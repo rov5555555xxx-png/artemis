@@ -1,0 +1,570 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+html,body{margin:0;background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#0d0d18;font-family:'Prompt',sans-serif}
+.scene{position:absolute;inset:0;opacity:0;overflow:hidden}
+.scene>svg{position:absolute;left:0;top:0;width:1080px;height:1920px}
+.art{position:absolute;inset:0;transform-origin:540px 760px}
+#subs{position:absolute;left:0;right:0;top:1170px;height:400px;z-index:500}
+.sub{position:absolute;left:50px;right:50px;top:0;text-align:center;opacity:0}
+.tag{display:inline-block;font-size:26px;font-weight:600;padding:2px 18px;border-radius:999px;margin-bottom:10px;letter-spacing:1px}
+.tag.u{background:#d9a53a;color:#2a1d08}.tag.n{background:#5fb3e0;color:#08202c}
+.th{font-weight:700;font-size:62px;color:#fff;line-height:1.35;text-shadow:0 4px 0 rgba(0,0,0,.4),0 0 28px rgba(0,0,0,.75)}
+.hl{color:#ffd24a}
+.bad{background:#d63a4a;padding:0 14px;border-radius:10px;text-shadow:none}
+.en{display:inline-block;margin-top:16px;font-weight:400;font-size:31px;color:#f2ede4;background:rgba(14,14,24,.66);padding:8px 22px;border-radius:12px;line-height:1.35}
+.year{position:absolute;left:50px;top:90px;background:#efe6d2;border-radius:10px;padding:14px 26px 12px 22px;box-shadow:0 12px 30px rgba(0,0,0,.45);border-left:8px solid #c9a24a;color:#2b261f}
+.year .yk{font-size:26px;font-weight:600;display:flex;align-items:center;gap:8px}
+.year .yv{font-family:'Courier Prime',monospace;font-size:66px;line-height:1;margin-top:4px;letter-spacing:2px}
+.year .yv small{font-family:'Prompt';font-size:28px;font-weight:600;letter-spacing:0;margin-right:8px}
+.card{position:absolute;background:#f4eddc;color:#2b261f;border-radius:16px;box-shadow:0 18px 40px rgba(0,0,0,.45);padding:24px 30px;border-left:10px solid #d9a53a}
+.card h3{margin:0;font-size:38px;font-weight:700;line-height:1.3}
+.card .k{font-size:19px;letter-spacing:2px;color:#8a7b66;font-weight:600;text-transform:uppercase}
+.row{display:flex;justify-content:space-between;gap:24px;font-size:31px;padding:12px 0;border-top:2px solid #e3d9c4}
+.ok{color:#2f9a55;font-weight:700}.no{color:#d63a4a;font-weight:700}
+.src{position:absolute;left:50%;transform:translateX(-50%);top:1090px;font-size:22px;color:#efe6d6;background:rgba(0,0,0,.5);padding:7px 18px;border-radius:999px;white-space:nowrap}
+.src b{background:#efe6d6;color:#222;font-size:16px;padding:2px 8px;border-radius:4px;margin-right:10px;letter-spacing:1px}
+.chip{position:absolute;font-size:30px;font-weight:600;padding:6px 22px;border-radius:999px}
+#grain{position:absolute;inset:0;z-index:400;opacity:.07;pointer-events:none;mix-blend-mode:overlay}
+#vig{position:absolute;inset:0;z-index:401;pointer-events:none;background:radial-gradient(ellipse at 50% 42%,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%)}
+#black{position:absolute;inset:0;z-index:600;background:#000;opacity:0}
+.grid{display:grid;grid-template-columns:repeat(20,1fr);gap:5px;margin-top:16px}
+.grid i{display:block;aspect-ratio:1;border-radius:4px;background:#e3d9c4}
+.grid i.on{background:#f08a3c}
+.strike{position:relative;display:inline-block;color:#b9ad98}
+.strike:after{content:'';position:absolute;left:-6px;top:52%;height:6px;background:#d63a4a;width:var(--w,0%);border-radius:3px}
+</style></head>
+<body>
+<div id="stage">
+  <div id="grain"></div><div id="vig"></div>
+  <div id="subs"></div>
+  <div id="black"></div>
+</div>
+<script src="timeline.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=clamp(x);return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2};
+const back=x=>{x=clamp(x);const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const ramp=(t,a,b)=>clamp((t-a)/(b-a));
+function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const PIN='<svg width="22" height="26" viewBox="0 0 22 26"><path d="M11 25C11 25 2 15 2 9.5A9 9 0 0 1 20 9.5C20 15 11 25 11 25Z" fill="none" stroke="#2b261f" stroke-width="2.5"/><circle cx="11" cy="9.5" r="3" fill="#2b261f"/></svg>';
+const year=(k,v,pre='ค.ศ.')=>`<div class="year" data-at="0.3"><div class="yk">${PIN} ${k}</div><div class="yv"><small>${pre}</small>${v}</div></div>`;
+const src=s=>`<div class="src" data-at="0.8"><b>SOURCE</b>${s}</div>`;
+
+/* ---------- characters ---------- */
+function eyes(P,c){return `<g id="${P}-eyes"><ellipse cx="-18" cy="6" rx="5" ry="6.5" fill="${c}"/><ellipse cx="18" cy="6" rx="5" ry="6.5" fill="${c}"/></g>`}
+function nephew(){
+  const skin='#e8b48c',shirt='#f2efe8';
+  return `<g id="N">
+  <rect x="-80" y="-20" width="160" height="230" rx="26" fill="#262636"/>
+  <rect x="-6" y="250" width="12" height="150" fill="#1b1b26"/>
+  <path d="M-70 430 L70 430" stroke="#1b1b26" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="-70" cy="436" r="9" fill="#111"/><circle cx="70" cy="436" r="9" fill="#111"/><circle cx="0" cy="436" r="9" fill="#111"/>
+  <rect x="-58" y="200" width="116" height="52" rx="20" fill="#2f3a5a"/>
+  <rect x="-52" y="236" width="38" height="146" rx="14" fill="#2f3a5a"/><rect x="14" y="236" width="38" height="146" rx="14" fill="#2f3a5a"/>
+  <ellipse cx="-36" cy="388" rx="26" ry="11" fill="#2a2420"/><ellipse cx="36" cy="388" rx="26" ry="11" fill="#2a2420"/>
+  <rect x="-12" y="34" width="24" height="26" fill="${skin}"/>
+  <path d="M-62 215 L-54 82 Q-52 60 -30 55 L30 55 Q52 60 54 82 L62 215 Z" fill="${shirt}"/>
+  <path d="M-16 56 L0 82 L16 56" fill="none" stroke="#d6d1c6" stroke-width="4"/>
+  <line x1="0" y1="82" x2="0" y2="210" stroke="#dcd7cc" stroke-width="3"/>
+  <g><path d="M-50 86 L-66 160 L-42 214" fill="none" stroke="${shirt}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="-40" cy="218" r="13" fill="${skin}"/></g>
+  <g id="N-armDown"><path d="M50 86 L66 160 L42 214" fill="none" stroke="${shirt}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="218" r="13" fill="${skin}"/></g>
+  <g id="N-armHold"><path d="M50 86 L84 150 L66 74" fill="none" stroke="${shirt}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+     <g id="N-bottle"><rect x="52" y="22" width="34" height="46" rx="6" fill="#fff"/><rect x="50" y="12" width="38" height="14" rx="4" fill="#e0782f"/><rect x="52" y="34" width="34" height="18" fill="#f2a33a"/><text x="69" y="48" font-size="13" font-weight="700" text-anchor="middle" fill="#fff">D3</text></g>
+     <g id="N-capsule"><rect x="54" y="40" width="34" height="16" rx="8" fill="#f2a33a"/><rect x="54" y="40" width="17" height="16" rx="8" fill="#fbd27a"/></g>
+     <circle cx="66" cy="70" r="13" fill="${skin}"/></g>
+  <g id="N-armScratch"><path d="M50 86 L88 120 L52 -30" fill="none" stroke="${shirt}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="-36" r="13" fill="${skin}"/></g>
+  <circle cx="-50" cy="6" r="10" fill="${skin}"/><circle cx="50" cy="6" r="10" fill="${skin}"/>
+  <circle cx="0" cy="0" r="50" fill="${skin}"/>
+  <path d="M-53 2 Q-58 -62 0 -62 Q58 -62 53 2 Q46 -30 14 -32 Q-14 -40 -53 2 Z" fill="#1d1b22"/>
+  ${eyes('N','#222')}
+  <g id="N-brows"><path id="N-bl" d="M-27 -10 L-10 -12" stroke="#1d1b22" stroke-width="5" stroke-linecap="round"/><path id="N-br" d="M10 -12 L27 -10" stroke="#1d1b22" stroke-width="5" stroke-linecap="round"/></g>
+  <path id="N-mc" d="M-10 28 Q0 33 10 28" stroke="#7a3a2a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <ellipse id="N-mo" cx="0" cy="30" rx="8" ry="6" fill="#6b2a2a"/>
+  <text id="N-q" x="60" y="-70" font-size="70" font-weight="700" fill="#ffd24a">?</text>
+  <text id="N-x" x="44" y="-66" font-size="64" font-weight="700" fill="#ffd24a">!?</text>
+  </g>`;
+}
+function uncle(){
+  const skin='#dfa77c',card='#7a5236';
+  return `<g id="U">
+  <rect x="-115" y="-50" width="230" height="300" rx="46" fill="#2f6b55"/>
+  <rect x="-115" y="-50" width="230" height="40" rx="20" fill="#357a61"/>
+  <rect x="-80" y="210" width="160" height="70" rx="18" fill="#2a5f4b"/>
+  <rect x="-58" y="200" width="116" height="52" rx="20" fill="#4a4038"/>
+  <rect x="-52" y="236" width="38" height="140" rx="14" fill="#4a4038"/><rect x="14" y="236" width="38" height="140" rx="14" fill="#4a4038"/>
+  <ellipse cx="-36" cy="382" rx="26" ry="11" fill="#1f1a16"/><ellipse cx="36" cy="382" rx="26" ry="11" fill="#1f1a16"/>
+  <rect x="-140" y="140" width="56" height="150" rx="24" fill="#2a5f4b"/><rect x="84" y="140" width="56" height="150" rx="24" fill="#2a5f4b"/>
+  <rect x="-110" y="280" width="16" height="40" fill="#3a2a20"/><rect x="94" y="280" width="16" height="40" fill="#3a2a20"/>
+  <rect x="-12" y="34" width="24" height="26" fill="${skin}"/>
+  <path d="M-62 215 L-56 82 Q-54 60 -30 55 L30 55 Q54 60 56 82 L62 215 Z" fill="${card}"/>
+  <path d="M-18 56 L0 120 L18 56 Z" fill="#efe9dd"/>
+  <circle cx="-6" cy="140" r="4" fill="#4a3020"/><circle cx="-6" cy="170" r="4" fill="#4a3020"/>
+  <path d="M-52 86 L-70 160 L-42 214" fill="none" stroke="${card}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="-40" cy="218" r="13" fill="${skin}"/>
+  <path d="M52 86 L74 168 L36 150" fill="none" stroke="${card}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+  <g id="U-steam" opacity=".5"><path id="U-s1" d="M24 112 Q16 96 26 82 Q34 68 26 54" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/><path id="U-s2" d="M42 112 Q50 98 42 84 Q34 70 42 58" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/></g>
+  <path d="M14 120 L54 120 L50 152 Q34 160 18 152 Z" fill="#f2efe6"/><path d="M54 128 Q66 132 54 144" stroke="#f2efe6" stroke-width="5" fill="none"/>
+  <circle cx="28" cy="152" r="13" fill="${skin}"/>
+  <circle cx="-50" cy="6" r="10" fill="${skin}"/><circle cx="50" cy="6" r="10" fill="${skin}"/>
+  <circle cx="0" cy="0" r="50" fill="${skin}"/>
+  <path d="M-52 10 Q-60 -36 -30 -50 Q-44 -20 -40 14 Z" fill="#f1eee8"/><path d="M52 10 Q60 -36 30 -50 Q44 -20 40 14 Z" fill="#f1eee8"/>
+  <path d="M-30 -46 Q0 -60 30 -46 Q0 -54 -30 -46Z" fill="#f1eee8"/>
+  ${eyes('U','#2a2220')}
+  <circle cx="-18" cy="6" r="14" fill="rgba(255,255,255,.14)" stroke="#3b3330" stroke-width="3"/><circle cx="18" cy="6" r="14" fill="rgba(255,255,255,.14)" stroke="#3b3330" stroke-width="3"/>
+  <line x1="-4" y1="6" x2="4" y2="6" stroke="#3b3330" stroke-width="3"/>
+  <path d="M-28 -14 L-8 -12" stroke="#f1eee8" stroke-width="7" stroke-linecap="round"/><path d="M8 -12 L28 -14" stroke="#f1eee8" stroke-width="7" stroke-linecap="round"/>
+  <ellipse id="U-mo" cx="0" cy="34" rx="8" ry="6" fill="#6b2a2a"/>
+  <path id="U-mc" d="M-9 34 Q0 39 9 34" stroke="#7a3a2a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <path d="M-22 26 Q0 14 22 26 Q12 32 0 28 Q-12 32 -22 26Z" fill="#f4f1ea"/>
+  </g>`;
+}
+function cat(id){
+  return `<g id="${id}">
+   <path id="${id}-tail" d="M-56 6 Q-110 10 -100 -30" stroke="#d9802f" stroke-width="16" fill="none" stroke-linecap="round"/>
+   <ellipse id="${id}-body" cx="0" cy="0" rx="64" ry="30" fill="#e58e3e"/>
+   <path d="M-20 -26 Q-14 0 -22 26 M0 -30 Q6 0 0 30 M20 -27 Q26 0 20 27" stroke="#c46e25" stroke-width="7" fill="none"/>
+   <circle cx="56" cy="-8" r="25" fill="#e58e3e"/>
+   <path d="M38 -24 L42 -50 L58 -30 Z M60 -30 L76 -48 L78 -22 Z" fill="#e58e3e"/>
+   <path d="M46 -8 Q51 -4 56 -8 M62 -8 Q67 -4 72 -8" stroke="#5a3010" stroke-width="3" fill="none"/>
+   <circle cx="62" cy="2" r="3" fill="#c0505a"/></g>`;
+}
+
+/* ---------- scenes ---------- */
+const S={};
+S.room=function(){
+  const r=rng(7);let city='',stars='';
+  for(let i=0;i<16;i++){const bw=34+r()*46,bh=120+r()*300,x=550+i*32;city+=`<rect x="${x}" y="${770-bh}" width="${bw}" height="${bh}" fill="#171a3c"/>`;
+    for(let yy=770-bh+14;yy<760;yy+=26)for(let xx=x+6;xx<x+bw-8;xx+=14)if(r()<.32)city+=`<rect x="${xx}" y="${yy}" width="6" height="10" fill="#ffd479" opacity="${.5+r()*.5}"/>`;}
+  for(let i=0;i<34;i++)stars+=`<circle class="star" cx="${570+r()*450}" cy="${170+r()*300}" r="${1+r()*2.2}" fill="#fff" data-p="${r()*6}"/>`;
+  let books='';const bc=['#c9563c','#e0a53a','#4f7fa8','#7a9a5a','#8a5aa0','#d9d0bb','#3f6a62'];
+  for(let s=0;s<5;s++){let x=46;while(x<200){const w=14+r()*16,h=90+r()*40;books+=`<rect x="${x}" y="${386+s*150-h}" width="${w}" height="${h}" fill="${bc[Math.floor(r()*bc.length)]}"/>`;x+=w+3}}
+  return `<svg viewBox="0 0 1080 1920"><defs>
+   <linearGradient id="rg-glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14183f"/><stop offset="1" stop-color="#3b2d6e"/></linearGradient>
+   <linearGradient id="rg-floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2148"/><stop offset="1" stop-color="#0f0c1e"/></linearGradient>
+   <radialGradient id="rg-lamp" cx=".5" cy="0" r="1"><stop offset="0" stop-color="#ffe2a0" stop-opacity=".55"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient>
+   <clipPath id="rc-win"><rect x="570" y="170" width="450" height="600"/></clipPath></defs>
+   <g id="room-cam">
+   <rect x="-800" y="-600" width="2700" height="1670" fill="#2c2550"/>
+   <rect x="-800" y="1060" width="2700" height="1500" fill="url(#rg-floor)"/>
+   <rect x="-800" y="1052" width="2700" height="10" fill="#3a3168"/>
+   <rect x="560" y="160" width="470" height="620" fill="#3d3570"/>
+   <g clip-path="url(#rc-win)"><rect x="570" y="170" width="450" height="600" fill="url(#rg-glass)"/>${stars}
+     <path d="M940 250 A40 40 0 1 0 975 310 A32 32 0 1 1 940 250Z" fill="#f4ecd0"/>${city}</g>
+   <rect x="792" y="170" width="6" height="600" fill="#3d3570"/>
+   <path d="M530 150 L590 150 Q575 480 600 800 L530 800 Z" fill="#5b3f86"/><path d="M1060 150 L1000 150 Q1015 480 990 800 L1060 800 Z" fill="#5b3f86"/>
+   <rect x="30" y="230" width="190" height="830" fill="#3a2a22"/><rect x="40" y="240" width="170" height="810" fill="#2a1e18"/>
+   ${books}${[0,1,2,3,4].map(s=>`<rect x="40" y="${386+s*150}" width="170" height="10" fill="#3a2a22"/>`).join('')}
+   <rect x="60" y="196" width="110" height="36" rx="6" fill="#121218"/><text x="115" y="223" font-size="24" fill="#59e08a" text-anchor="middle" font-family="Courier Prime">23:40</text>
+   <rect x="296" y="290" width="130" height="130" fill="#c9a77a"/><rect x="306" y="300" width="110" height="110" fill="#f0dcc0"/><circle cx="361" cy="360" r="26" fill="#e07a4a"/>
+   <line x1="560" y1="-600" x2="560" y2="590" stroke="#15122a" stroke-width="4"/>
+   <path id="room-cone" d="M510 650 L610 650 L760 880 L360 880 Z" fill="url(#rg-lamp)"/>
+   <path d="M520 592 L600 592 L626 652 L494 652 Z" fill="#e8c071"/><ellipse cx="560" cy="652" rx="66" ry="8" fill="#ffe9b0"/>
+   <ellipse cx="560" cy="1112" rx="430" ry="62" fill="#5e2b63"/><ellipse cx="560" cy="1112" rx="390" ry="48" fill="none" stroke="#7a3f80" stroke-width="4"/>
+   <g transform="translate(560 1085)">${cat('rcat')}</g>
+   <g transform="translate(240 620) scale(1.3)">${uncle()}</g>
+   <rect x="420" y="858" width="290" height="20" rx="4" fill="#8a5a3c"/><rect x="440" y="878" width="16" height="182" fill="#6a4430"/><rect x="674" y="878" width="16" height="182" fill="#6a4430"/>
+   <path d="M470 858 Q470 818 505 818 Q540 818 540 858 Z" fill="#c4553a"/><rect x="497" y="806" width="16" height="14" fill="#c4553a"/><path d="M540 838 L566 826" stroke="#c4553a" stroke-width="7"/>
+   <rect x="600" y="850" width="96" height="8" fill="#9aa0aa"/><path d="M696 856 L712 782" stroke="#5c6270" stroke-width="10" stroke-linecap="round"/>
+   <g transform="translate(860 600) scale(1.3)">${nephew()}</g>
+   </g></svg>`;
+};
+S.london=function(){
+  const r=rng(3);let b='';
+  for(let i=0;i<12;i++){const x=i*95-20,h=200+r()*260;b+=`<rect x="${x}" y="${1060-h}" width="${90}" height="${h}" fill="${i%2?'#3e3125':'#46382a'}"/>`;
+    for(let yy=1060-h+20;yy<1040;yy+=40)for(let xx=x+12;xx<x+80;xx+=26)if(r()<.25)b+=`<rect x="${xx}" y="${yy}" width="10" height="16" fill="#c99a52" opacity=".55"/>`;}
+  const ch=[140,330,640,900];let c='';ch.forEach((x,i)=>c+=`<rect x="${x}" y="${470+i%2*60}" width="46" height="600" fill="#33281e"/><rect x="${x-6}" y="${470+i%2*60}" width="58" height="16" fill="#2a2018"/>`);
+  let p='';for(let i=0;i<32;i++)p+=`<circle class="puff" data-c="${i%4}" data-i="${i}" r="40" fill="#6b5a48"/>`;
+  return `<svg viewBox="0 0 1080 1920"><defs><linearGradient id="lg-l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a805c"/><stop offset="1" stop-color="#5e4a37"/></linearGradient></defs>
+  <g class="art"><rect width="1080" height="1920" fill="url(#lg-l)"/>
+  <circle cx="780" cy="330" r="90" fill="#f3d9a0" opacity=".28"/>
+  ${c}<g id="lon-smoke">${p}</g>${b}
+  <rect y="1060" width="1080" height="860" fill="#2d241b"/><rect y="1060" width="1080" height="14" fill="#3d3124"/>
+  <g id="lon-kid"><g transform="scale(2.4)">
+    <path d="M-12 40 Q-30 66 -12 92" stroke="#3a2e24" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M12 40 Q30 66 12 92" stroke="#3a2e24" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <ellipse cx="-14" cy="96" rx="10" ry="5" fill="#1d1712"/><ellipse cx="14" cy="96" rx="10" ry="5" fill="#1d1712"/>
+    <path d="M-22 0 L22 0 L26 46 L-26 46 Z" fill="#6a5440"/>
+    <path d="M-20 4 L-30 38 M20 4 L30 38" stroke="#6a5440" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="0" cy="-20" r="20" fill="#d9b08c"/><path d="M-22 -26 Q0 -48 22 -26 L26 -24 L-22 -24Z" fill="#4a3a2c"/>
+    <circle cx="-7" cy="-17" r="2.4" fill="#2a2018"/><circle cx="7" cy="-17" r="2.4" fill="#2a2018"/><path d="M-5 -6 Q0 -9 5 -6" stroke="#5a3a2a" stroke-width="2" fill="none"/>
+  </g></g></g></svg>
+  ${year('อังกฤษ','1800s')}
+  <div class="card" data-at="2.8" style="right:50px;top:300px;width:380px"><div class="k">Rickets</div><h3>โรคกระดูกอ่อน</h3>
+   <div class="row"><span>กระดูกนิ่ม</span><span class="no">●</span></div><div class="row"><span>ขาโก่ง</span><span class="no">●</span></div><div class="row"><span>ตัวเตี้ย แคระแกร็น</span><span class="no">●</span></div></div>`;
+};
+S.cmp=function(){
+  let rays='';for(let i=0;i<12;i++)rays+=`<rect x="-6" y="-130" width="12" height="40" rx="6" fill="#ffd45a" transform="rotate(${i*30})"/>`;
+  const kid=(sick)=>`<g transform="scale(2)">
+    ${sick?`<path d="M-12 40 Q-30 66 -12 92" stroke="#3a2e24" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M12 40 Q30 66 12 92" stroke="#3a2e24" stroke-width="9" fill="none" stroke-linecap="round"/>`
+    :`<path d="M-10 40 L-12 92" stroke="#3a3a4a" stroke-width="9" stroke-linecap="round"/><path d="M10 40 L12 92" stroke="#3a3a4a" stroke-width="9" stroke-linecap="round"/>`}
+    <path d="M-22 0 L22 0 L26 46 L-26 46 Z" fill="${sick?'#6a5a4a':'#d9584a'}"/>
+    ${sick?'<path d="M-20 4 L-28 40 M20 4 L28 40" stroke="#6a5a4a" stroke-width="9" stroke-linecap="round"/>':'<path d="M-20 4 L-40 -30 M20 4 L40 -30" stroke="#d9584a" stroke-width="9" stroke-linecap="round"/>'}
+    <circle cx="0" cy="-20" r="20" fill="${sick?'#cfae92':'#e8b48c'}"/><path d="M-20 -26 Q0 -46 20 -26Z" fill="#3a2a20"/>
+    <circle cx="-7" cy="-17" r="2.4" fill="#2a2018"/><circle cx="7" cy="-17" r="2.4" fill="#2a2018"/>
+    ${sick?'<path d="M-5 -5 Q0 -9 5 -5" stroke="#5a3a2a" stroke-width="2" fill="none"/>':'<path d="M-6 -8 Q0 -2 6 -8" stroke="#5a3a2a" stroke-width="2.4" fill="none"/>'}</g>`;
+  let sm='';for(let i=0;i<14;i++)sm+=`<circle class="cpuff" data-i="${i}" r="40" fill="#5a5048"/>`;
+  return `<svg viewBox="0 0 1080 1920"><defs><clipPath id="cl-l"><rect width="540" height="1920"/></clipPath><clipPath id="cl-r"><rect x="540" width="540" height="1920"/></clipPath></defs>
+  <g class="art"><g clip-path="url(#cl-l)"><rect width="540" height="1920" fill="#7a7062"/>
+    <rect x="100" y="420" width="40" height="500" fill="#3a332c"/><rect x="330" y="470" width="40" height="460" fill="#3a332c"/><g id="cmp-smoke">${sm}</g>
+    <rect x="0" y="720" width="160" height="340" fill="#4a4238"/><rect x="150" y="640" width="140" height="420" fill="#544a3f"/><rect x="280" y="760" width="150" height="300" fill="#4a4238"/><rect x="420" y="690" width="120" height="370" fill="#544a3f"/>
+    <rect y="1060" width="540" height="860" fill="#2f2a24"/><g transform="translate(270 870)">${kid(true)}</g></g>
+  <g clip-path="url(#cl-r)"><rect x="540" width="540" height="1920" fill="#a9cbd8"/>
+    <g transform="translate(900 360)"><g id="cmp-rays">${rays}</g><circle r="70" fill="#ffd45a"/></g>
+    <path d="M540 880 Q760 760 1080 860 L1080 1060 L540 1060Z" fill="#7fae5c"/><path d="M540 960 Q820 880 1080 980 L1080 1060 L540 1060Z" fill="#6a9a4c"/>
+    <rect x="540" y="1060" width="540" height="860" fill="#3d5a30"/>
+    <g id="cmp-kid2" transform="translate(810 870)">${kid(false)}</g></g>
+  <rect x="536" width="8" height="1920" fill="#efe6d2"/></g></svg>
+  ${year('โปแลนด์','1822')}
+  <div class="chip" data-at="0.6" style="left:170px;top:320px;background:#3a332c;color:#efe6d2">เมือง</div>
+  <div class="chip" data-at="0.9" style="left:740px;top:520px;background:#efe6d2;color:#2f4a24">ชนบท</div>
+  <div class="chip" data-at="2.9" data-sub="7" style="left:150px;top:1010px;background:#d63a4a;color:#fff">ป่วยเยอะ</div>
+  <div class="chip" data-at="3.4" data-sub="7" data-off="0.4" style="left:700px;top:1010px;background:#2f9a55;color:#fff">แทบไม่เป็น</div>
+  ${src('Jędrzej Śniadecki, 1822')}`;
+};
+S.dog=function(){
+  return `<svg viewBox="0 0 1080 1920"><defs><linearGradient id="lg-d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a5844"/><stop offset="1" stop-color="#4a3c2e"/></linearGradient></defs>
+  <g class="art"><rect width="1080" height="1920" fill="url(#lg-d)"/>
+  <rect y="1000" width="1080" height="920" fill="#33291f"/><rect y="1000" width="1080" height="12" fill="#43362a"/>
+  <rect x="600" y="860" width="420" height="20" fill="#7a5a3c"/><rect x="620" y="880" width="16" height="120" fill="#5a4230"/><rect x="984" y="880" width="16" height="120" fill="#5a4230"/>
+  <path d="M900 860 L900 790 L880 790 L880 770 L940 770 L940 790 L920 790 L920 860Z" fill="#cfc6b0" opacity=".8"/>
+  <path d="M960 860 L990 800 L990 770 L1010 770 L1010 800 L1040 860Z" fill="#bfb69e" opacity=".7"/>
+  <g id="dog-sad" transform="translate(320 950)"><ellipse cx="0" cy="0" rx="120" ry="38" fill="#c7a27a"/><ellipse cx="110" cy="6" rx="42" ry="30" fill="#c7a27a"/><ellipse cx="96" cy="-8" rx="14" ry="26" fill="#9a7650" transform="rotate(30 96 -8)"/><path d="M118 0 Q124 4 130 0" stroke="#3a2a20" stroke-width="3" fill="none"/><circle cx="150" cy="10" r="6" fill="#2a2018"/><path d="M-120 0 Q-150 10 -160 20" stroke="#c7a27a" stroke-width="12" fill="none" stroke-linecap="round"/></g>
+  <g id="dog-happy" transform="translate(320 900)"><rect x="-80" y="20" width="18" height="70" rx="8" fill="#b8936a"/><rect x="60" y="20" width="18" height="70" rx="8" fill="#b8936a"/><rect x="-50" y="20" width="18" height="70" rx="8" fill="#c7a27a"/><rect x="34" y="20" width="18" height="70" rx="8" fill="#c7a27a"/>
+     <ellipse cx="0" cy="10" rx="110" ry="44" fill="#c7a27a"/><g id="dog-tail"><path d="M-104 0 Q-140 -30 -130 -70" stroke="#c7a27a" stroke-width="14" fill="none" stroke-linecap="round"/></g>
+     <circle cx="110" cy="-40" r="44" fill="#c7a27a"/><ellipse cx="88" cy="-62" rx="14" ry="28" fill="#9a7650" transform="rotate(20 88 -62)"/><circle cx="122" cy="-48" r="5" fill="#2a2018"/><circle cx="152" cy="-30" r="7" fill="#2a2018"/><path d="M126 -18 Q138 -10 148 -18" stroke="#3a2a20" stroke-width="3" fill="none"/></g>
+  <rect x="120" y="640" width="420" height="360" rx="8" fill="rgba(0,0,0,.12)" stroke="#2a2119" stroke-width="10"/>
+  ${Array.from({length:10},(_,i)=>`<line x1="${158+i*38}" y1="645" x2="${158+i*38}" y2="995" stroke="#2a2119" stroke-width="6"/>`).join('')}
+  <g data-at="2.6"><g id="dog-bottle" transform="translate(720 860)"><path d="M-36 0 L-36 -120 Q-36 -150 -14 -160 L-14 -190 L14 -190 L14 -160 Q36 -150 36 -120 L36 0 Z" fill="#6b3b1a"/><rect x="-18" y="-206" width="36" height="20" rx="4" fill="#3a2a20"/>
+     <rect x="-32" y="-110" width="64" height="74" fill="#efe3c4"/><path d="M-20 -70 Q0 -88 18 -70 Q0 -54 -20 -70Z M18 -70 L26 -80 L26 -60Z" fill="#4a6a8a"/><text x="0" y="-92" font-size="11" font-weight="700" text-anchor="middle" fill="#3a2a20">COD LIVER</text><text x="0" y="-44" font-size="11" font-weight="700" text-anchor="middle" fill="#3a2a20">OIL</text></g></g>
+  </g></svg>
+  ${year('อังกฤษ','1919')}
+  <div class="card" data-at="1.4" style="right:50px;top:300px;width:470px"><div class="k">Edward Mellanby · Experiment</div><h3>สุนัขที่เลี้ยงในร่ม</h3>
+   <div class="row"><span>ไม่โดนแดด</span><span class="no">กระดูกอ่อน ✗</span></div>
+   <div class="row" data-at="3.0" data-sub="11"><span>+ น้ำมันตับปลา</span><span class="ok">หาย ✓</span></div></div>
+  ${src('Mellanby, 1919 · The Lancet')}`;
+};
+S.uv=function(){
+  const bone=(x,o,id)=>`<g id="${id}" opacity="${o}"><path d="M${x-30} 560 L${x-24} 820 M${x+26} 560 L${x+20} 820" stroke="#f4f4f4" stroke-width="20" stroke-linecap="round"/><circle cx="${x-30}" cy="560" r="16" fill="#f4f4f4"/><circle cx="${x+26}" cy="560" r="16" fill="#f4f4f4"/><circle cx="${x-24}" cy="820" r="16" fill="#f4f4f4"/><circle cx="${x+20}" cy="820" r="16" fill="#f4f4f4"/></g>`;
+  return `<svg viewBox="0 0 1080 1920"><defs><filter id="glow"><feGaussianBlur stdDeviation="8"/></filter></defs>
+  <g class="art"><rect width="1080" height="1920" fill="#211b2a"/><rect y="1000" width="1080" height="920" fill="#16121d"/>
+  <path id="uv-cone" d="M290 430 L470 430 L640 1000 L120 1000Z" fill="#a46cff" opacity=".25"/>
+  <rect x="250" y="360" width="260" height="70" rx="14" fill="#5a5560"/><rect x="270" y="410" width="220" height="22" rx="11" fill="#d9b8ff"/><rect x="270" y="410" width="220" height="22" rx="11" fill="#b98cff" filter="url(#glow)"/>
+  <line x1="380" y1="0" x2="380" y2="360" stroke="#3a3540" stroke-width="8"/>
+  <g transform="translate(380 820)"><rect x="-60" y="110" width="120" height="16" fill="#5a4a3a"/><rect x="-50" y="126" width="12" height="54" fill="#5a4a3a"/><rect x="38" y="126" width="12" height="54" fill="#5a4a3a"/>
+    <path d="M-16 110 Q-34 140 -18 176 M16 110 Q34 140 18 176" stroke="#e0b08a" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <rect x="-30" y="84" width="60" height="34" rx="10" fill="#efe9dd"/>
+    <path d="M-34 20 L34 20 L30 92 L-30 92Z" fill="#e0b08a"/><path d="M-32 26 L-52 80 M32 26 L52 80" stroke="#e0b08a" stroke-width="13" stroke-linecap="round"/>
+    <circle cx="0" cy="-12" r="30" fill="#e0b08a"/><path d="M-30 -18 Q0 -54 30 -18 Q10 -34 -30 -18Z" fill="#3a2a20"/>
+    <rect x="-28" y="-20" width="56" height="16" rx="8" fill="#1a1a1a"/><circle cx="-12" cy="-12" r="7" fill="#7a5ab0"/><circle cx="12" cy="-12" r="7" fill="#7a5ab0"/></g>
+  <rect x="650" y="420" width="370" height="520" rx="16" fill="#0e1117" stroke="#3a3f4a" stroke-width="4"/>
+  <text x="835" y="470" font-size="26" fill="#8aa0b8" text-anchor="middle" font-weight="600" letter-spacing="4">X-RAY</text>
+  ${bone(745,.28,'uv-b0')}${bone(925,.2,'uv-b1')}
+  <text x="745" y="900" font-size="28" fill="#c9d3dd" text-anchor="middle">ก่อน</text><text x="925" y="900" font-size="28" fill="#c9d3dd" text-anchor="middle">หลัง</text>
+  <line x1="835" y1="500" x2="835" y2="870" stroke="#2a2f38" stroke-width="3"/></g></svg>
+  ${year('เบอร์ลิน','1919')}
+  ${src('Kurt Huldschinsky, 1919')}`;
+};
+S.mcc=function(){
+  let bub='';for(let i=0;i<9;i++)bub+=`<circle class="bub" data-i="${i}" r="8" fill="#f0c35a"/>`;
+  const tile=(l,x,id,on)=>`<g ${id?`id="${id}"`:''} transform="translate(${x} 1010)"><rect x="-56" y="-60" width="112" height="120" rx="18" fill="${on?'#e3b341':'#5c5348'}"/><text x="0" y="28" font-size="80" font-weight="700" text-anchor="middle" fill="${on?'#2a1d08':'#a39886'}">${l}</text></g>`;
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect width="1080" height="1920" fill="#4a3c2e"/><rect y="880" width="1080" height="1040" fill="#33291f"/>
+  <rect x="80" y="860" width="440" height="20" fill="#7a5a3c"/>
+  <g transform="translate(300 860)"><rect x="-40" y="-40" width="80" height="40" fill="#5a5a60"/><rect x="-10" y="-110" width="20" height="70" fill="#6a6a70"/>
+    <g id="mcc-flame"><path d="M-26 -110 Q-30 -150 0 -190 Q30 -150 26 -110Z" fill="#5aa0ff" opacity=".85"/><path d="M-12 -112 Q-14 -140 0 -162 Q14 -140 12 -112Z" fill="#c8e2ff"/></g></g>
+  <g transform="translate(300 600)"><path d="M-130 0 L130 0 L118 140 Q0 160 -118 140Z" fill="#8a8f94"/><rect x="-146" y="-14" width="292" height="22" rx="10" fill="#a2a7ac"/><ellipse cx="0" cy="2" rx="128" ry="12" fill="#c79a3a"/><g id="mcc-bub">${bub}</g></g>
+  <g id="mcc-steam" opacity=".4"><path d="M240 560 Q220 500 250 450 Q275 400 250 350" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M340 560 Q370 500 340 450 Q315 400 345 350" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round"/></g>
+  <g data-at="5.0" data-sub="18">${tile('A',375,'',0)}${tile('B',490,'',0)}${tile('C',605,'',0)}</g>
+  <g data-at="5.6" data-sub="18" data-off="0.5"><g id="mcc-d">${tile('D',720,'',1)}<g id="mcc-spk" fill="#ffe08a"><path d="M790 930 l6 16 16 6 -16 6 -6 16 -6 -16 -16 -6 16 -6z"/><path d="M650 920 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z"/></g></g></g>
+  </g></svg>
+  ${year('สหรัฐฯ','1922')}
+  <div class="card" data-at="1.0" style="right:50px;top:300px;width:470px"><div class="k">Elmer McCollum · Experiment</div><h3>ต้มน้ำมันตับปลา</h3>
+   <div class="row"><span>วิตามิน A</span><span class="no">ถูกทำลาย ✗</span></div>
+   <div class="row" data-at="3.0" data-sub="17"><span>รักษากระดูกอ่อน</span><span class="ok">ยังได้ผล ✓</span></div></div>
+  ${src('McCollum et al., 1922 · J. Biol. Chem.')}`;
+};
+S.steen=function(){
+  let bottles='';for(let i=0;i<7;i++)bottles+=`<g class="milk" data-i="${i}"><path d="M-32 0 L-32 -110 Q-32 -130 -16 -140 L-16 -160 L16 -160 L16 -140 Q32 -130 32 -110 L32 0Z" fill="#f6f3ea"/><rect x="-18" y="-172" width="36" height="16" rx="4" fill="#4f8fd0"/><g class="milk-lbl"><rect x="-30" y="-92" width="60" height="44" rx="6" fill="#e3b341"/><text x="0" y="-74" font-size="12" font-weight="700" text-anchor="middle" fill="#2a1d08">VITAMIN</text><text x="0" y="-56" font-size="18" font-weight="700" text-anchor="middle" fill="#2a1d08">D</text></g></g>`;
+  let rays='';for(let i=0;i<7;i++)rays+=`<line class="sray" x1="${250+i*30}" y1="370" x2="${280+i*14}" y2="610" stroke="#b98cff" stroke-width="6" stroke-dasharray="18 22" stroke-linecap="round"/>`;
+  let rol='';for(let i=0;i<12;i++)rol+=`<circle cx="${i*96+20}" cy="1018" r="18" fill="#5a4a3a" stroke="#2a2119" stroke-width="4"/>`;
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect width="1080" height="1920" fill="#3d3428"/><rect y="1040" width="1080" height="880" fill="#2a2219"/>
+  <rect x="200" y="300" width="260" height="70" rx="14" fill="#5a5560"/><rect x="220" y="350" width="220" height="20" rx="10" fill="#d9b8ff"/>
+  ${rays}
+  <path d="M220 620 L440 620 L410 680 L250 680Z" fill="#8a6a4a"/><ellipse cx="330" cy="620" rx="110" ry="16" fill="#d9b86a"/>
+  ${Array.from({length:14},(_,i)=>`<circle cx="${250+(i*37)%160}" cy="${614+(i*13)%12}" r="5" fill="#b8903a"/>`).join('')}
+  <rect x="610" y="420" width="140" height="120" rx="10" fill="#5a5a60"/><rect id="st-press" x="650" y="540" width="60" height="40" fill="#6a6a70"/><rect x="640" y="580" width="80" height="14" fill="#d63a4a"/>
+  <g id="st-belt">${bottles}</g>
+  <rect y="1000" width="1080" height="40" fill="#4a3c2e"/>${rol}</g></svg>
+  ${year('วิสคอนซิน','1924')}
+  <div class="card" data-at="1.2" style="right:50px;top:140px;width:330px;padding:18px 24px"><div class="k">Harry Steenbock</div><h3 style="font-size:32px">ฉาย UV ใส่อาหาร</h3>
+   <div class="row"><span>วิตามินดี</span><span class="ok">เกิดขึ้น ✓</span></div></div>
+  ${src('Steenbock, 1924 · Science')}`;
+};
+S.trend=function(){
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect width="1080" height="1920" fill="#1b1a2e"/>
+  <g data-at="0.2"><rect x="70" y="300" width="940" height="740" rx="18" fill="#f4eddc"/><rect x="70" y="300" width="12" height="740" fill="#d9a53a"/>
+  <text x="120" y="380" font-size="42" font-weight="700" fill="#2b261f">โรคกระดูกอ่อนในเด็ก</text>
+  <text x="120" y="420" font-size="20" font-weight="600" letter-spacing="2" fill="#8a7b66">RICKETS IN CHILDREN · TREND</text>
+  <line x1="150" y1="900" x2="950" y2="900" stroke="#b9ad98" stroke-width="3"/><line x1="150" y1="470" x2="150" y2="900" stroke="#b9ad98" stroke-width="3"/>
+  ${['1920','1930','1940','1950'].map((y,i)=>`<text x="${180+i*250}" y="944" font-size="26" fill="#6a5d4a" text-anchor="middle">${y}</text>`).join('')}
+  <text x="130" y="690" font-size="22" fill="#8a7b66" transform="rotate(-90 130 690)" text-anchor="middle">จำนวนเด็กป่วย</text>
+  <line x1="430" y1="480" x2="430" y2="900" stroke="#4f8fd0" stroke-width="3" stroke-dasharray="10 10"/>
+  <path id="tr-line" d="M170 500 C 330 505, 400 540, 480 680 S 700 880, 940 888" fill="none" stroke="#d63a4a" stroke-width="9" stroke-linecap="round"/>
+  <text x="120" y="1010" font-size="21" fill="#8a7b66">ภาพแสดงแนวโน้ม · ไม่ใช่สถิติรายปี (ILLUSTRATIVE)</text></g>
+  <g data-at="1.6"><rect x="445" y="470" width="300" height="60" rx="30" fill="#4f8fd0"/><text x="595" y="511" font-size="25" font-weight="600" fill="#fff" text-anchor="middle">เริ่มเติมวิตามินดีในนม</text></g>
+  </g></svg>`;
+};
+S.skin=function(){
+  let rays='';for(let i=0;i<12;i++)rays+=`<rect x="-7" y="-150" width="14" height="46" rx="7" fill="#ffcf4a" transform="rotate(${i*30})"/>`;
+  let beams='';for(let i=0;i<6;i++)beams+=`<line class="beam" x1="${260+i*20}" y1="${470+i*6}" x2="${520+i*80}" y2="680" stroke="#ffcf4a" stroke-width="6" stroke-dasharray="24 26" stroke-linecap="round" opacity=".85"/>`;
+  const hexs=(x,y)=>[0,1,2].map(k=>{const cx=x+k*44,cy=y+(k%2)*24;return `<polygon points="${[0,1,2,3,4,5].map(a=>`${cx+24*Math.cos(Math.PI/3*a+Math.PI/6)},${cy+24*Math.sin(Math.PI/3*a+Math.PI/6)}`).join(' ')}" fill="none" stroke="#7a3a2a" stroke-width="4"/>`}).join('');
+  return `<svg viewBox="0 0 1080 1920"><defs><radialGradient id="rg-med" cx=".4" cy=".35"><stop offset="0" stop-color="#ffe9a0"/><stop offset="1" stop-color="#c99a2a"/></radialGradient><filter id="glow2"><feGaussianBlur stdDeviation="14"/></filter></defs>
+  <g class="art"><rect width="1080" height="1920" fill="#2a2320"/>
+  <g transform="translate(200 430)"><g id="sk-rays">${rays}</g><circle r="84" fill="#ffcf4a"/></g>
+  ${beams}
+  <path d="M0 690 Q135 660 270 690 T540 690 T810 690 T1080 690 L1080 790 L0 790Z" fill="#ecbd98"/>
+  <rect y="790" width="1080" height="150" fill="#d9907f"/><rect y="940" width="1080" height="120" fill="#f0d8a4"/>
+  <text x="40" y="770" font-size="22" fill="#7a3a2a" font-weight="600">ผิวหนังชั้นนอก</text>
+  <g id="sk-mol" transform="translate(610 712)">${hexs(0,0)}</g>
+  <text x="660" y="780" font-size="22" fill="#7a3a2a" text-anchor="middle" font-family="Courier Prime">7-dehydrocholesterol</text>
+  <g id="sk-d3"><circle cx="0" cy="0" r="70" fill="#ffcf4a" opacity=".55" filter="url(#glow2)"/><circle cx="0" cy="0" r="54" fill="#ffcf4a"/><text x="0" y="18" font-size="50" font-weight="700" fill="#3a2508" text-anchor="middle">D3</text></g>
+  <g data-at="0.6" ><g transform="translate(870 360)"><path d="M-40 -150 L-14 -60 L14 -60 L40 -150Z" fill="#3a5aa0"/><circle r="92" fill="url(#rg-med)" stroke="#a87a1a" stroke-width="6"/>
+    <text y="-14" font-size="26" font-weight="700" fill="#5a3e08" text-anchor="middle" letter-spacing="3">NOBEL</text><text y="28" font-size="40" font-weight="700" fill="#5a3e08" text-anchor="middle" font-family="Courier Prime">1928</text></g></g>
+  </g></svg>
+  ${year('เยอรมนี','1928–36')}
+  ${src('Adolf Windaus · Nobel Chemistry 1928 · D3 1936')}`;
+};
+S.path=function(){
+  const node=(x,y,id,icon,a,b)=>`<g id="${id}" transform="translate(${x} ${y})"><circle r="112" fill="#2b2942" stroke="#4a4670" stroke-width="6" class="ring"/>${icon}
+    <text y="160" font-size="38" font-weight="700" fill="#fff" text-anchor="middle">${a}</text><text y="198" font-size="25" fill="#c9c4e0" text-anchor="middle">${b}</text></g>`;
+  const sun='<circle cx="-30" cy="-30" r="26" fill="#ffcf4a"/><path d="M-80 30 Q-40 10 0 30 T80 30 L80 60 L-80 60Z" fill="#ecbd98"/><text x="30" y="0" font-size="34" font-weight="700" fill="#ffcf4a" text-anchor="middle">D3</text>';
+  const liver='<path d="M-70 -20 Q-60 -60 0 -55 Q70 -50 75 -20 Q60 30 0 45 Q-60 50 -70 -20Z" fill="#9a4a3a"/><path d="M0 -55 Q-6 -10 0 45" stroke="#7a3a2a" stroke-width="4" fill="none"/>';
+  const kid='<path d="M-60 -50 Q-90 0 -60 50 Q-30 70 -24 30 Q-36 0 -24 -30 Q-30 -70 -60 -50Z" fill="#b8504a"/><path d="M60 -50 Q90 0 60 50 Q30 70 24 30 Q36 0 24 -30 Q30 -70 60 -50Z" fill="#b8504a"/>';
+  const hor='<path d="M0 -70 L18 -22 70 -22 28 10 44 62 0 30 -44 62 -28 10 -70 -22 -18 -22Z" fill="#ffd24a"/>';
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect width="1080" height="1920" fill="#1d1b2c"/>
+  <path d="M270 440 L810 440 L810 840 L270 840" fill="none" stroke="#3a3758" stroke-width="12" stroke-dasharray="4 22" stroke-linecap="round"/>
+  <path id="pa-line" d="M270 440 L810 440 L810 840 L270 840" fill="none" stroke="#ffcf4a" stroke-width="10" stroke-linecap="round"/>
+  ${node(270,440,'pa0',sun,'ผิว','D3')}${node(810,440,'pa1',liver,'ตับ','25(OH)D · ตัวที่ตรวจในเลือด')}
+  ${node(810,840,'pa2',kid,'ไต','1,25(OH)₂D · ตัวที่ออกฤทธิ์')}${node(270,840,'pa3',hor,'ทำงานเหมือน','ฮอร์โมน')}
+  <circle id="pa-dot" r="20" fill="#fff6d0"/></g></svg>
+  ${year('สหรัฐฯ · อังกฤษ','1968–71')}
+  ${src('DeLuca · Holick · Kodicek · Norman, 1968–1971')}`;
+};
+S.sheep=function(){
+  const r=rng(11);let wool='';for(let i=0;i<22;i++){const a=r()*Math.PI*2,d=r();wool+=`<circle cx="${Math.cos(a)*110*d}" cy="${Math.sin(a)*60*d}" r="${38+r()*20}" fill="${i%3?'#f6f2e6':'#ebe5d4'}"/>`}
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect width="1080" height="1920" fill="#b6d7e4"/><circle cx="880" cy="300" r="70" fill="#fff1b0"/>
+  <path d="M0 860 Q300 700 640 820 T1080 780 L1080 1920 L0 1920Z" fill="#8cbc6e"/><path d="M0 980 Q400 900 1080 990 L1080 1920 L0 1920Z" fill="#78a85c"/>
+  <g id="sh-sheep" transform="translate(330 820)"><rect x="-80" y="30" width="20" height="90" rx="9" fill="#3a3330"/><rect x="-30" y="40" width="20" height="90" rx="9" fill="#3a3330"/><rect x="30" y="40" width="20" height="90" rx="9" fill="#3a3330"/><rect x="70" y="30" width="20" height="90" rx="9" fill="#3a3330"/>
+    ${wool}<ellipse cx="150" cy="-30" rx="44" ry="56" fill="#3a3330" transform="rotate(-20 150 -30)"/><ellipse cx="120" cy="-74" rx="24" ry="12" fill="#3a3330"/><circle cx="162" cy="-40" r="7" fill="#fff"/><circle cx="164" cy="-40" r="3.5" fill="#111"/>
+    <circle cx="130" cy="-70" r="28" fill="#f6f2e6"/></g>
+  <g data-at="1.0"><path d="M520 760 L640 760" stroke="#2b261f" stroke-width="8" stroke-linecap="round"/><path d="M630 744 L652 760 L630 776" fill="none" stroke="#2b261f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="translate(790 750)"><path d="M0 -80 Q50 -10 50 20 A50 50 0 0 1 -50 20 Q-50 -10 0 -80Z" fill="#f0d27a" stroke="#c9a24a" stroke-width="5"/><text y="110" font-size="40" font-weight="700" fill="#2b261f" text-anchor="middle">ลาโนลิน</text><text y="146" font-size="22" fill="#4a4030" text-anchor="middle" letter-spacing="3">LANOLIN</text></g></g>
+  <g data-at="2.0"><path d="M790 920 L790 970" stroke="#2b261f" stroke-width="8" stroke-linecap="round"/><path d="M774 960 L790 982 L806 960" fill="none" stroke="#2b261f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="translate(790 1040)"><rect x="-80" y="-34" width="160" height="68" rx="34" fill="#f2a33a"/><rect x="-80" y="-34" width="80" height="68" rx="34" fill="#fbd27a"/><text y="14" font-size="38" font-weight="700" fill="#5a2e08" text-anchor="middle">D3</text></g></g>
+  </g></svg>
+  <div class="chip" data-at="0.2" style="left:50px;top:100px;background:#efe6d2;color:#2b261f">📍 ปัจจุบัน · TODAY</div>`;
+};
+S.thai=function(){
+  const r=rng(5);let city='';for(let i=0;i<20;i++){const w=40+r()*60,h=140+r()*320,x=i*56-10;city+=`<rect x="${x}" y="${1080-h}" width="${w}" height="${h}" fill="#222a46"/>`;
+    for(let yy=1080-h+16;yy<1070;yy+=28)for(let xx=x+8;xx<x+w-8;xx+=16)if(r()<.45)city+=`<rect x="${xx}" y="${yy}" width="7" height="12" fill="#ffe2a0" opacity="${.4+r()*.5}"/>`}
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect width="1080" height="1920" fill="#141a2e"/>${city}<rect y="1080" width="1080" height="840" fill="#0e1222"/></g></svg>
+  <div class="card" data-at="0.2" style="left:90px;right:90px;top:120px"><div class="k">Vitamin D insufficiency · Thai adults</div>
+   <div style="display:flex;align-items:flex-end;justify-content:space-between"><h3>คนไทยที่วิตามินดีไม่พอ</h3><div style="font-size:86px;font-weight:700;color:#f08a3c;line-height:1">45%</div></div>
+   <div class="grid" id="th-grid">${Array.from({length:100},()=>'<i></i>').join('')}</div>
+   <div class="row" data-at="3.3" data-sub="30" style="margin-top:14px;align-items:center"><span>กรุงเทพฯ</span><span style="flex:1;height:22px;background:#e3d9c4;border-radius:11px;overflow:hidden"><span id="th-bar" style="display:block;height:100%;width:0;background:#d63a4a"></span></span><span class="no">64.6%</span></div>
+   <div style="font-size:20px;color:#8a7b66;margin-top:8px">เกณฑ์ 25(OH)D &lt; 30 ng/mL · กลุ่มตัวอย่าง 2,641 คน</div></div>
+  ${src('Chailurkit et al., 2011 · BMC Public Health')}`;
+};
+S.tip=function(){
+  return `<svg viewBox="0 0 1080 1920"><defs><radialGradient id="rg-tip" cx=".5" cy=".35" r=".6"><stop offset="0" stop-color="#3a3060"/><stop offset="1" stop-color="#121224"/></radialGradient></defs><g class="art"><rect width="1080" height="1920" fill="url(#rg-tip)"/>
+   <g transform="translate(540 300)" opacity=".9"><circle r="60" fill="#ffcf4a"/>${Array.from({length:12},(_,i)=>`<rect x="-6" y="-104" width="12" height="30" rx="6" fill="#ffcf4a" transform="rotate(${i*30})"/>`).join('')}</g></g></svg>
+  <div class="chip" data-at="0.2" style="left:50%;transform:translateX(-50%);top:470px;background:#d9a53a;color:#2a1d08;font-size:26px">ลุงเฉลย</div>
+  <div class="card" data-at="0.4" style="left:70px;right:70px;top:560px;text-align:center;border-left:none;border-top:10px solid #d9a53a;padding:40px 30px">
+    <div style="font-size:54px;font-weight:700"><span class="strike" id="tip-s">กินเยอะไว้ก่อน</span></div>
+    <div class="k" style="margin:6px 0 22px">Don't megadose</div>
+    <div data-at="1.8" data-sub="32" style="font-size:58px;font-weight:700;line-height:1.3"><span style="color:#e0682f;border-bottom:6px solid #e0682f">ตรวจเลือด</span>ก่อน<br>แล้วค่อยเสริม</div>
+    <div class="k" data-at="1.8" data-sub="32" style="margin-top:16px;color:#c0602a">Test first, then supplement</div></div>`;
+};
+S.next=function(){
+  return `<svg viewBox="0 0 1080 1920"><rect width="1080" height="1920" fill="#101018"/></svg>
+  <div data-at="0.3" style="position:absolute;left:0;right:0;top:760px;text-align:center"><span style="display:inline-block;border:2px solid #efe6d6;color:#efe6d6;border-radius:999px;padding:4px 22px;font-size:28px;font-weight:600"><span style="color:#d63a4a">●</span> ตอนต่อไป</span>
+   <div style="font-size:120px;font-weight:700;color:#fff;margin-top:20px">ลุงเฉลย</div><div style="width:40px;height:5px;background:#d63a4a;margin:10px auto"></div></div>`;
+};
+S.end=function(){
+  return `<svg viewBox="0 0 1080 1920"><defs><radialGradient id="rg-end" cx=".5" cy=".45" r=".5"><stop offset="0" stop-color="#2a2a10" /><stop offset="1" stop-color="#0c0c14"/></radialGradient></defs><rect width="1080" height="1920" fill="url(#rg-end)"/>
+  <g data-at="0.2"><g transform="translate(540 760)"><g id="end-rays">${Array.from({length:12},(_,i)=>`<rect x="-8" y="-150" width="16" height="44" rx="8" fill="#ffcf4a" transform="rotate(${i*30})"/>`).join('')}</g><circle r="92" fill="#ffcf4a"/><text y="26" font-size="76" font-weight="700" fill="#3a2508" text-anchor="middle">D3</text></g></g></svg>
+  <div data-at="0.5" style="position:absolute;left:0;right:0;top:960px;text-align:center;color:#fff">
+   <div style="font-size:96px;font-weight:700">ลุงเฉลย</div>
+   <div style="font-size:36px;color:#ffd24a;font-weight:600">ตอน: วิตามิน D3 มาจากไหน</div>
+   <div style="font-size:22px;color:#9a96aa;margin-top:40px">เนื้อหาเพื่อการศึกษา ไม่ใช่คำแนะนำทางการแพทย์</div></div>`;
+};
+
+/* ---------- timeline ---------- */
+const TL=[
+ ['room',0,10,{cams:[[0,'nephew'],[4.9,'uncle']],pose:'pill'}],
+ ['london',10,16],['cmp',16,22],
+ ['room',22,26,{cams:[[22,'uncle']],pose:'down'}],
+ ['dog',26,32],['uv',32,38],
+ ['room',38,42,{cams:[[38,'nephew']],pose:'scratch'}],
+ ['mcc',42,50],['steen',50,56],['trend',56,60],['skin',60,67],['path',67,74],
+ ['room',74,78,{cams:[[74,'nephew']],pose:'capsule'}],
+ ['sheep',78,81.6],
+ ['room',81.6,83.6,{cams:[[81.6,'nephewClose']],pose:'shock'}],
+ ['thai',83.6,90],['tip',90,96],['next',96,100],['end',100,104.5]
+];
+let DUR=104.5;
+const SUBS=[
+[0.4,2.9,'n','ลุงครับ… หมอบอกผม<span class=hl>ขาดวิตามินดี</span>',"Uncle, the doctor says I'm low on vitamin D."],
+[2.9,4.9,'n','ทั้งที่เมืองไทย<span class=hl>แดดจัด</span>ขนาดนี้','In a country this sunny.'],
+[5.3,7.6,'u','รู้ไหม… กว่าโลกจะรู้จักเม็ดนี้','You know… before the world understood that pill,'],
+[7.6,9.9,'u','เด็กต้อง<span class=hl>ขาโก่ง</span>กันทั้งเมือง','whole cities of children grew bowed legs.'],
+[10.2,13.0,'u','ยุคปฏิวัติอุตสาหกรรม<br>ควันโรงงานบังแดดทั้งเมือง','The Industrial Revolution: factory smoke blotted out the sun.'],
+[13.0,15.9,'u','เด็กเป็น<span class=bad>โรคกระดูกอ่อน</span>กันเต็มเมือง','Children everywhere got rickets.'],
+[16.2,18.9,'u','หมอชาวโปแลนด์ชื่อ Śniadecki<br>สังเกตว่า…','A Polish doctor, Śniadecki, noticed…'],
+[18.9,21.9,'u','เด็กในเมืองป่วยเยอะ<br>แต่เด็กบ้านนอก<span class=hl>แทบไม่เป็น</span>','city kids got sick — country kids barely did.'],
+[22.2,24.0,'u','เขาเดาว่าเป็นเพราะ<span class=hl>แสงแดด</span>','He guessed: sunlight.'],
+[24.0,25.9,'u','แต่แทบไม่มีใครเชื่อ… อีกเกือบร้อยปี','Almost no one listened — for nearly 100 years.'],
+[26.2,29.0,'u','Mellanby เลี้ยงสุนัขไว้แต่ในร่ม<br>มันเป็นกระดูกอ่อน','Mellanby kept dogs indoors — they got rickets.'],
+[29.0,31.9,'u','พอให้<span class=hl>น้ำมันตับปลา</span> ก็หาย','Cod liver oil cured them.'],
+[32.2,35.0,'u','ปีเดียวกันที่เบอร์ลิน<br>Huldschinsky ส่อง<span class=hl>แสง UV</span>ให้เด็ก','Same year in Berlin, Huldschinsky shone UV light on children.'],
+[35.0,37.9,'u','ฟิล์มเอกซเรย์ชี้ว่า กระดูก<span class=hl>กลับมาแข็ง</span>','X-rays showed their bones healing.'],
+[38.2,40.0,'n','เดี๋ยวนะ… น้ำมันปลา กับ แสงแดด','Wait — fish oil and sunlight?'],
+[40.0,41.9,'n','มันเกี่ยวกันยังไงครับ','How are they connected?'],
+[42.2,44.9,'u','McCollum ต้มน้ำมันตับปลา<br>จนวิตามิน A พังหมด','McCollum heated cod liver oil until its vitamin A was destroyed.'],
+[44.9,47.4,'u','แต่มัน<span class=hl>ยังรักษาได้</span><br>แปลว่ามีอีกตัวซ่อนอยู่','It still cured rickets — something else was hiding inside.'],
+[47.4,49.9,'u','วิตามินตัวที่ 4 ที่ค้นพบ<br>เลยได้ชื่อว่า <span class=hl>D</span>','The fourth vitamin found — so it was named D.'],
+[50.2,53.0,'u','Steenbock พบว่าแค่<span class=hl>ฉายแสง UV</span><br>ใส่อาหาร ก็เกิดวิตามินดี','Steenbock found UV light could create vitamin D in food.'],
+[53.0,55.9,'u','ไม่นาน นมทั่วอเมริกาก็<span class=hl>เติมวิตามินดี</span>','Soon, milk across America was fortified.'],
+[56.2,59.9,'u','ไม่กี่สิบปี โรคกระดูกอ่อนในเด็ก<br><span class=hl>แทบหายไป</span>','Within decades, childhood rickets nearly vanished.'],
+[60.2,63.2,'u','Windaus ได้<span class=hl>รางวัลโนเบล</span> ปี 1928','Windaus won the 1928 Nobel Prize in Chemistry,'],
+[63.2,66.9,'u','และพบว่า<span class=hl>ผิวเรา</span>มีสาร<br>ที่โดนแดดแล้วกลายเป็น D3','and found a substance in our skin that sunlight turns into D3.'],
+[67.2,70.4,'u','แต่ D3 ยังใช้ไม่ได้ทันที<br>ต้องผ่าน<span class=hl>ตับ</span> แล้วผ่าน<span class=hl>ไต</span>','But D3 must pass through the liver, then the kidneys,'],
+[70.4,73.9,'u','จึงกลายเป็นตัวจริง<br>ที่ทำงานเหมือน<span class=hl>ฮอร์โมน</span>','to become the active form — which works like a hormone.'],
+[74.2,77.9,'n','แล้ว D3 ในเม็ดนี้<br>ได้มาจากไหนครับ','So where does the D3 in this pill come from?'],
+[78.2,81.5,'u','ส่วนใหญ่สกัดจาก<span class=hl>ไขขนแกะ</span>',"Mostly from sheep's wool grease — lanolin."],
+[81.7,83.5,'n','ห๊ะ… ขนแกะ!?',"…Sheep's wool!?"],
+[83.8,87.0,'u','ส่วนเรื่องแดดจัด… งานวิจัยพบ<br>คนไทย<span class=hl>เกือบครึ่ง</span>วิตามินดีไม่พอ','As for the sunshine… a study found nearly half of Thai adults low on vitamin D.'],
+[87.0,89.9,'u','คนกรุงเทพฯ ยิ่งเยอะ<br>เพราะเราอยู่แต่ในตึก','Even more in Bangkok — we live indoors.'],
+[90.2,92.9,'u','แดดยังเท่าเดิม…<br>แต่<span class=hl>เราหลบแดด</span>เอง',"The sun hasn't changed. We hide from it."],
+[92.9,95.9,'u','อย่ากินเยอะไว้ก่อน<br><span class=hl>ตรวจเลือด</span> แล้วปรึกษาหมอ',"Don't megadose. Get tested, then ask your doctor."],
+];
+if(window.TLD){TLD.subs.forEach((x,i)=>{SUBS[i][0]=x[0];SUBS[i][1]=x[1]});TL.length=0;TLD.tl.forEach(e=>TL.push(e));DUR=TLD.dur}
+let CURA=0,CURD=1;const M=i=>SUBS[i][0]-CURA;
+const CAMS={wide:[540,760,1],uncle:[270,800,1.75],nephew:[840,800,1.75],nephewClose:[860,700,2.3]};
+
+/* ---------- build ---------- */
+const stage=$('stage'),L={};
+for(const k in S){const d=document.createElement('div');d.className='scene';d.id='sc-'+k;d.innerHTML=S[k]();stage.appendChild(d);
+  L[k]={el:d,art:d.querySelector('.art'),pops:[...d.querySelectorAll('[data-at]')]};}
+const subsEl=$('subs');
+SUBS.forEach((s,i)=>{const d=document.createElement('div');d.className='sub';d.id='sub'+i;
+  d.innerHTML=`<div class="tag ${s[2]}">${s[2]=='u'?'ลุง':'หลาน'}</div><div class="th">${s[3]}</div><div class="en">${s[4]}</div>`;subsEl.appendChild(d)});
+(function(){const c=document.createElement('canvas');c.width=540;c.height=960;const x=c.getContext('2d'),im=x.createImageData(540,960),r=rng(99);
+  for(let i=0;i<im.data.length;i+=4){const v=r()*255;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255}x.putImageData(im,0,0);
+  $('grain').style.background=`url(${c.toDataURL()})`;$('grain').style.backgroundSize='1080px 1920px';})();
+const show=(id,on)=>{const e=$(id);if(e)e.style.display=on?'':'none'};
+const at=(sel,root)=>root.querySelectorAll(sel);
+const blink=(t,o)=>{const p=(t+o)%3.7;return p<.14?Math.max(.1,Math.abs(p-.07)/.07):1};
+
+function curSub(t){for(const s of SUBS)if(t>=s[0]&&t<s[1])return s;return null}
+
+const U={
+ room(lt,t,o){
+  const cams=o.cams;let ci=0;for(let i=0;i<cams.length;i++)if(t>=cams[i][0])ci=i;
+  let c=CAMS[cams[ci][1]];
+  if(ci>0){const p=ease((t-cams[ci][0])/0.9),a=CAMS[cams[ci-1][1]];c=a.map((v,i)=>v+(c[i]-v)*p)}
+  const drift=1+lt*0.006;
+  $('room-cam').setAttribute('transform',`translate(540 760) scale(${c[2]*drift}) translate(${-c[0]} ${-c[1]})`);
+  const sp=curSub(t),talk=Math.floor(t*7)%2==0;
+  const ut=sp&&sp[2]=='u'&&talk,nt=sp&&sp[2]=='n'&&talk;
+  show('U-mo',ut);show('U-mc',!ut);
+  const pose=o.pose;
+  show('N-armDown',pose=='down'||pose=='shock');show('N-armHold',pose=='pill'||pose=='capsule');show('N-armScratch',pose=='scratch');
+  show('N-bottle',pose=='pill');show('N-capsule',pose=='capsule');
+  show('N-q',pose=='scratch');show('N-x',pose=='shock');
+  const shock=pose=='shock';
+  show('N-mo',nt||shock);show('N-mc',!(nt||shock));
+  $('N-mo').setAttribute('ry',shock?13:6);$('N-mo').setAttribute('rx',shock?10:8);
+  $('N-bl').setAttribute('d',pose=='scratch'?'M-27 -18 L-10 -12':shock?'M-27 -20 L-10 -22':'M-27 -10 L-10 -12');
+  $('N-br').setAttribute('d',shock?'M10 -22 L27 -20':'M10 -12 L27 -10');
+  $('N-q').setAttribute('y',-70-Math.sin(t*4)*6);$('N-x').setAttribute('transform',`translate(0 ${-Math.abs(Math.sin(t*9))*6})`);
+  $('N-eyes').setAttribute('transform',`translate(0 6) scale(1 ${shock?1.3:blink(t,0)}) translate(0 -6)`);
+  $('U-eyes').setAttribute('transform',`translate(0 6) scale(1 ${blink(t,1.6)}) translate(0 -6)`);
+  $('N').setAttribute('transform',`translate(0 ${nt?Math.sin(t*14)*1.5:0})`);
+  $('U').setAttribute('transform',`translate(0 ${ut?Math.sin(t*12)*1.5:Math.sin(t*1.2)*1})`);
+  $('rcat-tail').setAttribute('transform',`rotate(${Math.sin(t*2.2)*14} -56 6)`);
+  $('rcat-body').setAttribute('ry',30+Math.sin(t*2)*1.5);
+  at('.star',L.room.el).forEach(s=>s.setAttribute('opacity',.35+.65*Math.abs(Math.sin(t*1.3+ +s.dataset.p))));
+  $('U-s1').setAttribute('transform',`translate(${Math.sin(t*2)*3} ${-((t*14)%14)})`);$('U-s2').setAttribute('transform',`translate(${Math.sin(t*2+1)*3} ${-((t*14+7)%14)})`);
+  $('room-cone').setAttribute('opacity',.92+Math.sin(t*9)*.04);
+ },
+ london(lt){
+  const ch=[[163,470],[353,530],[663,470],[923,530]];
+  at('.puff',L.london.el).forEach(p=>{const i=+p.dataset.i,c=ch[+p.dataset.c],ph=(lt*.11+i/8)%1;
+   p.setAttribute('cx',c[0]+ph*240+Math.sin(ph*6+i)*20);p.setAttribute('cy',c[1]-ph*430);p.setAttribute('r',28+ph*80);p.setAttribute('opacity',.6*(1-ph)*clamp(ph*6))});
+  const x=260+lt*55;$('lon-kid').setAttribute('transform',`translate(${x} ${828-Math.abs(Math.sin(lt*4))*6})`);
+ },
+ cmp(lt){
+  $('cmp-rays').setAttribute('transform',`rotate(${lt*12})`);
+  $('cmp-kid2').setAttribute('transform',`translate(810 ${870-Math.abs(Math.sin(lt*4.5))*40})`);
+  at('.cpuff',L.cmp.el).forEach(p=>{const i=+p.dataset.i,c=i%2?[350,470]:[120,420],ph=(lt*.12+i/7)%1;
+   p.setAttribute('cx',c[0]+ph*160);p.setAttribute('cy',c[1]-ph*360);p.setAttribute('r',26+ph*70);p.setAttribute('opacity',.7*(1-ph))});
+ },
+ dog(lt){
+  const h=ease((lt-M(11)+0.2)/0.5);$('dog-sad').setAttribute('opacity',1-h);$('dog-happy').setAttribute('opacity',h);
+  $('dog-tail').setAttribute('transform',`rotate(${Math.sin(lt*14)*18} -104 0)`);
+ },
+ uv(lt){
+  $('uv-cone').setAttribute('opacity',.22+Math.sin(lt*7)*.05);
+  $('uv-b1').setAttribute('opacity',.2+.8*ease((lt-M(13))/2.0));
+ },
+ mcc(lt){
+  const f=1+Math.sin(lt*23)*.08+Math.sin(lt*37)*.05;$('mcc-flame').setAttribute('transform',`translate(0 -110) scale(1 ${f}) translate(0 110)`);
+  at('.bub',L.mcc.el).forEach(b=>{const i=+b.dataset.i,ph=(lt*.9+i*.37)%1;b.setAttribute('cx',-100+i*25);b.setAttribute('cy',4-ph*10);b.setAttribute('r',3+ph*7);b.setAttribute('opacity',1-ph)});
+  $('mcc-steam').setAttribute('transform',`translate(0 ${-((lt*20)%30)})`);
+  const s=back((lt-M(18)-0.5)/0.5);$('mcc-d').setAttribute('transform',`translate(720 1010) scale(${Math.max(.01,s)}) translate(-720 -1010)`);
+  $('mcc-spk').setAttribute('opacity',.5+.5*Math.sin(lt*8));
+ },
+ steen(lt){
+  at('.sray',L.steen.el).forEach((r,i)=>r.setAttribute('stroke-dashoffset',-lt*120-i*9));
+  const press=Math.max(0,Math.sin(lt*Math.PI*2/1.4))**6;$('st-press').setAttribute('height',40+press*30);
+  at('.milk',L.steen.el).forEach(m=>{const i=+m.dataset.i;let x=((lt*130+i*180)%1260)-120;m.setAttribute('transform',`translate(${x} 1000)`);
+   m.querySelector('.milk-lbl').setAttribute('opacity',x>690?1:0)});
+ },
+ trend(lt){const p=$('tr-line'),len=p.getTotalLength();p.style.strokeDasharray=len;p.style.strokeDashoffset=len*(1-ease((lt-.5)/2.6))},
+ skin(lt){
+  $('sk-rays').setAttribute('transform',`rotate(${lt*10})`);
+  at('.beam',L.skin.el).forEach(b=>b.setAttribute('stroke-dashoffset',-lt*140));
+  const p=ease((lt-M(23))/1.4);$('sk-d3').setAttribute('transform',`translate(${660} ${730-p*240}) scale(${Math.max(.01,p)})`);
+  $('sk-mol').setAttribute('opacity',1-p*.6);
+ },
+ path(lt){
+  const p=ease((lt-.6)/(CURD-1.8)),line=$('pa-line'),len=line.getTotalLength();line.style.strokeDasharray=len;line.style.strokeDashoffset=len*(1-p);
+  const pt=line.getPointAtLength(len*p);$('pa-dot').setAttribute('cx',pt.x);$('pa-dot').setAttribute('cy',pt.y);
+  [0,1/3,2/3,1].forEach((th,i)=>{const on=p>=th-.001;const ring=$('pa'+i).querySelector('.ring');ring.setAttribute('stroke',on?'#ffcf4a':'#4a4670');$('pa'+i).setAttribute('opacity',on?1:.45)});
+ },
+ sheep(lt){$('sh-sheep').setAttribute('transform',`translate(330 ${820-Math.abs(Math.sin(lt*3))*14})`)},
+ thai(lt){const n=Math.round(45*ease((lt-.8)/2.2));at('#th-grid i',L.thai.el).forEach((e,i)=>e.className=i<n?'on':'');$('th-bar').style.width=(64.6*ease((lt-M(30))/1.2))+'%'},
+ tip(lt){$('tip-s').style.setProperty('--w',(110*ease((lt-1.0)/.6))+'%')},
+ next(){},end(lt){$('end-rays').setAttribute('transform',`rotate(${lt*8})`)}
+};
+
+const FADE=.45;
+window.seek=function(t){
+  for(const k in L){L[k].el.style.opacity=0;L[k].el.style.zIndex=0}
+  TL.forEach((e,idx)=>{const [k,a,b,o]=e;if(t<a||t>=b+FADE||(t>=b&&idx==TL.length-1))return;
+    const nxt=TL[idx+1];if(t>=b&&nxt&&nxt[0]==k)return;
+    const Ly=L[k],lt=t-a;CURA=a;CURD=b-a;Ly.el.style.opacity=a==0?1:ease((t-a)/FADE);Ly.el.style.zIndex=10+idx;
+    if(Ly.art&&k!=='room')Ly.art.style.transform=`scale(${1+lt*0.008})`;
+    Ly.pops.forEach(p=>{const pa=p.dataset.sub?SUBS[+p.dataset.sub][0]-a+(+p.dataset.off||0):+p.dataset.at,e2=ease((lt-pa)/.45);p.style.opacity=e2;
+      const base=p.classList.contains('chip')&&p.style.left=='50%'?'translateX(-50%) ':'';
+      if(!p.classList.contains('src'))p.style.transform=base+`translateY(${(1-e2)*26}px)`;});
+    U[k](lt,t,o||{});
+  });
+  SUBS.forEach((s,i)=>{const el=$('sub'+i);const o=clamp((t-s[0])/.2)*clamp((s[1]-t)/.15);el.style.opacity=o;el.style.transform=`translateY(${(1-clamp((t-s[0])/.25))*18}px)`});
+  $('black').style.opacity=clamp((t-(DUR-1.0))/1.0)+ (t<0.35?1-t/0.35:0);
+};
+window.DUR=DUR;
+seek(0);
+</script></body></html>
