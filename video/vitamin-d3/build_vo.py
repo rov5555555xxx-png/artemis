@@ -28,7 +28,7 @@ VOICES={'u':os.environ.get('ELEVEN_VOICE_UNCLE'),'n':os.environ.get('ELEVEN_VOIC
 ELEVEN=all(VOICES.values())
 
 def eleven(tx,sp,out):
-    q=json.dumps({'text':tx,'model_id':os.environ.get('ELEVEN_MODEL','eleven_v3'),'language_code':'th',
+    q=json.dumps({'text':tx,'model_id':os.environ.get('ELEVEN_MODEL','eleven_v4'),'language_code':'th',
         'voice_settings':{'stability':0.5,'similarity_boost':0.75}}).encode()
     h={'Content-Type':'application/json','Accept':'audio/mpeg'}
     if os.environ.get('ELEVENLABS_API_KEY'):h['xi-api-key']=os.environ['ELEVENLABS_API_KEY']

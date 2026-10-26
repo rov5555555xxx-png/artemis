@@ -16,7 +16,7 @@ Scene and subtitle timing follow the length of each narration line.
 
 - **ElevenLabs** — used when `ELEVEN_VOICE_UNCLE` and `ELEVEN_VOICE_NEPHEW` are set.
   Needs `api.elevenlabs.io` in the environment's allowed domains and the API key as a network secret
-  or `ELEVENLABS_API_KEY`. Optional `ELEVEN_MODEL` (default `eleven_v3`).
+  or `ELEVENLABS_API_KEY`. Optional `ELEVEN_MODEL` (default `eleven_v4`).
   `python3 eleven_voices.py` lists voice IDs and models.
 - **MMS Thai (offline)** — fallback; downloads `vits-mms-tha` from the sherpa-onnx releases.
 
