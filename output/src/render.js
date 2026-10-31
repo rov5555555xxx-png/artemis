@@ -1,7 +1,7 @@
 const {chromium}=require('playwright');const {spawn}=require('child_process');
 (async()=>{
  const [,,html,mode,out,...rest]=process.argv;
- const b=await chromium.launch();const p=await b.newPage({viewport:{width:1440,height:1080}});
+ const VW=+(process.env.VW||1440),VH=+(process.env.VH||1080),DPR=+(process.env.DPR||1);const b=await chromium.launch();const p=await b.newPage({viewport:{width:VW,height:VH},deviceScaleFactor:DPR});
  await p.goto('file://'+html);await p.evaluate(()=>document.fonts.ready);await p.waitForTimeout(300);
  if(mode==='stills'){let i=0;for(const t of rest){await p.evaluate(t=>render(t),+t);await p.screenshot({path:`${out}/s${String(i++).padStart(2,'0')}.jpg`,type:'jpeg',quality:85});}}
  else{const dur=+rest[0],fps=30,n=Math.ceil(dur*fps);
