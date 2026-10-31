@@ -64,7 +64,7 @@ cues=[(0.0,whoosh(),.5),(0.05,impact(),.8),(0.34,pop(),.6),(1.86,stamp(),.7),
 (15.3,riser(.7),.5),(16.0,impact(),.85),(16.0,sparkle(),.6),(16.12,stamp(),.5),
 (17.1,whoosh(.35),.4),(17.5,pop(),.55),(18.58,pop(),.55),(20.18,pop(),.5),
 *[(20.6+i*0.14,pop(900+i*120,500+i*60,.07),.35) for i in range(7)],
-(21.65,whoosh(.35),.4),(21.9,ding(1319),.45),(23.16,ding(1397),.45),(24.42,ding(1568),.45),(25.48,ding(1760),.45),(25.5,sparkle(),.45),
+(21.65,whoosh(.35),.4),(21.85,pop(),.45),(21.9,ding(1319),.45),(22.25,stamp(),.5),(22.3,sparkle(),.4),(23.98,whoosh(.35),.35),(23.16,ding(1397),.45),(24.42,ding(1568),.45),(25.48,ding(1760),.45),(25.5,sparkle(),.45),
 (26.12,whoosh(.5,False),.45),(26.3,boing(),.6),(28.48,buzz(),.5),
 (29.05,riser(.67),.5),(29.72,impact(),.85),(29.72,sparkle(),.5),(29.9,stamp(),.45),
 (30.85,whoosh(.35),.45),(30.92,pop(),.5),(31.06,impact(),.9),(31.06,chime(),.55),(31.1,sparkle(1.0,14),.6),
@@ -84,5 +84,5 @@ mix=np.tanh(mix*1.1)/np.tanh(1.1)  # soft limit
 mix*=0.97/np.abs(mix).max()
 def wr(p,x):
     o=wave.open(p,'w');o.setnchannels(1);o.setsampwidth(2);o.setframerate(SR);o.writeframes((np.clip(x,-1,1)*32767).astype(np.int16).tobytes());o.close()
-wr(out_path,mix); wr(sfx_out,sfx*SFX_GAIN)
+wr(out_path,mix); so=np.tanh(sfx*1.2)/np.tanh(1.2); wr(sfx_out,so*0.9/np.abs(so).max())
 print("ok",len(v)/SR, "voice peak",np.abs(v).max(),"sfx peak",np.abs(sfx*SFX_GAIN).max())
