@@ -182,6 +182,23 @@ def transcribe_elevenlabs(video: Path, out: Path) -> tuple[str | None, str]:
     return text, f"ElevenLabs scribe_v1 (language: {data.get('language_code', '?')})"
 
 
+def no_video_summary(src: str, out: Path, info: dict, transcript: str | None) -> None:
+    (out / "info.json").write_text(json.dumps(info, ensure_ascii=False, indent=2))
+    if transcript:
+        (out / "transcript.txt").write_text(transcript)
+    cover = out / "cover.jpg"
+    md = [f"# {info.get('title') or src}", "", f"- source: {src}",
+          "- video file: (could not download; no frames)",
+          f"- duration: {info.get('duration')}", f"- uploader: {info.get('uploader')}",
+          f"- transcript: {out / 'transcript.txt' if transcript else 'none'}",
+          f"- cover image: {cover if cover.exists() else 'none'}"]
+    if info.get("description"):
+        md += ["", "## Description", str(info["description"])[:2000]]
+    (out / "summary.md").write_text("\n".join(md))
+    print("\n".join(md))
+    print(f"\n[watch-video] done (metadata only). Output dir: {out}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("source", help="video URL or local file path")
@@ -195,8 +212,34 @@ def main() -> None:
     out = Path(a.out or f"/tmp/watch-video/{name}").resolve()
     out.mkdir(parents=True, exist_ok=True)
 
+    sc_transcript = None
     if is_url(a.source):
-        video, info = download(a.source, out)
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import scrapecreators  # noqa: PLC0415
+
+        sc = scrapecreators.fetch(a.source, out)
+        video, info = None, {}
+        if sc:
+            if sc["error"]:
+                print(f"[watch-video] ScrapeCreators: {sc['error']}", file=sys.stderr)
+            info, sc_transcript = sc["info"], sc["transcript"]
+            for i, u in enumerate(sc["video_urls"][:4]):
+                dest = out / "video.mp4"
+                if scrapecreators.download_file(u, dest):
+                    video = dest
+                    break
+            if not video and sc["cover"]:
+                scrapecreators.download_file(sc["cover"], out / "cover.jpg")
+        if video is None:
+            try:
+                video, yinfo = download(a.source, out)
+                info = {**yinfo, **{k: v for k, v in info.items() if v}}
+            except SystemExit as e:
+                if not (sc and (sc_transcript or info.get("title"))):
+                    raise
+                print(f"[watch-video] video download failed; using ScrapeCreators metadata only.\n{e}", file=sys.stderr)
+                no_video_summary(a.source, out, info, sc_transcript)
+                return
     else:
         video, info = Path(a.source).resolve(), {"title": Path(a.source).name}
         if not video.exists():
@@ -212,7 +255,9 @@ def main() -> None:
 
     transcript, source = None, "none"
     subs = sorted(out.glob("video*.srt"))
-    if subs:
+    if sc_transcript:
+        transcript, source = sc_transcript, "ScrapeCreators API"
+    elif subs:
         thai = [s for s in subs if ".th" in s.name]
         pick = (thai or subs)[0]
         transcript, source = srt_to_text(pick), f"subtitles ({pick.name})"

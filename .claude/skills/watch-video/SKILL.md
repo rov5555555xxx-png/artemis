@@ -28,6 +28,18 @@ sampled frames (images), and read what is said (subtitles or speech-to-text).
 4. Answer the user by combining visuals + speech, citing timestamps.
    Reply in the user's language.
 
+## ScrapeCreators API (optional, recommended for TikTok/IG/FB/X)
+
+If the env var `SCRAPECREATORS_API_KEY` is set, the helper first calls the
+ScrapeCreators API (`scripts/scrapecreators.py`, header `x-api-key`) to get
+metadata, a transcript and a direct video URL, then falls back to yt-dlp.
+If the video file still can't be downloaded, it writes a metadata-only summary
+(description + transcript + `cover.jpg`); tell the user frames were not seen.
+Raw API response is saved as `scrapecreators.json` — read it if fields look off.
+Requires `api.scrapecreators.com` in the environment's allowed network domains.
+Never ask the user to paste the API key into chat; it goes in the environment's
+settings as `SCRAPECREATORS_API_KEY`.
+
 ## Zooming in on a moment
 
 For a specific moment or fast action, grab extra frames around it:
