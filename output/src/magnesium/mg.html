@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:400;src:url(kanit-latin-400-normal.woff2)}
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2)}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2)}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2)}
+@font-face{font-family:K;font-weight:400;src:url(kanit-thai-400-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1080px;overflow:hidden;background:#000}
+body{font-family:K,sans-serif;color:#0F1B3D}
+#stage{position:relative;width:1080px;height:1080px;overflow:hidden;background:#0F1B3D}
+.scene{position:absolute;inset:0;display:none;overflow:hidden;transform-origin:45% 50%}
+.sbg{position:absolute;inset:-40px}
+.night{background:radial-gradient(circle at 60% 30%,#2B4AA0 0%,#16295E 45%,#0B1432 100%)}
+.day{background:radial-gradient(circle at 45% 40%,#FFFFFF 0%,#EAF1FF 45%,#C9D9FF 100%)}
+.morning{background:radial-gradient(circle at 45% 30%,#FFF8E8 0%,#EAF1FF 55%,#C7D7FB 100%)}
+.blue{background:radial-gradient(circle at 45% 40%,#5B7FE0 0%,#2F4FB5 50%,#172C73 100%)}
+.grey{background:radial-gradient(circle at 45% 40%,#F3F4F7 0%,#DADFEA 60%,#B7C0D3 100%)}
+.a{position:absolute;opacity:0;will-change:transform}
+.bottle{background:url(mg_bottle.png) center/contain no-repeat;filter:drop-shadow(0 26px 34px rgba(5,15,50,.45))}
+.shine{position:absolute;inset:0;-webkit-mask:url(mg_bottle.png) center/contain no-repeat;mask:url(mg_bottle.png) center/contain no-repeat;
+ background:linear-gradient(105deg,rgba(255,255,255,0) 0 42%,rgba(255,255,255,.6) 50%,rgba(255,255,255,0) 58% 100%) no-repeat;background-size:300% 100%}
+.rays{position:absolute;border-radius:50%;background:repeating-conic-gradient(rgba(255,255,255,.5) 0 8deg,rgba(255,255,255,0) 8deg 20deg);
+ -webkit-mask:radial-gradient(circle,#000 25%,transparent 70%);mask:radial-gradient(circle,#000 25%,transparent 70%)}
+.glow{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(170,200,255,.6) 35%,rgba(120,160,255,0) 70%)}
+.glowN{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(150,180,255,.65),rgba(90,120,230,.35) 40%,rgba(60,90,200,0) 70%)}
+.big{font-weight:900;line-height:1.22;white-space:nowrap}
+.cx{left:85px;width:800px;text-align:center}
+.pill{display:inline-block;padding:8px 34px 12px;border-radius:999px;font-weight:800;white-space:nowrap;line-height:1.25}
+.pill.bl{background:linear-gradient(90deg,#3B5BDB,#1E3A8A);color:#fff;box-shadow:0 9px 0 #0E1F55,0 16px 28px rgba(10,20,70,.35)}
+.pill.dk{background:#0F1B3D;color:#F2D58A;box-shadow:0 9px 0 #000,0 16px 28px rgba(0,0,0,.3)}
+.pill.gd{background:linear-gradient(90deg,#F6DFA0,#E3B85C);color:#0F1B3D;box-shadow:0 9px 0 #A9822F,0 16px 28px rgba(60,40,0,.3)}
+.pill.rd{background:#E5484D;color:#fff;box-shadow:0 9px 0 #8E1A1D,0 16px 28px rgba(120,0,0,.3)}
+.pill.wh{background:#fff;color:#0F1B3D;box-shadow:0 9px 0 #B9C6E8,0 16px 28px rgba(10,20,70,.2)}
+.hl{background:linear-gradient(transparent 58%,#F2D58A 58%,#F2D58A 92%,transparent 92%) no-repeat;background-size:0% 100%;padding:0 6px}
+.hlb{background:linear-gradient(transparent 58%,#BFD0FF 58%,#BFD0FF 92%,transparent 92%) no-repeat;background-size:0% 100%;padding:0 6px}
+.b-t{color:#2F55D4}.g-t{color:#F2D58A}
+.panel{border-radius:34px;overflow:hidden;border:8px solid #fff;box-shadow:0 14px 0 rgba(20,40,110,.22),0 26px 50px rgba(5,15,50,.32);background:#fff}
+.panel>svg{display:block;width:100%;height:100%}
+[data-pop],[data-kb]{transform-box:fill-box;transform-origin:center}
+.card{position:absolute;display:flex;align-items:center;gap:28px;background:#fff;border-radius:30px;padding:18px 34px 18px 20px;box-shadow:0 12px 0 rgba(30,60,160,.18),0 20px 40px rgba(10,20,70,.18)}
+.card .ic{width:118px;height:118px;border-radius:50%;background:linear-gradient(135deg,#5B7FE0,#1E3A8A);display:flex;align-items:center;justify-content:center;flex:none}
+.card .ic svg{width:80px;height:80px}
+.card .tx{font-weight:900;font-size:60px;line-height:1.15;white-space:nowrap}
+.card .sub{font-weight:600;font-size:32px;color:#5B6B95;line-height:1.2}
+.row{position:absolute;left:90px;width:790px;height:100px}
+.row .lb{position:absolute;left:0;top:0;width:240px;height:100%;display:flex;align-items:center;font-weight:800;font-size:36px;line-height:1.05}
+.row .tr{position:absolute;left:250px;right:0;top:18px;bottom:18px;border-radius:32px;background:rgba(15,27,61,.08);overflow:hidden}
+.row .fl{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:32px;background:#9AA6C2}
+.row .vl{position:absolute;top:0;height:100%;display:flex;align-items:center;font-weight:900;font-size:38px;white-space:nowrap}
+.beaker{position:absolute;width:240px;height:340px;border:10px solid #fff;border-top:none;border-radius:0 0 44px 44px;background:rgba(255,255,255,.35);overflow:hidden;box-shadow:0 18px 30px rgba(10,20,70,.18)}
+.beaker .lq{position:absolute;left:0;right:0;bottom:0;height:0}
+.chip{display:inline-block;padding:10px 28px 13px;border-radius:999px;background:#fff;font-weight:800;font-size:44px;white-space:nowrap;box-shadow:0 8px 0 #B9C6E8,0 14px 26px rgba(10,20,70,.25);color:#0F1B3D}
+.bub{position:absolute;border-radius:50%;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.95) 0 9%,rgba(200,220,255,.45) 25%,rgba(120,150,240,.18) 65%,rgba(120,150,240,.05) 100%);border:1.5px solid rgba(255,255,255,.55)}
+.tab{position:absolute;width:70px;height:44px;border-radius:22px;background:linear-gradient(180deg,#fff,#E6EAF3);box-shadow:0 6px 12px rgba(10,20,70,.15)}
+.starp{position:absolute;border-radius:50%;background:#fff}
+.star{position:absolute;width:56px;height:56px;opacity:0}
+.ring{position:absolute;width:400px;height:400px;margin:-200px 0 0 -200px;border-radius:50%;border:16px solid #fff;opacity:0}
+#swipe{position:absolute;top:-300px;width:2200px;height:1680px;transform:translateX(-3000px) skewX(-18deg)}
+#swipe .b1{position:absolute;inset:0;background:#0F1B3D}
+#swipe .b2{position:absolute;top:0;bottom:0;left:-70px;width:70px;background:#3B5BDB}
+#swipe .b3{position:absolute;top:0;bottom:0;right:-70px;width:70px;background:#F2D58A}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+.conf{position:absolute;width:18px;height:30px;border-radius:5px}
+</style></head><body>
+<div id="stage">
+
+<!-- S1 0 - 4.48 night: truth -->
+<div class="scene" data-s="0" data-e="4.48" data-bg="night" data-p="stars">
+ <div class="a big cx" data-at="0.05" data-an="up" style="top:78px;font-size:52px;color:#C9D6FF;font-weight:800">ความจริงของ</div>
+ <div class="a big cx" data-at="0.72" data-an="pop" data-breathe="1" style="top:130px;font-size:112px;color:#fff;text-shadow:0 0 30px rgba(120,160,255,.8)">แมกนีเซียม</div>
+ <div class="a panel" data-at="0.1" data-an="pop" style="left:95px;top:300px;width:780px;height:440px">
+  <svg viewBox="0 0 780 450"><g data-kb="0.1">
+   <rect width="780" height="450" fill="#1B2A55" id="roomS1"/>
+   <rect x="60" y="50" width="200" height="190" fill="#0B1432"/><circle cx="200" cy="110" r="34" fill="#F2E7C0"/><circle cx="214" cy="100" r="30" fill="#0B1432"/>
+   <g fill="#fff"><circle cx="100" cy="90" r="3"/><circle cx="130" cy="170" r="2.5"/><circle cx="230" cy="190" r="3"/><circle cx="90" cy="200" r="2"/></g>
+   <rect x="60" y="50" width="200" height="190" fill="none" stroke="#3A4C82" stroke-width="12"/><path d="M160 50v190M60 145h200" stroke="#3A4C82" stroke-width="8"/>
+   <rect x="610" y="270" width="120" height="110" rx="10" fill="#3A4C82"/>
+   <rect x="625" y="220" width="90" height="50" rx="10" fill="#0B1432" stroke="#5B7FE0" stroke-width="4"/>
+   <text x="670" y="256" text-anchor="middle" font-family="K" font-weight="800" font-size="28" fill="#7DF9C8" id="clockS1">23:45</text>
+   <rect x="300" y="230" width="300" height="60" rx="18" fill="#3A4C82"/>
+   <rect x="280" y="280" width="340" height="120" rx="20" fill="#2C3D72"/>
+   <ellipse cx="370" cy="270" rx="64" ry="28" fill="#E8EEFF"/>
+   <g transform="translate(372 222) scale(.72)" data-head='{"hair":"#2B1B12","faces":[{"e":"awake","vis":"0,2.7"},{"e":"sleep","vis":"2.7,99"}]}'></g>
+   <path d="M300 262 Q450 240 600 268 L608 380 Q450 400 292 380z" fill="#5B7FE0"/><path d="M300 262 Q450 240 600 268" stroke="#7E9BEA" stroke-width="10" fill="none"/>
+   <rect id="dimS1" width="780" height="450" fill="#050A20" opacity="0"/>
+   <g id="zzzS1" font-family="K" font-weight="900" fill="#BFD0FF"><text x="430" y="200" font-size="34">z</text><text x="460" y="160" font-size="44">z</text><text x="500" y="110" font-size="56">Z</text></g>
+  </g></svg>
+ </div>
+ <div class="a" data-at="1.58" data-an="stamp" data-out="2.45" style="left:640px;top:250px">
+  <svg width="170" height="170" viewBox="0 0 100 100"><circle cx="50" cy="56" r="36" fill="#fff" stroke="#0F1B3D" stroke-width="6"/><rect x="42" y="8" width="16" height="10" rx="3" fill="#0F1B3D"/><path d="M50 56V32" stroke="#0F1B3D" stroke-width="6" stroke-linecap="round"/><path d="M38 66l10-8-10-8zM52 66l10-8-10-8z" fill="#3B5BDB"/><path d="M14 14L86 86M86 14L14 86" stroke="#E5484D" stroke-width="11" stroke-linecap="round"/></svg>
+ </div>
+ <div class="a cx" data-at="1.58" data-an="up" data-out="2.42" style="top:775px"><span class="pill rd" style="font-size:62px">ไม่ได้ช่วยให้หลับเร็ว</span></div>
+ <div class="a cx" data-at="2.55" data-an="up" style="top:770px;font-size:46px;font-weight:800;color:#C9D6FF" >แต่ช่วยให้</div>
+ <div class="a cx" data-at="3.5" data-an="stamp" data-breathe="1" style="top:840px"><span class="pill gd" style="font-size:66px">หลับลึก · หลับสบาย</span></div>
+</div>
+
+<!-- S2 4.48 - 6.72 morning -->
+<div class="scene" data-s="4.48" data-e="6.72" data-bg="morning" data-tr="iris" data-p="bubbles">
+ <div class="a panel" data-at="4.5" data-an="fade" style="left:95px;top:55px;width:780px;height:520px">
+  <svg viewBox="0 0 780 520"><g data-kb="4.5">
+   <defs><linearGradient id="skyM" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BFE3FF"/><stop offset="1" stop-color="#FFE3A8"/></linearGradient><clipPath id="winM"><rect x="470" y="50" width="250" height="220"/></clipPath></defs>
+   <rect width="780" height="520" fill="#F4EEE2"/><rect y="420" width="780" height="100" fill="#D9CBB2"/>
+   <g clip-path="url(#winM)"><rect x="470" y="50" width="250" height="220" fill="url(#skyM)"/><circle id="sunM" cx="595" cy="250" r="44" fill="#FFD25E"/><path d="M470 270v-50q60-30 125 0t125-10v60z" fill="#9BD08A"/></g>
+   <rect x="470" y="50" width="250" height="220" fill="none" stroke="#fff" stroke-width="12"/><path d="M595 50v220" stroke="#fff" stroke-width="8"/>
+   <g id="birdsM" stroke="#334155" stroke-width="4" fill="none" stroke-linecap="round"><path d="M520 110q8-8 16 0q8-8 16 0"/><path d="M570 140q6-6 12 0q6-6 12 0"/></g>
+   <rect x="60" y="300" width="420" height="40" rx="14" fill="#8FA6E8"/>
+   <g data-person='{"pose":"sit","shirt":"#5B7FE0","armL":"up","armR":"up","expr":"happy"}' transform="translate(260 455) scale(.88)"></g>
+   <path d="M50 330 Q270 300 490 330 L500 440 Q270 460 40 440z" fill="#FFFFFF"/><path d="M50 330 Q270 300 490 330" stroke="#DCE5FF" stroke-width="10" fill="none"/>
+   <rect x="40" y="420" width="470" height="30" rx="10" fill="#8A6B4A"/>
+   <g data-pop="4.88"><path d="M150 120l6 14 14 6-14 6-6 14-6-14-14-6 14-6z" fill="#F2C94C"/></g>
+   <g data-pop="5.0"><path d="M380 100l5 11 11 5-11 5-5 11-5-11-11-5 11-5z" fill="#F2C94C"/></g>
+   <g data-pop="5.1"><path d="M410 200l4 9 9 4-9 4-4 9-4-9-9-4 9-4z" fill="#8FB0FF"/></g>
+  </g></svg>
+ </div>
+ <div class="a big cx" data-at="4.6" data-an="up" style="top:600px;font-size:92px">ตื่นมา<span class="hlb" data-hl="4.95">ปลอดโปร่ง</span></div>
+ <div class="a" data-at="5.85" data-an="pop" style="left:165px;top:770px"><span class="pill bl" style="font-size:62px">สบายหัว</span></div>
+ <div class="a" data-at="6.42" data-an="pop" style="left:500px;top:770px"><span class="pill bl" style="font-size:62px">สบายตัว</span></div>
+</div>
+
+<!-- S3 6.72 - 8.78 product -->
+<div class="scene" data-s="6.72" data-e="8.78" data-bg="day" data-tr="swipe" data-p="bubbles">
+ <div class="a rays" data-at="6.72" data-an="fade" data-spin="16" style="left:-15px;top:-140px;width:1000px;height:1000px"></div>
+ <div class="a glow" data-at="6.75" data-an="pop" style="left:185px;top:60px;width:600px;height:600px"></div>
+ <div class="a bottle" data-at="6.8" data-an="drop" data-float="1" style="left:340px;top:65px;width:290px;height:603px"></div>
+ <div class="a" data-at="7.3" data-an="pop" data-bob="0" style="left:150px;top:150px"><svg width="130" height="130" viewBox="0 0 100 100"><polygon points="50,4 90,27 90,73 50,96 10,73 10,27" fill="#2F55D4" stroke="#fff" stroke-width="5"/><text x="50" y="63" text-anchor="middle" font-family="K" font-weight="800" font-size="36" fill="#fff">Mg</text></svg></div>
+ <div class="a" data-at="7.45" data-an="pop" data-bob="2" style="left:700px;top:420px"><svg width="96" height="96" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#5B7FE0" stroke="#fff" stroke-width="5"/><text x="50" y="63" text-anchor="middle" font-family="K" font-weight="800" font-size="36" fill="#fff">Mg</text></svg></div>
+ <div class="a big cx" data-at="6.9" data-an="up" style="top:690px;font-size:62px">ต้องเป็นฟอร์ม</div>
+ <div class="a big cx" data-at="7.76" data-an="slam" data-breathe="1" style="top:770px;font-size:112px;color:#2F55D4;font-weight:800"><span class="hl" data-hl="8.0">Bisglycinate</span></div>
+</div>
+
+<!-- S4 8.78 - 14.56 absorption chart -->
+<div class="scene" data-s="8.78" data-e="14.58" data-bg="day" data-tr="slideup" data-p="bubbles">
+ <div class="a big cx" data-at="8.85" data-an="down" style="top:72px;font-size:56px">การ<span class="b-t">ดูดซึม</span>ของแต่ละฟอร์ม</div>
+ <div class="a row" data-at="9.0" data-an="left" data-dim="11.6" style="top:160px"><div class="lb">Oxide</div><div class="tr"><div class="fl" data-bar="9.2,0.7,0.07"></div></div><div class="vl" data-vat="9.58" style="left:304px;color:#6B7690">4–10%</div></div>
+ <div class="a row" data-at="10.2" data-an="left" data-dim="11.6" style="top:275px"><div class="lb">Citrate</div><div class="tr"><div class="fl" data-bar="10.35,0.7,0.32"></div></div><div class="vl" data-vat="10.7" style="left:439px;color:#6B7690">25–40%</div></div>
+ <div class="a row" data-at="10.35" data-an="left" data-dim="11.6" style="top:390px"><div class="lb">Malate</div><div class="tr"><div class="fl" data-bar="10.5,0.7,0.40"></div></div><div class="vl" data-vat="10.85" style="left:482px;color:#6B7690">30–50%</div></div>
+ <div class="a row" data-at="11.6" data-an="left" style="top:510px;height:118px"><div class="lb" style="color:#2F55D4;font-size:38px">Bisglycinate</div><div class="tr" style="background:rgba(47,85,212,.12)"><div class="fl" data-bar="12.62,1.0,0.75" style="background:linear-gradient(90deg,#5B7FE0,#1E3A8A)"></div></div><div class="vl" data-vat="13.5" style="left:500px;color:#fff">70–80%</div></div>
+ <div class="a big" data-at="9.58" data-an="pop" data-out="11.45" style="left:200px;top:690px;font-size:120px;color:#8A94AD">4%</div>
+ <div class="a big" data-at="10.44" data-an="pop" data-out="11.45" style="left:520px;top:690px;font-size:120px;color:#8A94AD">30%</div>
+ <div class="a big cx" data-at="11.55" data-an="up" data-out="12.95" style="top:700px;font-size:60px">แต่ตัวนี้คือ <span class="b-t">Bisglycinate</span></div>
+ <div class="a big cx" data-at="13.04" data-an="up" style="top:670px;font-size:56px;font-weight:800">ดูดซึมได้</div>
+ <div class="a big cx" data-at="13.6" data-an="slam" data-breathe="1" style="top:735px;font-size:170px;color:#2F55D4;text-shadow:0 8px 0 #BFD0FF"><span data-count="0,70,13.6,0.45">70</span>%++</div>
+</div>
+
+<!-- S5 14.58 - 17.98 beakers -->
+<div class="scene" data-s="14.58" data-e="17.98" data-bg="day" data-tr="swipe" data-p="bubbles">
+ <div class="a big cx" data-at="14.65" data-an="down" style="top:72px;font-size:56px">ในหมวด<span class="b-t">แมกนีเซียม</span></div>
+ <div class="a beaker" data-at="15.0" data-an="up" style="left:155px;top:190px"><div class="lq" data-fill="15.9,1.0,0.35" style="background:linear-gradient(180deg,#B8C0D4,#8A94AD)"></div></div>
+ <div class="a beaker" data-at="15.2" data-an="up" style="left:575px;top:190px"><div class="lq" data-fill="16.25,1.1,0.75" style="background:linear-gradient(180deg,#7EA0FF,#2F55D4)"></div></div>
+ <div class="a" data-at="16.66" data-an="fade" style="left:110px;top:405px;width:760px;height:0;border-top:6px dashed #E5484D"></div>
+ <div class="a" data-at="16.7" data-an="pop" style="left:420px;top:350px"><span class="pill wh" style="font-size:30px;padding:4px 18px 7px;color:#E5484D">ครึ่งของตัวนี้</span></div>
+ <div class="a big" data-at="15.1" data-an="up" style="left:135px;top:550px;width:280px;text-align:center;font-size:46px;color:#6B7690">ฟอร์มอื่น</div>
+ <div class="a big" data-at="15.3" data-an="up" style="left:545px;top:550px;width:300px;text-align:center;font-size:46px;color:#2F55D4">Bisglycinate</div>
+ <div class="a cx" data-at="16.84" data-an="stamp" data-shake="1" style="top:700px"><span class="pill rd" style="font-size:60px">ดูดซึมไม่ถึงครึ่ง!</span></div>
+</div>
+
+<!-- S6 17.98 - 20.22 made for deep sleep -->
+<div class="scene" data-s="17.98" data-e="20.22" data-bg="night" data-tr="iris" data-p="stars">
+ <div class="a" data-at="18.0" data-an="fade" style="left:640px;top:40px"><svg width="200" height="200" viewBox="0 0 100 100"><circle cx="50" cy="50" r="34" fill="#F2E7C0"/><circle cx="64" cy="40" r="30" fill="#1F3577"/></svg></div>
+ <div class="a glowN" data-at="18.0" data-an="pop" style="left:185px;top:40px;width:600px;height:600px"></div>
+ <div class="a bottle" data-at="18.05" data-an="up" data-float="1" style="left:345px;top:70px;width:280px;height:582px"></div>
+ <div class="a big cx" data-at="18.14" data-an="up" style="top:680px;font-size:60px;color:#C9D6FF;font-weight:800">สร้างมาเพื่อ</div>
+ <div class="a big cx" data-at="19.34" data-an="slam" data-breathe="1" style="top:760px;font-size:120px;color:#fff"><span class="g-t">หลับลึก</span> <span style="font-size:66px">โดยเฉพาะ</span></div>
+</div>
+
+<!-- S7 20.22 - 21.80 groggy -->
+<div class="scene" data-s="20.22" data-e="21.8" data-bg="grey" data-tr="slideleft" data-p="bubbles">
+ <div class="a panel" data-at="20.25" data-an="fade" style="left:95px;top:55px;width:780px;height:560px">
+  <svg viewBox="0 0 780 560"><g data-kb="20.25">
+   <rect width="780" height="560" fill="#DCD8E6"/><rect y="450" width="780" height="110" fill="#B9B2C7"/>
+   <rect x="70" y="60" width="210" height="190" fill="#C9D3E6"/><rect x="70" y="60" width="210" height="190" fill="none" stroke="#fff" stroke-width="12"/><path d="M175 60v190" stroke="#fff" stroke-width="8"/>
+   <path d="M70 60h105v190H70z" fill="#8C7BA8" opacity=".85"/>
+   <rect x="120" y="320" width="440" height="40" rx="14" fill="#A7B3D6"/>
+   <g data-person='{"pose":"sit","shirt":"#9AA6C2","armL":"down","armR":"fwd","hairStyle":"messy","expr":"groggy"}' transform="translate(320 480) scale(.9)"></g>
+   <path d="M110 350 Q330 320 560 350 L570 470 Q330 490 100 470z" fill="#F4F1FA"/>
+   <rect x="100" y="455" width="480" height="30" rx="10" fill="#7C6A55"/>
+   <rect x="600" y="330" width="120" height="120" rx="10" fill="#8C7BA8"/>
+   <g id="alarmS7" transform="translate(660 290)"><circle r="40" fill="#E5484D"/><circle r="30" fill="#fff"/><path d="M0 0V-20M0 0L14 8" stroke="#0F1B3D" stroke-width="5" stroke-linecap="round"/><circle cx="-26" cy="-36" r="12" fill="#E5484D"/><circle cx="26" cy="-36" r="12" fill="#E5484D"/><path d="M-26 38l-8 12M26 38l8 12" stroke="#0F1B3D" stroke-width="6"/></g>
+   <g id="ringS7" stroke="#E5484D" stroke-width="5" fill="none" stroke-linecap="round"><path d="M600 250q-14 20 0 40M590 236q-24 34 0 68M720 250q14 20 0 40M730 236q24 34 0 68"/></g>
+  </g></svg>
+ </div>
+ <div class="a big cx" data-at="20.6" data-an="up" style="top:650px;font-size:82px">ตื่นมาแล้ว<span class="hl" data-hl="21.24">ไม่สดชื่น</span>?</div>
+</div>
+
+<!-- S8 21.80 - 23.42 two tablets -->
+<div class="scene" data-s="21.8" data-e="23.42" data-bg="morning" data-tr="zoom" data-p="bubbles">
+ <div class="a panel" data-at="21.82" data-an="fade" style="left:95px;top:55px;width:780px;height:520px">
+  <svg viewBox="0 0 780 520"><g data-kb="21.82">
+   <rect width="780" height="520" fill="#EEF2FB"/><rect y="350" width="780" height="34" fill="#C9A47A"/><rect y="384" width="780" height="136" fill="#B58D63"/>
+   <path d="M120 180h100l-12 170h-76z" fill="#CFE6FF" opacity=".9" stroke="#8DB6E0" stroke-width="5"/><path d="M128 230h84" stroke="#8DB6E0" stroke-width="4"/>
+   <image href="mg_bottle.png" x="250" y="170" width="88" height="183"/>
+   <g transform="translate(520 330)">
+    <rect x="-46" y="10" width="92" height="190" rx="20" fill="#E8B88E"/>
+    <g fill="#F5C9A0"><rect x="-66" y="-118" width="30" height="90" rx="15"/><rect x="-32" y="-132" width="30" height="100" rx="15"/><rect x="2" y="-128" width="30" height="96" rx="15"/><rect x="36" y="-112" width="28" height="84" rx="14"/>
+    <ellipse cx="0" cy="-10" rx="76" ry="56"/><rect x="-118" y="-48" width="80" height="30" rx="15" transform="rotate(-35 -78 -33)"/></g>
+    <g data-pop="22.64"><ellipse cx="-24" cy="-12" rx="30" ry="18" fill="#fff" stroke="#D5DBE8" stroke-width="3"/><path d="M-44 -12h40" stroke="#D5DBE8" stroke-width="3"/></g>
+    <g data-pop="22.74"><ellipse cx="28" cy="-6" rx="30" ry="18" fill="#fff" stroke="#D5DBE8" stroke-width="3"/><path d="M8 -6h40" stroke="#D5DBE8" stroke-width="3"/></g>
+   </g>
+  </g></svg>
+ </div>
+ <div class="a big cx" data-at="21.85" data-an="up" style="top:600px;font-size:52px;font-weight:800">ลองกินตัวนี้</div>
+ <div class="a big cx" data-at="22.46" data-an="slam" data-breathe="1" style="top:670px;font-size:120px">วันละ <span class="b-t">2</span> เม็ด</div>
+</div>
+
+<!-- S9 23.42 - 27.48 benefits -->
+<div class="scene" data-s="23.42" data-e="27.48" data-bg="day" data-tr="swipe" data-p="bubbles">
+ <div class="a panel" data-at="23.45" data-an="pop" style="left:95px;top:45px;width:780px;height:270px">
+  <svg viewBox="0 0 780 270"><g data-kb="23.45">
+   <rect width="780" height="270" fill="#DDEBFF"/><circle cx="640" cy="70" r="40" fill="#FFD25E"/><g id="sunRay9" stroke="#FFD25E" stroke-width="6" stroke-linecap="round"><path d="M640 10v-0M640 130v0"/></g>
+   <rect y="215" width="780" height="55" fill="#9BD08A"/>
+   <g id="jump9"><g data-person='{"shirt":"#2F55D4","armL":"up","armR":"up","expr":"happy"}' transform="translate(390 258) scale(.48)"></g></g>
+   <g data-pop="23.6"><path d="M250 80l6 14 14 6-14 6-6 14-6-14-14-6 14-6z" fill="#F2C94C"/></g>
+   <g data-pop="23.75"><path d="M520 150l5 11 11 5-11 5-5 11-5-11-11-5 11-5z" fill="#5B7FE0"/></g>
+  </g></svg>
+ </div>
+ <div class="a card" data-at="23.42" data-an="left" style="left:95px;top:350px">
+  <div class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"><circle cx="32" cy="32" r="12"/><path d="M32 6v6M32 52v6M6 32h6M52 32h6M14 14l4 4M46 46l4 4M50 14l-4 4M18 46l-4 4"/></svg></div>
+  <div><div class="tx">สดใส ไม่เพลีย</div></div>
+ </div>
+ <div class="a card" data-at="24.64" data-an="left" style="left:95px;top:530px">
+  <div class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M24 54c-2-6-10-8-10-18 0-11 8-20 18-20s18 9 18 20c0 10-8 12-10 18z"/><path d="M34 26l-6 10h8l-6 10" stroke="#F2D58A"/></svg></div>
+  <div><div class="tx">สมองแล่น</div><div class="a sub" data-at="25.3" data-an="fade" style="position:relative">เพราะได้นอนพอ</div></div>
+ </div>
+ <div class="a card" data-at="25.96" data-an="left" style="left:95px;top:730px">
+  <div class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"><rect x="8" y="20" width="42" height="24" rx="5"/><rect x="50" y="27" width="6" height="10" rx="2" fill="#fff"/><rect id="bat9" x="13" y="25" width="32" height="14" rx="2" fill="#7DF9C8" stroke="none"/></svg></div>
+  <div><div class="tx">มีแรง</div><div class="a sub" data-at="26.9" data-an="fade" style="position:relative">เพราะได้หลับลึก</div></div>
+ </div>
+</div>
+
+<!-- S10 27.48 - 30.20 recap -->
+<div class="scene" data-s="27.48" data-e="30.2" data-bg="blue" data-tr="iris" data-p="bubbles">
+ <div class="a rays" data-at="27.5" data-an="fade" data-spin="14" style="left:-15px;top:-60px;width:1000px;height:1000px"></div>
+ <div class="a big cx" data-at="27.55" data-an="down" style="top:70px;font-size:54px;color:#fff;font-weight:800">สิ่งที่ <span class="g-t">Bisglycinate</span> ช่วยคุณได้</div>
+ <div class="a glow" data-at="27.6" data-an="pop" style="left:205px;top:180px;width:560px;height:560px"></div>
+ <div class="a bottle" data-at="27.65" data-an="drop" data-float="1" style="left:355px;top:180px;width:260px;height:540px"></div>
+ <div class="a" data-at="28.0" data-an="pop" data-bob="0" style="left:95px;top:250px"><span class="chip">หลับลึก</span></div>
+ <div class="a" data-at="28.4" data-an="pop" data-bob="1" style="left:640px;top:330px"><span class="chip">สมองแล่น</span></div>
+ <div class="a" data-at="28.8" data-an="pop" data-bob="2" style="left:95px;top:540px"><span class="chip">มีแรง</span></div>
+ <div class="a" data-at="29.2" data-an="pop" data-bob="3" style="left:575px;top:610px"><span class="chip">ตื่นมาสดชื่น</span></div>
+ <div class="a cx" data-at="29.5" data-an="stamp" style="top:790px"><span class="pill gd" style="font-size:58px">Magnesium Bisglycinate</span></div>
+</div>
+
+<!-- S11 30.20 - end promo -->
+<div class="scene" data-s="30.2" data-e="99" data-bg="blue" data-tr="flash" data-p="bubbles">
+ <div id="confetti"></div>
+ <div class="a rays" data-at="30.2" data-an="fade" data-spin="12" style="left:-15px;top:40px;width:1000px;height:1000px"></div>
+ <div class="a big cx" data-at="30.6" data-an="down" style="top:70px;font-size:54px;color:#C9D6FF;font-weight:800">สนใจฟอร์มนี้?</div>
+ <div class="a big cx" data-at="31.0" data-an="slam" data-breathe="1" style="top:120px;font-size:140px;color:#fff;text-shadow:0 8px 0 #0E1F55">1 แถม 1</div>
+ <div class="a bottle" data-at="31.15" data-an="left" data-float="1" style="left:255px;top:315px;width:210px;height:437px"></div>
+ <div class="a bottle" data-at="31.3" data-an="right" data-float="2.4" style="left:505px;top:315px;width:210px;height:437px"></div>
+ <div class="a" data-at="31.45" data-an="pop" style="left:620px;top:300px"><span class="pill wh" style="font-size:34px">30 เม็ด x2</span></div>
+ <div class="a cx" data-at="31.68" data-an="stamp" data-breathe="1" style="top:775px"><span class="pill dk" style="font-size:60px">พิกัดอยู่ด้านล่าง</span></div>
+ <div class="a cx" data-at="31.9" data-an="up" id="arrow11" style="top:880px"><svg width="70" height="70" viewBox="0 0 100 100"><path d="M50 10v62M22 48l28 30 28-30" stroke="#F2D58A" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+</div>
+
+<div id="rings"></div>
+<div id="swipe"><div class="b2"></div><div class="b1"></div><div class="b3"></div></div>
+<div id="flash"></div>
+<div id="safe" style="display:none;position:absolute;left:70px;top:60px;width:830px;height:900px;border:3px dashed #f0f;pointer-events:none"></div>
+<svg width="0" height="0" style="position:absolute"><defs><symbol id="st" viewBox="0 0 100 100"><path d="M50 0C54 36 64 46 100 50 64 54 54 64 50 100 46 64 36 54 0 50 36 46 46 36 50 0z" fill="#fff"/></symbol></defs></svg>
+</div>
+<script>
+const W=1080,H=1080;
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eOC=p=>1-Math.pow(1-p,3);
+const eOB=p=>{const c1=1.9,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+const eIO=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+let seed=5;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+if(location.hash==='#safe')document.getElementById('safe').style.display='block';
+function face(e,hy){let s='';const ey=hy+2;
+ if(e==='sleep')s+=`<path d="M-30 ${ey} q10 9 20 0 M10 ${ey} q10 9 20 0" stroke="#2B1B12" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M-8 ${hy+28} q8 6 16 0" stroke="#7A2E1A" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="-33" cy="${hy+18}" r="8" fill="#F59E8B" opacity=".6"/><circle cx="33" cy="${hy+18}" r="8" fill="#F59E8B" opacity=".6"/>`;
+ else if(e==='groggy')s+=`<path d="M-30 ${ey} h20 M10 ${ey} h20" stroke="#2B1B12" stroke-width="6" stroke-linecap="round"/><path d="M-32 ${ey+12} q11 7 22 0 M10 ${ey+12} q11 7 22 0" stroke="#9C7DB8" stroke-width="4" fill="none"/><path d="M-14 ${hy+30} q7 -5 14 0 t14 0" stroke="#7A2E1A" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+ else if(e==='awake')s+=`<circle cx="-19" cy="${ey}" r="11" fill="#fff"/><circle cx="19" cy="${ey}" r="11" fill="#fff"/><circle cx="-17" cy="${ey}" r="6" fill="#2B1B12"/><circle cx="21" cy="${ey}" r="6" fill="#2B1B12"/><path d="M-10 ${hy+30} h20" stroke="#7A2E1A" stroke-width="5" stroke-linecap="round"/>`;
+ else s+=`<circle cx="-19" cy="${ey}" r="7" fill="#2B1B12"/><circle cx="19" cy="${ey}" r="7" fill="#2B1B12"/>`;
+ if(e==='smile'||e==='happy')s+=`<path d="M-16 ${hy+22} Q0 ${hy+(e==='happy'?44:36)} 16 ${hy+22}" stroke="#7A2E1A" stroke-width="6" fill="${e==='happy'?'#7A2E1A':'none'}" stroke-linecap="round" stroke-linejoin="round"/><circle cx="-33" cy="${hy+18}" r="8" fill="#F59E8B" opacity=".7"/><circle cx="33" cy="${hy+18}" r="8" fill="#F59E8B" opacity=".7"/>`;
+ return s}
+function hairPath(st,hy,hr){
+ if(st==='messy')return `<path d="M-54 ${hy-4} C-60 ${hy-70} 60 ${hy-70} 54 ${hy-4} C40 ${hy-30} -10 ${hy-40} -54 ${hy-4}z" fill="${hr}"/><path d="M-30 ${hy-52} l-10 -24 l18 14 l4 -26 l12 24 l14 -22 l2 28 l20 -10 l-10 22" fill="${hr}"/>`;
+ return `<path d="M-54 ${hy-4} C-58 ${hy-74} 58 ${hy-74} 54 ${hy-4} C40 ${hy-32} -10 ${hy-42} -54 ${hy-4}z" fill="${hr}"/>`}
+function headSvg(o){const sk=o.skin||'#F5C9A0',hr=o.hair||'#2B1B12';let s=`<circle cx="-50" cy="4" r="12" fill="${sk}"/><circle cx="50" cy="4" r="12" fill="${sk}"/><circle cx="0" cy="0" r="52" fill="${sk}"/>`+hairPath(o.hairStyle,0,hr);
+ (o.faces||[{e:o.expr||'smile'}]).forEach(f=>{s+=`<g ${f.vis?`data-vis="${f.vis}"`:''}>${face(f.e,0)}</g>`});return s}
+function person(o){const sk=o.skin||'#F5C9A0',sh=o.shirt||'#3B82F6',pa=o.pants||'#334155',hr=o.hair||'#2B1B12';
+ const sit=o.pose==='sit';const legTop=sit?-95:-120,bodyTop=sit?-215:-235,bodyBot=sit?-90:-110,hy=bodyTop-50;let s='';
+ s+=`<path d="M-24 ${legTop} V-12 M24 ${legTop} V-12" stroke="${pa}" stroke-width="34" stroke-linecap="round"/><ellipse cx="-28" cy="-6" rx="24" ry="11" fill="#222"/><ellipse cx="28" cy="-6" rx="24" ry="11" fill="#222"/>`;
+ s+=`<rect x="-14" y="${hy+30}" width="28" height="34" fill="${sk}"/><rect x="-54" y="${bodyTop}" width="108" height="${bodyBot-bodyTop+20}" rx="44" fill="${sh}"/>`;
+ const arm=(sd,k)=>{const sx=sd*46,sy=bodyTop+28;let ex,ey;
+  if(k==='fwd'){ex=sd*150;ey=bodyTop+70}else if(k==='up'){ex=sd*95;ey=bodyTop-75}else if(k==='lap'){ex=sd*22;ey=bodyTop+105}else if(k==='hold'){ex=sd*55;ey=bodyTop+60}else{ex=sd*66;ey=bodyTop+120}
+  return `<path d="M${sx} ${sy} L${ex} ${ey}" stroke="${sh}" stroke-width="30" stroke-linecap="round"/><circle cx="${ex}" cy="${ey}" r="16" fill="${sk}"/>`};
+ s+=arm(-1,o.armL||'down')+arm(1,o.armR||'down');
+ s+=`<g transform="translate(0 ${hy})">${headSvg(o)}</g>`;return s}
+document.querySelectorAll('[data-person]').forEach(g=>g.innerHTML=person(JSON.parse(g.dataset.person)));
+document.querySelectorAll('[data-head]').forEach(g=>g.innerHTML=headSvg(JSON.parse(g.dataset.head)));
+document.querySelectorAll('.bottle').forEach((b,i)=>{const s=document.createElement('div');s.className='shine';s.dataset.ph=i*0.41;b.appendChild(s)});
+// scenes
+const scenes=[...document.querySelectorAll('.scene')].map((el,i)=>{
+ const bg=document.createElement('div');bg.className='sbg '+el.dataset.bg;el.insertBefore(bg,el.firstChild);
+ const parts=[];const pl=document.createElement('div');pl.style.cssText='position:absolute;inset:0;pointer-events:none';el.insertBefore(pl,bg.nextSibling);
+ if(el.dataset.p==='stars'){for(let k=0;k<46;k++){const d=document.createElement('div');d.className='starp';const s=2+rnd()*4;d.style.width=d.style.height=s+'px';d.style.left=rnd()*W+'px';d.style.top=rnd()*H+'px';pl.appendChild(d);parts.push({d,tw:rnd()*6,sp:1+rnd()*2,star:1})}}
+ else{for(let k=0;k<16;k++){const d=document.createElement('div');d.className='bub';const s=16+rnd()*70;d.style.width=d.style.height=s+'px';pl.appendChild(d);parts.push({d,x:rnd()*W,y:rnd()*H,v:20+rnd()*40,ph:rnd()*6.28})}
+  for(let k=0;k<5;k++){const d=document.createElement('div');d.className='tab';pl.appendChild(d);parts.push({d,x:rnd()*W,y:rnd()*H,v:25+rnd()*30,ph:rnd()*6.28,rot:rnd()*180,sc:.6+rnd()*.5})}}
+ return{el,s:+el.dataset.s,e:+el.dataset.e,tr:el.dataset.tr||'',parts,items:[...el.querySelectorAll('.a')]}});
+const TR=0.42; // transition length
+const conf=[];const cw=document.getElementById('confetti');const cc=['#F2D58A','#5B7FE0','#fff','#BFD0FF','#E3B85C'];
+for(let i=0;i<70;i++){const d=document.createElement('div');d.className='conf';d.style.background=cc[i%5];cw.appendChild(d);
+ conf.push({d,x:80+rnd()*820,vy:240+rnd()*320,vx:(rnd()-.5)*140,r:rnd()*360,vr:(rnd()-.5)*720,dl:rnd()*0.6,sw:rnd()*6});}
+const ringDefs=[[0.75,485,180],[6.85,485,380],[13.6,485,830],[19.34,485,830],[22.46,485,740],[31.0,485,200],[16.84,485,740]];
+const rw=document.getElementById('rings');const rings=ringDefs.map(([t,x,y])=>{const d=document.createElement('div');d.className='ring';d.style.left=x+'px';d.style.top=y+'px';rw.appendChild(d);return{d,t}});
+function animT(an,p,el){switch(an){
+ case 'fade':return [eOC(p),''];
+ case 'pop':{const s=p<=0?0:eOB(p);return [cl(p*4),`scale(${s})`]}
+ case 'slam':{const e=eOC(p);return [cl(p*5),`scale(${1+1.2*(1-e)})`]}
+ case 'stamp':{const e=eOB(p);return [cl(p*5),`scale(${1.6-0.6*e}) rotate(${-6*(1-e)}deg)`]}
+ case 'up':{const e=eOB(p);return [cl(p*3),`translateY(${80*(1-e)}px)`]}
+ case 'down':{const e=eOB(p);return [cl(p*3),`translateY(${-110*(1-e)}px)`]}
+ case 'left':{const e=eOB(p);return [cl(p*3),`translateX(${-280*(1-e)}px)`]}
+ case 'right':{const e=eOB(p);return [cl(p*3),`translateX(${280*(1-e)}px)`]}
+ case 'drop':{const e=eOB(p);return [cl(p*4),`translateY(${-650*(1-e)}px) rotate(${(1-e)*-25}deg)`]}}return [1,'']}
+const DUR={fade:.35,pop:.42,slam:.32,stamp:.35,up:.42,down:.45,left:.45,right:.45,drop:.55};
+const $=id=>document.getElementById(id);
+const lerpC=(a,b,p)=>{const h=x=>[1,3,5].map(i=>parseInt(x.substr(i,2),16));const A=h(a),B=h(b);return `rgb(${A.map((v,i)=>Math.round(v+(B[i]-v)*p)).join(',')})`};
+window.render=function(t){
+ let flash=0;
+ scenes.forEach((sc,i)=>{
+  const nx=scenes[i+1];const tail=(nx&&nx.tr&&nx.tr!=='swipe'&&nx.tr!=='flash')?TR:0;
+  const on=t>=sc.s&&t<sc.e+tail; sc.el.style.display=on?'block':'none'; if(!on)return;
+  const lt=t-sc.s, len=Math.min(sc.e,33.4)-sc.s, q=cl(lt/TR);
+  let tf=`scale(${1+0.025*cl(lt/len)}) rotate(${Math.sin(t*0.6)*0.4}deg)`, clip='none', op=1;
+  if(sc.tr==='iris'){clip=`circle(${eIO(q)*110}% at 45% 45%)`}
+  else if(sc.tr==='slideup'){tf=`translateY(${(1-eOC(q))*1080}px) `+tf}
+  else if(sc.tr==='slideleft'){tf=`translateX(${(1-eOC(q))*1080}px) `+tf}
+  else if(sc.tr==='zoom'){tf=`scale(${1.35-0.35*eOC(q)}) `+tf;op=q}
+  else {tf=`scale(${1.07-0.07*eOC(cl(lt/0.3))}) `+tf}
+  sc.el.style.transform=tf;sc.el.style.clipPath=q<1?clip:'none';sc.el.style.opacity=op;
+  for(const p of sc.parts){
+   if(p.star){p.d.style.opacity=.35+.65*Math.abs(Math.sin(t*p.sp+p.tw))}
+   else{const y=((p.y-p.v*t)%(H+200)+H+200)%(H+200)-100;const x=p.x+Math.sin(t*0.8+p.ph)*28;
+    p.d.style.transform=`translate(${x}px,${y}px)`+(p.rot!==undefined?` rotate(${p.rot+t*20}deg) scale(${p.sc})`:'');p.d.style.opacity=p.rot!==undefined?.7:.9}}
+  for(const el of sc.items){
+   const at=+el.dataset.at, an=el.dataset.an, p=cl((t-at)/DUR[an]);
+   let [o,tr]=t<at?[0,'']:animT(an,p,el); const live=t-at;
+   if(el.dataset.out){const k=cl((t-+el.dataset.out)/0.28);if(k>0){o*=1-k;tr+=` translateY(${-eIO(k)*60}px) scale(${1-0.25*k})`}}
+   if(el.dataset.dim){const k=cl((t-+el.dataset.dim)/0.35);o*=1-0.55*k}
+   if(el.dataset.float){const ph=+el.dataset.float;tr+=` translateY(${Math.sin(t*2.2+ph)*12}px) perspective(1400px) rotateY(${Math.sin(t*1.4+ph)*10}deg) rotate(${Math.sin(t*1.1+ph)*2}deg)`}
+   if(el.dataset.bob){const ph=+el.dataset.bob;tr+=` translateY(${Math.sin(t*3+ph)*9}px) rotate(${Math.sin(t*2.4+ph)*2.5}deg)`}
+   if(el.dataset.breathe&&live>0.4){tr+=` scale(${1+0.03*Math.sin((live-0.4)*5)})`}
+   if(el.dataset.spin)tr+=` rotate(${t*el.dataset.spin}deg)`;
+   if(el.dataset.shake){if(live>0&&live<0.55)tr+=` translateX(${Math.sin(live*70)*13*(1-live/0.55)}px)`}
+   el.style.opacity=o; el.style.transform=tr;
+  }
+ });
+ // swipe/flash transitions
+ const sw=$('swipe');let sx=-3000;
+ for(const sc of scenes){if(sc.tr==='swipe'){const d=t-sc.s;if(d>-0.2&&d<0.2){sx=-2700+eIO((d+0.2)/0.4)*4200}}
+  if(sc.tr==='flash'){const d=t-sc.s;if(d>=0&&d<0.3)flash=Math.max(flash,0.9*(1-d/0.3))}}
+ sw.style.transform=`translateX(${sx}px) skewX(-18deg)`; $('flash').style.opacity=flash;
+ document.querySelectorAll('[data-vis]').forEach(g=>{const[a,b]=g.dataset.vis.split(',').map(Number);g.style.opacity=(t>=a&&t<b)?1:0});
+ document.querySelectorAll('[data-pop]').forEach(g=>{const p=cl((t-+g.dataset.pop)/0.4);g.style.opacity=cl(p*4);g.style.transform=`scale(${p?eOB(p):0})`});
+ document.querySelectorAll('[data-kb]').forEach(g=>{const d=Math.max(0,t-+g.dataset.kb);g.style.transform=`scale(${1+0.014*d})`});
+ document.querySelectorAll('[data-hl]').forEach(h=>{const p=eIO(cl((t-+h.dataset.hl)/0.35));h.style.backgroundSize=`${p*100}% 100%`});
+ document.querySelectorAll('[data-count]').forEach(c=>{const[f,to,at,d]=c.dataset.count.split(',').map(Number);c.textContent=Math.round(f+(to-f)*eOC(cl((t-at)/d)))});
+ document.querySelectorAll('[data-bar]').forEach(b=>{const[a,d,w]=b.dataset.bar.split(',').map(Number);b.style.width=(eOC(cl((t-a)/d))*w*100)+'%'});
+ document.querySelectorAll('[data-vat]').forEach(v=>{const p=cl((t-+v.dataset.vat)/0.3);v.style.opacity=p;v.style.transform=`scale(${p?eOB(p):0})`});
+ document.querySelectorAll('[data-fill]').forEach(b=>{const[a,d,w]=b.dataset.fill.split(',').map(Number);b.style.height=(eIO(cl((t-a)/d))*w*100)+'%';
+  b.style.transform=`translateY(${Math.sin(t*6)*2}px)`});
+ document.querySelectorAll('.shine').forEach(s=>{const c=((t*0.55+ +s.dataset.ph)%1.6);s.style.backgroundPosition=`${110-c/1.6*130}% 0`});
+ // S1
+ if($('dimS1')){$('dimS1').setAttribute('opacity',0.45*eIO(cl((t-2.48)/0.5)));
+  const z=$('zzzS1');const zp=cl((t-2.8)/0.4);z.setAttribute('opacity',zp);z.setAttribute('transform',`translate(${Math.sin(t*2)*6} ${-((t*18)%24)})`);
+  $('clockS1').textContent=t<2.48?'23:45':(t<3.5?'02:10':'04:30');}
+ if($('sunM'))$('sunM').setAttribute('cy',250-110*eOC(cl((t-4.5)/1.8)));
+ if($('birdsM'))$('birdsM').setAttribute('transform',`translate(${(t-4.5)*40} ${Math.sin(t*6)*3})`);
+ if($('alarmS7')){const sh=Math.sin(t*60)*4;$('alarmS7').setAttribute('transform',`translate(${660+sh} 290) rotate(${Math.sin(t*50)*8})`);$('ringS7').setAttribute('opacity',Math.sin(t*20)>0?1:.25)}
+ if($('jump9'))$('jump9').setAttribute('transform',`translate(0 ${-Math.abs(Math.sin(t*4.2))*18})`);
+ if($('bat9')){const p=cl((t-26.0)/0.8);$('bat9').setAttribute('width',6+26*eOC(p))}
+ if($('arrow11')&&t>32.2){$('arrow11').style.transform+=` translateY(${Math.abs(Math.sin((t-32.2)*5))*18}px)`}
+ for(const r of rings){const d=t-r.t;if(d<0||d>0.6){r.d.style.opacity=0;continue}const p=d/0.6;r.d.style.opacity=0.85*(1-p);r.d.style.transform=`scale(${0.2+eOC(p)*2.2})`;r.d.style.borderWidth=(16*(1-p)+2)+'px'}
+ for(const c of conf){const d=t-31.0-c.dl;if(d<0){c.d.style.opacity=0;continue}
+  c.d.style.opacity=1;c.d.style.transform=`translate(${c.x+c.vx*d+Math.sin(d*4+c.sw)*30}px,${-60+c.vy*d}px) rotate(${c.r+c.vr*d}deg) rotateX(${d*400+c.sw*50}deg)`}
+};
+window.render(0);
+</script>
+</body></html>
