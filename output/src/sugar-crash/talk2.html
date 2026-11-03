@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2)}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2)}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2)}
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000;font-family:K,sans-serif}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden}
+#vidwrap{position:absolute;inset:0;transform-origin:540px 1300px}
+#vid{position:absolute;inset:0;width:1080px;height:1920px}
+#vign{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,0) 55%,rgba(0,0,0,.35) 100%)}
+.a{position:absolute;opacity:0;will-change:transform}
+.card{left:60px;top:350px;width:960px;height:472px;border-radius:40px;background:rgba(255,255,255,.96);box-shadow:0 18px 50px rgba(0,0,0,.35);overflow:hidden;border:6px solid #fff}
+.card svg{display:block;width:100%;height:100%}
+.cap{left:90px;width:900px;top:205px;text-align:center}
+.pill{display:inline-block;padding:4px 40px 12px;border-radius:999px;font-weight:900;font-size:78px;line-height:1.25;white-space:nowrap;box-shadow:0 10px 0 rgba(0,0,0,.35),0 16px 30px rgba(0,0,0,.35)}
+.dk{background:#141414;color:#FFE04D}
+.wh{background:#fff;color:#141414}
+.rd{background:#EF3B3B;color:#fff}
+.gn{background:#22B573;color:#fff}
+.bl{background:#2F6BFF;color:#fff}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+#safe{display:none;position:absolute;left:140px;top:260px;width:800px;height:1340px;border:4px dashed #f0f}
+#panel{position:absolute;left:0;top:0;width:1080px;height:960px;background:linear-gradient(180deg,#FBF7EF,#F1EADC);box-shadow:0 12px 30px rgba(0,0,0,.35)}
+#panel::after{content:"";position:absolute;left:0;right:0;bottom:0;height:10px;background:#141414}
+#hook{position:absolute;left:0;top:0;width:1080px;height:1180px;background:linear-gradient(180deg,#FFF1CC,#FFE3A0);overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.4)}
+#hook::after{content:"";position:absolute;left:0;right:0;bottom:0;height:12px;background:#141414}
+.hw{position:absolute;left:0;width:1080px;text-align:center;font-weight:900;line-height:1.15;white-space:nowrap;-webkit-text-stroke:14px #141414;paint-order:stroke fill;text-shadow:0 12px 0 rgba(0,0,0,.25);opacity:0}
+</style></head><body>
+<div id="stage">
+ <div id="vidwrap"><img id="vid" src="frames2/00001.jpg"><div id="vign"></div></div>
+
+
+ <div id="panel"></div>
+ <div id="hook">
+  <div class="hw" id="hw0" style="top:215px;font-size:64px;color:#fff;-webkit-text-stroke:10px #141414">สงสัยไหม...</div>
+  <div class="hw" id="hw1" style="top:300px;font-size:130px;color:#fff">ทำไม</div>
+  <div class="hw" id="hw2" style="top:440px;font-size:190px;color:#FF4D4D">น้ำตาล</div>
+  <div class="hw" id="hw3" style="top:640px;font-size:190px;color:#FFD400">ถึงตก?</div>
+  <svg id="hookG" viewBox="0 0 1080 300" style="position:absolute;left:0;top:870px;width:1080px;height:300px">
+   <path d="M120 250 H960" stroke="#141414" stroke-width="8" stroke-linecap="round"/>
+   <path id="hg" d="M130 230 C260 230 330 210 400 140 C450 90 480 40 520 40 C570 40 600 210 660 250 C720 285 820 260 950 230" fill="none" stroke="#EF3B3B" stroke-width="18" stroke-linecap="round" pathLength="1"/>
+   <path id="hga" d="M600 60 L650 210 M622 182 L652 222 L676 180" stroke="#141414" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>
+  </svg>
+ </div>
+ <!-- C2..C4 Pythagorean cup -->
+ <div class="a card" data-at="2.80" data-an="pop" data-out="16.80" id="cupCard">
+  <svg viewBox="0 0 748 368"><rect width="748" height="368" fill="#EAF4FF"/>
+   <defs><clipPath id="cupIn"><path d="M262 62 L486 62 L462 262 Q374 280 286 262 Z"/></clipPath></defs>
+   <g id="cupG">
+    <path d="M250 50 L498 50 L470 270 Q374 292 278 270 Z" fill="rgba(255,255,255,.7)" stroke="#5B7FB0" stroke-width="8" stroke-linejoin="round"/>
+    <g clip-path="url(#cupIn)"><rect id="water" x="250" y="280" width="250" height="0" fill="#3E9BFF" opacity=".85"/><path id="wave" d="M250 0 q20 -8 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" stroke="#9CD0FF" stroke-width="6" fill="none"/></g>
+    <rect x="360" y="110" width="28" height="165" rx="10" fill="#fff" stroke="#5B7FB0" stroke-width="6"/>
+    <path d="M374 290 V330" stroke="#5B7FB0" stroke-width="14" stroke-linecap="round"/>
+    <path d="M300 330 h148" stroke="#5B7FB0" stroke-width="10" stroke-linecap="round"/>
+    <path id="maxLine" d="M262 112 H486" stroke="#EF3B3B" stroke-width="5" stroke-dasharray="14 10"/>
+    <text x="500" y="120" font-family="K" font-weight="800" font-size="24" fill="#EF3B3B">ขีดที่กำหนด</text>
+    <path id="stream" d="M374 300 V360" stroke="#3E9BFF" stroke-width="16" stroke-linecap="round" opacity="0"/>
+    <ellipse id="puddle" cx="374" cy="356" rx="0" ry="10" fill="#3E9BFF" opacity=".8"/>
+   </g>
+   <text id="cupLabel" x="110" y="190" text-anchor="middle" font-family="K" font-weight="900" font-size="34" fill="#1E3A6E" opacity="0">แก้ว</text>
+   <text id="cupLabel2" x="110" y="232" text-anchor="middle" font-family="K" font-weight="900" font-size="34" fill="#1E3A6E" opacity="0">พีทาโกรัส</text>
+   <g id="okMark" opacity="0"><circle cx="630" cy="200" r="50" fill="#22B573"/><path d="M606 200l16 16 30-32" stroke="#fff" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+   <g id="xMark" opacity="0"><circle cx="630" cy="200" r="50" fill="#EF3B3B"/><path d="M610 180l40 40M650 180l-40 40" stroke="#fff" stroke-width="11" stroke-linecap="round"/></g>
+   <g id="sugarLink" opacity="0" transform="translate(600 180)"><rect x="-34" y="-34" width="68" height="68" rx="12" fill="#fff" stroke="#C9B48A" stroke-width="5"/><path d="M-20 -6h40M-20 10h40" stroke="#E7D9B8" stroke-width="5"/><text x="0" y="66" text-anchor="middle" font-family="K" font-weight="800" font-size="24" fill="#9A7B45">น้ำตาล</text></g>
+  </svg>
+ </div>
+ <div class="a cap" data-at="3.94" data-an="stamp" data-out="4.70"><span class="pill wh">แก้ว<span style="color:#2F6BFF">พีทาโกรัส</span></span></div>
+ <div class="a cap" data-at="4.76" data-an="up" data-out="6.15"><span class="pill dk">เกี่ยวกับน้ำตาลตกยังไง?</span></div>
+ <div class="a cap" data-at="8.80" data-an="pop" data-out="10.05"><span class="pill bl">เติมน้ำพอดี</span></div>
+ <div class="a cap" data-at="10.10" data-an="stamp" data-out="11.00"><span class="pill gn">น้ำยังอยู่ในแก้ว ✓</span></div>
+ <div class="a cap" data-at="12.70" data-an="stamp" data-out="14.25"><span class="pill dk">เติมจน<span style="color:#FF6B6B">เกินขีด</span></span></div>
+ <div class="a cap" data-at="15.10" data-an="stamp" data-shake="1" data-out="16.80"><span class="pill rd">ไหลออกหมด!</span></div>
+
+ <!-- C5 sugar -> insulin -> fat -->
+ <div class="a card" data-at="16.90" data-an="pop" data-out="24.85">
+  <svg viewBox="0 0 748 368"><rect width="748" height="368" fill="#FFF3F3"/>
+   <path d="M40 200 H708" stroke="#F4B6B6" stroke-width="70" stroke-linecap="round"/>
+   <text x="374" y="330" text-anchor="middle" font-family="K" font-weight="800" font-size="26" fill="#C26A6A">กระแสเลือด</text>
+   <g id="cubes"></g>
+   <g id="ins" opacity="0"><g id="insG"></g><text x="150" y="80" text-anchor="middle" font-family="K" font-weight="900" font-size="30" fill="#2F6BFF">อินซูลิน</text></g>
+   <g id="fat" transform="translate(620 200)" opacity="0"><g id="fatS"><circle r="58" fill="#FFD36B"/><circle cx="-38" cy="-30" r="30" fill="#FFC94A"/><circle cx="34" cy="34" r="28" fill="#FFC94A"/><circle cx="-18" cy="-12" r="9" fill="#fff" opacity=".7"/></g><text y="100" text-anchor="middle" font-family="K" font-weight="900" font-size="28" fill="#B9860F">ไขมัน</text></g>
+  </svg>
+ </div>
+ <div class="a cap" data-at="17.70" data-an="stamp" data-out="20.50"><span class="pill dk">กินน้ำตาล<span style="color:#FF6B6B">เยอะเกิน</span></span></div>
+ <div class="a cap" data-at="20.55" data-an="pop" data-out="21.90"><span class="pill bl">หลั่งอินซูลิน</span></div>
+ <div class="a cap" data-at="21.96" data-an="stamp" data-shake="1" data-out="23.60"><span class="pill rd">กระชากน้ำตาล!</span></div>
+ <div class="a cap" data-at="23.66" data-an="stamp" data-out="24.85"><span class="pill dk">เก็บเป็น<span style="color:#FFC94A">ไขมัน</span></span></div>
+
+ <!-- C6 over threshold graph -->
+ <div class="a card" data-at="24.95" data-an="pop" data-out="29.40">
+  <svg viewBox="0 0 748 368"><rect width="748" height="368" fill="#FFF7E6"/>
+   <path d="M60 310H700M60 310V40" stroke="#C9B48A" stroke-width="5" stroke-linecap="round"/>
+   <path d="M62 120 H700" stroke="#EF3B3B" stroke-width="5" stroke-dasharray="14 10"/>
+   <text x="690" y="108" text-anchor="end" font-family="K" font-weight="800" font-size="24" fill="#EF3B3B">จุดที่กำหนด</text>
+   <path id="g6" d="M70 290 C150 285 220 250 280 200 C330 160 360 90 400 70 C430 60 445 150 470 250 C490 320 540 300 690 285" fill="none" stroke="#EF3B3B" stroke-width="12" stroke-linecap="round" pathLength="1"/>
+   <g id="g6boom" opacity="0" transform="translate(400 70)"><circle r="34" fill="#FFE04D"/><text y="12" text-anchor="middle" font-family="K" font-weight="900" font-size="34" fill="#141414">!</text></g>
+  </svg>
+ </div>
+ <div class="a cap" data-at="25.90" data-an="up" data-out="27.75"><span class="pill wh">เติมน้ำตาลเยอะแค่ไหน</span></div>
+ <div class="a cap" data-at="28.20" data-an="stamp" data-out="29.40"><span class="pill rd">เกินจุดที่กำหนด</span></div>
+
+ <!-- C7 hungry -->
+ <div class="a card" data-at="29.45" data-an="pop" data-out="34.90">
+  <svg viewBox="0 0 748 368"><rect width="748" height="368" fill="#F3F0FF"/>
+   <g id="stom" transform="translate(250 190)"><path d="M-60 -110 C-60 -60 -110 -40 -110 20 C-110 90 -30 120 40 100 C110 80 120 0 80 -40 C50 -70 0 -40 -10 -110 Z" fill="#FF9FB0" stroke="#E2667E" stroke-width="7"/><path d="M-40 20 q15 -14 30 0 t30 0 t30 0" stroke="#C2405A" stroke-width="6" fill="none" stroke-linecap="round"/></g>
+   <g id="growl" stroke="#7A5CFF" stroke-width="7" fill="none" stroke-linecap="round" opacity="0"><path d="M380 130 q20 -20 0 -40"/><path d="M400 150 q34 -40 0 -80"/><path d="M120 130 q-20 -20 0 -40"/><path d="M100 150 q-34 -40 0 -80"/></g>
+   <g id="bubble" opacity="0" transform="translate(560 170)"><path d="M-120 -80 h240 a30 30 0 0 1 30 30 v90 a30 30 0 0 1 -30 30 h-150 l-40 40 v-40 h-50 a30 30 0 0 1 -30 -30 v-90 a30 30 0 0 1 30 -30z" fill="#141414"/><text id="bubT" y="22" text-anchor="middle" font-family="K" font-weight="900" font-size="58" fill="#FFE04D">หิว!</text></g>
+  </svg>
+ </div>
+ <div class="a cap" data-at="31.60" data-an="up" data-out="33.80"><span class="pill wh">เพิ่งกินน้ำตาลไป...</span></div>
+ <div class="a cap" data-at="33.84" data-an="stamp" data-shake="1" data-out="34.90"><span class="pill rd">หายไปไหน??</span></div>
+
+ <!-- C8 spike -> fat -->
+ <div class="a card" data-at="34.96" data-an="pop" data-out="39.75">
+  <svg viewBox="0 0 748 368"><rect width="748" height="368" fill="#FFF3F3"/>
+   <path d="M60 310H420M60 310V40" stroke="#E5AFAF" stroke-width="5" stroke-linecap="round"/>
+   <path d="M62 140 H420" stroke="#EF3B3B" stroke-width="5" stroke-dasharray="14 10"/>
+   <path id="g8" d="M70 290 C150 280 200 200 240 80 C260 40 280 60 300 140" fill="none" stroke="#EF3B3B" stroke-width="12" stroke-linecap="round" pathLength="1"/>
+   <path id="arr8" d="M320 150 C400 150 450 170 520 190" stroke="#141414" stroke-width="9" fill="none" stroke-linecap="round" stroke-dasharray="1" stroke-dashoffset="1" pathLength="1"/>
+   <path id="arr8h" d="M500 168 L528 192 L496 208" stroke="#141414" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>
+   <g id="fat8" transform="translate(620 200)" opacity="0"><g id="fat8S"><circle r="60" fill="#FFD36B"/><circle cx="-40" cy="-30" r="30" fill="#FFC94A"/><circle cx="34" cy="36" r="28" fill="#FFC94A"/><circle cx="-18" cy="-12" r="9" fill="#fff" opacity=".7"/></g><text y="102" text-anchor="middle" font-family="K" font-weight="900" font-size="28" fill="#B9860F">ไขมัน</text></g>
+  </svg>
+ </div>
+ <div class="a cap" data-at="36.40" data-an="stamp" data-out="37.95"><span class="pill dk">ถ้า<span style="color:#FF6B6B">สูงเกิน</span></span></div>
+ <div class="a cap" data-at="38.00" data-an="stamp" data-out="39.75"><span class="pill dk">เก็บเป็นไขมัน<span style="color:#FFC94A">ทันที</span></span></div>
+
+ <!-- C9 balanced -->
+ <div class="a card" data-at="39.85" data-an="pop">
+  <svg viewBox="0 0 748 368"><rect width="748" height="368" fill="#ECFBF3"/>
+   <rect x="62" y="130" width="640" height="90" fill="#BDEFD5"/>
+   <text x="690" y="122" text-anchor="end" font-family="K" font-weight="800" font-size="24" fill="#1E8F5A">โซนพอดี</text>
+   <path d="M60 310H700M60 310V40" stroke="#9BCFB3" stroke-width="5" stroke-linecap="round"/>
+   <path id="g9" d="M70 200 C140 160 200 190 260 170 C320 150 380 195 440 175 C500 155 560 190 690 172" fill="none" stroke="#22B573" stroke-width="12" stroke-linecap="round" pathLength="1"/>
+   <g id="ok9" opacity="0" transform="translate(620 270)"><circle r="40" fill="#22B573"/><path d="M-18 0l12 12 24-26" stroke="#fff" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+  </svg>
+ </div>
+ <div class="a cap" data-at="40.60" data-an="stamp" data-out="42.40"><span class="pill gn">น้ำตาลพอดี ไม่มากไป</span></div>
+ <div class="a cap" data-at="44.08" data-an="up"><span class="pill dk">คงที่ <span style="color:#5BE3A0">ไม่กระชาก</span> ✓</span></div>
+
+ <div id="flash"></div>
+ <div id="safe"></div>
+</div>
+<script>
+const KEEP=__KEEP__;
+function M(t){let acc=0;for(const[a,b]of KEEP){if(t<a)return acc;if(t<=b)return acc+t-a;acc+=b-a}return acc}
+const FPS=30,NF=__NF__;
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eOC=p=>1-Math.pow(1-p,3);
+const eOB=p=>{const c1=1.9,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+const eIO=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+const $=id=>document.getElementById(id);
+if(location.hash==='#safe')$('safe').style.display='block';
+// progress between two ORIGINAL times, evaluated at cut-time t
+const P=(t,a,b)=>cl((t-M(a))/(M(b)-M(a)));
+const items=[...document.querySelectorAll('.a')].map(el=>({el,at:M(+el.dataset.at),out:el.dataset.out?M(+el.dataset.out):null,an:el.dataset.an}));
+const DUR={pop:.4,stamp:.32,up:.38,fade:.3};
+function animT(an,p){switch(an){
+ case 'pop':return [cl(p*4),`scale(${p?eOB(p):0})`];
+ case 'stamp':{const e=eOB(p);return [cl(p*5),`scale(${1.5-0.5*e}) rotate(${-5*(1-e)}deg)`]}
+ case 'up':{const e=eOB(p);return [cl(p*3),`translateY(${70*(1-e)}px)`]}
+ default:return [eOC(p),'']}}
+// ---- zoom plan (original times) ----
+const sentences=[0.30,2.76,3.62,6.20,7.20,9.46,11.72,14.30,16.86,17.62,19.22,21.96,23.66,24.92,25.90,27.78,29.44,31.60,33.84,34.96,35.88,37.20,39.82,41.68,42.48,44.08].map(M);
+const bases=[1.0,1.12,1.0,1.06,1.16,1.0,1.1,1.0,1.14,1.0,1.08,1.0,1.12,1.0,1.1,1.04,1.16,1.0,1.1,1.0,1.06,1.0,1.12,1.0,1.06,1.18];
+const punches=[[2.76,.10],[15.15,.14],[21.96,.14],[31.0,.16],[33.9,.14],[37.54,.14],[13.02,.08],[28.6,.08]].map(([t,a])=>[M(t),a]);
+const shakes=[15.15,21.96,37.54,31.0].map(M);
+function zoomAt(t){return [1.0+0.04*(0.5-0.5*Math.cos(2*Math.PI*t/14)),0,0]}
+// sugar cubes
+const cubesG=$('cubes');const cubes=[];
+for(let i=0;i<9;i++){const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.innerHTML='<rect x="-20" y="-20" width="40" height="40" rx="8" fill="#fff" stroke="#C9B48A" stroke-width="4"/>';cubesG.appendChild(g);cubes.push({g,x:80+i*55,y:170+((i*37)%50),d:i*0.07})}
+const insG=$('insG');for(let i=0;i<4;i++){const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.setAttribute('transform',`translate(${90+i*40} ${120+(i%2)*30})`);g.innerHTML='<polygon points="0,-16 14,-8 14,8 0,16 -14,8 -14,-8" fill="#2F6BFF"/><circle r="5" fill="#fff"/>';insG.appendChild(g)}
+let lastSrc='';
+window.render=async function(t){
+ const f=Math.min(NF,Math.floor(t*FPS+1e-6)+1);const src='frames2/'+String(f).padStart(5,'0')+'.jpg';
+ const img=$('vid');if(src!==lastSrc){img.src=src;lastSrc=src;await img.decode().catch(()=>{})}
+ const [s,sx,sy]=zoomAt(t);$('vidwrap').style.transform=`translateY(85px) scale(${s})`;
+ for(const it of items){const p=cl((t-it.at)/DUR[it.an]);let [o,tr]=t<it.at?[0,'']:animT(it.an,p);
+  if(it.out!==null){const k=cl((t-it.out)/0.25);if(k>0){o*=1-k;tr+=` scale(${1-0.2*k})`}}
+  if(it.el.dataset.shake){const d=t-it.at;if(d>0&&d<0.5)tr+=` translateX(${Math.sin(d*70)*12*(1-d/0.5)}px)`}
+  if(it.el.classList.contains('cap')&&t>it.at+0.4)tr+=` scale(${1+0.025*Math.sin((t-it.at)*5)})`;
+  it.el.style.opacity=o;it.el.style.transform=tr}
+  // hook
+ const hOut=P(t,2.66,2.96);$('hook').style.transform=`translateY(${-eIO(hOut)*1200}px)`;
+ [['hw0',0.4],['hw1',1.2],['hw2',1.44],['hw3',1.9]].forEach(([id,a])=>{const p=P(t,a,a+0.25);$(id).style.opacity=cl(p*4);$(id).style.transform=`scale(${p?eOB(p):0})`});
+ $('hg').style.strokeDasharray=1;$('hg').style.strokeDashoffset=1-eIO(P(t,0.5,2.2));$('hga').setAttribute('opacity',P(t,1.9,2.05));
+ // cup
+ $('cupLabel').setAttribute('opacity',P(t,3.94,4.2));$('cupLabel2').setAttribute('opacity',P(t,3.94,4.2));
+ $('sugarLink').setAttribute('opacity',P(t,4.8,5.1)*(1-P(t,6.0,6.2)));
+ let lvl=0; // 0..1 of cup height (1 = rim). max line at 0.78
+ lvl=0.62*eIO(P(t,6.6,9.2));
+ if(t>=M(11.9))lvl=0.62+0.34*eIO(P(t,11.98,13.6));
+ let drain=P(t,14.3,16.3);
+ if(drain>0)lvl=0.96*(1-eIO(drain));
+ const top=262-lvl*200;$('water').setAttribute('y',top);$('water').setAttribute('height',Math.max(0,300-top));
+ $('wave').setAttribute('transform',`translate(${-(t*60)%80} ${top})`);$('wave').setAttribute('opacity',lvl>0.02?1:0);
+ $('stream').setAttribute('opacity',drain>0&&drain<0.98?1:0);$('puddle').setAttribute('rx',110*eOC(drain));
+ $('okMark').setAttribute('opacity',P(t,10.1,10.3)*(1-P(t,11.0,11.2)));
+ $('xMark').setAttribute('opacity',P(t,13.0,13.2));
+ $('maxLine').setAttribute('stroke-width',t>M(12.9)&&t<M(14.4)?(5+3*Math.abs(Math.sin(t*10))):5);
+ // C5 sugar flow
+ const pour=P(t,17.7,19.0),yank=P(t,21.96,23.4);
+ cubes.forEach((c,i)=>{const a=cl((pour-c.d)/0.5);let x=c.x,y=c.y-(1-eOB(a))*220;
+  const yk=eIO(cl((yank-c.d*0.6)/0.6));x=x+(620-x)*yk;y=y+(200-y)*yk;const sc=1-0.7*yk;
+  c.g.setAttribute('transform',`translate(${x+Math.sin(t*3+i)*3} ${y}) rotate(${(i*23+t*30)%360}) scale(${a?sc:0})`);c.g.setAttribute('opacity',a&&yk<0.98?1:0)});
+ $('ins').setAttribute('opacity',P(t,20.4,20.7));$('insG').setAttribute('transform',`translate(${Math.sin(t*4)*6} ${Math.cos(t*3)*5})`);
+ const fs=P(t,21.9,22.2);$('fat').setAttribute('opacity',fs);$('fatS').setAttribute('transform',`scale(${0.5+0.5*eOB(fs)+0.35*eOC(P(t,22.6,24.0))})`);
+ // C6
+ $('g6').style.strokeDasharray=1;$('g6').style.strokeDashoffset=1-(0.55*eIO(P(t,25.9,28.4))+0.45*eIO(P(t,28.6,29.2)));
+ $('g6boom').setAttribute('opacity',P(t,28.5,28.6));
+ // C7
+ const gr=t>M(30.0);$('growl').setAttribute('opacity',gr?(Math.sin(t*16)>0?1:.4):0);
+ $('stom').setAttribute('transform',`translate(250 190) rotate(${gr?Math.sin(t*30)*4:0})`);
+ const bb=P(t,30.0,30.3);$('bubble').setAttribute('opacity',bb);$('bubble').setAttribute('transform',`translate(560 170) scale(${bb?eOB(bb):0})`);
+ $('bubT').textContent=t>M(33.84)?'หายไหน?':'หิว!';
+ // C8
+ $('g8').style.strokeDasharray=1;$('g8').style.strokeDashoffset=1-eIO(P(t,35.2,36.6));
+ $('arr8').style.strokeDashoffset=1-eOC(P(t,37.5,38.0));$('arr8h').setAttribute('opacity',P(t,37.95,38.05));
+ const f8=P(t,37.9,38.2);$('fat8').setAttribute('opacity',f8);$('fat8S').setAttribute('transform',`scale(${0.5+0.5*eOB(f8)+0.3*eOC(P(t,38.3,39.5))})`);
+ // C9
+ $('g9').style.strokeDasharray=1;$('g9').style.strokeDashoffset=1-eIO(P(t,40.0,43.0));
+ const o9=P(t,45.3,45.5);$('ok9').setAttribute('opacity',o9);$('ok9').setAttribute('transform',`translate(620 270) scale(${o9?eOB(o9):0})`);
+ // flash on big hits
+ let fl=0;for(const h of [M(15.15),M(21.96),M(33.84)]){const d=t-h;if(d>=0&&d<0.15)fl=Math.max(fl,.35*(1-d/0.15))}$('flash').style.opacity=0;
+};
+</script>
+</body></html>
