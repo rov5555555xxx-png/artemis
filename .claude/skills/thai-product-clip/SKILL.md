@@ -1,6 +1,6 @@
 ---
 name: thai-product-clip
-description: Make a Thai product explainer / ad clip (supplements, health products) from the user's voiceover video plus product images, in the user's established style — keyword-only captions, flat scenario illustrations, user photos, original background music, varied quiet SFX, TikTok-safe margins. Use when the user sends a voiceover (mp4/audio) with product pictures and asks for a clip ("ทำคลิป", "เอาเสียงนี้ไปทำคลิป", "ทำแบบคราวที่แล้ว").
+description: Make or edit Thai TikTok clips in the user's established style — (a) product explainer/ad clips (supplements, brand INZENT) built from a voiceover plus product images, and (b) 9:16 talking-head edits of the user's own camera footage (cut silences, zoom punches, motion graphics). Keyword-only captions, scenario illustrations, user photos, original background music, varied quiet SFX, TikTok-safe margins. Use when the user sends a voiceover/raw clip (upload or Google Drive) and asks for a clip ("ทำคลิป", "เอาเสียงนี้ไปทำคลิป", "ตัดต่อให้หน่อย", "ตัดช่วงเงียบ", "ทำแบบคราวที่แล้ว").
 ---
 
 # Thai product explainer clip
@@ -37,6 +37,26 @@ Finished examples live in `output/` (vitamin D3+K2, magnesium); `output/src/magn
 5. **Check:** render stills with the `#safe` URL hash (this shows the 130px guide box) at several times, tile them with ffmpeg into one image, look at it, and fix overlaps, edge crowding and low-res images. Then render the video in the background with `DPR=2` (about 4–6 minutes) and use Monitor or the background notification; don't poll with sleep.
 6. **Audio:** `python3 -I scripts/music.py music.wav <dur>`; edit the `cues` list in `scripts/mix_sfx.py` to the new timings, then run it to get both mixes. Check the waveform and RMS.
 7. **Mux:** `ffmpeg -i video.mp4 -i mix.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest -movflags +faststart out.mp4` for each version. Make a 1–2 fps contact sheet of the final video and look at it before sending.
+
+## Getting big files (Google Drive)
+
+Chat uploads stop at about 30 MB. For bigger files, the user uploads to Google Drive and shares the file as **"ทุกคนที่มีลิงก์" with the "ผู้มีสิทธิ์อ่าน" (viewer) role**. If they pick Editor, tell them to switch to viewer. The environment allowlists `drive.google.com`, `drive.usercontent.google.com` and `*.googleusercontent.com`.
+- Find the file: use the Google Drive connector (`search_files`, e.g. `title contains '<folder>'` with the folder mimeType, then `parentId = '<id>'`) to get the file id and size. The connector's own download is capped at 10 MB, so don't use it for video.
+- Download into its own new folder: `curl -L -o clip.mp4 "https://drive.usercontent.google.com/download?id=<ID>&export=download&confirm=t"`, then check that the size matches and `file` says it is an MP4. If you get an HTML sign-in page instead, the file isn't shared publicly yet.
+- If Drive is blocked (proxy 403), the user has to add those domains under Network access on the environment this session uses. You cannot change it yourself.
+- Instagram, TikTok, Dropbox and similar sites are blocked. Ask for a screen recording or the downloaded file instead.
+
+## 9:16 talking-head edit (user's own camera footage)
+
+Template: `templates/talking_head_9x16_template.html` (from the approved "sugar crash" v1, `output/sugar-crash-9x16.mp4`).
+1. Transcribe the raw clip (as in step 2 above) and fix the Thai from context.
+2. **Cut silences, tight jump-cut style:** `python3 -I scripts/cut_silence.py raw.mp4 cut.mov keep.json` (silences ≥0.3 s at −35 dB, keeps 0.07 s on each side). Expect about 10–15% shorter.
+3. Extract frames: `ffmpeg -i cut.mov -vf fps=30 -q:v 3 build/frames/%05d.jpg`. The page swaps an `<img>` per frame, and `render(t)` is async and awaits `img.decode()`.
+4. Fill the template: replace `__KEEP__` with the keep.json contents and `__NF__` with the frame count. Write every time in the page as an **original** video time; the page maps it through `M()` to the cut timeline.
+5. **Zoom:** alternate the base scale per sentence (1.0 ↔ 1.06–1.18) so each jump cut reads as a camera change. Add quick punch-ins (+0.08–0.16) with a small shake/flash on emphasis words (e.g. "กระชาก", "เฮ้ย", "ดูนี่นะ"), and end with a slow zoom-out. Set the zoom origin above the face so the face stays in frame.
+6. **Motion graphics:** find where the face sits with a gridded frame, then put a white rounded card (about 760×380) with an animated SVG explanation in the empty wall area above the head, inside TikTok-safe space (x 140–940, y ≥ 260; nothing in the bottom ~320 px caption zone or the right-side button column). Put a keyword pill under the card, synced to the spoken word. Build one card per idea, with animated diagrams (fill levels, graphs drawing with dashoffset, objects moving along a path, counters).
+7. **Audio:** the user's phone recordings are quiet, so normalise the voice to about −16 dBFS RMS first. Generate music with `scripts/music.py`, keep it about 12 dB under the voice, and use the varied SFX palette (`scripts/mix_talking_head_example.py` shows cues in original times mapped through keep.json).
+8. Render at 1080×1920 (`VW=1080 VH=1920`, DPR 1). It takes about 5 minutes for 40 s. Mux with AAC, and re-encode at crf 21 if the file is over about 40 MB.
 
 ## Gotchas
 
