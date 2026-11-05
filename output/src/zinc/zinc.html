@@ -83,18 +83,34 @@ body{font-family:K,sans-serif;color:#fff}
  <div class="a cx" data-at="4.46" data-an="slam" style="top:830px;text-align:center"><span class="pill p-gold" style="font-size:58px">ดูดซึมดีกว่า</span></div>
 </div>
 
-<!-- S3 5.15 - 9.45 time in body: 2 h vs 6 h -->
-<div class="scene" data-s="5.15" data-e="9.45" data-bg="studio" data-tr="iris" data-cam="5.15:1:720:540;5.5:1.06:720:440;6.85:1.06:720:440;7.4:1.06:720:580;9.1:1.06:720:580;9.45:1.04:720:540">
+<!-- S3 5.15 - 9.45 level in body over time: old declines gradually from 2 h, new stays high 6 h then declines -->
+<div class="scene" data-s="5.15" data-e="9.45" data-bg="studio" data-tr="iris" data-cam="5.15:1:720:540;5.6:1.1:620:500;6.9:1.1:620:500;7.4:1:720:540;8.2:1:720:540;8.9:1.08:860:500;9.45:1.08:860:500">
  <div class="cam">
-  <div class="a img ob" data-at="5.2" data-an="left" style="left:205px;top:260px;width:110px;height:206px"></div>
-  <div class="a bar" data-at="5.25" data-an="fade" style="left:350px;top:320px;width:890px"><div class="fl" data-bar="5.6,0.9,0.333" style="background:linear-gradient(90deg,#4F86F0,#2EC4B6)"></div></div>
-  <div class="a" data-at="5.3" data-an="fade" style="left:0;top:415px;width:1440px;height:40px"><span class="tick" style="left:372px">0</span><span class="tick" style="left:647px">2 ชม.</span><span class="tick" style="left:943px">4</span><span class="tick" style="left:1222px">6</span></div>
-  <div class="a" data-at="6.0" data-an="right" style="left:660px;top:300px"><svg width="200" height="120" viewBox="0 0 200 120"><path d="M10 60h140" stroke="#E5484D" stroke-width="18" stroke-linecap="round"/><path d="M120 22l50 38-50 38" stroke="#E5484D" stroke-width="18" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-  <div class="a big" data-at="6.52" data-an="stamp" style="left:880px;top:296px;font-size:76px;color:#FF8A8E;text-shadow:0 6px 0 #6E1418">2 ชม.</div>
-  <div class="a img nb" data-at="6.96" data-an="left" style="left:200px;top:560px;width:116px;height:216px"></div>
-  <div class="a bar" data-at="7.0" data-an="fade" style="left:350px;top:630px;width:890px"><div class="fl" data-bar="8.3,1.0,1" style="background:linear-gradient(90deg,#8A6731,#D9B98A,#F6E2B5)"></div></div>
-  <div class="a" data-at="7.05" data-an="fade" style="left:0;top:725px;width:1440px;height:40px"><span class="tick" style="left:372px">0</span><span class="tick" style="left:647px">2</span><span class="tick" style="left:943px">4</span><span class="tick" style="left:1222px">6 ชม.</span></div>
-  <div class="a big gold" data-at="9.1" data-an="slam" style="left:660px;top:616px;width:300px;font-size:84px;color:#16171B;text-shadow:none">6 ชม.</div>
+  <svg class="a" data-at="5.2" data-an="fade" style="left:200px;top:190px;width:1040px;height:700px;overflow:visible" viewBox="0 0 1040 700">
+   <defs>
+    <linearGradient id="gOld" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4F86F0" stop-opacity=".55"/><stop offset="1" stop-color="#4F86F0" stop-opacity="0"/></linearGradient>
+    <linearGradient id="gNew" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3D9A4" stop-opacity=".6"/><stop offset="1" stop-color="#D9B98A" stop-opacity="0"/></linearGradient>
+    <clipPath id="cOld"><rect id="rOld" x="110" y="0" width="0" height="700"/></clipPath>
+    <clipPath id="cNew"><rect id="rNew" x="110" y="0" width="0" height="700"/></clipPath>
+   </defs>
+   <rect id="band6" x="110" y="120" width="630" height="480" rx="18" fill="#D9B98A" opacity="0"/>
+   <g stroke="rgba(255,255,255,.12)" stroke-width="2"><path d="M110 140H950M110 293H950M110 447H950"/></g>
+   <path d="M110 600H960" stroke="rgba(255,255,255,.55)" stroke-width="5" stroke-linecap="round"/>
+   <path d="M110 120V600" stroke="rgba(255,255,255,.35)" stroke-width="4" stroke-linecap="round"/>
+   <g font-family="K" font-weight="800" font-size="32" fill="rgba(255,255,255,.75)" text-anchor="middle">
+    <text x="110" y="650">0</text><text x="320" y="650">2</text><text x="530" y="650">4</text><text x="740" y="650">6</text><text x="950" y="650">8 ชม.</text></g>
+   <g id="gOldG" clip-path="url(#cOld)"><path id="aOld" fill="url(#gOld)"/><path id="lOld" fill="none" stroke="#4F86F0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></g>
+   <g clip-path="url(#cNew)"><path id="aNew" fill="url(#gNew)"/><path id="lNew" fill="none" stroke="#F3D9A4" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></g>
+   <circle id="dOld" r="16" fill="#fff" stroke="#4F86F0" stroke-width="8" opacity="0"/>
+   <circle id="dNew" r="17" fill="#fff" stroke="#D9B98A" stroke-width="8" opacity="0"/>
+   <path id="m2" d="M320 150V600" stroke="#FF8A8E" stroke-width="5" stroke-dasharray="14 12" opacity="0"/>
+   <path id="m6" d="M740 150V600" stroke="#F3D9A4" stroke-width="5" stroke-dasharray="14 12" opacity="0"/>
+  </svg>
+  <div class="a img ob" data-at="6.75" data-an="pop" style="left:1150px;top:610px;width:70px;height:131px"></div>
+  <div class="a img nb" data-at="8.65" data-an="pop" style="left:1150px;top:405px;width:74px;height:138px"></div>
+  <div class="a" data-at="6.0" data-an="stamp" style="left:540px;top:215px"><span class="pill p-red" style="font-size:46px">2 ชม.</span></div>
+  <div class="a big" data-at="6.3" data-an="up" data-out="6.95" style="left:770px;top:360px;font-size:54px;color:#BFD3FF;text-shadow:0 5px 0 rgba(0,0,0,.5)">ค่อยๆ ลดลง</div>
+  <div class="a" data-at="8.55" data-an="slam" style="left:860px;top:205px"><span class="pill p-gold" style="font-size:52px">สูงต่อเนื่อง 6 ชม.</span></div>
  </div>
 </div>
 
@@ -196,11 +212,23 @@ const scenes=[...document.querySelectorAll('.scene')].map(el=>{
  const cam=(el.dataset.cam||'').split(';').filter(Boolean).map(k=>k.split(':').map(Number));
  return{el,s:+el.dataset.s,e:+el.dataset.e,tr:el.dataset.tr||'',parts,cam,camEl:el.querySelector('.cam'),items:[...el.querySelectorAll('.a')]}});
 const TR=0.4;
+function crCurve(pts){const out=[];const P=pts.map(([h,l])=>[110+h*105,600-l*460]);
+ for(let i=0;i<P.length-1;i++){const p0=P[Math.max(0,i-1)],p1=P[i],p2=P[i+1],p3=P[Math.min(P.length-1,i+2)];
+  for(let k=0;k<24;k++){const u=k/24,u2=u*u,u3=u2*u;out.push([0,1].map(j=>0.5*((2*p1[j])+(-p0[j]+p2[j])*u+(2*p0[j]-5*p1[j]+4*p2[j]-p3[j])*u2+(-p0[j]+3*p1[j]-3*p2[j]+p3[j])*u3)))}}
+ out.push(P[P.length-1]);
+ const lut=[];let j=0;for(let x=110;x<=950;x+=2){while(j<out.length-2&&out[j+1][0]<x)j++;const a=out[j],b=out[j+1];const f=b[0]>a[0]?cl((x-a[0])/(b[0]-a[0])):0;lut.push([x,a[1]+(b[1]-a[1])*f])}
+ return lut}
+const CO=crCurve([[0,0.02],[0.5,0.8],[1,0.93],[1.5,0.95],[2,0.95],[2.6,0.86],[3.2,0.7],[4,0.5],[5,0.32],[6,0.2],[7,0.13],[8,0.09]]);
+const CN=crCurve([[0,0.02],[0.5,0.78],[1,0.92],[2,0.94],[4,0.94],[6,0.93],[7,0.68],[8,0.42]]);
+if(document.getElementById('lOld')){const d=a=>'M'+a.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join('L');
+ document.getElementById('lOld').setAttribute('d',d(CO));document.getElementById('aOld').setAttribute('d',d(CO)+'L950 600L110 600Z');
+ document.getElementById('lNew').setAttribute('d',d(CN));document.getElementById('aNew').setAttribute('d',d(CN)+'L950 600L110 600Z');}
+
 function camAt(keys,t){if(!keys.length)return[1,720,540];if(t<=keys[0][0])return keys[0].slice(1);
  for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t<=b[0]){const p=eIO(cl((t-a[0])/(b[0]-a[0])));return[1,2,3].map(j=>a[j]+(b[j]-a[j])*p)}}return keys[keys.length-1].slice(1)}
 const conf=[];const cw=document.getElementById('confetti');const cc=['#F3D9A4','#D9B98A','#fff','#C0C4CC','#8A6731'];
 for(let i=0;i<70;i++){const d=document.createElement('div');d.className='conf';d.style.background=cc[i%5];cw.appendChild(d);conf.push({d,x:200+rnd()*1040,vy:250+rnd()*300,vx:(rnd()-.5)*160,r:rnd()*360,vr:(rnd()-.5)*720,dl:rnd()*0.5,sw:rnd()*6})}
-const ringDefs=[[0.55,720,420],[4.46,720,880],[6.52,960,340],[9.1,810,660],[17.56,720,830],[18.72,1010,880],[24.3,720,800]];
+const ringDefs=[[0.55,720,420],[4.46,720,880],[6.05,600,250],[8.55,1010,240],[17.56,720,830],[18.72,1010,880],[24.3,720,800]];
 const rw=document.getElementById('rings');const rings=ringDefs.map(([t,x,y])=>{const d=document.createElement('div');d.className='ring';d.style.left=x+'px';d.style.top=y+'px';rw.appendChild(d);return{d,t}});
 function animT(an,p){switch(an){
  case 'fade':return[eOC(p),''];
@@ -240,6 +268,16 @@ window.render=function(t){
  $('wipe').style.transform=`translateX(${wx}px) skewX(-16deg)`;$('flash').style.opacity=flash;
  document.querySelectorAll('[data-kbi]').forEach(g=>{const d=Math.max(0,t-+g.dataset.kbi);g.style.transform=`scale(${1.02+0.03*d})`});
  document.querySelectorAll('[data-hl]').forEach(h=>{h.style.backgroundSize=`${eIO(cl((t-+h.dataset.hl)/0.35))*100}% 100%`});
+ if($('lOld')&&t>=5.15&&t<9.9){
+  const rv=(a,d)=>eIO(cl((t-a)/d));const po=rv(5.45,1.45),pn=rv(7.0,1.6),W8=840;
+  $('rOld').setAttribute('width',po*W8+(po>0?14:0));$('rNew').setAttribute('width',pn*W8+(pn>0?14:0));
+  const yAt=(arr,x)=>{let i=Math.min(arr.length-1,Math.max(0,Math.round((x-110)/2)));return arr[i][1]};
+  if(po>0&&po<1){const x=110+po*W8;$('dOld').setAttribute('cx',x);$('dOld').setAttribute('cy',yAt(CO,x));$('dOld').setAttribute('opacity',1)}else $('dOld').setAttribute('opacity',0);
+  if(pn>0&&pn<1){const x=110+pn*W8;$('dNew').setAttribute('cx',x);$('dNew').setAttribute('cy',yAt(CN,x));$('dNew').setAttribute('opacity',1)}else $('dNew').setAttribute('opacity',0);
+  $('gOldG').style.opacity=1-0.55*cl((t-7.2)/0.4);
+  $('m2').setAttribute('opacity',cl((t-5.95)/0.25));$('m6').setAttribute('opacity',cl((t-8.5)/0.25));
+  $('band6').setAttribute('opacity',0.14*cl((t-8.2)/0.4));
+ }
  document.querySelectorAll('[data-bar]').forEach(b=>{const[a,d,w]=b.dataset.bar.split(',').map(Number);b.style.width=(eOC(cl((t-a)/d))*w*100)+'%'});
  document.querySelectorAll('.shine').forEach(s=>{const c=((t*0.5+ +s.dataset.ph)%1.7);s.style.backgroundPosition=`${110-c/1.7*130}% 0`});
  for(const r of rings){const d=t-r.t;if(d<0||d>0.6){r.d.style.opacity=0;continue}const p=d/0.6;r.d.style.opacity=.8*(1-p);r.d.style.transform=`scale(${0.2+eOC(p)*1.3})`;r.d.style.borderWidth=(16*(1-p)+2)+'px'}
