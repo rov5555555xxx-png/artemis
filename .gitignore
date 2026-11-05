@@ -60,7 +60,8 @@ dmypy.json
 .idea/
 .cursor/
 .gemini/
-.claude/
+.claude/*
+!.claude/skills/
 .windsurf/
 .cline/
 .roo/

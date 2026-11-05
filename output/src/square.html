@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:400;src:url(kanit-latin-400-normal.woff2)}
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2)}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2)}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2)}
+@font-face{font-family:K;font-weight:400;src:url(kanit-thai-400-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1080px;overflow:hidden;background:#000}
+body{font-family:K,sans-serif;color:#1E1410}
+#stage{position:relative;width:1080px;height:1080px;overflow:hidden}
+.bg{position:absolute;inset:0}
+#bgWarm{background:radial-gradient(circle at 50% 42%,#FFF3DA 0%,#FFE2B0 38%,#FFB65C 78%,#FF8A1F 100%)}
+#bgCool{background:radial-gradient(circle at 50% 40%,#EEF2F7 0%,#CBD5E1 55%,#8E9BB0 100%)}
+#bgFlash{background:#fff}
+#bgLayer{position:absolute;inset:0;pointer-events:none}
+.bub{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.95) 0 8%,rgba(255,214,90,.75) 22%,rgba(255,150,20,.55) 60%,rgba(255,120,0,.15) 100%);box-shadow:0 0 30px rgba(255,170,40,.35)}
+.bcap{position:absolute;width:110px;height:42px;border-radius:21px;background:linear-gradient(90deg,#fff 0 50%,#F1ECE2 50%);box-shadow:0 8px 14px rgba(120,60,0,.18)}
+.scene{position:absolute;inset:0;display:none;transform-origin:50% 50%}
+.a{position:absolute;opacity:0;will-change:transform}
+.bottle{background:url(bottle.png) center/contain no-repeat;filter:drop-shadow(0 30px 40px rgba(90,40,0,.45))}
+.shine{position:absolute;inset:0;-webkit-mask:url(bottle.png) center/contain no-repeat;mask:url(bottle.png) center/contain no-repeat;
+ background:linear-gradient(105deg,rgba(255,255,255,0) 0 42%,rgba(255,255,255,.65) 50%,rgba(255,255,255,0) 58% 100%) no-repeat;background-size:300% 100%}
+.rays{position:absolute;border-radius:50%;
+ background:repeating-conic-gradient(rgba(255,255,255,.55) 0 8deg,rgba(255,255,255,0) 8deg 20deg);
+ -webkit-mask:radial-gradient(circle,#000 25%,transparent 70%);mask:radial-gradient(circle,#000 25%,transparent 70%)}
+.glow{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(255,220,120,.6) 35%,rgba(255,160,40,0) 70%)}
+.big{font-weight:900;line-height:1.2;white-space:nowrap}
+.ctr{left:0;width:1080px;text-align:center}
+.pill{display:inline-block;padding:8px 34px 12px;border-radius:999px;font-weight:800;white-space:nowrap;line-height:1.25}
+.pill.or{background:linear-gradient(90deg,#FF7A00,#E8410A);color:#fff;box-shadow:0 9px 0 #A82A00,0 16px 28px rgba(120,40,0,.35)}
+.pill.dk{background:#1E1410;color:#FFD34D;box-shadow:0 9px 0 #000,0 16px 28px rgba(0,0,0,.3)}
+.pill.rd{background:#E53935;color:#fff;box-shadow:0 9px 0 #8E1512,0 16px 28px rgba(120,0,0,.3)}
+.hl{background:linear-gradient(transparent 58%,#FFD34D 58%,#FFD34D 92%,transparent 92%) no-repeat;background-size:0% 100%;padding:0 6px}
+.or-t{color:#F25C05}
+.card{display:flex;align-items:center;gap:28px;background:#fff;border-radius:32px;padding:22px 40px 22px 24px;box-shadow:0 12px 0 rgba(160,70,0,.25),0 22px 44px rgba(120,50,0,.25)}
+.card .ic{width:112px;height:112px;border-radius:50%;background:linear-gradient(135deg,#FF8A00,#E8410A);display:flex;align-items:center;justify-content:center;flex:none}
+.card .ic svg{width:72px;height:72px}
+.card .tx{font-weight:900;font-size:64px;line-height:1.2;white-space:nowrap}
+.cap{position:absolute;width:280px;height:110px;border-radius:55px;overflow:hidden;box-shadow:0 18px 30px rgba(100,50,0,.35)}
+.cap::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#FFFFFF 0 50%,#F1ECE2 50% 100%)}
+.cap::after{content:"";position:absolute;left:14px;right:14px;top:15px;height:24px;border-radius:20px;background:rgba(255,255,255,.9)}
+.chk{display:flex;align-items:center;gap:24px;font-weight:900;font-size:56px;line-height:1.25;white-space:nowrap}
+.chk .box{width:78px;height:78px;border-radius:20px;background:#1E1410;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 7px 0 #000}
+.chk .box svg{width:54px;height:54px}
+.flag{display:inline-block;width:84px;height:56px;border-radius:7px;vertical-align:middle;margin-left:14px;box-shadow:0 4px 10px rgba(0,0,0,.25);
+ background:linear-gradient(#ED1C24 0 16.66%,#fff 16.66% 33.33%,#241D4F 33.33% 66.66%,#fff 66.66% 83.33%,#ED1C24 83.33%)}
+.day{width:120px;height:140px;border-radius:22px;background:#fff;box-shadow:0 10px 0 rgba(160,70,0,.25);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:40px;position:relative}
+.day .tk{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0}
+.day .tk svg{width:100px;height:100px}
+.bar{position:absolute;border:11px solid #1d2a3a;border-radius:36px;background:#fff;overflow:hidden}
+.bar .fill{position:absolute;left:0;top:0;bottom:0;border-radius:22px}
+.conf{position:absolute;width:20px;height:32px;border-radius:5px}
+.star{position:absolute;width:60px;height:60px;opacity:0}
+.ring{position:absolute;width:400px;height:400px;margin:-200px 0 0 -200px;border-radius:50%;border:18px solid #fff;opacity:0}
+#swipe{position:absolute;top:-300px;width:2200px;height:1680px;transform:translateX(-3000px) skewX(-18deg)}
+#swipe .b1{position:absolute;inset:0;background:#1E1410}
+#swipe .b2{position:absolute;top:0;bottom:0;left:-70px;width:70px;background:#FF7A00}
+#swipe .b3{position:absolute;top:0;bottom:0;right:-70px;width:70px;background:#FFD34D}
+.panel{border-radius:36px;overflow:hidden;border:8px solid #fff;box-shadow:0 14px 0 rgba(160,70,0,.22),0 26px 50px rgba(60,20,0,.3);background:#fff}
+.panel>svg{display:block;width:100%;height:100%}
+[data-pop],[data-kb]{transform-box:fill-box;transform-origin:center}
+#flagH{transform-box:fill-box;transform-origin:0 50%}
+</style></head><body>
+<div id="stage">
+ <div class="bg" id="bgWarm"></div>
+ <div class="bg" id="bgCool" style="opacity:0"></div>
+ <div id="bgLayer"></div>
+
+ <!-- A 0 - 2.45 -->
+ <div class="scene" data-s="0" data-e="2.45">
+  <div class="a rays" data-at="0" data-an="fade" data-spin="18" style="left:40px;top:-140px;width:1000px;height:1000px"></div>
+  <div class="a glow" data-at="0" data-an="pop" style="left:240px;top:60px;width:600px;height:600px"></div>
+  <div class="a bottle" data-at="0.02" data-an="drop" data-float="1" style="left:390px;top:70px;width:300px;height:563px"></div>
+  <div class="a big ctr" data-at="0.34" data-an="pop" data-breathe="1" style="top:640px;font-size:150px;text-shadow:0 8px 0 rgba(255,255,255,.7)">วิตามิน <span class="or-t">D3</span></div>
+  <div class="a ctr" data-at="1.86" data-an="stamp" data-breathe="1" style="top:868px"><span class="pill dk" style="font-size:76px">เหมาะกับมือใหม่</span></div>
+  <svg class="a star" data-at="0.5" data-an="pop" data-tw="0" style="left:300px;top:150px"><use href="#st"/></svg>
+  <svg class="a star" data-at="0.7" data-an="pop" data-tw="1" style="left:720px;top:250px"><use href="#st"/></svg>
+  <svg class="a star" data-at="0.9" data-an="pop" data-tw="2" style="left:700px;top:560px"><use href="#st"/></svg>
+ </div>
+ <!-- B 2.45 - 5.5 -->
+ <div class="scene" data-s="2.45" data-e="5.5">
+  <div class="a panel" data-at="2.5" data-an="pop" style="left:90px;top:40px;width:900px;height:520px">
+   <svg viewBox="0 0 900 520"><g data-kb="2.5">
+    <rect width="900" height="520" fill="#DCEBFA"/><rect y="300" width="900" height="12" fill="#C7DAF0"/><rect y="420" width="900" height="100" fill="#B8CCE4"/>
+    <rect x="760" y="40" width="90" height="90" rx="16" fill="#fff"/><path d="M793 58h24v22h22v24h-22v22h-24v-22h-22v-24h22z" fill="#EF4444"/>
+    <rect x="215" y="170" width="170" height="210" rx="26" fill="#5B8DEF"/><rect x="200" y="330" width="200" height="40" rx="14" fill="#3F6FD8"/>
+    <rect x="210" y="370" width="16" height="80" fill="#2E4FA0"/><rect x="374" y="370" width="16" height="80" fill="#2E4FA0"/>
+    <g data-person='{"pose":"sit","shirt":"#F97316","armR":"fwd","faces":[{"e":"worry","vis":"0,3.3"},{"e":"happy","vis":"3.3,99"}]}' transform="translate(300 470) scale(.95)"></g>
+    <rect x="430" y="330" width="320" height="22" rx="6" fill="#94A3B8"/><rect x="450" y="352" width="14" height="90" fill="#64748B"/><rect x="716" y="352" width="14" height="90" fill="#64748B"/>
+    <rect x="620" y="300" width="100" height="30" rx="6" fill="#CBD5E1"/>
+    <g><rect x="634" y="240" width="16" height="62" rx="8" fill="#fff" stroke="#94A3B8" stroke-width="3"/><rect x="634" y="240" width="16" height="16" rx="6" fill="#EF4444"/>
+    <rect x="662" y="240" width="16" height="62" rx="8" fill="#fff" stroke="#94A3B8" stroke-width="3"/><rect x="662" y="240" width="16" height="16" rx="6" fill="#8B5CF6"/>
+    <rect x="690" y="240" width="16" height="62" rx="8" fill="#fff" stroke="#94A3B8" stroke-width="3"/><rect x="690" y="240" width="16" height="16" rx="6" fill="#22C55E"/></g>
+    <g id="syrB" transform="translate(462 318) rotate(-35)">
+     <path d="M0 0L52 0" stroke="#64748B" stroke-width="5" stroke-linecap="round"/>
+     <rect x="50" y="-20" width="160" height="40" rx="8" fill="#fff" stroke="#64748B" stroke-width="5"/>
+     <rect x="56" y="-14" width="90" height="28" rx="4" fill="#EF4444" opacity=".8"/>
+     <path d="M80 -20v12M110 -20v12M140 -20v12M170 -20v12" stroke="#64748B" stroke-width="3"/>
+     <rect x="210" y="-8" width="50" height="16" fill="#94A3B8"/><rect x="258" y="-26" width="14" height="52" rx="4" fill="#64748B"/>
+    </g>
+   </g></svg>
+  </div>
+  <div class="a" data-at="3.1" data-an="stamp" style="left:500px;top:130px"><svg width="260" height="260" viewBox="0 0 100 100"><path d="M15 15L85 85M85 15L15 85" stroke="#E53935" stroke-width="13" stroke-linecap="round"/></svg></div>
+  <div class="a card" data-at="2.6" data-an="left" style="left:110px;top:595px">
+   <div class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M40 8l16 16M48 16l-26 26-10 2 2-10 26-26M14 50l-6 6M20 36l8 8"/></svg></div>
+   <div class="tx">ไม่ต้อง<span class="hl" data-hl="3.1">ตรวจ</span>ก่อนกิน</div>
+  </div>
+  <div class="a card" data-at="4.1" data-an="right" style="left:160px;top:785px">
+   <div class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M32 6l20 8v16c0 14-9 23-20 28C21 53 12 44 12 30V14z"/><path d="M22 32l7 7 13-14"/></svg></div>
+   <div class="tx">ไม่ต้อง<span class="hl" data-hl="4.6">กลัวเกิน</span></div>
+  </div>
+ </div>
+ <!-- C 5.5 - 8.05 -->
+ <div class="scene" data-s="5.5" data-e="8.05">
+  <div class="a glow" data-at="5.5" data-an="fade" style="left:80px;top:20px;width:560px;height:560px"></div>
+  <div class="a cap" data-at="5.54" data-an="drop" data-rot="-24" data-float="1" style="left:130px;top:150px"></div>
+  <div class="a cap" data-at="5.76" data-an="drop" data-rot="-24" data-float="2" style="left:260px;top:290px"></div>
+  <div class="a big" data-at="5.6" data-an="right" style="left:640px;top:190px;font-size:110px">2 เม็ด</div>
+  <div class="a big ctr" data-at="6.6" data-an="pop" style="top:440px;font-size:90px;color:#F25C05">=</div>
+  <div class="a big ctr" data-at="6.86" data-an="slam" style="top:500px;font-size:240px;letter-spacing:-5px"><span data-count="0,1200,6.86,0.55">1,200</span></div>
+  <div class="a ctr" data-at="7.48" data-an="stamp" data-breathe="1" style="top:850px"><span class="pill or" style="font-size:96px">IU</span></div>
+ </div>
+
+ <!-- D 8.05 - 11.4 -->
+ <div class="scene" data-s="8.05" data-e="11.4">
+  <div class="a big ctr" data-at="8.1" data-an="up" style="top:60px;font-size:68px;font-weight:800">ขนาดที่</div>
+  <div class="a" data-at="8.7" data-an="pop" data-bob="0" style="left:30px;top:160px;width:460px">
+   <svg viewBox="0 0 460 390" width="460" height="390">
+    <ellipse cx="230" cy="380" rx="200" ry="14" fill="rgba(120,60,0,.15)"/>
+    <g data-person='{"shirt":"#F97316","pants":"#475569","hairStyle":"long","armR":"up","expr":"happy"}' transform="translate(150 380) scale(.92)"></g>
+    <g data-person='{"shirt":"#3B82F6","pants":"#1E293B","armL":"down","expr":"smile"}' transform="translate(315 380) scale(.98)"></g>
+   </svg>
+   <div class="big" style="font-size:84px;text-align:center">คนทั่วไป</div>
+  </div>
+  <div class="a big" data-at="9.8" data-an="pop" data-spin="40" style="left:500px;top:300px;font-size:110px;color:#F25C05">+</div>
+  <div class="a" data-at="10.1" data-an="pop" data-bob="1.5" style="left:590px;top:160px;width:460px">
+   <svg viewBox="0 0 460 390" width="460" height="390">
+    <ellipse cx="230" cy="380" rx="150" ry="14" fill="rgba(120,60,0,.15)"/>
+    <g data-person='{"shirt":"#22C55E","pants":"#334155","armR":"hold","armL":"up","expr":"happy"}' transform="translate(220 380) scale(.98)"></g>
+    <image href="bottle.png" x="250" y="180" width="62" height="116"/>
+    <path d="M370 40l12 24 26 4-19 18 5 26-24-12-24 12 5-26-19-18 26-4z" fill="#FFB800" stroke="#fff" stroke-width="4"/>
+   </svg>
+   <div class="big" style="font-size:84px;text-align:center">มือใหม่</div>
+  </div>
+  <div class="a ctr" data-at="10.9" data-an="stamp" data-breathe="1" style="top:830px"><span class="pill dk" style="font-size:80px">ทานได้สบาย ✓</span></div>
+ </div>
+ <!-- E 11.4 - 16.0 -->
+ <div class="scene" data-s="11.4" data-e="16.0" data-cool="1">
+  <div class="a panel" data-at="11.45" data-an="pop" style="left:90px;top:30px;width:900px;height:540px">
+   <svg viewBox="0 0 900 540"><g data-kb="11.45">
+    <defs><clipPath id="winE"><rect x="60" y="60" width="290" height="270"/></clipPath></defs>
+    <rect width="900" height="540" fill="#E9E4DA"/><rect y="455" width="900" height="85" fill="#CDBFA8"/>
+    <g clip-path="url(#winE)"><rect id="skyE" x="60" y="60" width="290" height="270" fill="#8FD3FF"/>
+     <circle id="sunE" cx="205" cy="150" r="46" fill="#FFC83D"/>
+     <path d="M60 330V250h50v-40h40v120zM170 330v-90h60v90zM240 330v-60h45v-30h40v90z" fill="#7E93AB"/></g>
+    <rect x="60" y="60" width="290" height="270" fill="none" stroke="#fff" stroke-width="14"/><path d="M205 60v270M60 195h290" stroke="#fff" stroke-width="10"/>
+    <circle cx="480" cy="115" r="52" fill="#fff" stroke="#334155" stroke-width="7"/>
+    <path d="M480 72v8M480 150v8M437 115h8M515 115h8" stroke="#334155" stroke-width="4"/>
+    <line id="hhE" x1="480" y1="115" x2="480" y2="85" stroke="#1E293B" stroke-width="8" stroke-linecap="round"/>
+    <line id="mhE" x1="480" y1="115" x2="480" y2="74" stroke="#F25C05" stroke-width="5" stroke-linecap="round"/><circle cx="480" cy="115" r="6" fill="#1E293B"/>
+    <path id="lightE" d="M745 112L835 112L900 455L640 455z" fill="#FFF3B0" opacity=".3"/>
+    <path d="M790 0v70" stroke="#334155" stroke-width="5"/><path d="M745 112L835 112L815 68L765 68z" fill="#334155"/>
+    <g data-person='{"pose":"sit","shirt":"#64748B","armL":"lap","armR":"lap","faces":[{"e":"neutral","vis":"0,15.0"},{"e":"tired","vis":"15.0,99"}]}' transform="translate(700 560) scale(1)"></g>
+    <rect x="420" y="390" width="470" height="28" rx="6" fill="#8B5E3C"/><rect x="440" y="418" width="430" height="122" fill="#A0703F"/>
+    <rect x="460" y="292" width="160" height="100" rx="10" fill="#CBD5E1"/><circle cx="540" cy="342" r="12" fill="#fff"/><rect x="445" y="386" width="190" height="8" rx="4" fill="#94A3B8"/>
+    
+    <rect x="800" y="350" width="40" height="42" rx="6" fill="#EF4444"/><path d="M840 360q16 4 0 22" stroke="#EF4444" stroke-width="6" fill="none"/>
+    <path id="steamE" d="M812 340q-8 -14 0 -26q8 -12 0 -26M828 340q-8 -14 0 -26q8 -12 0 -26" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" opacity=".8"/>
+   </g></svg>
+  </div>
+  <div class="a big ctr" data-at="11.62" data-an="up" data-out="13.65" style="top:610px;font-size:96px;color:#1d2a3a">ไม่ค่อย<span class="hl" data-hl="12.0">โดนแดด</span></div>
+  <div class="a big ctr" data-at="13.84" data-an="up" style="top:600px;font-size:54px;color:#1d2a3a">วิตามิน D ในร่างกาย</div>
+  <div class="a bar" data-at="13.84" data-an="up" style="left:190px;top:690px;width:700px;height:130px"><div class="fill" data-gauge="13.9,15.3,0.85,0.14"></div></div>
+  <div class="a ctr" data-at="15.16" data-an="stamp" data-shake="1" style="top:860px"><span class="pill rd" style="font-size:80px">ต่ำเกินไป!</span></div>
+ </div>
+ <!-- F 16.0 - 17.15 -->
+ <div class="scene" data-s="16.0" data-e="17.15">
+  <div class="a rays" data-at="16.0" data-an="fade" data-spin="40" style="left:40px;top:-20px;width:1000px;height:1000px"></div>
+  <div class="a glow" data-at="16.0" data-an="pop" style="left:220px;top:160px;width:640px;height:640px"></div>
+  <div class="a bottle" data-at="16.0" data-an="slam" data-float="1" style="left:365px;top:110px;width:350px;height:657px"></div>
+  <div class="a ctr" data-at="16.12" data-an="stamp" data-breathe="1" style="top:845px"><span class="pill dk" style="font-size:88px">ลองตัวนี้เลย!</span></div>
+  <svg class="a star" data-at="16.1" data-an="pop" data-tw="0" style="left:280px;top:200px"><use href="#st"/></svg>
+  <svg class="a star" data-at="16.2" data-an="pop" data-tw="1" style="left:740px;top:300px"><use href="#st"/></svg>
+  <svg class="a star" data-at="16.3" data-an="pop" data-tw="2" style="left:250px;top:620px"><use href="#st"/></svg>
+  <svg class="a star" data-at="16.4" data-an="pop" data-tw="3" style="left:760px;top:650px"><use href="#st"/></svg>
+ </div>
+
+ <!-- G 17.15 - 21.7 -->
+ <div class="scene" data-s="17.15" data-e="21.7">
+  <div class="a bottle" data-at="17.15" data-an="left" data-float="1" style="left:90px;top:30px;width:165px;height:310px"></div>
+  <div class="a big" data-at="17.5" data-an="pop" style="left:290px;top:100px;font-size:120px"><span class="or-t">30</span> เม็ด<span style="font-size:52px;font-weight:600"> / กระปุก</span></div>
+  <div class="a panel" data-at="18.35" data-an="pop" style="left:90px;top:355px;width:900px;height:370px">
+   <svg viewBox="0 0 900 370"><g data-kb="18.35">
+    <defs><linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE9A8"/><stop offset="1" stop-color="#FFB76B"/></linearGradient><clipPath id="winG"><rect x="620" y="30" width="230" height="200"/></clipPath></defs>
+    <rect width="900" height="370" fill="#FFF1D6"/>
+    <g clip-path="url(#winG)"><rect x="620" y="30" width="230" height="200" fill="url(#skyG)"/><circle id="sunG" cx="735" cy="200" r="42" fill="#FFF7D1"/><path d="M620 230v-40q60 -30 115 0t115 -10v50z" fill="#9BCB7A"/></g>
+    <rect x="620" y="30" width="230" height="200" fill="none" stroke="#fff" stroke-width="12"/><path d="M735 30v200" stroke="#fff" stroke-width="8"/>
+    <rect y="262" width="900" height="26" fill="#C98A4B"/><rect y="288" width="900" height="82" fill="#B5773C"/>
+    <path d="M150 150h90l-10 112h-70z" fill="#BFE6FF" opacity=".85" stroke="#7FB8DA" stroke-width="5"/><path d="M156 185h78" stroke="#7FB8DA" stroke-width="4"/>
+    <ellipse cx="330" cy="262" rx="80" ry="14" fill="#fff"/><rect x="290" y="226" width="80" height="34" rx="14" fill="#E9B872"/>
+    <image href="bottle.png" x="430" y="140" width="66" height="124"/>
+    <g transform="translate(610 300)">
+     <rect x="-46" y="10" width="92" height="80" rx="20" fill="#E8B88E"/>
+     <g fill="#F5C9A0"><rect x="-66" y="-118" width="30" height="90" rx="15"/><rect x="-32" y="-132" width="30" height="100" rx="15"/><rect x="2" y="-128" width="30" height="96" rx="15"/><rect x="36" y="-112" width="28" height="84" rx="14"/>
+     <ellipse cx="0" cy="-10" rx="76" ry="56"/><rect x="-118" y="-48" width="80" height="30" rx="15" transform="rotate(-35 -78 -33)"/></g>
+     <path d="M-40 -30 q40 14 80 0" stroke="#E2AD82" stroke-width="4" fill="none"/>
+     <g data-pop="18.7"><rect x="-56" y="-22" width="62" height="26" rx="13" fill="#fff" stroke="#E5DCCB" stroke-width="3" transform="rotate(-14 -25 -9)"/></g>
+     <g data-pop="18.85"><rect x="-2" y="-26" width="62" height="26" rx="13" fill="#fff" stroke="#E5DCCB" stroke-width="3" transform="rotate(12 29 -13)"/></g></g>
+   </g></svg>
+  </div>
+  <div class="a" data-at="18.58" data-an="stamp" data-breathe="1" style="left:120px;top:385px"><span class="pill or" style="font-size:62px">วันละ 2 เม็ด</span></div>
+  <div class="a big ctr" data-at="20.18" data-an="up" style="top:735px;font-size:76px">ทานได้<span class="or-t">ทุกวัน</span></div>
+  <div class="a" data-at="20.3" data-an="up" style="left:69px;top:850px;display:flex;gap:14px" id="cal">
+   <div class="day">จ<div class="tk"></div></div><div class="day">อ<div class="tk"></div></div><div class="day">พ<div class="tk"></div></div><div class="day">พฤ<div class="tk"></div></div><div class="day">ศ<div class="tk"></div></div><div class="day">ส<div class="tk"></div></div><div class="day">อา<div class="tk"></div></div>
+  </div>
+ </div>
+ <!-- H 21.7 - 26.2 -->
+ <div class="scene" data-s="21.7" data-e="26.2">
+  <div class="a" data-at="21.85" data-an="up" data-out="24.0" style="left:230px;top:20px;width:620px;height:600px">
+   <div style="position:absolute;left:0;top:0;width:620px;height:580px;background:#111;border-radius:60px;box-shadow:0 24px 50px rgba(60,20,0,.4)">
+    <div style="position:absolute;left:250px;top:18px;width:120px;height:18px;border-radius:9px;background:#333"></div>
+    <div style="position:absolute;left:30px;top:50px;width:560px;height:480px;border-radius:22px;overflow:hidden;background:#fff">
+     <img src="fda_sq.jpg" style="display:block;width:560px">
+     <div data-box="22.25" style="position:absolute;left:30px;top:254px;width:240px;height:80px;border:6px solid #F25C05;border-radius:14px"></div>
+    </div>
+   </div>
+   <svg style="position:absolute;left:-120px;top:300px" width="260" height="320" viewBox="0 0 260 320">
+    <path d="M40 320 C20 240 30 170 90 120 L150 80 C170 70 185 90 172 106 L140 150 L160 150 C180 130 205 140 195 165 L170 220 C160 260 150 300 150 320z" fill="#F5C9A0"/>
+    <path d="M150 80 C170 70 185 90 172 106" stroke="#E2AD82" stroke-width="4" fill="none"/>
+   </svg>
+  </div>
+  <div class="a ctr" data-at="22.25" data-an="stamp" data-out="24.0" style="top:540px"><span class="pill or" style="font-size:38px">เลข อย. 71-1-02462-5-0543</span></div>
+  <div class="a panel" data-at="24.1" data-an="pop" style="left:90px;top:30px;width:900px;height:560px">
+   <svg viewBox="0 0 900 560"><g data-kb="24.1">
+    <rect width="900" height="560" fill="#CFEFFF"/><circle cx="800" cy="80" r="40" fill="#FFE07A"/>
+    <rect y="430" width="900" height="130" fill="#A3D977"/><rect y="470" width="900" height="40" fill="#94A3B8"/><path d="M0 490h900" stroke="#fff" stroke-width="5" stroke-dasharray="40 30"/>
+    <g id="smokeH"><circle cx="505" cy="120" r="22" fill="#fff"/><circle cx="520" cy="80" r="28" fill="#fff"/><circle cx="500" cy="40" r="32" fill="#fff"/></g>
+    <rect x="480" y="130" width="50" height="140" fill="#94A3B8"/><rect x="480" y="130" width="50" height="16" fill="#EF4444"/>
+    <path d="M130 270L130 200L210 250L210 200L290 250L290 200L370 250L370 200L450 250L450 200L560 270z" fill="#64748B"/>
+    <rect x="130" y="265" width="430" height="168" fill="#E2E8F0"/>
+    <g fill="#7DD3FC"><rect x="160" y="300" width="60" height="44" rx="6"/><rect x="240" y="300" width="60" height="44" rx="6"/><rect x="320" y="300" width="60" height="44" rx="6"/><rect x="400" y="300" width="60" height="44" rx="6"/></g>
+    <rect x="480" y="350" width="60" height="83" fill="#475569"/>
+    <rect x="170" y="362" width="270" height="56" rx="10" fill="#fff" stroke="#F25C05" stroke-width="5"/>
+    <text x="305" y="402" text-anchor="middle" font-family="K" font-weight="800" font-size="32" fill="#1E1410">โรงงานผลิตในไทย</text>
+    <path d="M640 430V160" stroke="#64748B" stroke-width="8"/>
+    <g id="flagH"><rect x="644" y="160" width="130" height="14" fill="#ED1C24"/><rect x="644" y="174" width="130" height="14" fill="#fff"/><rect x="644" y="188" width="130" height="28" fill="#241D4F"/><rect x="644" y="216" width="130" height="14" fill="#fff"/><rect x="644" y="230" width="130" height="14" fill="#ED1C24"/></g>
+    <g data-pop="24.28"><g id="pinH"><path d="M345 200C345 200 290 140 290 100a55 55 0 0 1 110 0c0 40 -55 100 -55 100z" fill="#E53935"/><circle cx="345" cy="100" r="22" fill="#fff"/></g></g>
+    <g data-pop="25.34"><image href="bottle.png" x="730" y="270" width="140" height="263"/></g>
+   </g></svg>
+  </div>
+  <div class="a chk" data-at="21.76" data-an="left" style="left:110px;top:630px"><div class="box"><svg viewBox="0 0 64 64"><path data-draw="21.9" d="M14 34l12 12 24-26" fill="none" stroke="#FFD34D" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></div>มี <span class="or-t">อย.</span> ตรวจสอบได้</div>
+  <div class="a chk" data-at="23.02" data-an="left" style="left:110px;top:727px"><div class="box"><svg viewBox="0 0 64 64"><path data-draw="23.16" d="M14 34l12 12 24-26" fill="none" stroke="#FFD34D" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></div>โรงงานผลิต<span class="or-t">ในไทย</span></div>
+  <div class="a chk" data-at="24.28" data-an="left" style="left:110px;top:824px"><div class="box"><svg viewBox="0 0 64 64"><path data-draw="24.42" d="M14 34l12 12 24-26" fill="none" stroke="#FFD34D" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></div>ที่ตั้ง<span class="or-t">ชัดเจน</span></div>
+  <div class="a chk" data-at="25.34" data-an="left" style="left:110px;top:921px"><div class="box"><svg viewBox="0 0 64 64"><path data-draw="25.48" d="M14 34l12 12 24-26" fill="none" stroke="#FFD34D" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></div>แบรนด์<span class="hl" data-hl="25.6">คนไทย</span><span class="flag" data-wave="1"></span></div>
+ </div>
+ <!-- I 26.2 - 29.7 -->
+ <div class="scene" data-s="26.2" data-e="29.7" data-cool="1">
+  <div class="a panel" data-at="26.22" data-an="pop" style="left:90px;top:30px;width:900px;height:510px">
+   <svg viewBox="0 0 900 510"><g data-kb="26.22">
+    <defs><clipPath id="winI"><rect x="70" y="60" width="270" height="230"/></clipPath></defs>
+    <rect width="900" height="510" fill="#D8DEE9"/><rect y="425" width="900" height="85" fill="#AAB4C3"/>
+    <g clip-path="url(#winI)"><rect x="70" y="60" width="270" height="230" fill="#7B8796"/>
+     <g id="cloudsI"><ellipse cx="140" cy="95" rx="70" ry="32" fill="#5B6676"/><ellipse cx="270" cy="110" rx="80" ry="34" fill="#4B5563"/><ellipse cx="400" cy="90" rx="70" ry="30" fill="#5B6676"/></g>
+     <g id="rainI" stroke="#C7D2E0" stroke-width="4" stroke-linecap="round"></g></g>
+    <rect x="70" y="60" width="270" height="230" fill="none" stroke="#fff" stroke-width="14"/><path d="M205 60v230" stroke="#fff" stroke-width="10"/>
+    <path d="M800 425V230" stroke="#475569" stroke-width="8"/><path d="M760 230h80l-15 -55h-50z" fill="#F59E0B"/><path d="M760 230h80l50 195h-180z" fill="#FFE8A3" opacity=".35"/>
+    <rect x="390" y="240" width="380" height="140" rx="34" fill="#6366F1"/>
+    <g data-person='{"pose":"sit","shirt":"#F59E0B","pants":"#334155","armL":"lap","armR":"lap","faces":[{"e":"neutral","vis":"0,28.4"},{"e":"tired","vis":"28.4,99"}]}' transform="translate(580 470) scale(.92)"></g>
+    <rect x="555" y="300" width="50" height="34" rx="6" fill="#111"/><rect x="560" y="304" width="40" height="26" rx="3" fill="#60A5FA"/>
+    <rect x="370" y="340" width="420" height="80" rx="26" fill="#4F46E5"/><rect x="360" y="290" width="54" height="130" rx="24" fill="#4338CA"/><rect x="746" y="290" width="54" height="130" rx="24" fill="#4338CA"/>
+    <g data-pop="28.48"><g id="batI"><rect x="535" y="40" width="96" height="48" rx="10" fill="#fff" stroke="#1d2a3a" stroke-width="7"/><rect x="631" y="54" width="10" height="20" rx="3" fill="#1d2a3a"/><rect id="batFill" x="545" y="50" width="20" height="28" rx="4" fill="#E53935"/></g></g>
+   </g></svg>
+  </div>
+  <div class="a big ctr" data-at="26.3" data-an="up" style="top:575px;font-size:84px;color:#1d2a3a">ไม่ได้โดนแดด<span class="hl" data-hl="26.9">ทุกวัน</span>?</div>
+  <div class="a ctr" data-at="28.48" data-an="stamp" data-shake="1" style="top:760px"><span class="pill rd" style="font-size:80px">วิตามิน D ไม่พอ?</span></div>
+ </div>
+ <!-- J 29.7 - 30.9 -->
+ <div class="scene" data-s="29.7" data-e="30.9">
+  <div class="a rays" data-at="29.7" data-an="fade" data-spin="40" style="left:40px;top:-20px;width:1000px;height:1000px"></div>
+  <div class="a glow" data-at="29.7" data-an="pop" style="left:220px;top:160px;width:640px;height:640px"></div>
+  <div class="a bottle" data-at="29.72" data-an="slam" data-float="1" style="left:365px;top:110px;width:350px;height:657px"></div>
+  <div class="a ctr" data-at="29.9" data-an="stamp" data-breathe="1" style="top:845px"><span class="pill dk" style="font-size:84px">เอาตัวนี้ไปกินดู!</span></div>
+  <svg class="a star" data-at="29.8" data-an="pop" data-tw="0" style="left:280px;top:200px"><use href="#st"/></svg>
+  <svg class="a star" data-at="29.9" data-an="pop" data-tw="1" style="left:740px;top:300px"><use href="#st"/></svg>
+  <svg class="a star" data-at="30.0" data-an="pop" data-tw="2" style="left:250px;top:620px"><use href="#st"/></svg>
+ </div>
+
+ <!-- K 30.9 - end -->
+ <div class="scene" data-s="30.9" data-e="99">
+  <div id="confetti"></div>
+  <div class="a rays" data-at="30.9" data-an="fade" data-spin="14" style="left:40px;top:160px;width:1000px;height:1000px"></div>
+  <div class="a ctr" data-at="30.92" data-an="down" style="top:30px"><span class="pill or" style="font-size:58px">โปรเปิดตัว</span></div>
+  <div class="a big ctr" data-at="31.06" data-an="slam" data-breathe="1" style="top:120px;font-size:170px;text-shadow:0 8px 0 #FFD34D">1 แถม 1</div>
+  <div class="a bottle" data-at="31.3" data-an="left" data-float="1" style="left:210px;top:380px;width:280px;height:525px"></div>
+  <div class="a bottle" data-at="31.45" data-an="right" data-float="2.5" style="left:590px;top:380px;width:280px;height:525px"></div>
+  <div class="a big" data-at="31.6" data-an="pop" data-spin="60" style="left:505px;top:560px;font-size:100px;color:#F25C05">+</div>
+  <div class="a ctr" data-at="32.42" data-an="stamp" data-breathe="1" style="top:925px"><span class="pill dk" style="font-size:62px">มือใหม่ เริ่มได้เลย!</span></div>
+  <svg class="a star" data-at="31.2" data-an="pop" data-tw="0" style="left:150px;top:420px"><use href="#st"/></svg>
+  <svg class="a star" data-at="31.3" data-an="pop" data-tw="1" style="left:880px;top:450px"><use href="#st"/></svg>
+  <svg class="a star" data-at="31.4" data-an="pop" data-tw="2" style="left:500px;top:840px"><use href="#st"/></svg>
+ </div>
+
+ <div id="rings"></div>
+ <div id="swipe"><div class="b2"></div><div class="b1"></div><div class="b3"></div></div>
+ <div class="bg" id="bgFlash" style="opacity:0;pointer-events:none"></div>
+ <svg width="0" height="0" style="position:absolute"><defs><symbol id="st" viewBox="0 0 100 100"><path d="M50 0C54 36 64 46 100 50 64 54 54 64 50 100 46 64 36 54 0 50 36 46 46 36 50 0z" fill="#fff"/><circle cx="50" cy="50" r="10" fill="#FFE07A"/></symbol></defs></svg>
+</div>
+<script>
+const W=1080,H=1080;
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eOC=p=>1-Math.pow(1-p,3);
+const eOB=p=>{const c1=1.9,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+const eIO=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+const layer=document.getElementById('bgLayer');
+const floaters=[];
+for(let i=0;i<20;i++){const d=document.createElement('div');d.className='bub';const s=18+rnd()*85;d.style.width=d.style.height=s+'px';layer.appendChild(d);
+ floaters.push({d,x:rnd()*W,y:rnd()*H,v:25+rnd()*50,ph:rnd()*6.28,rot:0});}
+for(let i=0;i<7;i++){const d=document.createElement('div');d.className='bcap';layer.appendChild(d);
+ floaters.push({d,x:rnd()*W,y:rnd()*H,v:30+rnd()*40,ph:rnd()*6.28,rot:60+rnd()*80,sc:0.6+rnd()*0.6});}
+const conf=[];const cw=document.getElementById('confetti');const cc=['#FF7A00','#FFD34D','#E8410A','#1E1410','#fff'];
+for(let i=0;i<80;i++){const d=document.createElement('div');d.className='conf';d.style.background=cc[i%5];cw.appendChild(d);
+ conf.push({d,x:rnd()*W,vy:240+rnd()*360,vx:(rnd()-.5)*160,r:rnd()*360,vr:(rnd()-.5)*720,dl:rnd()*0.6,sw:rnd()*6});}
+document.querySelectorAll('#cal .tk').forEach(t=>t.innerHTML='<svg viewBox="0 0 64 64"><path d="M14 34l12 12 24-26" fill="none" stroke="#F25C05" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+document.querySelectorAll('.bottle').forEach((b,i)=>{const s=document.createElement('div');s.className='shine';s.dataset.ph=i*0.37;b.appendChild(s)});
+// impact rings
+const ringDefs=[[0.3,540,360],[7.48,540,640],[16.0,540,440],[29.72,540,440],[31.06,540,200],[1.86,540,920],[15.16,540,910]];
+const rw=document.getElementById('rings');const rings=ringDefs.map(([t,x,y])=>{const d=document.createElement('div');d.className='ring';d.style.left=x+'px';d.style.top=y+'px';rw.appendChild(d);return{d,t}});
+const swipes=[2.45,5.5,8.05,11.4,17.15,21.7,26.2,30.9];
+function face(e,hy){let s='';const ey=hy+2;
+ if(e==='tired')s+=`<path d="M-30 ${ey} h20 M10 ${ey} h20" stroke="#2B1B12" stroke-width="6" stroke-linecap="round"/><path d="M-30 ${ey+12} q10 6 20 0 M10 ${ey+12} q10 6 20 0" stroke="#B07A55" stroke-width="3" fill="none"/><path d="M-12 ${hy+30} h24" stroke="#7A2E1A" stroke-width="6" stroke-linecap="round"/>`;
+ else s+=`<circle cx="-19" cy="${ey}" r="7" fill="#2B1B12"/><circle cx="19" cy="${ey}" r="7" fill="#2B1B12"/>`;
+ if(e==='smile'||e==='happy')s+=`<path d="M-16 ${hy+22} Q0 ${hy+(e==='happy'?44:36)} 16 ${hy+22}" stroke="#7A2E1A" stroke-width="6" fill="${e==='happy'?'#7A2E1A':'none'}" stroke-linecap="round" stroke-linejoin="round"/><circle cx="-33" cy="${hy+18}" r="8" fill="#F59E8B" opacity=".7"/><circle cx="33" cy="${hy+18}" r="8" fill="#F59E8B" opacity=".7"/>`;
+ if(e==='worry')s+=`<path d="M-14 ${hy+32} Q0 ${hy+20} 14 ${hy+32}" stroke="#7A2E1A" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M-32 ${hy-12} l16 -8 M32 ${hy-12} l-16 -8" stroke="#2B1B12" stroke-width="5" stroke-linecap="round"/><path d="M50 ${hy-34} q10 16 0 24 q-10 -8 0 -24z" fill="#7CC4FF"/>`;
+ if(e==='neutral')s+=`<path d="M-12 ${hy+28} Q0 ${hy+32} 12 ${hy+28}" stroke="#7A2E1A" stroke-width="6" fill="none" stroke-linecap="round"/>`;
+ return s}
+function person(o){const sk=o.skin||'#F5C9A0',sh=o.shirt||'#3B82F6',pa=o.pants||'#334155',hr=o.hair||'#2B1B12';
+ const sit=o.pose==='sit';const legTop=sit?-95:-120,bodyTop=sit?-215:-235,bodyBot=sit?-90:-110,hy=bodyTop-50;let s='';
+ s+=`<path d="M-24 ${legTop} V-12 M24 ${legTop} V-12" stroke="${pa}" stroke-width="34" stroke-linecap="round"/><ellipse cx="-28" cy="-6" rx="24" ry="11" fill="#222"/><ellipse cx="28" cy="-6" rx="24" ry="11" fill="#222"/>`;
+ if(o.hairStyle==='long')s+=`<path d="M-58 ${hy+70} C-70 ${hy-80} 70 ${hy-80} 58 ${hy+70}z" fill="${hr}"/>`;
+ s+=`<rect x="-14" y="${hy+30}" width="28" height="34" fill="${sk}"/><rect x="-54" y="${bodyTop}" width="108" height="${bodyBot-bodyTop+20}" rx="44" fill="${sh}"/>`;
+ const arm=(sd,k)=>{const sx=sd*46,sy=bodyTop+28;let ex,ey;
+  if(k==='fwd'){ex=sd*150;ey=bodyTop+70}else if(k==='up'){ex=sd*95;ey=bodyTop-75}else if(k==='lap'){ex=sd*22;ey=bodyTop+105}else if(k==='hold'){ex=sd*55;ey=bodyTop+60}else{ex=sd*66;ey=bodyTop+120}
+  return `<path d="M${sx} ${sy} L${ex} ${ey}" stroke="${sh}" stroke-width="30" stroke-linecap="round"/><circle cx="${ex}" cy="${ey}" r="16" fill="${sk}"/>`};
+ s+=arm(-1,o.armL||'down')+arm(1,o.armR||'down');
+ s+=`<circle cx="-50" cy="${hy+4}" r="12" fill="${sk}"/><circle cx="50" cy="${hy+4}" r="12" fill="${sk}"/><circle cx="0" cy="${hy}" r="52" fill="${sk}"/>`;
+ if(o.hairStyle==='long')s+=`<path d="M-54 ${hy+6} C-58 ${hy-74} 58 ${hy-74} 54 ${hy+6} C30 ${hy-30} -30 ${hy-30} -54 ${hy+6}z" fill="${hr}"/>`;
+ else s+=`<path d="M-54 ${hy-4} C-58 ${hy-74} 58 ${hy-74} 54 ${hy-4} C40 ${hy-32} -10 ${hy-42} -54 ${hy-4}z" fill="${hr}"/>`;
+ (o.faces||[{e:o.expr||'smile'}]).forEach(f=>{s+=`<g ${f.vis?`data-vis="${f.vis}"`:''}>${face(f.e,hy)}</g>`});return s}
+document.querySelectorAll('[data-person]').forEach(g=>g.innerHTML=person(JSON.parse(g.dataset.person)));
+const rainEl=document.getElementById('rainI');const rain=[];
+if(rainEl){for(let i=0;i<34;i++){const l=document.createElementNS('http://www.w3.org/2000/svg','line');const x=70+rnd()*290;l.setAttribute('x1',x);l.setAttribute('x2',x-8);l.setAttribute('y1',0);l.setAttribute('y2',22);rainEl.appendChild(l);rain.push({l,y:rnd()*260,v:420+rnd()*200})}}
+const lerpC=(a,b,p)=>{const h=x=>[1,3,5].map(i=>parseInt(x.substr(i,2),16));const A=h(a),B=h(b);return `rgb(${A.map((v,i)=>Math.round(v+(B[i]-v)*p)).join(',')})`};
+const scenes=[...document.querySelectorAll('.scene')].map(el=>({el,s:+el.dataset.s,e:+el.dataset.e,items:[...el.querySelectorAll('.a')]}));
+
+function animT(an,p,el){
+ switch(an){
+  case 'fade':return [eOC(p),''];
+  case 'pop':{const s=p<=0?0:eOB(p);return [cl(p*4),`scale(${s})`]}
+  case 'slam':{const e=eOC(p);return [cl(p*5),`scale(${1+1.3*(1-e)})`]}
+  case 'stamp':{const e=eOB(p);return [cl(p*5),`scale(${1.7-0.7*e}) rotate(${-7*(1-e)}deg)`]}
+  case 'up':{const e=eOB(p);return [cl(p*3),`translateY(${90*(1-e)}px)`]}
+  case 'down':{const e=eOB(p);return [cl(p*3),`translateY(${-140*(1-e)}px)`]}
+  case 'left':{const e=eOB(p);return [cl(p*3),`translateX(${-300*(1-e)}px)`]}
+  case 'right':{const e=eOB(p);return [cl(p*3),`translateX(${300*(1-e)}px)`]}
+  case 'drop':{const e=eOB(p);const r=+(el.dataset.rot||0);return [cl(p*4),`translateY(${-700*(1-e)}px) rotate(${r+(1-e)*-30}deg)`]}
+ }
+ return [1,''];
+}
+const DUR={fade:.3,pop:.42,slam:.32,stamp:.35,up:.42,down:.45,left:.45,right:.45,drop:.55};
+
+window.render=function(t){
+ let flash=0;
+ for(const sc of scenes){
+  const on=t>=sc.s&&t<sc.e; sc.el.style.display=on?'block':'none'; if(!on)continue;
+  const lt=t-sc.s, len=Math.min(sc.e,33.7)-sc.s;
+  const ep=eOC(cl(lt/0.3)); const drift=1+0.045*(lt/len);
+  sc.el.style.transform=`scale(${(1.08-0.08*ep)*drift}) rotate(${Math.sin(t*0.6)*0.5}deg)`;
+  for(const el of sc.items){
+   const at=+el.dataset.at, an=el.dataset.an, p=cl((t-at)/DUR[an]);
+   let [o,tr]=t<at?[0,'']:animT(an,p,el);
+   const live=t-at;
+   if(el.dataset.out){const q=cl((t-+el.dataset.out)/0.3);if(q>0){o*=1-q;tr+=` translateY(${-eIO(q)*400}px) scale(${1-0.4*q})`}}
+   if(el.dataset.float){const ph=+el.dataset.float;tr+=` translateY(${Math.sin(t*2.2+ph)*12}px) perspective(1400px) rotateY(${Math.sin(t*1.4+ph)*10}deg) rotate(${Math.sin(t*1.1+ph)*2}deg)`}
+   if(el.dataset.bob){const ph=+el.dataset.bob;tr+=` translateY(${Math.sin(t*3+ph)*10}px) rotate(${Math.sin(t*2.4+ph)*2.5}deg)`}
+   if(el.dataset.breathe&&live>0.4){tr+=` scale(${1+0.03*Math.sin((live-0.4)*5)})`}
+   if(el.dataset.spin)tr+=` rotate(${(el.classList.contains('rays')?t:Math.max(0,live)*0.15+0)*el.dataset.spin}deg)`;
+   if(el.dataset.tw){const k=+el.dataset.tw;tr+=` rotate(${t*90+k*30}deg) scale(${0.45+0.55*Math.abs(Math.sin(t*3.2+k*1.3))})`}
+   if(el.dataset.shake){const sp=live;if(sp>0&&sp<0.55)tr+=` translateX(${Math.sin(sp*70)*14*(1-sp/0.55)}px)`}
+   el.style.opacity=o; el.style.transform=tr;
+  }
+ }
+ const cs=[[11.4,16.0],[26.2,29.7]];let cv=0;
+ for(const[a,b]of cs){cv=Math.max(cv,cl((t-a+0.15)/0.3)*cl((b-t+0.15)/0.3))}
+ document.getElementById('bgCool').style.opacity=cv;
+ for(const h of[16.0,29.72,31.06,0.02]){const d=t-h;if(d>=0&&d<0.25)flash=Math.max(flash,0.85*(1-d/0.25))}
+ document.getElementById('bgFlash').style.opacity=flash;
+ for(const f of floaters){let y=((f.y-f.v*t)%(H+200)+H+200)%(H+200)-100;const x=f.x+Math.sin(t*0.8+f.ph)*30;
+  f.d.style.transform=`translate(${x}px,${y}px)`+(f.rot?` rotate(${f.rot+t*25*(f.ph>3?1:-1)}deg) scale(${f.sc})`:'');f.d.style.opacity=(f.rot?0.55:0.85)*(1-cv);}
+ document.querySelectorAll('[data-hl]').forEach(h=>{const p=eIO(cl((t-+h.dataset.hl)/0.35));h.style.backgroundSize=`${p*100}% 100%`});
+ document.querySelectorAll('[data-count]').forEach(c=>{const[f,to,at,d]=c.dataset.count.split(',').map(Number);
+  const v=Math.round(f+(to-f)*eOC(cl((t-at)/d)));c.textContent=v.toLocaleString('en-US')});
+ document.querySelectorAll('[data-gauge]').forEach(g=>{const[a,b,f0,f1]=g.dataset.gauge.split(',').map(Number);
+  const p=eIO(cl((t-a)/(b-a)));g.style.width=((f0+(f1-f0)*p)*100)+'%';
+  g.style.background=`rgb(${Math.round(76+153*p)},${Math.round(175-118*p)},${Math.round(80-27*p)})`;
+  g.style.opacity=t>b?(0.55+0.45*(Math.sin((t-b)*14)>0?1:0)):1});
+ document.querySelectorAll('[data-draw]').forEach(pth=>{const p=eOC(cl((t-+pth.dataset.draw)/0.3));pth.style.strokeDasharray=1;pth.style.strokeDashoffset=1-p});
+ document.querySelectorAll('[data-box]').forEach(b=>{const p=cl((t-+b.dataset.box)/0.3);const pulse=p>=1?1+0.04*Math.sin((t-+b.dataset.box)*9):1;b.style.opacity=p;b.style.transform=`scale(${(1.4-0.4*eOC(p))*pulse})`});
+ document.querySelectorAll('#cal .tk').forEach((tk,i)=>{const at=20.6+i*0.14;const p=cl((t-at)/0.2);tk.style.opacity=p;tk.style.transform=`scale(${p?eOB(p):0}) rotate(${(1-p)*-30}deg)`});
+ document.querySelectorAll('[data-wave]').forEach(f=>f.style.transform=`skewY(${Math.sin(t*6)*5}deg) rotate(${Math.sin(t*3)*4}deg)`);
+ document.querySelectorAll('.shine').forEach(s=>{const c=((t*0.55+ +s.dataset.ph)%1.6);s.style.backgroundPosition=`${110-c/1.6*130}% 0`});
+ const sr=document.getElementById('sunRays');if(sr)sr.setAttribute('transform',`rotate(${t*20} 50 50)`);
+ const core=document.getElementById('sunCore');if(core)core.style.opacity=1-0.6*cl((t-12.26)/0.4);
+ const ce=document.getElementById('cloudE');if(ce)ce.setAttribute('transform',`translate(${-30+cl((t-11.5)/0.9)*30+Math.sin(t*1.5)*3} 0)`);
+ const ci=document.getElementById('cloudI');if(ci)ci.setAttribute('transform',`translate(${Math.sin(t*1.2)*5} 0)`);
+ const si=document.getElementById('sunI');if(si)si.setAttribute('transform',`rotate(${t*12} 50 50)`);
+ for(const r of rings){const d=t-r.t;if(d<0||d>0.6){r.d.style.opacity=0;continue}const p=d/0.6;r.d.style.opacity=0.9*(1-p);r.d.style.transform=`scale(${0.2+eOC(p)*2.4})`;r.d.style.borderWidth=(18*(1-p)+2)+'px'}
+ const sw=document.getElementById('swipe');let sx=-3000;
+ for(const s of swipes){const d=t-s;if(d>-0.2&&d<0.2){const p=(d+0.2)/0.4;sx=-2700+eIO(p)*4200}}
+ sw.style.transform=`translateX(${sx}px) skewX(-18deg)`;
+
+ document.querySelectorAll('[data-vis]').forEach(g=>{const[a,b]=g.dataset.vis.split(',').map(Number);g.style.opacity=(t>=a&&t<b)?1:0});
+ document.querySelectorAll('[data-pop]').forEach(g=>{const p=cl((t-+g.dataset.pop)/0.4);g.style.opacity=cl(p*4);g.style.transform=`scale(${p?eOB(p):0})`});
+ document.querySelectorAll('[data-kb]').forEach(g=>{const d=Math.max(0,t-+g.dataset.kb);g.style.transform=`scale(${1+0.014*d})`});
+ const pE=eIO(cl((t-12.3)/2.7));const $=id=>document.getElementById(id);
+ if($('skyE')){$('skyE').setAttribute('fill',lerpC('#8FD3FF','#1E2A4A',pE));$('sunE').setAttribute('cy',150+230*pE);
+  $('hhE').setAttribute('transform',`rotate(${270+270*pE} 480 115)`);$('mhE').setAttribute('transform',`rotate(${3240*pE} 480 115)`);
+  $('lightE').setAttribute('opacity',.2+.5*pE);$('steamE').setAttribute('transform',`translate(${Math.sin(t*3)*3} ${-(t*20%12)})`);}
+ if($('sunG'))$('sunG').setAttribute('cy',200-85*eOC(cl((t-18.35)/2.8)));
+ if($('smokeH'))$('smokeH').setAttribute('transform',`translate(${Math.sin(t*2)*6} ${-((t*35)%30)})`);
+ if($('flagH'))$('flagH').style.transform=`skewY(${Math.sin(t*6)*6}deg)`;
+ if($('pinH'))$('pinH').setAttribute('transform',`translate(0 ${Math.sin(t*5)*8})`);
+ if($('cloudsI'))$('cloudsI').setAttribute('transform',`translate(${Math.sin(t*0.6)*25} 0)`);
+ for(const r of rain){const y=((r.y+t*r.v)%280)+40;r.l.setAttribute('transform',`translate(0 ${y})`)}
+ if($('batFill'))$('batFill').setAttribute('opacity',t>28.8&&Math.sin((t-28.8)*14)<0?0.15:1);
+ // confetti
+ for(const c of conf){const d=t-31.06-c.dl;if(d<0){c.d.style.opacity=0;continue}
+  c.d.style.opacity=1;c.d.style.transform=`translate(${c.x+c.vx*d+Math.sin(d*4+c.sw)*30}px,${-60+c.vy*d}px) rotate(${c.r+c.vr*d}deg) rotateX(${d*400+c.sw*50}deg)`}
+};
+window.render(0);
+</script>
+</body></html>
