@@ -1,0 +1,500 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+html,body{margin:0;background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#07070b;font-family:'Prompt',sans-serif;color:#f4f1ea}
+#world{position:absolute;inset:0}
+.scene{position:absolute;inset:0;opacity:0;overflow:hidden}
+.scene>svg{position:absolute;left:0;top:0;width:1080px;height:1920px}
+.art{transform-origin:0 0}
+#subs{position:absolute;left:0;right:0;top:1290px;height:420px;z-index:500}
+.sub{position:absolute;left:40px;right:40px;top:0;text-align:center;opacity:0}
+.tag{display:inline-block;font-size:28px;font-weight:600;padding:2px 18px;border-radius:999px;margin-bottom:10px;letter-spacing:1px}
+.tag.u{background:#d9a53a;color:#2a1d08}.tag.n{background:#5fb3e0;color:#08202c}
+.th{font-weight:700;font-size:66px;line-height:1.32;color:#fff;text-shadow:0 0 2px #000,0 5px 0 rgba(0,0,0,.55),0 0 30px rgba(0,0,0,.9)}
+.th b,.th r{display:inline-block;font-weight:700}
+.th b{color:#ffd23a}
+.th r{color:#fff;background:#e0162b;padding:0 14px;border-radius:8px;text-shadow:none}
+.ev{position:absolute;background:#f4f1ea;color:#111;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.6);padding:22px 28px;border-left:10px solid #e0162b}
+.ev .k{font-size:20px;letter-spacing:2px;color:#7a7484;font-weight:600;text-transform:uppercase}
+.ev h3{margin:2px 0 0;font-size:40px;line-height:1.25}
+.ev .n{font-family:'Courier Prime',monospace;font-weight:700;font-size:78px;line-height:1.05;color:#e0162b}
+.ev .row{display:flex;justify-content:space-between;gap:20px;font-size:30px;padding:10px 0;border-top:2px solid #ddd6c8}
+.chip{position:absolute;font-size:28px;font-weight:600;padding:6px 20px;border-radius:999px;white-space:nowrap}
+.red{background:#e0162b;color:#fff}.ylw{background:#ffd23a;color:#111}.drk{background:rgba(0,0,0,.7);color:#f4f1ea;border:2px solid #3a3a48}
+.src{position:absolute;right:36px;top:54px;font-size:19px;color:#cfc9d8;background:rgba(0,0,0,.6);padding:6px 14px;border-radius:8px;max-width:640px;text-align:right}
+.src b{color:#ffd23a;font-size:15px;letter-spacing:2px;margin-right:8px}
+.stamp{position:absolute;font-weight:700;color:#e0162b;border:6px solid #e0162b;border-radius:12px;padding:4px 22px;font-size:46px;transform:rotate(-8deg);background:rgba(244,241,234,.06)}
+.big{position:absolute;left:0;right:0;text-align:center;font-weight:700;line-height:1.15}
+#grain{position:absolute;inset:0;z-index:400;opacity:.09;pointer-events:none;mix-blend-mode:overlay}
+#scan{position:absolute;inset:0;z-index:401;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 2px,transparent 2px 5px);opacity:.35}
+#vig{position:absolute;inset:0;z-index:402;pointer-events:none;background:radial-gradient(ellipse at 50% 42%,rgba(0,0,0,0) 50%,rgba(0,0,0,.75) 100%)}
+#flash{position:absolute;inset:0;z-index:450;background:#fff;opacity:0;mix-blend-mode:overlay}
+#black{position:absolute;inset:0;z-index:600;background:#000;opacity:0}
+</style></head>
+<body>
+<div id="stage"><div id="world"></div>
+  <div id="grain"></div><div id="scan"></div><div id="vig"></div><div id="flash"></div>
+  <div id="subs"></div><div id="black"></div>
+</div>
+<script src="timeline.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=clamp(x);return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2};
+const back=x=>{x=clamp(x);const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const src=s=>`<div class="src" data-at="0.3"><b>SOURCE</b>${s}</div>`;
+const RED='#e0162b',YLW='#ffd23a',GRN='#b6ff3b',INK='#07070b';
+
+const SUBS=[
+'เธอกดสั่งจาก<b>ร้านออนไลน์</b>','อาหารเสริมลดน้ำหนัก <b>ราคาถูก ส่งไว</b>','หลังจากนั้น… <r>เธอเสียชีวิต</r>',
+'ในนั้น มี<r>สารที่ถูกแบน</r>ในหลายประเทศ','นี่คือเส้นทางของ<b>อาหารเสริมเถื่อน</b>','จาก<b>ด่านสนามบิน</b>','สู่<b>โกดังล้านชิ้น</b>',
+'ผ่าน<r>เลข อย. ที่ขโมยมา</r>','จนถึง<b>มือคุณ</b>','และหลายคดี มี<r>ทุนจีน</r>อยู่เบื้องหลัง',
+'ลุงครับ… ผมก็เพิ่ง<b>สั่งแบบนี้มา</b>เหมือนกัน','งั้นฟังให้ดี… มัน<b>เข้ามาง่ายกว่าที่คิด</b>',
+'ครึ่งปี สกัดได้ <b>3,975 รายการ</b><br>มีถึง <r>เฟนทานิล</r>','พวกมันแอบนำเข้า<b>ทีละน้อย แต่ถี่</b>',
+'บางคนหิ้วปากกาลดน้ำหนักเถื่อน<br>มาทีเดียว <b>8,900 ด้าม</b>','ที่มาทางบก กองอยู่ในโกดังบางบ่อ<br>ยึดได้<r>กว่าล้านชิ้น</r>',
+'แต่ของผม<b>มีเลข อย.</b> นะครับ','นั่นแหละกับดัก… <r>เลขของสินค้าอื่น</r><br>ที่ถูกเอามาแปะ',
+'<r>ไซบูทรามีน</r> ถูกถอนจากตลาด<br>เสี่ยง<r>หัวใจวาย</r> <r>เส้นเลือดสมอง</r>',
+'คดีที่มีคนตาย ตำรวจตามรอย<br>จาก<b>พัสดุตีกลับ</b> จนเจอของกลาง','สรุปเป็นฝีมือ<b>ทุนจีน</b>หมดเลยเหรอ',
+'ไม่ใช่หรอก… แบรนด์ไทยเองก็เคยโดนยึด<br><r>กว่า 16 ล้านบาท</r>','',
+'ก่อนกดสั่ง เช็กเลข อย.<br><b>แอป Oryor</b> · โทร <b>1556</b>','<r>ถูกเกินจริง</r> <r>เห็นผลไวเกินจริง</r><br>= สัญญาณอันตราย',''];
+
+
+/* ---------- helpers ---------- */
+function phone(inner,id=''){return `<g ${id?`id="${id}"`:''}><rect x="-262" y="-482" width="524" height="964" rx="64" fill="#1b1b24" stroke="#33333f" stroke-width="6"/>
+  <rect x="-238" y="-456" width="476" height="912" rx="44" fill="#f6f3ee"/>${inner}<rect x="-60" y="-446" width="120" height="22" rx="11" fill="#1b1b24"/></g>`}
+function box(x,y,w,h,c='#9a6a3c',label=''){return `<g transform="translate(${x} ${y})"><rect width="${w}" height="${h}" fill="${c}"/><rect y="${h*.42}" width="${w}" height="${h*.16}" fill="rgba(0,0,0,.18)"/><rect width="${w}" height="${h}" fill="none" stroke="rgba(0,0,0,.35)" stroke-width="3"/>${label?`<text x="${w/2}" y="${h*.36}" font-size="${Math.min(w,h)*.2}" font-weight="700" fill="rgba(0,0,0,.55)" text-anchor="middle">${label}</text>`:''}</g>`}
+function capsule(r=1,c1=RED,c2='#f4f1ea'){return `<g transform="scale(${r})"><rect x="-150" y="-62" width="300" height="124" rx="62" fill="${c2}"/><path d="M0 -62 L88 -62 A62 62 0 0 1 88 62 L0 62Z" fill="${c1}"/><rect x="-120" y="-44" width="90" height="16" rx="8" fill="rgba(255,255,255,.55)"/></g>`}
+function ecgPath(x0,x1,y,beats,amp){let d=`M${x0} ${y}`;const w=(x1-x0)/beats;for(let i=0;i<beats;i++){const b=x0+i*w;d+=` L${b+w*.35} ${y} L${b+w*.42} ${y-amp*.2} L${b+w*.48} ${y+amp*.25} L${b+w*.53} ${y-amp} L${b+w*.6} ${y+amp*.5} L${b+w*.66} ${y} L${b+w} ${y}`}return d}
+
+/* ---------- scenes ---------- */
+const S={};
+function eyes(P,c){return `<g id="${P}-eyes"><ellipse cx="-18" cy="6" rx="5" ry="6.5" fill="${c}"/><ellipse cx="18" cy="6" rx="5" ry="6.5" fill="${c}"/></g>`}
+function nephew(){
+  const skin='#e8b48c',shirt='#f2efe8';
+  return `<g id="N">
+  <rect x="-80" y="-20" width="160" height="230" rx="26" fill="#262636"/>
+  <rect x="-6" y="250" width="12" height="150" fill="#1b1b26"/>
+  <path d="M-70 430 L70 430" stroke="#1b1b26" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="-70" cy="436" r="9" fill="#111"/><circle cx="70" cy="436" r="9" fill="#111"/><circle cx="0" cy="436" r="9" fill="#111"/>
+  <rect x="-58" y="200" width="116" height="52" rx="20" fill="#2f3a5a"/>
+  <rect x="-52" y="236" width="38" height="146" rx="14" fill="#2f3a5a"/><rect x="14" y="236" width="38" height="146" rx="14" fill="#2f3a5a"/>
+  <ellipse cx="-36" cy="388" rx="26" ry="11" fill="#2a2420"/><ellipse cx="36" cy="388" rx="26" ry="11" fill="#2a2420"/>
+  <rect x="-12" y="34" width="24" height="26" fill="${skin}"/>
+  <path d="M-62 215 L-54 82 Q-52 60 -30 55 L30 55 Q52 60 54 82 L62 215 Z" fill="${shirt}"/>
+  <path d="M-16 56 L0 82 L16 56" fill="none" stroke="#d6d1c6" stroke-width="4"/>
+  <line x1="0" y1="82" x2="0" y2="210" stroke="#dcd7cc" stroke-width="3"/>
+  <g><path d="M-50 86 L-66 160 L-42 214" fill="none" stroke="${shirt}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="-40" cy="218" r="13" fill="${skin}"/></g>
+  <g id="N-armDown"><path d="M50 86 L66 160 L42 214" fill="none" stroke="${shirt}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="218" r="13" fill="${skin}"/></g>
+  <g id="N-armHold"><path d="M50 86 L84 150 L66 74" fill="none" stroke="${shirt}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+     <g id="N-bottle"><rect x="50" y="18" width="38" height="52" rx="10" fill="#ff6b8b"/><rect x="52" y="8" width="34" height="14" rx="4" fill="#c93a58"/><text x="69" y="50" font-size="11" font-weight="700" text-anchor="middle" fill="#fff">SLIM</text></g>
+     <g id="N-capsule"><rect x="54" y="40" width="34" height="16" rx="8" fill="#f2a33a"/><rect x="54" y="40" width="17" height="16" rx="8" fill="#fbd27a"/></g>
+     <circle cx="66" cy="70" r="13" fill="${skin}"/></g>
+  <g id="N-armScratch"><path d="M50 86 L88 120 L52 -30" fill="none" stroke="${shirt}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="-36" r="13" fill="${skin}"/></g>
+  <circle cx="-50" cy="6" r="10" fill="${skin}"/><circle cx="50" cy="6" r="10" fill="${skin}"/>
+  <circle cx="0" cy="0" r="50" fill="${skin}"/>
+  <path d="M-53 2 Q-58 -62 0 -62 Q58 -62 53 2 Q46 -30 14 -32 Q-14 -40 -53 2 Z" fill="#1d1b22"/>
+  ${eyes('N','#222')}
+  <g id="N-brows"><path id="N-bl" d="M-27 -10 L-10 -12" stroke="#1d1b22" stroke-width="5" stroke-linecap="round"/><path id="N-br" d="M10 -12 L27 -10" stroke="#1d1b22" stroke-width="5" stroke-linecap="round"/></g>
+  <path id="N-mc" d="M-10 28 Q0 33 10 28" stroke="#7a3a2a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <ellipse id="N-mo" cx="0" cy="30" rx="8" ry="6" fill="#6b2a2a"/>
+  <text id="N-q" x="60" y="-70" font-size="70" font-weight="700" fill="#ffd24a">?</text>
+  <text id="N-x" x="44" y="-66" font-size="64" font-weight="700" fill="#ffd24a">!?</text>
+  </g>`;
+}
+function uncle(){
+  const skin='#dfa77c',card='#7a5236';
+  return `<g id="U">
+  <rect x="-115" y="-50" width="230" height="300" rx="46" fill="#2f6b55"/>
+  <rect x="-115" y="-50" width="230" height="40" rx="20" fill="#357a61"/>
+  <rect x="-80" y="210" width="160" height="70" rx="18" fill="#2a5f4b"/>
+  <rect x="-58" y="200" width="116" height="52" rx="20" fill="#4a4038"/>
+  <rect x="-52" y="236" width="38" height="140" rx="14" fill="#4a4038"/><rect x="14" y="236" width="38" height="140" rx="14" fill="#4a4038"/>
+  <ellipse cx="-36" cy="382" rx="26" ry="11" fill="#1f1a16"/><ellipse cx="36" cy="382" rx="26" ry="11" fill="#1f1a16"/>
+  <rect x="-140" y="140" width="56" height="150" rx="24" fill="#2a5f4b"/><rect x="84" y="140" width="56" height="150" rx="24" fill="#2a5f4b"/>
+  <rect x="-110" y="280" width="16" height="40" fill="#3a2a20"/><rect x="94" y="280" width="16" height="40" fill="#3a2a20"/>
+  <rect x="-12" y="34" width="24" height="26" fill="${skin}"/>
+  <path d="M-62 215 L-56 82 Q-54 60 -30 55 L30 55 Q54 60 56 82 L62 215 Z" fill="${card}"/>
+  <path d="M-18 56 L0 120 L18 56 Z" fill="#efe9dd"/>
+  <circle cx="-6" cy="140" r="4" fill="#4a3020"/><circle cx="-6" cy="170" r="4" fill="#4a3020"/>
+  <path d="M-52 86 L-70 160 L-42 214" fill="none" stroke="${card}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="-40" cy="218" r="13" fill="${skin}"/>
+  <path d="M52 86 L74 168 L36 150" fill="none" stroke="${card}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+  <g id="U-steam" opacity=".5"><path id="U-s1" d="M24 112 Q16 96 26 82 Q34 68 26 54" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/><path id="U-s2" d="M42 112 Q50 98 42 84 Q34 70 42 58" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/></g>
+  <path d="M14 120 L54 120 L50 152 Q34 160 18 152 Z" fill="#f2efe6"/><path d="M54 128 Q66 132 54 144" stroke="#f2efe6" stroke-width="5" fill="none"/>
+  <circle cx="28" cy="152" r="13" fill="${skin}"/>
+  <circle cx="-50" cy="6" r="10" fill="${skin}"/><circle cx="50" cy="6" r="10" fill="${skin}"/>
+  <circle cx="0" cy="0" r="50" fill="${skin}"/>
+  <path d="M-52 10 Q-60 -36 -30 -50 Q-44 -20 -40 14 Z" fill="#f1eee8"/><path d="M52 10 Q60 -36 30 -50 Q44 -20 40 14 Z" fill="#f1eee8"/>
+  <path d="M-30 -46 Q0 -60 30 -46 Q0 -54 -30 -46Z" fill="#f1eee8"/>
+  ${eyes('U','#2a2220')}
+  <circle cx="-18" cy="6" r="14" fill="rgba(255,255,255,.14)" stroke="#3b3330" stroke-width="3"/><circle cx="18" cy="6" r="14" fill="rgba(255,255,255,.14)" stroke="#3b3330" stroke-width="3"/>
+  <line x1="-4" y1="6" x2="4" y2="6" stroke="#3b3330" stroke-width="3"/>
+  <path d="M-28 -14 L-8 -12" stroke="#f1eee8" stroke-width="7" stroke-linecap="round"/><path d="M8 -12 L28 -14" stroke="#f1eee8" stroke-width="7" stroke-linecap="round"/>
+  <ellipse id="U-mo" cx="0" cy="34" rx="8" ry="6" fill="#6b2a2a"/>
+  <path id="U-mc" d="M-9 34 Q0 39 9 34" stroke="#7a3a2a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <path d="M-22 26 Q0 14 22 26 Q12 32 0 28 Q-12 32 -22 26Z" fill="#f4f1ea"/>
+  </g>`;
+}
+function cat(id){
+  return `<g id="${id}">
+   <path id="${id}-tail" d="M-56 6 Q-110 10 -100 -30" stroke="#d9802f" stroke-width="16" fill="none" stroke-linecap="round"/>
+   <ellipse id="${id}-body" cx="0" cy="0" rx="64" ry="30" fill="#e58e3e"/>
+   <path d="M-20 -26 Q-14 0 -22 26 M0 -30 Q6 0 0 30 M20 -27 Q26 0 20 27" stroke="#c46e25" stroke-width="7" fill="none"/>
+   <circle cx="56" cy="-8" r="25" fill="#e58e3e"/>
+   <path d="M38 -24 L42 -50 L58 -30 Z M60 -30 L76 -48 L78 -22 Z" fill="#e58e3e"/>
+   <path d="M46 -8 Q51 -4 56 -8 M62 -8 Q67 -4 72 -8" stroke="#5a3010" stroke-width="3" fill="none"/>
+   <circle cx="62" cy="2" r="3" fill="#c0505a"/></g>`;
+}
+
+/* ---------- scenes ---------- */
+
+S.room=function(){
+  const r=rng(7);let city='',stars='';
+  for(let i=0;i<16;i++){const bw=34+r()*46,bh=120+r()*300,x=550+i*32;city+=`<rect x="${x}" y="${770-bh}" width="${bw}" height="${bh}" fill="#171a3c"/>`;
+    for(let yy=770-bh+14;yy<760;yy+=26)for(let xx=x+6;xx<x+bw-8;xx+=14)if(r()<.32)city+=`<rect x="${xx}" y="${yy}" width="6" height="10" fill="#ffd479" opacity="${.5+r()*.5}"/>`;}
+  for(let i=0;i<34;i++)stars+=`<circle class="star" cx="${570+r()*450}" cy="${170+r()*300}" r="${1+r()*2.2}" fill="#fff" data-p="${r()*6}"/>`;
+  let books='';const bc=['#c9563c','#e0a53a','#4f7fa8','#7a9a5a','#8a5aa0','#d9d0bb','#3f6a62'];
+  for(let s=0;s<5;s++){let x=46;while(x<200){const w=14+r()*16,h=90+r()*40;books+=`<rect x="${x}" y="${386+s*150-h}" width="${w}" height="${h}" fill="${bc[Math.floor(r()*bc.length)]}"/>`;x+=w+3}}
+  return `<svg viewBox="0 0 1080 1920"><defs>
+   <linearGradient id="rg-glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14183f"/><stop offset="1" stop-color="#3b2d6e"/></linearGradient>
+   <linearGradient id="rg-floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2148"/><stop offset="1" stop-color="#0f0c1e"/></linearGradient>
+   <radialGradient id="rg-lamp" cx=".5" cy="0" r="1"><stop offset="0" stop-color="#ffe2a0" stop-opacity=".55"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient>
+   <clipPath id="rc-win"><rect x="570" y="170" width="450" height="600"/></clipPath></defs>
+   <g id="room-cam">
+   <rect x="-800" y="-600" width="2700" height="1670" fill="#2c2550"/>
+   <rect x="-800" y="1060" width="2700" height="1500" fill="url(#rg-floor)"/>
+   <rect x="-800" y="1052" width="2700" height="10" fill="#3a3168"/>
+   <rect x="560" y="160" width="470" height="620" fill="#3d3570"/>
+   <g clip-path="url(#rc-win)"><rect x="570" y="170" width="450" height="600" fill="url(#rg-glass)"/>${stars}
+     <path d="M940 250 A40 40 0 1 0 975 310 A32 32 0 1 1 940 250Z" fill="#f4ecd0"/>${city}</g>
+   <rect x="792" y="170" width="6" height="600" fill="#3d3570"/>
+   <path d="M530 150 L590 150 Q575 480 600 800 L530 800 Z" fill="#5b3f86"/><path d="M1060 150 L1000 150 Q1015 480 990 800 L1060 800 Z" fill="#5b3f86"/>
+   <rect x="30" y="230" width="190" height="830" fill="#3a2a22"/><rect x="40" y="240" width="170" height="810" fill="#2a1e18"/>
+   ${books}${[0,1,2,3,4].map(s=>`<rect x="40" y="${386+s*150}" width="170" height="10" fill="#3a2a22"/>`).join('')}
+   <rect x="60" y="196" width="110" height="36" rx="6" fill="#121218"/><text x="115" y="223" font-size="24" fill="#59e08a" text-anchor="middle" font-family="Courier Prime">23:40</text>
+   <rect x="296" y="290" width="130" height="130" fill="#c9a77a"/><rect x="306" y="300" width="110" height="110" fill="#f0dcc0"/><circle cx="361" cy="360" r="26" fill="#e07a4a"/>
+   <line x1="560" y1="-600" x2="560" y2="590" stroke="#15122a" stroke-width="4"/>
+   <path id="room-cone" d="M510 650 L610 650 L760 880 L360 880 Z" fill="url(#rg-lamp)"/>
+   <path d="M520 592 L600 592 L626 652 L494 652 Z" fill="#e8c071"/><ellipse cx="560" cy="652" rx="66" ry="8" fill="#ffe9b0"/>
+   <ellipse cx="560" cy="1112" rx="430" ry="62" fill="#5e2b63"/><ellipse cx="560" cy="1112" rx="390" ry="48" fill="none" stroke="#7a3f80" stroke-width="4"/>
+   <g transform="translate(560 1085)">${cat('rcat')}</g>
+   <g transform="translate(240 620) scale(1.3)">${uncle()}</g>
+   <rect x="420" y="858" width="290" height="20" rx="4" fill="#8a5a3c"/><rect x="440" y="878" width="16" height="182" fill="#6a4430"/><rect x="674" y="878" width="16" height="182" fill="#6a4430"/>
+   <path d="M470 858 Q470 818 505 818 Q540 818 540 858 Z" fill="#c4553a"/><rect x="497" y="806" width="16" height="14" fill="#c4553a"/><path d="M540 838 L566 826" stroke="#c4553a" stroke-width="7"/>
+   <rect x="600" y="850" width="96" height="8" fill="#9aa0aa"/><path d="M696 856 L712 782" stroke="#5c6270" stroke-width="10" stroke-linecap="round"/>
+   <g transform="translate(860 600) scale(1.3)">${nephew()}</g>
+   </g></svg>`;
+};
+S.open=function(){
+  const ui=`<rect x="-238" y="-456" width="476" height="96" rx="44" fill="#111"/><rect x="-238" y="-400" width="476" height="40" fill="#111"/>
+   <rect x="-200" y="-420" width="110" height="34" rx="17" fill="${RED}"/><text x="-145" y="-395" font-size="20" font-weight="700" fill="#fff" text-anchor="middle">LIVE</text>
+   <text x="60" y="-394" font-size="26" font-weight="600" fill="#fff" text-anchor="middle">ร้านค้าออนไลน์</text>
+   <rect x="-200" y="-330" width="400" height="330" rx="20" fill="#ffe3dc"/>
+   <rect x="-80" y="-300" width="160" height="40" rx="10" fill="#c93a58"/><rect x="-70" y="-266" width="140" height="200" rx="26" fill="#ff6b8b"/>
+   <text x="0" y="-172" font-size="44" font-weight="700" fill="#fff" text-anchor="middle">SLIM</text><text x="0" y="-134" font-size="22" font-weight="600" fill="#fff" text-anchor="middle">7 DAYS</text>
+   <rect x="110" y="-320" width="80" height="80" rx="40" fill="${YLW}"/><text x="150" y="-272" font-size="22" font-weight="700" fill="#111" text-anchor="middle">-78%</text>
+   <text x="-200" y="50" font-size="34" font-weight="700" fill="#111">ลดไว 7 วัน เห็นผลจริง!</text>
+   <text x="-200" y="140" font-size="70" font-weight="700" fill="${RED}">฿199</text><text x="10" y="134" font-size="34" fill="#999">฿890</text><line x1="6" y1="122" x2="92" y2="122" stroke="#999" stroke-width="3"/>
+   <text x="200" y="134" font-size="24" fill="#666" text-anchor="end">ขายแล้ว 10K+</text>
+   <rect id="op-btn" x="-200" y="190" width="400" height="96" rx="48" fill="${RED}"/><text x="0" y="252" font-size="40" font-weight="700" fill="#fff" text-anchor="middle">สั่งซื้อเลย</text>
+   <circle id="op-tap" cx="0" cy="238" r="0" fill="none" stroke="#fff" stroke-width="8"/>
+   <text x="-200" y="350" font-size="24" fill="#888">เลข อย.:</text><text id="op-fda" x="-104" y="350" font-size="24" font-weight="700" fill="#888">—</text>
+   <line id="op-ul" x1="-204" y1="362" x2="-204" y2="362" stroke="${RED}" stroke-width="6" stroke-linecap="round"/>`;
+  return `<svg viewBox="0 0 1080 1920"><defs><radialGradient id="op-bg" cx=".5" cy=".35" r=".7"><stop offset="0" stop-color="#1d1626"/><stop offset="1" stop-color="#050507"/></radialGradient></defs>
+  <g class="art"><rect x="-500" y="-500" width="2100" height="2900" fill="url(#op-bg)"/>
+   <g transform="translate(540 640)">${phone(ui)}</g>
+   <g id="op-box" opacity="0"><g transform="translate(400 920)"><rect width="280" height="190" fill="#b07a46"/><rect x="0" y="0" width="280" height="40" fill="#9a6838"/><rect x="120" y="0" width="40" height="190" fill="#d9c08a" opacity=".7"/>
+     <rect x="30" y="80" width="140" height="80" fill="#f4f1ea"/><text x="100" y="128" font-size="24" font-weight="700" fill="#333" text-anchor="middle">พัสดุ</text></g></g>
+   <rect id="op-dim" x="-500" y="-500" width="2100" height="2900" fill="#000" opacity="0"/>
+   <path id="op-ecg" d="${ecgPath(-40,700,640,4,170)} L1120 640" fill="none" stroke="${GRN}" stroke-width="7" stroke-linejoin="round" opacity="0"/>
+  </g></svg>`;
+};
+S.montage=function(){
+  const r=rng(5);let boxes='';for(let i=0;i<7;i++)for(let j=0;j<6;j++)boxes+=box(140+i*115,380+j*105,108,98,['#9a6a3c','#8a5e34','#a8743f'][Math.floor(r()*3)]);
+  const icons=['M-40 0 L40 0 M0 -40 L0 40','','',''];
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect x="-500" y="-500" width="2100" height="2900" fill="${INK}"/>
+   <g id="mo-p0"><path d="M160 700 L400 700 L680 700 L920 700" stroke="${RED}" stroke-width="6" stroke-dasharray="16 14"/>
+    ${[['ด่าน',160],['โกดัง',400],['เลข อย.',680],['มือคุณ',920]].map(([l,x],i)=>`<g transform="translate(${x} 700)"><circle r="70" fill="#15151d" stroke="${i==3?RED:'#44445a'}" stroke-width="6"/><text y="12" font-size="30" font-weight="700" fill="#fff" text-anchor="middle">${l}</text></g>`).join('')}
+    <circle id="mo-dot" r="16" fill="${YLW}"/></g>
+   <g id="mo-p1"><path d="M240 760 L840 600 L880 640 L560 760 L600 900 L560 910 L470 790 L300 830 L280 880 L250 885 L250 800Z" fill="#e8e4f0"/>
+    <rect id="mo-scan" x="0" y="560" width="1080" height="10" fill="${GRN}" opacity=".8"/></g>
+   <g id="mo-p2">${boxes}</g>
+   <g id="mo-p3"><rect x="190" y="520" width="700" height="330" rx="24" fill="#f4f1ea"/><text x="540" y="610" font-size="44" font-weight="700" fill="#111" text-anchor="middle">เลขสารบบอาหาร (เลข อย.)</text>
+    <text id="mo-num" x="540" y="730" font-size="64" font-weight="700" fill="#111" text-anchor="middle" font-family="Courier Prime">00-0-00000-0-0000</text>
+    <g transform="translate(720 820) rotate(-10)"><rect x="-120" y="-50" width="240" height="90" rx="12" fill="none" stroke="${RED}" stroke-width="8"/><text y="22" font-size="56" font-weight="700" fill="${RED}" text-anchor="middle">FAKE</text></g></g>
+   <g id="mo-p4"><circle cx="540" cy="700" r="260" fill="${RED}" opacity=".12"/><g transform="translate(540 700) rotate(-25)">${capsule(1.6)}</g></g>
+  </g></svg>`;
+};
+S.title=function(){
+  const t=(c,dx,dy)=>`<g transform="translate(${dx} ${dy})" class="ti-${c}"><text x="540" y="640" font-size="120" font-weight="700" fill="${c=='w'?'#f4f1ea':c=='r'?'#ff2d55':'#2de0ff'}" text-anchor="middle">อาหารเสริม</text>
+    <text x="540" y="860" font-size="230" font-weight="700" fill="${c=='w'?RED:c=='r'?'#ff2d55':'#2de0ff'}" text-anchor="middle">เถื่อน</text></g>`;
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect x="-500" y="-500" width="2100" height="2900" fill="#050507"/>
+   <g opacity=".7" style="mix-blend-mode:screen"><g id="ti-r">${t('r',0,0)}</g><g id="ti-c">${t('c',0,0)}</g></g><g id="ti-w">${t('w',0,0)}</g>
+   <rect x="300" y="920" width="480" height="6" fill="${RED}"/><text x="540" y="1000" font-size="44" font-weight="600" fill="#cfc9d8" text-anchor="middle" letter-spacing="6">เส้นทางมรณะ</text>
+   <rect id="ti-bar" x="0" y="0" width="1080" height="40" fill="#fff" opacity="0"/></g></svg>`;
+};
+S.airport=function(){
+  let pens='';for(let r=0;r<5;r++)for(let c=0;c<9;c++)pens+=`<rect x="${370+c*38}" y="${290+r*32}" width="28" height="12" rx="6" fill="${c%3?'#ff9a3c':'#2de0ff'}" opacity=".9"/>`;
+  let rol='';for(let i=0;i<13;i++)rol+=`<circle cx="${i*90}" cy="870" r="16" fill="#2a2a34" stroke="#111" stroke-width="4"/>`;
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect x="-500" y="-500" width="2100" height="2900" fill="#0c0d14"/>
+   <rect x="250" y="200" width="580" height="320" rx="16" fill="#111522" stroke="#2c3348" stroke-width="8"/><rect x="270" y="220" width="540" height="280" fill="#061226"/>
+   <g id="ap-xr" opacity="0"><rect x="340" y="260" width="400" height="210" rx="20" fill="none" stroke="#2de0ff" stroke-width="5"/>${pens}</g>
+   <rect id="ap-scan" x="270" y="220" width="8" height="280" fill="${GRN}"/>
+   <g id="ap-alert" opacity="0"><rect x="430" y="440" width="220" height="50" rx="8" fill="${RED}"/><text x="540" y="477" font-size="32" font-weight="700" fill="#fff" text-anchor="middle">ALERT</text></g>
+   <rect x="200" y="560" width="680" height="300" fill="#3a3d4a"/><rect x="250" y="600" width="580" height="260" fill="#101218"/>
+   ${Array.from({length:12},(_,i)=>`<rect x="${255+i*48}" y="600" width="40" height="250" fill="#22252f" opacity=".85"/>`).join('')}
+   <rect x="-200" y="850" width="1480" height="40" fill="#1d1f27"/>${rol}
+   <g id="ap-bag"><rect x="-130" y="-130" width="260" height="130" rx="16" fill="#2b4a8a"/><rect x="-40" y="-160" width="80" height="34" rx="10" fill="none" stroke="#1b3060" stroke-width="10"/></g></g></svg>
+  ${src('อย.–กรมศุลกากร · ผลงาน 6 เดือนปีงบ 2569')}
+  <div class="ev" data-at="1" data-sub="12" data-off="0.4" style="left:60px;right:60px;top:930px"><div class="k">ต.ค. 68 – มี.ค. 69 · สุวรรณภูมิ · ดอนเมือง · ไปรษณีย์หลักสี่</div>
+   <div style="display:flex;align-items:flex-end;justify-content:space-between"><div class="n">3,975</div><div style="font-size:34px;font-weight:700">รายการ · <span style="color:${RED}">51 ล้าน+</span></div></div></div>
+  <div class="chip ylw" data-at="2" data-sub="12" data-off="2.6" style="left:60px;top:1150px">ปากกาลดน้ำหนัก</div><div class="chip ylw" data-at="2.2" data-sub="12" data-off="3.3" style="left:350px;top:1150px">ฟิลเลอร์</div>
+  <div class="chip ylw" data-at="2.4" data-sub="12" data-off="3.9" style="left:520px;top:1150px">ยาเพิ่มสมรรถภาพ</div>
+  <div class="chip red" data-at="3" data-sub="12" data-off="4.6" style="left:60px;top:1210px">เฟนทานิล · แรงกว่ามอร์ฟีน ~100 เท่า</div>`;
+};
+S.trick=function(){
+  let small='';for(let i=0;i<16;i++)small+=`<g class="tr-s" data-i="${i}">${box(-30,-30,60,60,'#a8743f')}</g>`;
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect x="-500" y="-500" width="2100" height="2900" fill="#0c0d14"/>
+   <rect x="-200" y="760" width="1480" height="16" fill="#2a2a34"/>
+   <rect x="500" y="380" width="80" height="380" fill="#3a3d4a"/><rect x="500" y="380" width="80" height="20" fill="#5a5d6a"/>
+   <circle id="tr-light" cx="540" cy="440" r="24" fill="${GRN}"/>
+   <g id="tr-big"><g transform="translate(-110 -220)">${box(0,0,220,220,'#9a6a3c','ใหญ่')}</g><g id="tr-x" opacity="0"><circle r="90" fill="${RED}" opacity=".9"/><path d="M-40 -40 L40 40 M40 -40 L-40 40" stroke="#fff" stroke-width="16" stroke-linecap="round"/></g></g>
+   <g id="tr-small">${small}</g>
+   <text x="540" y="1020" font-size="40" font-weight="600" fill="#8b8796" text-anchor="middle">กล่องใหญ่ → ถูกตรวจ · กล่องเล็กถี่ๆ → หลุดง่ายกว่า</text></g></svg>
+  ${src('อย.–กรมศุลกากร, เม.ย. 2569')}`;
+};
+S.suitcase=function(){
+  let pens='';for(let r=0;r<9;r++)for(let c=0;c<6;c++)pens+=`<g transform="translate(${250+c*100} ${430+r*52})"><rect width="86" height="30" rx="15" fill="#f4f1ea"/><rect width="26" height="30" rx="13" fill="${c%2?'#3a8bff':'#ff6b3c'}"/><rect x="34" y="10" width="36" height="10" rx="5" fill="#cfcad6"/></g>`;
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect x="-500" y="-500" width="2100" height="2900" fill="#0f0f16"/>
+   <rect x="200" y="160" width="680" height="220" rx="30" fill="#1f3a6e"/><rect x="200" y="360" width="680" height="560" rx="30" fill="#2b4a8a"/><rect x="225" y="400" width="630" height="490" rx="18" fill="#141a2c"/>
+   ${pens}</g></svg>
+  ${src('กรมศุลกากร · 31 ต.ค. 2569')}
+  <div class="chip drk" data-at="0.5" data-sub="14" data-off="0.3" style="left:60px;top:120px">31 ต.ค. 2569 · สุวรรณภูมิ</div>
+  <div class="ev" data-at="2" data-sub="14" data-off="2.3" style="left:90px;right:90px;top:960px;text-align:center"><div class="k">ปากกาลดน้ำหนัก · ไม่มี อย.</div><div class="n">8,900 ด้าม</div><div style="font-size:34px;font-weight:700">มูลค่า ~5.34 ล้านบาท</div></div>
+  <div class="stamp" data-at="2.6" data-sub="14" data-off="3.2" style="left:640px;top:820px">ของเถื่อน</div>`;
+};
+S.wh2=function(){
+  const r=rng(12);let wall='';for(let i=0;i<18;i++)for(let j=0;j<28;j++)wall+=`<rect x="${i*60}" y="${j*44+140}" width="58" height="42" fill="${['#9a6a3c','#8a5e34','#b07a46','#7a5230'][Math.floor(r()*4)]}"/>`;
+  return `<svg viewBox="0 0 1080 1920"><defs><radialGradient id="sr-r"><stop offset="0" stop-color="#ff1a2e" stop-opacity=".75"/><stop offset="1" stop-color="#ff1a2e" stop-opacity="0"/></radialGradient>
+   <radialGradient id="sr-b"><stop offset="0" stop-color="#1a5cff" stop-opacity=".75"/><stop offset="1" stop-color="#1a5cff" stop-opacity="0"/></radialGradient></defs>
+   <g class="art"><rect x="-500" y="-500" width="2100" height="2900" fill="#120f12"/>${wall}
+   <circle id="sr1" cx="120" cy="300" r="700" fill="url(#sr-r)"/><circle id="sr2" cx="960" cy="300" r="700" fill="url(#sr-b)"/></g>
+   <rect x="0" y="1180" width="1080" height="740" fill="#000" opacity=".55"/>
+   <text id="wh2-n" x="540" y="760" font-size="150" font-weight="700" fill="#fff" text-anchor="middle" font-family="Courier Prime" opacity="0" style="paint-order:stroke" stroke="#000" stroke-width="14">0</text></svg>
+  ${src('บก.ปคบ. · 10 มิ.ย. 2569')}
+  <div class="chip drk" data-at="0.4" data-sub="15" data-off="1.2" style="left:60px;top:120px">บางบ่อ · สมุทรปราการ</div>
+  <div class="ev" data-at="3" data-sub="15" data-off="3.4" style="left:60px;right:60px;top:960px"><div class="k">กาแฟ · มัทฉะ · อาหารเสริมผิว · เครื่องสำอาง</div>
+   <div style="display:flex;align-items:flex-end;justify-content:space-between"><h3>มูลค่า ~12 ล้านบาท</h3><div style="font-size:30px;font-weight:700;color:${RED}">ขายออนไลน์</div></div></div>`;
+};
+S.fda=function(){
+  const pk=(x,c,id,lab)=>`<g transform="translate(${x} 640)" ${id?`id="${id}"`:''}><rect x="-170" y="-230" width="340" height="460" rx="14" fill="${c}"/><rect x="-170" y="-230" width="340" height="80" rx="14" fill="rgba(0,0,0,.2)"/>
+    <text y="-30" font-size="56" font-weight="700" fill="#fff" text-anchor="middle">${lab}</text><rect x="-140" y="120" width="280" height="80" rx="8" fill="#fff"/>
+    <text y="148" font-size="18" font-weight="600" fill="#555" text-anchor="middle">เลข อย.</text><text y="184" font-size="28" font-weight="700" fill="#111" text-anchor="middle" font-family="Courier Prime">xx-x-xxxxx-x-xxxx</text></g>`;
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect x="-500" y="-500" width="2100" height="2900" fill="#0b0b12"/>
+   ${pk(290,'#2f8a5a','','ของจริง')}${pk(790,'#8a2f4a','fd-fake','???')}
+   <g id="fd-clone"><rect x="-140" y="-40" width="280" height="80" rx="8" fill="#fff" stroke="${YLW}" stroke-width="5"/><text y="12" font-size="28" font-weight="700" fill="#111" text-anchor="middle" font-family="Courier Prime">xx-x-xxxxx-x-xxxx</text></g>
+   <rect id="fd-beam" x="150" y="740" width="280" height="8" fill="${GRN}" opacity="0"/>
+   <g id="fd-check" opacity="0" transform="translate(290 380)"><circle r="44" fill="#2f9a55"/><path d="M-20 0 L-4 16 L22 -16" stroke="#fff" stroke-width="10" fill="none" stroke-linecap="round"/></g></g></svg>
+  ${src('บก.ปคบ. · อย. 2569')}
+  <div class="stamp" data-at="2" data-sub="17" data-off="2.4" style="left:640px;top:540px">สวมเลข</div></div>`;
+};
+S.capsule=function(){
+  let pw='';const r=rng(14);for(let i=0;i<40;i++)pw+=`<circle class="cp-p" data-x="${(r()-.5)*200}" data-y="${r()*160}" r="${3+r()*6}" fill="#f4f1ea"/>`;
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect x="-500" y="-500" width="2100" height="2900" fill="#07070b"/><circle cx="540" cy="560" r="330" fill="${RED}" opacity=".08"/>
+   <g transform="translate(540 560) rotate(-20)"><g id="cp-l"><rect x="-150" y="-62" width="150" height="124" rx="0" fill="#f4f1ea"/><rect x="-150" y="-62" width="124" height="124" rx="62" fill="#f4f1ea"/><rect x="-120" y="-44" width="90" height="16" rx="8" fill="rgba(255,255,255,.6)"/></g>
+    <g id="cp-r"><path d="M0 -62 L88 -62 A62 62 0 0 1 88 62 L0 62Z" fill="${RED}"/></g></g><g id="cp-pw" transform="translate(540 560)">${pw}</g>
+   <g id="cp-lab" opacity="0"><text x="540" y="380" font-size="64" font-weight="700" fill="#fff" text-anchor="middle" font-family="Courier Prime">SIBUTRAMINE</text></g>
+   <g id="cp-ecg" opacity="0"><rect x="80" y="800" width="920" height="240" rx="18" fill="#0a1410" stroke="#1d3a2a" stroke-width="4"/>
+    <path id="cp-line" d="${ecgPath(100,980,940,9,110)}" fill="none" stroke="${GRN}" stroke-width="6"/><text id="cp-bpm" x="960" y="860" font-size="40" font-weight="700" fill="${RED}" text-anchor="end" font-family="Courier Prime">BPM 148</text>
+    <path id="cp-heart" d="M0 18 C-30 -8 -26 -34 0 -22 C26 -34 30 -8 0 18Z" fill="${RED}" transform="translate(150 850) scale(1.4)"/></g></g></svg>
+  ${src('ถอนจากตลาดสหรัฐฯ/EU ปี 2010 · อย.')}
+  <div class="stamp" data-at="2" data-sub="18" data-off="2.0" style="left:600px;top:430px">ถอนจากตลาด 2010</div>
+  <div class="ev" data-at="5" data-sub="18" data-off="4.8" style="left:120px;right:120px;top:1080px;text-align:center;padding:14px 20px"><h3 style="color:${RED}">วัตถุออกฤทธิ์ประเภท 1</h3></div>`;
+};
+S.case=function(){
+  const pins=[[280,380],[800,360],[700,820],[330,860]];
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect x="-500" y="-500" width="2100" height="2900" fill="#3a2a1e"/>
+   ${Array.from({length:60},(_,i)=>`<circle cx="${(i*137)%1080}" cy="${(i*263)%1200+100}" r="3" fill="#2a1c12"/>`).join('')}
+   <polyline id="cs-str" points="${pins.map(p=>p.join(',')).join(' ')} ${pins[0].join(',')}" fill="none" stroke="${RED}" stroke-width="5"/>
+   <g transform="translate(420 520) rotate(-4)"><rect x="-150" y="-120" width="300" height="300" fill="#f4f1ea"/><rect x="-128" y="-98" width="256" height="200" fill="#b07a46"/><rect x="-30" y="-98" width="60" height="200" fill="#d9c08a" opacity=".7"/>
+    <text y="150" font-size="28" font-weight="700" fill="#333" text-anchor="middle" font-family="Courier Prime">RETURNED</text></g>
+   <g data-at="1" data-sub="19" data-off="1.0"><g transform="translate(560 470) rotate(12)"><rect x="-100" y="-34" width="200" height="68" rx="8" fill="none" stroke="${RED}" stroke-width="7"/><text y="14" font-size="40" font-weight="700" fill="${RED}" text-anchor="middle">ตีกลับ</text></g></g>
+   <g transform="translate(780 640) rotate(5)"><rect x="-120" y="-80" width="240" height="160" fill="#f4f1ea"/><text y="-20" font-size="30" font-weight="700" fill="#111" text-anchor="middle">สกลนคร</text><text y="30" font-size="30" font-weight="700" fill="#111" text-anchor="middle">นนทบุรี</text></g>
+   ${pins.map((p,i)=>`<g class="cs-pin" data-i="${i}" transform="translate(${p[0]} ${p[1]})"><circle r="20" fill="${RED}"/><circle r="8" fill="#fff" opacity=".6" cx="-6" cy="-6"/></g>`).join('')}</g></svg>
+  ${src('ไทยรัฐ · เดลินิวส์ · มติชน, 2569')}
+  <div class="ev" data-at="3" data-sub="19" data-off="1.9" style="left:60px;right:60px;top:1000px"><div class="k">ปคบ.–อย.–สสจ. · ค้น 4 จุด</div>
+   <div style="display:flex;align-items:flex-end;justify-content:space-between"><div class="n">18 กระปุก</div><div style="font-size:30px;font-weight:700">ไม่มีเลข อย.</div></div></div>`;
+};
+S.twist=function(){
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect x="-500" y="-500" width="2100" height="2900" fill="#08080e"/>
+   <g id="tw-split"><rect x="0" y="0" width="540" height="1920" fill="#14101a"/><rect x="540" y="0" width="540" height="1920" fill="#0e1418"/>
+    <text x="270" y="640" font-size="54" font-weight="700" fill="#8b8796" text-anchor="middle">ทุนต่างชาติ</text><text x="810" y="640" font-size="54" font-weight="700" fill="#8b8796" text-anchor="middle">คนไทยเอง</text>
+    <text x="540" y="660" font-size="90" font-weight="700" fill="${RED}" text-anchor="middle">=</text></g>
+   <g id="tw-full" opacity="0"><rect x="-500" y="-500" width="2100" height="2900" fill="#050507"/>
+    <text x="540" y="700" font-size="170" font-weight="700" fill="#fff" text-anchor="middle">ความโลภ</text><text x="540" y="900" font-size="120" font-weight="700" fill="${RED}" text-anchor="middle">ไม่มีสัญชาติ</text></g></g></svg>
+  <div class="ev" id="tw-card" data-at="2" data-sub="21" data-off="0.5" style="left:60px;right:60px;top:920px"><div class="k">มิ.ย. 2567 · ปคบ.–อย. ค้น 6 จุด · ผู้ต้องหาคนไทย</div>
+   <div style="display:flex;align-items:flex-end;justify-content:space-between"><div class="n">16 ล้าน+</div><div style="font-size:32px;font-weight:700">ผสมไซบูทรามีน</div></div></div>`;
+};
+S.protect=function(){
+  const ui=`<rect x="-238" y="-456" width="476" height="130" rx="44" fill="#2f8a5a"/><rect x="-238" y="-380" width="476" height="54" fill="#2f8a5a"/>
+   <text x="0" y="-368" font-size="34" font-weight="700" fill="#fff" text-anchor="middle">ตรวจเลข อย.</text>
+   <rect x="-200" y="-270" width="400" height="80" rx="40" fill="#fff" stroke="#cfcad6" stroke-width="4"/><text id="pr-typed" x="-170" y="-218" font-size="30" fill="#111" font-family="Courier Prime"></text>
+   <g id="pr-ok" opacity="0"><rect x="-200" y="-150" width="400" height="160" rx="20" fill="#e6f6ec"/><circle cx="-130" cy="-70" r="40" fill="#2f9a55"/><path d="M-150 -70 L-136 -56 L-110 -86" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round"/><text x="-70" y="-60" font-size="32" font-weight="700" fill="#2f6a45">พบในระบบ</text></g>
+   <g id="pr-no" opacity="0"><rect x="-200" y="40" width="400" height="160" rx="20" fill="#fde8ea"/><circle cx="-130" cy="120" r="40" fill="${RED}"/><path d="M-148 102 L-112 138 M-112 102 L-148 138" stroke="#fff" stroke-width="9" stroke-linecap="round"/><text x="-70" y="130" font-size="32" font-weight="700" fill="${RED}">ไม่พบ / ไม่ตรง</text></g>
+   <rect x="-200" y="250" width="400" height="90" rx="45" fill="#111"/><text x="0" y="308" font-size="36" font-weight="700" fill="#fff" text-anchor="middle">สายด่วน 1556</text>`;
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect x="-500" y="-500" width="2100" height="2900" fill="#0b0b12"/>
+   <g id="pr-phone" transform="translate(540 640)">${phone(ui)}</g>
+   <g id="pr-flags" opacity="0"><rect x="-500" y="-500" width="2100" height="2900" fill="#07070b" opacity=".9"/>
+    ${['ถูกเกินจริง','เห็นผลไวเกินจริง','ไม่มีเลข อย. / เลขไม่ตรง'].map((l,i)=>`<g class="pr-f" data-i="${i}" transform="translate(140 ${460+i*170})"><rect width="800" height="130" rx="20" fill="#15151d" stroke="${RED}" stroke-width="5"/><circle cx="70" cy="65" r="34" fill="${RED}"/><text x="70" y="80" font-size="44" font-weight="700" fill="#fff" text-anchor="middle">!</text><text x="130" y="82" font-size="46" font-weight="700" fill="#fff">${l}</text></g>`).join('')}</g>
+   <g id="pr-final" opacity="0"><rect x="-500" y="-500" width="2100" height="2900" fill="#050507"/>
+    <text x="540" y="600" font-size="80" font-weight="700" fill="#8b8796" text-anchor="middle">ตรวจเลข อย. ได้ใน</text><text x="540" y="790" font-size="200" font-weight="700" fill="${YLW}" text-anchor="middle" font-family="Courier Prime">10s</text>
+    <g id="pr-last" opacity="0"><text x="540" y="1000" font-size="96" font-weight="700" fill="#fff" text-anchor="middle">แต่ชีวิต</text><text x="540" y="1130" font-size="96" font-weight="700" fill="${RED}" text-anchor="middle">ย้อนคืนไม่ได้</text></g></g></g></svg>
+  ${src('อย. · Oryor Smart Application · สายด่วน 1556')}`;
+};
+S.end=function(){
+  return `<svg viewBox="0 0 1080 1920"><rect width="1080" height="1920" fill="#050507"/></svg>
+  <div data-at="0.2" style="position:absolute;left:60px;right:60px;top:560px;text-align:center">
+   <div style="font-size:100px;font-weight:700;line-height:1.1">อาหารเสริม<span style="color:${RED}">เถื่อน</span></div>
+   <div style="font-size:40px;font-weight:600;color:#cfc9d8;letter-spacing:6px;margin-top:10px">เส้นทางมรณะ</div>
+   <div style="width:120px;height:6px;background:${RED};margin:40px auto"></div>
+   <div style="font-size:24px;color:#8b8796;line-height:1.7">ข้อมูลจากแถลงข่าว อย. · กรมศุลกากร · บก.ปคบ.<br>และรายงานข่าว ไทยรัฐ · เดลินิวส์ · มติชน · ไทยพีบีเอส (2567–2569)<br>
+   ผู้ต้องหาในคดีถือว่าบริสุทธิ์จนกว่าศาลจะพิพากษา</div></div>`;
+};
+
+/* ---------- build ---------- */
+const D=window.TLD,TL=D.tl,DUR=D.dur,HITS=D.hits||[];
+SUBS.forEach((s,i)=>{if(D.subs[i])D.subs[i].push(s)});
+const world=$('world'),L={};
+for(const k in S){const d=document.createElement('div');d.className='scene';d.innerHTML=S[k]();world.appendChild(d);L[k]={el:d,art:d.querySelector('.art'),pops:[...d.querySelectorAll('[data-at]')]}}
+const subsEl=$('subs');
+D.subs.forEach((s,i)=>{const d=document.createElement('div');d.className='sub';d.id='sub'+i;const sp=D.spk&&D.spk[i];d.innerHTML=(sp=='u'?'<div class="tag u">ลุง</div>':sp=='n'?'<div class="tag n">หลาน</div>':'')+`<div class="th">${s[3]}</div>`;subsEl.appendChild(d);s.push([...d.querySelectorAll('b,r')])});
+(function(){const c=document.createElement('canvas');c.width=540;c.height=960;const x=c.getContext('2d'),im=x.createImageData(540,960),r=rng(99);
+  for(let i=0;i<im.data.length;i+=4){const v=r()*255;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255}x.putImageData(im,0,0);
+  $('grain').style.background=`url(${c.toDataURL()})`;$('grain').style.backgroundSize='1080px 1920px'})();
+const at=(sel,root)=>root.querySelectorAll(sel);
+let CURA=0,CURD=1,CURL=null;const M=i=>D.subs[i][0]-CURA;
+function cam(keys,lt){let c=keys[0].slice(1);for(let i=1;i<keys.length;i++)if(lt>=keys[i][0]){const p=ease((lt-keys[i][0])/0.5);c=c.map((v,j)=>v+(keys[i][j+1]-v)*p)}
+  CURL.art.style.transform=`translate(540px,760px) scale(${c[2]}) translate(${-c[0]}px,${-c[1]}px)`;CURL.camSet=true}
+function counter(el,v){el.textContent=Math.round(v).toLocaleString('en-US')}
+const sh=(e,on)=>e.setAttribute('opacity',on)
+
+const CAMS={wide:[540,760,1],uncle:[270,800,1.75],nephew:[840,800,1.75],nephewClose:[860,700,2.3]};
+const show=(id,on)=>{const e=$(id);if(e)e.style.display=on?'':'none'};
+const blink=(t,o)=>{const p=(t+o)%3.7;return p<.14?Math.max(.1,Math.abs(p-.07)/.07):1};
+function curSub(t){for(let i=0;i<D.subs.length;i++){const s=D.subs[i];if(s&&t>=s[0]&&t<s[1])return [s[0],s[1],D.spk[i]]}return null}
+const U={
+ room(lt,t,o){
+  const cams=o.cams;let ci=0;for(let i=0;i<cams.length;i++)if(t>=cams[i][0])ci=i;
+  let c=CAMS[cams[ci][1]];
+  if(ci>0){const p=ease((t-cams[ci][0])/0.9),a=CAMS[cams[ci-1][1]];c=a.map((v,i)=>v+(c[i]-v)*p)}
+  const drift=1+lt*0.006;
+  $('room-cam').setAttribute('transform',`translate(540 760) scale(${c[2]*drift}) translate(${-c[0]} ${-c[1]})`);
+  const sp=curSub(t),talk=Math.floor(t*7)%2==0;
+  const ut=sp&&sp[2]=='u'&&talk,nt=sp&&sp[2]=='n'&&talk;
+  show('U-mo',ut);show('U-mc',!ut);
+  const pose=o.pose;
+  show('N-armDown',pose=='down'||pose=='shock');show('N-armHold',pose=='pill'||pose=='capsule');show('N-armScratch',pose=='scratch');
+  show('N-bottle',pose=='pill');show('N-capsule',pose=='capsule');
+  show('N-q',pose=='scratch');show('N-x',pose=='shock');
+  const shock=pose=='shock';
+  show('N-mo',nt||shock);show('N-mc',!(nt||shock));
+  $('N-mo').setAttribute('ry',shock?13:6);$('N-mo').setAttribute('rx',shock?10:8);
+  $('N-bl').setAttribute('d',pose=='scratch'?'M-27 -18 L-10 -12':shock?'M-27 -20 L-10 -22':'M-27 -10 L-10 -12');
+  $('N-br').setAttribute('d',shock?'M10 -22 L27 -20':'M10 -12 L27 -10');
+  $('N-q').setAttribute('y',-70-Math.sin(t*4)*6);$('N-x').setAttribute('transform',`translate(0 ${-Math.abs(Math.sin(t*9))*6})`);
+  $('N-eyes').setAttribute('transform',`translate(0 6) scale(1 ${shock?1.3:blink(t,0)}) translate(0 -6)`);
+  $('U-eyes').setAttribute('transform',`translate(0 6) scale(1 ${blink(t,1.6)}) translate(0 -6)`);
+  $('N').setAttribute('transform',`translate(0 ${nt?Math.sin(t*14)*1.5:0})`);
+  $('U').setAttribute('transform',`translate(0 ${ut?Math.sin(t*12)*1.5:Math.sin(t*1.2)*1})`);
+  $('rcat-tail').setAttribute('transform',`rotate(${Math.sin(t*2.2)*14} -56 6)`);
+  $('rcat-body').setAttribute('ry',30+Math.sin(t*2)*1.5);
+  at('.star',L.room.el).forEach(s=>s.setAttribute('opacity',.35+.65*Math.abs(Math.sin(t*1.3+ +s.dataset.p))));
+  $('U-s1').setAttribute('transform',`translate(${Math.sin(t*2)*3} ${-((t*14)%14)})`);$('U-s2').setAttribute('transform',`translate(${Math.sin(t*2+1)*3} ${-((t*14+7)%14)})`);
+  $('room-cone').setAttribute('opacity',.92+Math.sin(t*9)*.04);
+ },
+ open(lt){
+  cam([[0,540,700,1.0],[M(0)+0.2,540,820,1.45],[M(1),540,760,0.95],[M(2),540,700,1.0],[M(3),440,985,2.4]],lt);
+  const tp=clamp((lt-M(0)-0.9)/0.4);$('op-tap').setAttribute('r',tp>0&&tp<1?20+tp*90:0);$('op-tap').setAttribute('opacity',1-tp);
+  $('op-btn').setAttribute('fill',lt>M(0)+0.9&&lt<M(0)+1.1?'#a00d1e':RED);
+  const bx=ease((lt-M(1)-0.1)/0.35);sh($('op-box'),bx);$('op-box').setAttribute('transform',`translate(0 ${(1-bx)*-260})`);
+  const dm=ease((lt-M(2)+1.2)/1.0);sh($('op-dim'),dm*.72);
+  const e=$('op-ecg'),len=e.getTotalLength(),p=ease((lt-M(2)+1.4)/2.2);e.style.strokeDasharray=len;e.style.strokeDashoffset=len*(1-p);sh(e,p>0?1:0);
+  e.setAttribute('stroke',lt>M(2)+0.5?RED:GRN);
+  const u=ease((lt-M(3)-0.5)/0.4);$('op-ul').setAttribute('x2',-204+u*140);$('op-fda').setAttribute('fill',u>0?RED:'#888');
+  if(lt>M(3)+0.6)$('op-fda').textContent='ไม่มี'; else $('op-fda').textContent='—';
+ },
+ montage(lt){
+  let cur=0;for(let i=4;i<=8;i++)if(lt>=M(i))cur=i-4;
+  for(let i=0;i<5;i++)$('mo-p'+i).setAttribute('opacity',i==cur?1:0);
+  const st=M(cur+4),pp=1.18-0.18*ease((lt-st)/0.35);cam([[0,540,700,pp]],0);
+  const line=lt-M(4);const x=160+clamp(line/1.6)*760;$('mo-dot').setAttribute('cx',x);$('mo-dot').setAttribute('cy',700);
+  $('mo-scan').setAttribute('y',560+((lt*600)%380));
+  const r=rng(Math.floor(lt*12));$('mo-num').textContent=Array.from('00-0-00000-0-0000').map(c=>c=='-'?'-':Math.floor(r()*10)).join('');
+ },
+ title(lt){
+  const g=(lt<0.6)||((lt%1.3)<0.12);const r=rng(Math.floor(lt*30));
+  $('ti-r').setAttribute('transform',g?`translate(${(r()-.5)*40} ${(r()-.5)*14})`:'translate(-4 0)');$('ti-c').setAttribute('transform',g?`translate(${(r()-.5)*40} ${(r()-.5)*14})`:'translate(4 0)');
+  $('ti-bar').setAttribute('opacity',g?.25:0);$('ti-bar').setAttribute('y',r()*1200+300);$('ti-bar').setAttribute('height',r()*60+10);
+  cam([[0,540,760,1.25],[0.01,540,760,1.0]],lt);
+ },
+ airport(lt){
+  const bx=-200+ease(lt/1.6)*740;$('ap-bag').setAttribute('transform',`translate(${bx} 850)`);
+  const sp=(lt*1.2)%1;$('ap-scan').setAttribute('x',270+sp*532);sh($('ap-xr'),ease((lt-1.2)/0.6));sh($('ap-alert'),lt>(M(12)+0)+0.3&&(lt*4%1)<.6?1:0);
+  cam([[0,540,600,1.0],[(M(12)+0)+0.2,540,380,1.35],[(M(12)+2.4),540,700,0.95]],lt);
+ },
+ trick(lt){
+  const bigx=-150+ease(lt/0.8)*560;$('tr-big').setAttribute('transform',`translate(${Math.min(bigx,410)} 760)`);sh($('tr-x'),ease((lt-0.8)/0.25));
+  at('.tr-s',L.trick.el).forEach(s=>{const i=+s.dataset.i;const x=((lt*420+i*90)%1500)-200;s.setAttribute('transform',`translate(${x} 730)`);s.setAttribute('opacity',lt>0.9?1:0)});
+  $('tr-light').setAttribute('fill',lt>0.8&&lt<1.2?RED:GRN);
+ },
+ suitcase(lt){cam([[0,540,560,0.9],[(M(14)+1.6),540,640,1.6],[(M(14)+1.6)+1.4,540,700,1.0]],lt)},
+ wh2(lt){const z=3.2-2.2*ease((lt-0.1)/2.2);cam([[0,540,760,z]],0);
+  const a=(Math.sin(lt*9)+1)/2;$('sr1').setAttribute('opacity',a);$('sr2').setAttribute('opacity',1-a);
+  const p=ease((lt-(M(15)+2.0))/1.6);sh($('wh2-n'),lt>(M(15)+2.0)-0.1?1:0);counter($('wh2-n'),1073327*p)},
+ fda(lt){const p=ease((lt-(M(17)+1.6)-0.1)/0.9);const sx=290,ex=790;$('fd-clone').setAttribute('transform',`translate(${sx+(ex-sx)*p} ${804-Math.sin(p*Math.PI)*160})`);sh($('fd-clone'),lt>(M(17)+1.6)?1:0);
+  sh($('fd-check'),ease((lt-(M(17)+0)-0.6)/0.3));$('fd-beam').setAttribute('opacity',lt>(M(17)+0)+0.2&&lt<(M(17)+0)+1.2?.9:0);$('fd-beam').setAttribute('y',740+((lt*300)%80));
+  cam([[0,540,640,1.0],[(M(17)+0)+0.2,290,760,1.6],[(M(17)+1.6),540,640,1.0],[(M(17)+3.4),540,700,0.95]],lt)},
+ capsule(lt){
+  cam([[0,540,560,1.3],[(M(18)+0),540,600,1.0],[(M(18)+3.0),540,820,1.05]],lt);
+  const o=ease((lt-(M(18)+0))/0.4);$('cp-l').setAttribute('transform',`translate(${-o*90} 0) rotate(${-o*12})`);$('cp-r').setAttribute('transform',`translate(${o*90} 0) rotate(${o*12})`);
+  at('.cp-p',L.capsule.el).forEach(p=>{p.setAttribute('cx',+p.dataset.x*o);p.setAttribute('cy',+p.dataset.y*o*1.4);p.setAttribute('opacity',o)});
+  sh($('cp-lab'),ease((lt-(M(18)+0)-0.2)/0.3));sh($('cp-ecg'),ease((lt-(M(18)+3.0))/0.3));
+  $('cp-line').setAttribute('transform',`translate(${-((lt*520)%98)} 0)`);$('cp-heart').setAttribute('transform',`translate(150 850) scale(${1.4+((lt*2.5)%1<.2?.35:0)})`);
+  $('cp-bpm').textContent='BPM '+(140+Math.floor((lt*7)%12));
+ },
+ case(lt){cam([[0,540,600,1.2],[(M(19)+1.5),540,620,1.0]],lt);at('.cs-pin',L.case.el).forEach(p=>p.setAttribute('opacity',ease((lt-(M(19)+1.5)-p.dataset.i*.2)/.1)));
+  const s=$('cs-str'),len=s.getTotalLength(),p=ease((lt-(M(19)+1.5))/1.0);s.style.strokeDasharray=len;s.style.strokeDashoffset=len*(1-p)},
+ twist(lt){const g=(lt%0.9)<0.08;$('tw-split').setAttribute('transform',g?`translate(${Math.sin(lt*90)*18} 0)`:'');const fu=ease((lt-(M(22)+0)+0.1)/0.15);sh($('tw-full'),fu);$('tw-card').style.opacity=Math.min(+$('tw-card').style.opacity,1-fu);
+  cam([[0,540,760,1.0],[(M(22)+0),540,800,1.25],[(M(22)+0)+0.01,540,800,1.0]],lt)},
+ protect(lt){const n='12-1-23456-1-0001';$('pr-typed').textContent=n.slice(0,Math.floor(clamp((lt-(M(23)+0)-0.4)/1.2)*n.length));
+  sh($('pr-ok'),ease((lt-(M(23)+0)-1.7)/0.2));sh($('pr-no'),ease((lt-(M(23)+0)-2.4)/0.2));
+  sh($('pr-flags'),ease((lt-(M(24)+0)+0.1)/0.2));at('.pr-f',L.protect.el).forEach(f=>f.setAttribute('opacity',ease((lt-(M(24)+0)-f.dataset.i*.45)/.15)));
+  sh($('pr-final'),ease((lt-(M(25)+0)+0.1)/0.2));sh($('pr-last'),ease((lt-(M(25)+1.6))/0.25));
+  cam([[0,540,640,1.0],[(M(23)+0)+0.3,540,460,1.35],[(M(24)+0),540,700,1.0],[(M(25)+1.6),540,1060,1.2]],lt)},
+ end(){}
+};
+
+const FADE=.18;
+window.seek=function(t){
+  for(const k in L){L[k].el.style.opacity=0;L[k].el.style.zIndex=0}
+  TL.forEach((e,idx)=>{const [k,a,b,o]=e;if(t<a||t>=b+FADE||(t>=b&&idx==TL.length-1))return;
+    const nx=TL[idx+1];if(t>=b&&nx&&nx[0]==k)return;
+    const Ly=L[k],lt=t-a;Ly.el.style.opacity=a==0?1:ease((t-a)/FADE);Ly.el.style.zIndex=10+idx;
+    Ly.pops.forEach(p=>{const pa=p.dataset.sub&&D.subs[+p.dataset.sub]?D.subs[+p.dataset.sub][0]-a+(+p.dataset.off||0):+p.dataset.at,x=(lt-pa)/.22,e2=ease(x);
+      p.style.opacity=e2;if(p.classList.contains('src'))return;
+      const rot=p.classList.contains('stamp')?' rotate(-8deg)':'';p.style.transform=`scale(${x<0?1.3:1.3-.3*back(x)})${rot}`});
+    CURA=a;CURD=b-a;CURL=Ly;Ly.camSet=false;U[k](lt,t,o||{});
+    if(!Ly.camSet&&Ly.art)Ly.art.style.transform=`translate(540px,760px) scale(${1+lt*0.012}) translate(-540px,-760px)`;
+  });
+  D.subs.forEach((s,i)=>{const el=$('sub'+i);if(!s[3]){el.style.opacity=0;return}
+    const o=clamp((t-s[0])/.1)*clamp((s[1]-t)/.08);el.style.opacity=o;el.style.transform=`translateY(${(1-ease((t-s[0])/.18))*26}px)`;
+    if(o>0)s[4].forEach((w,k)=>{const x=(t-s[0]-.08-k*.12)/.25;w.style.transform=`scale(${x<0?1.35:1.35-.35*back(x)})`})});
+  let sx=0,sy=0,fl=0;for(const h of HITS){const d=t-h;if(d>=0&&d<.28){const a=(1-d/.28)*16;sx+=Math.sin(d*170)*a;sy+=Math.cos(d*130)*a}if(d>=0&&d<.14)fl=Math.max(fl,.45*(1-d/.14))}
+  world.style.transform=`translate(${sx}px,${sy}px)`;$('flash').style.opacity=fl;
+  $('black').style.opacity=clamp((t-(DUR-1.0))/1.0);
+};
+window.DUR=DUR;
+seek(0);
+</script></body></html>

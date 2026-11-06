@@ -1,0 +1,522 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+html,body{margin:0;background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#0d0d18;font-family:'Prompt',sans-serif}
+.scene{position:absolute;inset:0;opacity:0;overflow:hidden}
+.scene>svg{position:absolute;left:0;top:0;width:1080px;height:1920px}
+.art{position:absolute;inset:0;transform-origin:540px 760px}
+#subs{position:absolute;left:0;right:0;top:1170px;height:400px;z-index:500}
+.sub{position:absolute;left:50px;right:50px;top:0;text-align:center;opacity:0}
+.tag{display:inline-block;font-size:26px;font-weight:600;padding:2px 18px;border-radius:999px;margin-bottom:10px;letter-spacing:1px}
+.tag.u{background:#d9a53a;color:#2a1d08}.tag.n{background:#5fb3e0;color:#08202c}
+.th{font-weight:700;font-size:62px;color:#fff;line-height:1.35;text-shadow:0 4px 0 rgba(0,0,0,.4),0 0 28px rgba(0,0,0,.75)}
+.hl{color:#ffd24a}
+.bad{background:#d63a4a;padding:0 14px;border-radius:10px;text-shadow:none}
+.en{display:inline-block;margin-top:16px;font-weight:400;font-size:31px;color:#f2ede4;background:rgba(14,14,24,.66);padding:8px 22px;border-radius:12px;line-height:1.35}
+.year{position:absolute;left:50px;top:90px;background:#efe6d2;border-radius:10px;padding:14px 26px 12px 22px;box-shadow:0 12px 30px rgba(0,0,0,.45);border-left:8px solid #c9a24a;color:#2b261f}
+.year .yk{font-size:26px;font-weight:600;display:flex;align-items:center;gap:8px}
+.year .yv{font-family:'Courier Prime',monospace;font-size:66px;line-height:1;margin-top:4px;letter-spacing:2px}
+.year .yv small{font-family:'Prompt';font-size:28px;font-weight:600;letter-spacing:0;margin-right:8px}
+.card{position:absolute;background:#f4eddc;color:#2b261f;border-radius:16px;box-shadow:0 18px 40px rgba(0,0,0,.45);padding:24px 30px;border-left:10px solid #d9a53a}
+.card h3{margin:0;font-size:38px;font-weight:700;line-height:1.3}
+.card .k{font-size:19px;letter-spacing:2px;color:#8a7b66;font-weight:600;text-transform:uppercase}
+.row{display:flex;justify-content:space-between;gap:24px;font-size:31px;padding:12px 0;border-top:2px solid #e3d9c4}
+.ok{color:#2f9a55;font-weight:700}.no{color:#d63a4a;font-weight:700}
+.src{position:absolute;left:50%;transform:translateX(-50%);top:1090px;font-size:22px;color:#efe6d6;background:rgba(0,0,0,.5);padding:7px 18px;border-radius:999px;white-space:nowrap}
+.src b{background:#efe6d6;color:#222;font-size:16px;padding:2px 8px;border-radius:4px;margin-right:10px;letter-spacing:1px}
+.chip{position:absolute;font-size:30px;font-weight:600;padding:6px 22px;border-radius:999px}
+#grain{position:absolute;inset:0;z-index:400;opacity:.07;pointer-events:none;mix-blend-mode:overlay}
+#vig{position:absolute;inset:0;z-index:401;pointer-events:none;background:radial-gradient(ellipse at 50% 42%,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%)}
+#black{position:absolute;inset:0;z-index:600;background:#000;opacity:0}
+.grid{display:grid;grid-template-columns:repeat(20,1fr);gap:5px;margin-top:16px}
+.grid i{display:block;aspect-ratio:1;border-radius:4px;background:#e3d9c4}
+.grid i.on{background:#f08a3c}
+.strike{position:relative;display:inline-block;color:#b9ad98}
+.strike:after{content:'';position:absolute;left:-6px;top:52%;height:6px;background:#d63a4a;width:var(--w,0%);border-radius:3px}
+</style></head>
+<body>
+<div id="stage">
+  <div id="grain"></div><div id="vig"></div>
+  <div id="subs"></div>
+  <div id="black"></div>
+</div>
+<script src="timeline.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=clamp(x);return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2};
+const back=x=>{x=clamp(x);const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const ramp=(t,a,b)=>clamp((t-a)/(b-a));
+function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const PIN='<svg width="22" height="26" viewBox="0 0 22 26"><path d="M11 25C11 25 2 15 2 9.5A9 9 0 0 1 20 9.5C20 15 11 25 11 25Z" fill="none" stroke="#2b261f" stroke-width="2.5"/><circle cx="11" cy="9.5" r="3" fill="#2b261f"/></svg>';
+const year=(k,v,pre='ค.ศ.')=>`<div class="year" data-at="0.3"><div class="yk">${PIN} ${k}</div><div class="yv"><small>${pre}</small>${v}</div></div>`;
+const src=s=>`<div class="src" data-at="0.8"><b>SOURCE</b>${s}</div>`;
+
+/* ---------- characters ---------- */
+function eyes(P,c){return `<g id="${P}-eyes"><ellipse cx="-18" cy="6" rx="5" ry="6.5" fill="${c}"/><ellipse cx="18" cy="6" rx="5" ry="6.5" fill="${c}"/></g>`}
+function nephew(){
+  const skin='#e8b48c',shirt='#f2efe8';
+  return `<g id="N">
+  <rect x="-80" y="-20" width="160" height="230" rx="26" fill="#262636"/>
+  <rect x="-6" y="250" width="12" height="150" fill="#1b1b26"/>
+  <path d="M-70 430 L70 430" stroke="#1b1b26" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="-70" cy="436" r="9" fill="#111"/><circle cx="70" cy="436" r="9" fill="#111"/><circle cx="0" cy="436" r="9" fill="#111"/>
+  <rect x="-58" y="200" width="116" height="52" rx="20" fill="#2f3a5a"/>
+  <rect x="-52" y="236" width="38" height="146" rx="14" fill="#2f3a5a"/><rect x="14" y="236" width="38" height="146" rx="14" fill="#2f3a5a"/>
+  <ellipse cx="-36" cy="388" rx="26" ry="11" fill="#2a2420"/><ellipse cx="36" cy="388" rx="26" ry="11" fill="#2a2420"/>
+  <rect x="-12" y="34" width="24" height="26" fill="${skin}"/>
+  <path d="M-62 215 L-54 82 Q-52 60 -30 55 L30 55 Q52 60 54 82 L62 215 Z" fill="${shirt}"/>
+  <path d="M-16 56 L0 82 L16 56" fill="none" stroke="#d6d1c6" stroke-width="4"/>
+  <line x1="0" y1="82" x2="0" y2="210" stroke="#dcd7cc" stroke-width="3"/>
+  <g><path d="M-50 86 L-66 160 L-42 214" fill="none" stroke="${shirt}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="-40" cy="218" r="13" fill="${skin}"/></g>
+  <g id="N-armDown"><path d="M50 86 L66 160 L42 214" fill="none" stroke="${shirt}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="218" r="13" fill="${skin}"/></g>
+  <g id="N-armHold"><path d="M50 86 L84 150 L66 74" fill="none" stroke="${shirt}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+     <g id="N-bottle"><rect x="52" y="22" width="34" height="46" rx="6" fill="#fff"/><rect x="50" y="12" width="38" height="14" rx="4" fill="#e0782f"/><rect x="52" y="34" width="34" height="18" fill="#f08a2c"/><text x="69" y="48" font-size="13" font-weight="700" text-anchor="middle" fill="#fff">C</text></g>
+     <g id="N-capsule"><rect x="54" y="40" width="34" height="16" rx="8" fill="#f2a33a"/><rect x="54" y="40" width="17" height="16" rx="8" fill="#fbd27a"/></g>
+     <circle cx="66" cy="70" r="13" fill="${skin}"/></g>
+  <g id="N-armScratch"><path d="M50 86 L88 120 L52 -30" fill="none" stroke="${shirt}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="-36" r="13" fill="${skin}"/></g>
+  <circle cx="-50" cy="6" r="10" fill="${skin}"/><circle cx="50" cy="6" r="10" fill="${skin}"/>
+  <circle cx="0" cy="0" r="50" fill="${skin}"/>
+  <path d="M-53 2 Q-58 -62 0 -62 Q58 -62 53 2 Q46 -30 14 -32 Q-14 -40 -53 2 Z" fill="#1d1b22"/>
+  ${eyes('N','#222')}
+  <g id="N-brows"><path id="N-bl" d="M-27 -10 L-10 -12" stroke="#1d1b22" stroke-width="5" stroke-linecap="round"/><path id="N-br" d="M10 -12 L27 -10" stroke="#1d1b22" stroke-width="5" stroke-linecap="round"/></g>
+  <path id="N-mc" d="M-10 28 Q0 33 10 28" stroke="#7a3a2a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <ellipse id="N-mo" cx="0" cy="30" rx="8" ry="6" fill="#6b2a2a"/>
+  <text id="N-q" x="60" y="-70" font-size="70" font-weight="700" fill="#ffd24a">?</text>
+  <text id="N-x" x="44" y="-66" font-size="64" font-weight="700" fill="#ffd24a">!?</text>
+  </g>`;
+}
+function uncle(){
+  const skin='#dfa77c',card='#7a5236';
+  return `<g id="U">
+  <rect x="-115" y="-50" width="230" height="300" rx="46" fill="#2f6b55"/>
+  <rect x="-115" y="-50" width="230" height="40" rx="20" fill="#357a61"/>
+  <rect x="-80" y="210" width="160" height="70" rx="18" fill="#2a5f4b"/>
+  <rect x="-58" y="200" width="116" height="52" rx="20" fill="#4a4038"/>
+  <rect x="-52" y="236" width="38" height="140" rx="14" fill="#4a4038"/><rect x="14" y="236" width="38" height="140" rx="14" fill="#4a4038"/>
+  <ellipse cx="-36" cy="382" rx="26" ry="11" fill="#1f1a16"/><ellipse cx="36" cy="382" rx="26" ry="11" fill="#1f1a16"/>
+  <rect x="-140" y="140" width="56" height="150" rx="24" fill="#2a5f4b"/><rect x="84" y="140" width="56" height="150" rx="24" fill="#2a5f4b"/>
+  <rect x="-110" y="280" width="16" height="40" fill="#3a2a20"/><rect x="94" y="280" width="16" height="40" fill="#3a2a20"/>
+  <rect x="-12" y="34" width="24" height="26" fill="${skin}"/>
+  <path d="M-62 215 L-56 82 Q-54 60 -30 55 L30 55 Q54 60 56 82 L62 215 Z" fill="${card}"/>
+  <path d="M-18 56 L0 120 L18 56 Z" fill="#efe9dd"/>
+  <circle cx="-6" cy="140" r="4" fill="#4a3020"/><circle cx="-6" cy="170" r="4" fill="#4a3020"/>
+  <path d="M-52 86 L-70 160 L-42 214" fill="none" stroke="${card}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="-40" cy="218" r="13" fill="${skin}"/>
+  <path d="M52 86 L74 168 L36 150" fill="none" stroke="${card}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+  <g id="U-steam" opacity=".5"><path id="U-s1" d="M24 112 Q16 96 26 82 Q34 68 26 54" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/><path id="U-s2" d="M42 112 Q50 98 42 84 Q34 70 42 58" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/></g>
+  <path d="M14 120 L54 120 L50 152 Q34 160 18 152 Z" fill="#f2efe6"/><path d="M54 128 Q66 132 54 144" stroke="#f2efe6" stroke-width="5" fill="none"/>
+  <circle cx="28" cy="152" r="13" fill="${skin}"/>
+  <circle cx="-50" cy="6" r="10" fill="${skin}"/><circle cx="50" cy="6" r="10" fill="${skin}"/>
+  <circle cx="0" cy="0" r="50" fill="${skin}"/>
+  <path d="M-52 10 Q-60 -36 -30 -50 Q-44 -20 -40 14 Z" fill="#f1eee8"/><path d="M52 10 Q60 -36 30 -50 Q44 -20 40 14 Z" fill="#f1eee8"/>
+  <path d="M-30 -46 Q0 -60 30 -46 Q0 -54 -30 -46Z" fill="#f1eee8"/>
+  ${eyes('U','#2a2220')}
+  <circle cx="-18" cy="6" r="14" fill="rgba(255,255,255,.14)" stroke="#3b3330" stroke-width="3"/><circle cx="18" cy="6" r="14" fill="rgba(255,255,255,.14)" stroke="#3b3330" stroke-width="3"/>
+  <line x1="-4" y1="6" x2="4" y2="6" stroke="#3b3330" stroke-width="3"/>
+  <path d="M-28 -14 L-8 -12" stroke="#f1eee8" stroke-width="7" stroke-linecap="round"/><path d="M8 -12 L28 -14" stroke="#f1eee8" stroke-width="7" stroke-linecap="round"/>
+  <ellipse id="U-mo" cx="0" cy="34" rx="8" ry="6" fill="#6b2a2a"/>
+  <path id="U-mc" d="M-9 34 Q0 39 9 34" stroke="#7a3a2a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <path d="M-22 26 Q0 14 22 26 Q12 32 0 28 Q-12 32 -22 26Z" fill="#f4f1ea"/>
+  </g>`;
+}
+function cat(id){
+  return `<g id="${id}">
+   <path id="${id}-tail" d="M-56 6 Q-110 10 -100 -30" stroke="#d9802f" stroke-width="16" fill="none" stroke-linecap="round"/>
+   <ellipse id="${id}-body" cx="0" cy="0" rx="64" ry="30" fill="#e58e3e"/>
+   <path d="M-20 -26 Q-14 0 -22 26 M0 -30 Q6 0 0 30 M20 -27 Q26 0 20 27" stroke="#c46e25" stroke-width="7" fill="none"/>
+   <circle cx="56" cy="-8" r="25" fill="#e58e3e"/>
+   <path d="M38 -24 L42 -50 L58 -30 Z M60 -30 L76 -48 L78 -22 Z" fill="#e58e3e"/>
+   <path d="M46 -8 Q51 -4 56 -8 M62 -8 Q67 -4 72 -8" stroke="#5a3010" stroke-width="3" fill="none"/>
+   <circle cx="62" cy="2" r="3" fill="#c0505a"/></g>`;
+}
+
+/* ---------- scenes ---------- */
+const S={};
+S.room=function(){
+  const r=rng(7);let city='',stars='';
+  for(let i=0;i<16;i++){const bw=34+r()*46,bh=120+r()*300,x=550+i*32;city+=`<rect x="${x}" y="${770-bh}" width="${bw}" height="${bh}" fill="#171a3c"/>`;
+    for(let yy=770-bh+14;yy<760;yy+=26)for(let xx=x+6;xx<x+bw-8;xx+=14)if(r()<.32)city+=`<rect x="${xx}" y="${yy}" width="6" height="10" fill="#ffd479" opacity="${.5+r()*.5}"/>`;}
+  for(let i=0;i<34;i++)stars+=`<circle class="star" cx="${570+r()*450}" cy="${170+r()*300}" r="${1+r()*2.2}" fill="#fff" data-p="${r()*6}"/>`;
+  let books='';const bc=['#c9563c','#e0a53a','#4f7fa8','#7a9a5a','#8a5aa0','#d9d0bb','#3f6a62'];
+  for(let s=0;s<5;s++){let x=46;while(x<200){const w=14+r()*16,h=90+r()*40;books+=`<rect x="${x}" y="${386+s*150-h}" width="${w}" height="${h}" fill="${bc[Math.floor(r()*bc.length)]}"/>`;x+=w+3}}
+  return `<svg viewBox="0 0 1080 1920"><defs>
+   <linearGradient id="rg-glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14183f"/><stop offset="1" stop-color="#3b2d6e"/></linearGradient>
+   <linearGradient id="rg-floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2148"/><stop offset="1" stop-color="#0f0c1e"/></linearGradient>
+   <radialGradient id="rg-lamp" cx=".5" cy="0" r="1"><stop offset="0" stop-color="#ffe2a0" stop-opacity=".55"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient>
+   <clipPath id="rc-win"><rect x="570" y="170" width="450" height="600"/></clipPath></defs>
+   <g id="room-cam">
+   <rect x="-800" y="-600" width="2700" height="1670" fill="#2c2550"/>
+   <rect x="-800" y="1060" width="2700" height="1500" fill="url(#rg-floor)"/>
+   <rect x="-800" y="1052" width="2700" height="10" fill="#3a3168"/>
+   <rect x="560" y="160" width="470" height="620" fill="#3d3570"/>
+   <g clip-path="url(#rc-win)"><rect x="570" y="170" width="450" height="600" fill="url(#rg-glass)"/>${stars}
+     <path d="M940 250 A40 40 0 1 0 975 310 A32 32 0 1 1 940 250Z" fill="#f4ecd0"/>${city}</g>
+   <rect x="792" y="170" width="6" height="600" fill="#3d3570"/>
+   <path d="M530 150 L590 150 Q575 480 600 800 L530 800 Z" fill="#5b3f86"/><path d="M1060 150 L1000 150 Q1015 480 990 800 L1060 800 Z" fill="#5b3f86"/>
+   <rect x="30" y="230" width="190" height="830" fill="#3a2a22"/><rect x="40" y="240" width="170" height="810" fill="#2a1e18"/>
+   ${books}${[0,1,2,3,4].map(s=>`<rect x="40" y="${386+s*150}" width="170" height="10" fill="#3a2a22"/>`).join('')}
+   <rect x="60" y="196" width="110" height="36" rx="6" fill="#121218"/><text x="115" y="223" font-size="24" fill="#59e08a" text-anchor="middle" font-family="Courier Prime">23:40</text>
+   <rect x="296" y="290" width="130" height="130" fill="#c9a77a"/><rect x="306" y="300" width="110" height="110" fill="#f0dcc0"/><circle cx="361" cy="360" r="26" fill="#e07a4a"/>
+   <line x1="560" y1="-600" x2="560" y2="590" stroke="#15122a" stroke-width="4"/>
+   <path id="room-cone" d="M510 650 L610 650 L760 880 L360 880 Z" fill="url(#rg-lamp)"/>
+   <path d="M520 592 L600 592 L626 652 L494 652 Z" fill="#e8c071"/><ellipse cx="560" cy="652" rx="66" ry="8" fill="#ffe9b0"/>
+   <ellipse cx="560" cy="1112" rx="430" ry="62" fill="#5e2b63"/><ellipse cx="560" cy="1112" rx="390" ry="48" fill="none" stroke="#7a3f80" stroke-width="4"/>
+   <g transform="translate(560 1085)">${cat('rcat')}</g>
+   <g transform="translate(240 620) scale(1.3)">${uncle()}</g>
+   <rect x="420" y="858" width="290" height="20" rx="4" fill="#8a5a3c"/><rect x="440" y="878" width="16" height="182" fill="#6a4430"/><rect x="674" y="878" width="16" height="182" fill="#6a4430"/>
+   <path d="M470 858 Q470 818 505 818 Q540 818 540 858 Z" fill="#c4553a"/><rect x="497" y="806" width="16" height="14" fill="#c4553a"/><path d="M540 838 L566 826" stroke="#c4553a" stroke-width="7"/>
+   <rect x="600" y="850" width="96" height="8" fill="#9aa0aa"/><path d="M696 856 L712 782" stroke="#5c6270" stroke-width="10" stroke-linecap="round"/>
+   <g transform="translate(860 600) scale(1.3)">${nephew()}</g>
+   </g></svg>`;
+};
+S.ship=function(){
+  const wc=['#6a8aa4','#5a7a94','#4c6c86','#456380','#3d5a76','#36516c'];
+  let waves='';for(let i=0;i<6;i++){let d=`M-240 ${800+i*80}`;for(let x=-240;x<1400;x+=120)d+=' q30 -18 60 0 t60 0';waves+=`<path class="wave" data-i="${i}" d="${d}" stroke="${wc[i]}" stroke-width="7" fill="none" opacity=".8"/>`}
+  const sail=(mx,ty,h)=>`<path d="M${mx-92} ${ty} Q${mx} ${ty-22} ${mx+92} ${ty} L${mx+82} ${ty+h} Q${mx} ${ty+h+22} ${mx-82} ${ty+h}Z" fill="#efe3c4"/>`;
+  return `<svg viewBox="0 0 1080 1920"><defs><linearGradient id="sh-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b3355"/><stop offset="1" stop-color="#d98d5a"/></linearGradient></defs>
+  <g class="art"><rect width="1080" height="780" fill="url(#sh-sky)"/><circle cx="800" cy="700" r="74" fill="#ffd39a"/>
+  <rect y="760" width="1080" height="1160" fill="#2f4862"/><rect y="760" width="1080" height="400" fill="#36516c"/>
+  <ellipse cx="800" cy="790" rx="120" ry="10" fill="#ffd39a" opacity=".5"/><ellipse cx="800" cy="830" rx="70" ry="6" fill="#ffd39a" opacity=".35"/>
+  <g id="sh-ship"><g transform="translate(450 790) scale(.78)">
+   <rect x="-136" y="-470" width="14" height="460" fill="#3a2618"/><rect x="-6" y="-540" width="16" height="530" fill="#3a2618"/><rect x="124" y="-440" width="14" height="430" fill="#3a2618"/>
+   ${sail(-129,-430,150)}${sail(-129,-250,170)}${sail(2,-500,160)}${sail(2,-310,190)}${sail(131,-400,140)}${sail(131,-230,150)}
+   <path d="M10 -540 L70 -525 L10 -510Z" fill="#c8282a"/><path d="M260 -30 L380 -120" stroke="#3a2618" stroke-width="10"/>
+   <path d="M-280 -20 L280 -20 L222 100 L-222 100 Z" fill="#5a3a24"/><rect x="-280" y="-36" width="560" height="20" fill="#7a5236"/>
+   <rect x="-230" y="22" width="460" height="12" fill="#c99a52"/>${[-160,-90,-20,50,120,190].map(x=>`<circle cx="${x}" cy="62" r="11" fill="#2a1d14"/>`).join('')}
+  </g></g>
+  <g id="sh-waves">${waves}</g></g></svg>
+  ${year('มหาสมุทร','1500–1800')}
+  <div class="card" data-at="2.0" data-sub="5" style="right:50px;top:300px;width:400px"><div class="k">Scurvy</div><h3>โรคลักปิดลักเปิด</h3>
+   <div class="row"><span>เหงือกบวม เลือดออก</span><span class="no">●</span></div><div class="row"><span>แผลไม่หาย</span><span class="no">●</span></div><div class="row"><span>อ่อนเพลีย ฟันโยก</span><span class="no">●</span></div></div>
+  <div class="card" data-at="4" data-sub="6" style="left:90px;right:90px;top:850px;text-align:center;border-left:none;border-top:10px solid #d63a4a">
+   <div class="k">ลูกเรือที่เสียชีวิต · ค.ศ. 1500–1800</div><div style="font-size:84px;font-weight:700;color:#d63a4a;line-height:1.15">~2,000,000</div><div style="font-size:22px;color:#8a7b66">ตัวเลขประมาณการ</div></div>
+  ${src('Bown, Scurvy, 2003 · ประมาณการ')}`;
+};
+S.lind=function(){
+  const items=[['ไซเดอร์','cider'],['กรดเจือจาง','acid'],['น้ำส้มสายชู','vinegar'],['น้ำทะเล','sea'],['ส้ม + เลมอน','citrus'],['เครื่องเทศบด','spice']];
+  const icon={cider:'<path d="M-40 -50 L30 -50 L26 40 L-36 40Z" fill="#b8742e"/><path d="M30 -30 Q62 -18 30 22" stroke="#b8742e" stroke-width="10" fill="none"/><ellipse cx="-5" cy="-52" rx="40" ry="12" fill="#f8f2e2"/>',
+   acid:'<path d="M-20 -50 L20 -50 L20 -24 L42 40 L-42 40 L-20 -24Z" fill="#8a6ab0"/><rect x="-24" y="-66" width="48" height="18" rx="4" fill="#4a3a5a"/>',
+   vinegar:'<path d="M-30 40 L-30 -14 Q-30 -34 -12 -40 L-12 -64 L12 -64 L12 -40 Q30 -34 30 -14 L30 40Z" fill="#a8463a"/><text y="24" font-size="38" font-weight="700" fill="#f8f2e2" text-anchor="middle">V</text>',
+   sea:'<path d="M-60 -14 q15 -16 30 0 t30 0 t30 0 t30 0" stroke="#3a7ab8" stroke-width="10" fill="none"/><path d="M-60 22 q15 -16 30 0 t30 0 t30 0 t30 0" stroke="#3a7ab8" stroke-width="10" fill="none"/>',
+   citrus:'<circle cx="-24" cy="2" r="40" fill="#f08a2c"/><ellipse cx="36" cy="10" rx="32" ry="24" fill="#f4d23a"/><path d="M-24 -38 l8 -14" stroke="#4a7a2a" stroke-width="5"/>',
+   spice:'<path d="M-50 -6 L50 -6 Q46 42 0 46 Q-46 42 -50 -6Z" fill="#8a7a6a"/><path d="M10 -6 L50 -56" stroke="#6a5a4a" stroke-width="12" stroke-linecap="round"/><circle cx="-14" cy="-12" r="6" fill="#b8742e"/><circle cx="8" cy="-14" r="6" fill="#b8742e"/>'};
+  const face=(x,h)=>`<g transform="translate(${x} 0)"><circle r="20" fill="#e0b08a"/><path d="M-20 -6 Q0 -30 20 -6Z" fill="#3a3a5a"/><circle cx="-7" cy="-1" r="2.6" fill="#2a2018"/><circle cx="7" cy="-1" r="2.6" fill="#2a2018"/><path d="${h?'M-7 8 Q0 15 7 8':'M-7 11 Q0 5 7 11'}" stroke="#5a3a2a" stroke-width="2.6" fill="none"/></g>`;
+  let tiles='';items.forEach((it,i)=>{const x=75+(i%3)*320,y=330+Math.floor(i/3)*340;
+   tiles+=`<g data-at="${(0.8+i*0.35).toFixed(2)}"><g id="lind-t${i}" transform="translate(${x} ${y})"><rect width="290" height="300" rx="18" fill="#f0e6d0"/>
+    <rect class="lt-ring" x="-6" y="-6" width="302" height="312" rx="22" fill="none" stroke="#2f9a55" stroke-width="10" opacity="0"/>
+    <g transform="translate(145 100)">${icon[it[1]]}</g><text x="145" y="200" font-size="32" font-weight="700" fill="#2b261f" text-anchor="middle">${it[0]}</text>
+    <g transform="translate(145 252)"><g class="lf-sad">${face(-26,0)}${face(26,0)}</g>${i==4?`<g class="lf-happy" opacity="0">${face(-26,1)}${face(26,1)}</g>`:''}</g></g></g>`});
+  let planks='';for(let y=0;y<1920;y+=90)planks+=`<rect y="${y}" width="1080" height="86" fill="${(y/90)%2?'#5e4632':'#55402e'}"/>`;
+  return `<svg viewBox="0 0 1080 1920"><g class="art">${planks}${tiles}</g></svg>
+  ${year('เรือ HMS Salisbury','1747')}
+  ${src('James Lind, A Treatise of the Scurvy, 1753')}`;
+};
+S.lime=function(){
+  const barrel=(x,col,label)=>`<g transform="translate(${x} 760)"><path d="M-110 -150 Q-132 0 -110 150 L110 150 Q132 0 110 -150Z" fill="#8a5a34"/>
+   <path d="M-60 -150 Q-70 0 -60 150 M0 -150 L0 150 M60 -150 Q70 0 60 150" stroke="#6a4226" stroke-width="5" fill="none"/>
+   <rect x="-124" y="-104" width="248" height="14" fill="#3a3a3a"/><rect x="-124" y="90" width="248" height="14" fill="#3a3a3a"/>
+   <rect x="-92" y="-48" width="184" height="90" rx="10" fill="${col}"/><text y="14" font-size="42" font-weight="700" text-anchor="middle" fill="#2a2018">${label}</text></g>`;
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect width="1080" height="1920" fill="#4a3c2e"/><rect y="910" width="1080" height="1010" fill="#33291f"/>
+   ${barrel(270,'#f4d23a','LEMON')}<text x="270" y="980" font-size="34" font-weight="700" fill="#efe6d2" text-anchor="middle" font-family="Courier Prime">1795</text>
+   <g data-at="2" data-sub="12"><path d="M420 760 L640 760" stroke="#efe6d2" stroke-width="8" stroke-linecap="round"/><path d="M626 742 L650 760 L626 778" fill="none" stroke="#efe6d2" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+   ${barrel(810,'#8fc24a','LIME')}<text x="810" y="980" font-size="34" font-weight="700" fill="#efe6d2" text-anchor="middle" font-family="Courier Prime">1860s</text></g></g></svg>
+  ${year('กองทัพเรืออังกฤษ','1795')}
+  <div class="chip" data-at="3" data-sub="12" data-off="2.2" style="left:690px;top:540px;background:#8fc24a;color:#1f3010">ไลมีย์ · LIMEY</div>
+  <div class="card" data-at="4" data-sub="13" style="right:50px;top:290px;width:470px;padding:18px 26px"><div class="k">Vitamin C · เทียบกัน</div><h3 style="font-size:32px">น้ำผลไม้ที่แจกบนเรือ</h3>
+   <div class="row" style="align-items:center"><span style="width:150px">เลมอน</span><span style="flex:1;height:22px;background:#e3d9c4;border-radius:11px;overflow:hidden"><span style="display:block;height:100%;width:92%;background:#e8c22a"></span></span></div>
+   <div class="row" style="align-items:center"><span style="width:150px">มะนาวไลม์</span><span style="flex:1;height:22px;background:#e3d9c4;border-radius:11px;overflow:hidden"><span style="display:block;height:100%;width:28%;background:#6fa83a"></span></span></div>
+   <div style="font-size:19px;color:#8a7b66">ภาพเปรียบเทียบคร่าว ๆ</div></div>
+  ${src('Royal Navy rations · lemon → West Indian lime')}`;
+};
+S.arctic=function(){
+  const r=rng(21);let snow='';for(let i=0;i<46;i++)snow+=`<circle class="snow" data-x="${r()*1080}" data-y="${r()*1300}" data-s="${.6+r()*.8}" r="${2+r()*4}" fill="#fff" opacity=".9"/>`;
+  return `<svg viewBox="0 0 1080 1920"><defs><linearGradient id="ar-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5f7896"/><stop offset="1" stop-color="#c9d8e4"/></linearGradient><linearGradient id="ar-dark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d2838" stop-opacity="0"/><stop offset=".25" stop-color="#1d2838" stop-opacity=".85"/><stop offset="1" stop-color="#1d2838"/></linearGradient></defs>
+  <g class="art"><rect width="1080" height="1920" fill="url(#ar-sky)"/>
+   <path d="M0 900 L140 640 L260 760 L400 560 L560 820 L700 600 L860 780 L1000 620 L1080 700 L1080 900Z" fill="#e6eef5"/><path d="M400 560 L470 900 L330 900Z M700 600 L760 900 L640 900Z" fill="#c8d6e2"/>
+   <rect y="900" width="1080" height="1020" fill="#eef4f8"/><path d="M0 960 Q300 930 600 970 T1080 950" stroke="#c8d6e2" stroke-width="6" fill="none"/>
+   <g transform="translate(560 930) rotate(-7)"><rect x="-96" y="-330" width="12" height="310" fill="#3a2618"/><rect x="40" y="-300" width="12" height="280" fill="#3a2618"/>
+    <path d="M-200 -20 L200 -20 L160 60 L-160 60Z" fill="#4a3020"/><rect x="-200" y="-34" width="400" height="18" fill="#fff"/><rect x="-104" y="-336" width="28" height="10" rx="5" fill="#fff"/><rect x="32" y="-306" width="28" height="10" rx="5" fill="#fff"/></g>
+   <path d="M330 990 Q560 950 800 990 L800 1010 L330 1010Z" fill="#eef4f8"/>
+   <rect y="1060" width="1080" height="860" fill="url(#ar-dark)"/><g id="ar-snow">${snow}</g></g></svg>
+  ${year('ขั้วโลกเหนือ','1875')}
+  <div class="card" data-at="1.0" style="right:50px;top:300px;width:460px"><div class="k">British Arctic Expedition</div><h3>คณะสำรวจขั้วโลก</h3>
+   <div class="row"><span>ดื่มน้ำมะนาวทุกวัน</span><span class="ok">✓</span></div>
+   <div class="row" data-at="2.6"><span>ลักปิดลักเปิดระบาด</span><span class="no">✗</span></div></div>
+  ${src('British Arctic Expedition, 1875–76')}`;
+};
+S.gpig=function(){
+  return `<svg viewBox="0 0 1080 1920"><defs><linearGradient id="lg-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a5844"/><stop offset="1" stop-color="#4a3c2e"/></linearGradient></defs>
+  <g class="art"><rect width="1080" height="1920" fill="url(#lg-g)"/><rect y="1000" width="1080" height="920" fill="#33291f"/><rect y="1000" width="1080" height="12" fill="#43362a"/>
+  <g id="gp" transform="translate(320 930)"><ellipse rx="112" ry="62" fill="#c98a4a"/><path d="M-20 -60 Q24 -20 -8 60 L62 52 Q92 0 62 -52Z" fill="#f4ecd8"/>
+   <circle cx="96" cy="-12" r="36" fill="#c98a4a"/><ellipse cx="80" cy="-46" rx="15" ry="10" fill="#e8a0a0"/><circle cx="106" cy="-20" r="6" fill="#1a1a1a"/><circle id="gp-nose" cx="130" cy="-4" r="5" fill="#7a4a4a"/>
+   <ellipse cx="-62" cy="54" rx="18" ry="8" fill="#a86a3a"/><ellipse cx="52" cy="58" rx="18" ry="8" fill="#a86a3a"/></g>
+  <path d="M410 990 L530 990 L515 960 L425 960Z" fill="#8a6a4a"/>${Array.from({length:9},(_,i)=>`<circle cx="${435+i*9}" cy="${958-(i%3)*3}" r="5" fill="#d9b86a"/>`).join('')}
+  <rect x="120" y="640" width="440" height="360" rx="8" fill="rgba(0,0,0,.12)" stroke="#2a2119" stroke-width="10"/>
+  ${Array.from({length:11},(_,i)=>`<line x1="${158+i*38}" y1="645" x2="${158+i*38}" y2="995" stroke="#2a2119" stroke-width="6"/>`).join('')}
+  <rect x="640" y="860" width="380" height="20" fill="#7a5a3c"/><rect x="660" y="880" width="16" height="120" fill="#5a4230"/><rect x="984" y="880" width="16" height="120" fill="#5a4230"/>
+  <path d="M900 860 L900 790 L880 790 L880 770 L940 770 L940 790 L920 790 L920 860Z" fill="#cfc6b0" opacity=".8"/></g></svg>
+  ${year('นอร์เวย์','1907')}
+  <div class="card" data-at="1.4" style="right:50px;top:300px;width:470px"><div class="k">Holst & Frølich · Experiment</div><h3>หนูตะเภา</h3>
+   <div class="row"><span>กินแต่ธัญพืช</span><span class="no">ป่วย ✗</span></div>
+   <div class="row" data-at="3" data-sub="16"><span>สร้างวิตามินซีเอง</span><span class="no">ไม่ได้ ✗</span></div></div>
+  ${src('Holst & Frølich, 1907')}`;
+};
+S.gene=function(){
+  let a='',b='',rungs='';for(let x=80;x<=1000;x+=8){const y1=380+Math.sin(x/46)*56,y2=380-Math.sin(x/46)*56;const gap=x>470&&x<610;
+   if(!gap){a+=(a?' L':'M')+x+' '+y1.toFixed(1);b+=(b?' L':'M')+x+' '+y2.toFixed(1)}else{a+=' M'+x+' '+y1.toFixed(1);b+=' M'+x+' '+y2.toFixed(1)}
+   if(x%32==0&&!gap)rungs+=`<line x1="${x}" y1="${y1.toFixed(1)}" x2="${x}" y2="${y2.toFixed(1)}" stroke="#4a4670" stroke-width="5"/>`}
+  const list=(items,cls)=>items.map(t=>`<div class="row"><span>${t}</span><span class="${cls}">${cls=='ok'?'✓':'✗'}</span></div>`).join('');
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect width="1080" height="1920" fill="#1d1b2c"/>${rungs}
+   <path d="${a}" stroke="#5fb3e0" stroke-width="10" fill="none" stroke-linecap="round"/><path d="${b}" stroke="#f08a3c" stroke-width="10" fill="none" stroke-linecap="round"/>
+   <g data-at="0.8"><circle cx="540" cy="380" r="52" fill="#d63a4a"/><path d="M516 356 L564 404 M564 356 L516 404" stroke="#fff" stroke-width="10" stroke-linecap="round"/>
+   <text x="540" y="480" font-size="30" font-weight="700" fill="#fff" text-anchor="middle" font-family="Courier Prime">GULO</text></g></g></svg>
+  <div class="chip" data-at="0.2" style="left:50%;transform:translateX(-50%);top:150px;background:#efe6d2;color:#2b261f;white-space:nowrap">ยีนสร้างวิตามินซี</div>
+  <div class="card" data-at="1.0" style="left:50px;top:560px;width:410px"><div class="k">Make their own</div><h3>สร้างเองได้</h3>${list(['หมา','แมว','หนู','วัว'],'ok')}</div>
+  <div class="card" data-at="1.8" style="right:50px;top:560px;width:410px;border-left-color:#d63a4a"><div class="k">Can't</div><h3>สร้างเองไม่ได้</h3>${list(['คน','ลิงหลายชนิด','หนูตะเภา','ค้างคาวผลไม้'],'no')}</div>
+  ${src('Nishikimi et al., 1994 · human GULO pseudogene')}`;
+};
+S.paprika=function(){
+  const pep=(x,y,r)=>`<g transform="translate(${x} ${y}) rotate(${r})"><path d="M-70 0 Q-60 -34 0 -30 Q60 -26 74 6 Q40 30 -10 26 Q-60 22 -70 0Z" fill="#c8282a"/><path d="M-70 0 Q-60 -14 -10 -14" stroke="#e85a4a" stroke-width="6" fill="none"/><path d="M74 6 Q90 -6 98 -20" stroke="#3a7a2a" stroke-width="9" stroke-linecap="round" fill="none"/></g>`;
+  let cr='';const r=rng(4);for(let i=0;i<14;i++)cr+=`<polygon points="${[0,1,2,3,4,5].map(a=>{const R=10+r()*10;return `${(Math.cos(a*1.05)*R).toFixed(1)},${(Math.sin(a*1.05)*R).toFixed(1)}`}).join(' ')}" transform="translate(${-50+r()*100} ${-10-r()*40})" fill="#f8f8f0" stroke="#c9d3dd" stroke-width="2"/>`;
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect width="1080" height="1920" fill="#4a3c2e"/><rect y="880" width="1080" height="1040" fill="#33291f"/>
+   <rect x="60" y="860" width="960" height="20" fill="#7a5a3c"/>
+   <g data-at="2" data-sub="20">${pep(240,820,-8)}${pep(380,826,6)}${pep(310,786,-2)}${pep(200,778,14)}${pep(440,786,-12)}</g>
+   <g transform="translate(800 860)"><path d="M-30 -230 L30 -230 L30 -150 L110 -10 Q120 0 104 0 L-104 0 Q-120 0 -110 -10 L-30 -150Z" fill="rgba(220,235,245,.25)" stroke="#c9d3dd" stroke-width="6"/>
+    <path d="M-80 -40 L80 -40 L104 -6 Q110 0 100 0 L-100 0 Q-110 0 -104 -6Z" fill="#e8a64a" opacity=".55"/><g id="pp-cr">${cr}</g></g></g></svg>
+  ${year('ฮังการี','1928–33')}
+  <div class="card" data-at="1.0" style="right:50px;top:290px;width:480px"><div class="k">Albert Szent-Györgyi</div><h3>สกัดสารลึกลับ</h3>
+   <div class="row" data-at="1.4"><span>ต่อมหมวกไตวัว</span><span class="no">ได้นิดเดียว</span></div>
+   <div class="row" data-at="5" data-sub="21"><span>พริกปาปริก้า</span><span class="ok">ได้เป็นกิโล ✓</span></div></div>
+  ${src('Szent-Györgyi · Szeged, Hungary')}`;
+};
+S.nobel=function(){
+  const pts=[0,1,2,3,4].map(i=>{const a=-Math.PI/2+i*2*Math.PI/5;return [540+110*Math.cos(a),470+110*Math.sin(a)]});
+  return `<svg viewBox="0 0 1080 1920"><defs><radialGradient id="rg-med2" cx=".4" cy=".35"><stop offset="0" stop-color="#ffe9a0"/><stop offset="1" stop-color="#c99a2a"/></radialGradient></defs>
+  <g class="art"><rect width="1080" height="1920" fill="#2a2320"/>
+   <g id="nb-mol"><polygon points="${pts.map(p=>p.map(v=>v.toFixed(1)).join(',')).join(' ')}" fill="none" stroke="#ffcf4a" stroke-width="8"/>
+    <text x="${pts[0][0]}" y="${pts[0][1]-22}" font-size="34" font-weight="700" fill="#ffcf4a" text-anchor="middle">O</text>
+    <line x1="${pts[1][0]}" y1="${pts[1][1]}" x2="${pts[1][0]+70}" y2="${pts[1][1]-30}" stroke="#ffcf4a" stroke-width="6"/><text x="${pts[1][0]+80}" y="${pts[1][1]-30}" font-size="30" fill="#ffcf4a">=O</text>
+    <line x1="${pts[2][0]}" y1="${pts[2][1]}" x2="${pts[2][0]+50}" y2="${pts[2][1]+60}" stroke="#ffcf4a" stroke-width="6"/><text x="${pts[2][0]+40}" y="${pts[2][1]+96}" font-size="30" fill="#ffcf4a">OH</text>
+    <line x1="${pts[3][0]}" y1="${pts[3][1]}" x2="${pts[3][0]-50}" y2="${pts[3][1]+60}" stroke="#ffcf4a" stroke-width="6"/><text x="${pts[3][0]-90}" y="${pts[3][1]+96}" font-size="30" fill="#ffcf4a">HO</text>
+    <line x1="${pts[4][0]}" y1="${pts[4][1]}" x2="${pts[4][0]-80}" y2="${pts[4][1]-40}" stroke="#ffcf4a" stroke-width="6"/><text x="${pts[4][0]-250}" y="${pts[4][1]-44}" font-size="26" fill="#ffcf4a" font-family="Courier Prime">CH(OH)CH₂OH</text>
+    <text x="540" y="690" font-size="44" font-weight="700" fill="#efe6d2" text-anchor="middle" font-family="Courier Prime">C₆H₈O₆</text></g>
+   <g data-at="3" data-sub="23"><g transform="translate(880 300)"><path d="M-40 -150 L-14 -60 L14 -60 L40 -150Z" fill="#3a5aa0"/><circle r="88" fill="url(#rg-med2)" stroke="#a87a1a" stroke-width="6"/>
+    <text y="-14" font-size="26" font-weight="700" fill="#5a3e08" text-anchor="middle" letter-spacing="3">NOBEL</text><text y="28" font-size="40" font-weight="700" fill="#5a3e08" text-anchor="middle" font-family="Courier Prime">1937</text></g></g></g></svg>
+  ${year('ฮังการี · สหรัฐฯ','1932')}
+  <div class="card" data-at="1.2" style="left:110px;right:110px;top:780px;text-align:center"><div class="k">Ascorbic acid · กรดแอสคอร์บิก</div>
+   <div style="font-size:64px;font-weight:700;line-height:1.2"><span style="color:#d63a4a">a</span>-scorbic</div>
+   <div class="row" style="justify-content:center;gap:40px"><span><b style="color:#d63a4a">a-</b> = ไม่ / ต้าน</span><span><b>scorbutus</b> = ลักปิดลักเปิด</span></div></div>
+  ${src('Szent-Györgyi & Svirbely; King & Waugh, 1932 · Nobel 1937')}`;
+};
+S.factory=function(){
+  let bottles='';for(let i=0;i<7;i++)bottles+=`<g class="cb" data-i="${i}"><path d="M-34 0 L-34 -120 Q-34 -134 -20 -138 L20 -138 Q34 -134 34 -120 L34 0Z" fill="#f6f3ea"/><rect x="-26" y="-156" width="52" height="20" rx="5" fill="#e0782f"/>
+   <circle cx="0" cy="-70" r="24" fill="#f08a2c"/><text y="-58" font-size="32" font-weight="700" text-anchor="middle" fill="#fff">C</text></g>`;
+  let tabs='';for(let j=0;j<12;j++)tabs+=`<ellipse class="tab" data-j="${j}" rx="14" ry="9" fill="#f6a24a"/>`;
+  let rol='';for(let i=0;i<12;i++)rol+=`<circle cx="${i*96+20}" cy="1018" r="18" fill="#5a4a3a" stroke="#2a2119" stroke-width="4"/>`;
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect width="1080" height="1920" fill="#3d3428"/><rect y="1040" width="1080" height="880" fill="#2a2219"/>
+   <path d="M380 300 L700 300 L600 460 L480 460Z" fill="#7a7a82"/><rect x="480" y="460" width="120" height="30" fill="#5a5a60"/><text x="540" y="390" font-size="40" font-weight="700" fill="#efe6d2" text-anchor="middle">C</text>
+   <g id="fa-tabs">${tabs}</g><g id="fa-belt">${bottles}</g><rect y="1000" width="1080" height="40" fill="#4a3c2e"/>${rol}</g></svg>
+  ${year('สวิตเซอร์แลนด์','1934')}
+  <div class="card" data-at="1.0" style="right:50px;top:140px;width:330px;padding:18px 24px"><div class="k">Reichstein process</div><h3 style="font-size:32px">ผลิตในโรงงาน</h3>
+   <div class="row"><span>ราคา</span><span class="ok">ถูกลง ✓</span></div></div>
+  ${src('Reichstein process, 1933 · mass production 1934')}`;
+};
+S.pauling=function(){
+  let pb='';for(let i=0;i<12;i++){const x=690+(i%3)*110,y=600+Math.floor(i/3)*120;pb+=`<g class="pb" data-i="${i}" transform="translate(${x} ${y})"><rect x="-34" y="-50" width="68" height="94" rx="10" fill="#f6f3ea"/><rect x="-30" y="-66" width="60" height="20" rx="5" fill="#e0782f"/><rect x="-34" y="-20" width="68" height="34" fill="#f08a2c"/><text y="4" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">1000mg</text></g>`}
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect width="1080" height="1920" fill="#1b1a2e"/>
+   <g transform="translate(350 650) rotate(-4)"><rect x="-200" y="-280" width="400" height="560" rx="8" fill="#e9dcc0"/><rect x="-176" y="-256" width="352" height="512" fill="none" stroke="#c8282a" stroke-width="4"/>
+    <text y="-150" font-size="64" font-weight="700" fill="#c8282a" text-anchor="middle" font-family="Courier Prime">VITAMIN C</text>
+    <text y="-90" font-size="30" fill="#2b261f" text-anchor="middle" font-family="Courier Prime">and the</text>
+    <text y="-30" font-size="44" font-weight="700" fill="#2b261f" text-anchor="middle" font-family="Courier Prime">COMMON COLD</text>
+    <line x1="-120" y1="20" x2="120" y2="20" stroke="#2b261f" stroke-width="3"/>
+    <text y="90" font-size="32" font-weight="700" fill="#2b261f" text-anchor="middle" font-family="Courier Prime">LINUS PAULING</text>
+    <text y="200" font-size="28" fill="#6a5d4a" text-anchor="middle" font-family="Courier Prime">1970</text></g>
+   <g data-at="1.0">${[0,1].map(i=>`<g transform="translate(${620+i*110} 340)"><circle r="48" fill="url(#rg-pm)" stroke="#a87a1a" stroke-width="4"/><text y="10" font-size="26" font-weight="700" fill="#5a3e08" text-anchor="middle" font-family="Courier Prime">${i?'1962':'1954'}</text></g>`).join('')}
+    <text x="675" y="440" font-size="26" font-weight="700" fill="#ffcf4a" text-anchor="middle">NOBEL × 2</text></g>
+   <defs><radialGradient id="rg-pm" cx=".4" cy=".35"><stop offset="0" stop-color="#ffe9a0"/><stop offset="1" stop-color="#c99a2a"/></radialGradient></defs>
+   <g id="pa-bottles">${pb}</g></g></svg>
+  ${year('สหรัฐฯ','1970')}
+  ${src('Pauling, Vitamin C and the Common Cold, 1970')}`;
+};
+S.cochrane=function(){
+  const days=Array.from({length:7},(_,i)=>`<span style="flex:1;height:56px;border-radius:8px;background:#e3d9c4;overflow:hidden;position:relative"><span ${i==6?'id="co-last"':''} style="position:absolute;left:0;top:0;bottom:0;width:100%;background:#f08a3c"></span><span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;color:#fff">${i+1}</span></span>`).join('');
+  return `<svg viewBox="0 0 1080 1920"><defs><radialGradient id="rg-co" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#2a2a48"/><stop offset="1" stop-color="#121224"/></radialGradient></defs><rect width="1080" height="1920" fill="url(#rg-co)"/></svg>
+  <div class="card" data-at="0.2" style="left:60px;right:60px;top:170px"><div class="k">Cochrane Review · Hemilä & Chalker 2013</div><h3>วิตามินซี กันหวัดได้จริงไหม?</h3>
+   <div class="row" data-at="1" data-sub="28" data-off="0.6"><span>กินทุกวัน → เป็นหวัดน้อยลง?</span><span class="no">ไม่ ✗</span></div>
+   <div data-at="1.5" data-sub="28" data-off="1.8" style="font-size:21px;color:#8a7b66;margin:-2px 0 8px">ยกเว้นคนที่ใช้ร่างกายหนักมาก เช่น นักวิ่งมาราธอน</div>
+   <div class="row" data-at="3" data-sub="29" data-off="0.2"><span>กินทุกวัน → หายเร็วขึ้น (ผู้ใหญ่)</span><span class="ok">~8%</span></div>
+   <div data-at="3" data-sub="29" data-off="0.5"><div style="display:flex;gap:8px;margin:8px 0 6px">${days}</div><div style="font-size:22px;color:#6a5d4a;margin-bottom:10px">หวัด 7 วัน → ราว 6.5 วัน</div></div>
+   <div class="row" data-at="4" data-sub="29" data-off="2.2"><span>เพิ่งเริ่มกินตอนป่วย</span><span style="color:#8a7b66;font-weight:700">ไม่ชัดเจน</span></div></div>
+  ${src('Hemilä & Chalker, 2013 · Cochrane Database Syst Rev')}`;
+};
+S.guava=function(){
+  const r=rng(9);let seeds='';for(let i=0;i<26;i++){const a=r()*Math.PI*2,d=30+r()*30;seeds+=`<circle cx="${(Math.cos(a)*d).toFixed(1)}" cy="${(Math.sin(a)*d).toFixed(1)}" r="5" fill="#d9c89a"/>`}
+  const bar=(lab,id,w,col,val)=>`<div class="row" style="align-items:center"><span style="width:220px">${lab}</span><span style="flex:1;height:26px;background:#e3d9c4;border-radius:13px;overflow:hidden"><span id="${id}" data-w="${w}" style="display:block;height:100%;width:0;background:${col}"></span></span><span style="width:110px;text-align:right;font-weight:700">${val}</span></div>`;
+  return `<svg viewBox="0 0 1080 1920"><g class="art"><rect width="1080" height="1920" fill="#1f2a1e"/>
+   <g transform="translate(330 420)"><circle r="130" fill="#8cc152"/><circle r="104" fill="#f6f1dc"/>${seeds}<text y="190" font-size="40" font-weight="700" fill="#efe6d2" text-anchor="middle">ฝรั่ง</text></g>
+   <g transform="translate(770 430)"><circle r="104" fill="#f08a2c"/><circle r="84" fill="#f6b04a"/>${[0,1,2,3,4,5,6,7].map(i=>`<line x1="0" y1="0" x2="${(Math.cos(i*Math.PI/4)*84).toFixed(1)}" y2="${(Math.sin(i*Math.PI/4)*84).toFixed(1)}" stroke="#f08a2c" stroke-width="4"/>`).join('')}<text y="180" font-size="40" font-weight="700" fill="#efe6d2" text-anchor="middle">ส้ม</text></g></g></svg>
+  <div class="card" data-at="0.4" style="left:60px;right:60px;top:690px"><div class="k">Vitamin C · mg</div><h3>วิตามินซี (มก.)</h3>
+   <div data-at="0.6" data-sub="30">${bar('ร่างกายต้องการ/วัน','gv-b0',90/260*100,'#5fb3e0','75–90')}</div>
+   <div data-at="2" data-sub="31">${bar('ฝรั่ง 100 ก.','gv-b1',228/260*100,'#6fa83a','228')}${bar('ส้ม 100 ก.','gv-b2',53/260*100,'#f08a2c','53')}</div></div>
+  ${src('USDA FoodData Central · NIH Office of Dietary Supplements')}`;
+};
+S.tip=function(){
+  return `<svg viewBox="0 0 1080 1920"><defs><radialGradient id="rg-tip" cx=".5" cy=".35" r=".6"><stop offset="0" stop-color="#3a3060"/><stop offset="1" stop-color="#121224"/></radialGradient></defs><g class="art"><rect width="1080" height="1920" fill="url(#rg-tip)"/>
+   <g transform="translate(540 300)"><circle r="78" fill="#8cc152"/><circle r="60" fill="#f6f1dc"/><circle r="10" fill="#d9c89a" cx="-14" cy="6"/><circle r="10" fill="#d9c89a" cx="16" cy="-8"/><circle r="10" fill="#d9c89a" cx="8" cy="20"/></g></g></svg>
+  <div class="chip" data-at="0.2" style="left:50%;transform:translateX(-50%);top:470px;background:#d9a53a;color:#2a1d08;font-size:26px">ลุงเฉลย</div>
+  <div class="card" data-at="0.4" style="left:70px;right:70px;top:560px;text-align:center;border-left:none;border-top:10px solid #d9a53a;padding:40px 30px">
+    <div style="font-size:54px;font-weight:700"><span class="strike" id="tip-s">กินเยอะ กันหวัด</span></div>
+    <div class="k" style="margin:6px 0 22px">Not a magic cure</div>
+    <div data-at="1.8" data-sub="35" style="font-size:54px;font-weight:700;line-height:1.35"><span style="color:#6fa83a;border-bottom:6px solid #6fa83a">ผัก-ผลไม้</span>ทุกวัน<br>ป่วยแล้ว<span style="color:#e0682f">พักผ่อน</span></div>
+    <div class="k" data-at="1.8" data-sub="35" style="margin-top:16px;color:#6a8a3a">Real food daily · rest when sick</div></div>`;
+};
+S.next=function(){
+  return `<svg viewBox="0 0 1080 1920"><rect width="1080" height="1920" fill="#101018"/></svg>
+  <div data-at="0.3" style="position:absolute;left:0;right:0;top:760px;text-align:center"><span style="display:inline-block;border:2px solid #efe6d6;color:#efe6d6;border-radius:999px;padding:4px 22px;font-size:28px;font-weight:600"><span style="color:#d63a4a">●</span> ตอนต่อไป</span>
+   <div style="font-size:120px;font-weight:700;color:#fff;margin-top:20px">ลุงเฉลย</div><div style="width:40px;height:5px;background:#d63a4a;margin:10px auto"></div></div>`;
+};
+S.end=function(){
+  return `<svg viewBox="0 0 1080 1920"><defs><radialGradient id="rg-end" cx=".5" cy=".45" r=".5"><stop offset="0" stop-color="#2a1a08"/><stop offset="1" stop-color="#0c0c14"/></radialGradient></defs><rect width="1080" height="1920" fill="url(#rg-end)"/>
+  <g data-at="0.2"><g transform="translate(540 760)"><g id="end-rays">${Array.from({length:12},(_,i)=>`<rect x="-8" y="-150" width="16" height="44" rx="8" fill="#f08a2c" transform="rotate(${i*30})"/>`).join('')}</g><circle r="92" fill="#f08a2c"/><text y="30" font-size="90" font-weight="700" fill="#fff" text-anchor="middle">C</text></g></g></svg>
+  <div data-at="0.5" style="position:absolute;left:0;right:0;top:960px;text-align:center;color:#fff">
+   <div style="font-size:96px;font-weight:700">ลุงเฉลย</div>
+   <div style="font-size:36px;color:#ffd24a;font-weight:600">ตอน: วิตามินซี กันหวัดได้จริงไหม</div>
+   <div style="font-size:22px;color:#9a96aa;margin-top:40px">เนื้อหาเพื่อการศึกษา ไม่ใช่คำแนะนำทางการแพทย์</div></div>`;
+};
+
+/* ---------- timeline ---------- */
+const TL=[];
+let DUR=1;
+const SUBS=[
+[0,0,'n','ลุงครับ… ผมเป็นหวัด<br>เลยกิน<span class=hl>วิตามินซี</span>วันละ 1,000 มก.',"Uncle, I've got a cold, so I'm taking 1,000 mg of vitamin C a day."],
+[0,0,'n','แบบนี้<span class=hl>หายไว</span>แน่','That should get me better fast.'],
+[0,0,'u','รู้ไหม… กว่าโลกจะรู้จักวิตามินซี','You know… before the world knew about vitamin C,'],
+[0,0,'u','คนต้อง<span class=bad>ตายกลางทะเล</span>เป็นล้านคน','millions died at sea.'],
+[0,0,'u','ยุคเรือใบ ออกทะเลทีละหลายเดือน<br>กินแต่ขนมปังแข็งกับเนื้อเค็ม','In the age of sail: months at sea on hard biscuit and salted meat.'],
+[0,0,'u','เหงือกบวม เลือดออก แผลไม่หาย<br>คือ<span class=bad>โรคลักปิดลักเปิด</span>',"Swollen, bleeding gums, wounds that won't heal: scurvy."],
+[0,0,'u','ประมาณกันว่า ลูกเรือตายด้วยโรคนี้<br><span class=hl>กว่า 2 ล้านคน</span>','An estimated two million sailors died of it.'],
+[0,0,'u','ปี 1747 หมอเรือ James Lind<br>แบ่งลูกเรือป่วย 12 คน เป็น 6 คู่',"In 1747, ship's surgeon James Lind split 12 sick sailors into 6 pairs."],
+[0,0,'u','แต่ละคู่ได้ของต่างกัน<br>ไซเดอร์ น้ำส้มสายชู น้ำทะเล…','Each pair got something different: cider, vinegar, seawater…'],
+[0,0,'u','คู่ที่ได้<span class=hl>ส้มกับเลมอน</span><br>หายจนกลับไปทำงานได้ในไม่กี่วัน','The pair given oranges and lemons were back at work within days.'],
+[0,0,'n','งั้นก็…จบแล้วสิครับ','So that solved it?'],
+[0,0,'u','ยังหรอก… กองทัพเรืออังกฤษ<br>ใช้เวลาอีก<span class=hl>เกือบ 50 ปี</span> กว่าจะแจกน้ำเลมอน','Not yet. The Royal Navy took almost 50 more years to hand out lemon juice.'],
+[0,0,'u','ต่อมาเปลี่ยนเป็น<span class=hl>มะนาวไลม์</span>เพราะถูกกว่า<br>ทหารเรืออังกฤษเลยถูกเรียกว่า "ไลมีย์"','Later they switched to cheaper limes — so British sailors became "limeys".'],
+[0,0,'u','แต่มะนาวพวกนั้น<br>มีวิตามินซี<span class=bad>น้อยกว่ามาก</span>','But those limes had far less vitamin C.'],
+[0,0,'u','ปี 1875 คณะสำรวจขั้วโลก<br>ดื่มน้ำมะนาวทุกวัน… แต่<span class=bad>โรคก็กลับมา</span>','In 1875, a polar expedition drank lime juice daily — and scurvy came back.'],
+[0,0,'u','ปี 1907 นักวิจัยนอร์เวย์บังเอิญพบว่า<br><span class=hl>หนูตะเภา</span>ก็เป็นโรคนี้','In 1907, Norwegian researchers found by accident that guinea pigs get scurvy too,'],
+[0,0,'u','เพราะมัน<span class=hl>สร้างวิตามินซีเองไม่ได้</span><br>เหมือนคน',"because, like us, they can't make their own vitamin C."],
+[0,0,'n','เดี๋ยวนะ… สัตว์อื่นสร้างเองได้เหรอครับ','Wait — other animals make their own?'],
+[0,0,'u','หมา แมว สร้างเองได้หมด<br>แต่ยีนตัวนั้นในคนเรา<span class=bad>พังไปนานแล้ว</span>','Dogs and cats do. In humans, that gene broke long ago.'],
+[0,0,'u','ปี 1928 Szent-Györgyi สกัดสารลึกลับ<br>จากต่อมหมวกไต แต่ได้<span class=hl>นิดเดียว</span>','In 1928, Szent-Györgyi isolated a mystery substance from adrenal glands — but only a tiny amount.'],
+[0,0,'u','วันหนึ่งเขาไม่อยากกิน<span class=hl>พริกปาปริก้า</span><br>ที่ภรรยาทำ เลยหอบเข้าแล็บ',"One evening he didn't want the paprika his wife served, so he took it to the lab."],
+[0,0,'u','ปรากฏว่าพริกมีสารนี้<span class=hl>เพียบ</span><br>ได้เป็นกิโล','The peppers were packed with it — he got kilograms.'],
+[0,0,'u','มันคือวิตามินซี ชื่อ<span class=hl>กรดแอสคอร์บิก</span><br>แปลว่า "ต้านลักปิดลักเปิด"','It was vitamin C — named ascorbic acid: "anti-scurvy".'],
+[0,0,'u','ได้<span class=hl>รางวัลโนเบล</span> ปี 1937','It won the 1937 Nobel Prize.'],
+[0,0,'u','ไม่นานก็<span class=hl>สังเคราะห์ได้ในโรงงาน</span><br>ใครก็ซื้อกินได้','Soon factories were making it — anyone could buy it.'],
+[0,0,'u','ปี 1970 Linus Pauling<br>เจ้าของ<span class=hl>โนเบล 2 รางวัล</span> เขียนหนังสือ','In 1970, two-time Nobel laureate Linus Pauling wrote a book'],
+[0,0,'u','บอกให้กิน<span class=bad>วันละหลายพันมิลลิกรัม</span><br>เพื่อกันหวัด… คนทั้งโลกเชื่อตาม','telling people to take thousands of milligrams a day against colds. The world believed him.'],
+[0,0,'n','แล้วมัน<span class=hl>กันหวัดได้จริง</span>ไหมครับ','So does it actually prevent colds?'],
+[0,0,'u','งานวิจัยรวมหลายสิบชิ้นพบว่า<br>กินทุกวัน<span class=bad>ไม่ได้เป็นหวัดน้อยลง</span>',"Dozens of trials combined: taking it daily didn't mean fewer colds."],
+[0,0,'u','แค่<span class=hl>หายเร็วขึ้นนิดหน่อย</span><br>ถ้าเพิ่งเริ่มกินตอนป่วย ผลก็ไม่ชัดเจน','Colds were only slightly shorter — and starting once sick showed no clear benefit.'],
+[0,0,'u','ผู้ใหญ่ต้องการแค่วันละ<br><span class=hl>75–90 มก.</span>','Adults need just 75–90 mg a day.'],
+[0,0,'u','<span class=hl>ฝรั่ง</span> 100 กรัม มีตั้ง 200 กว่า มก.<br>มากกว่าส้มราว 4 เท่า','100 g of guava has over 200 mg — about four times an orange.'],
+[0,0,'n','แล้วที่ผมกินไป<span class=hl>พันนึง</span>ล่ะครับ','Then what about the 1,000 mg I took?'],
+[0,0,'u','ร่างกายดูดซึมไม่หมด<br>ส่วนเกินก็<span class=hl>ออกไปกับปัสสาวะ</span>',"Your body can't absorb it all — the excess leaves in your urine."],
+[0,0,'u','วิตามินซี<span class=bad>ไม่ใช่ยาวิเศษ</span>',"Vitamin C isn't a magic cure."],
+[0,0,'u','กินผักผลไม้ทุกวัน ป่วยก็พักผ่อน<br><span class=hl>ไม่ต้องกินเกินขนาด</span>','Eat fruit and veg every day, rest when sick — no megadoses needed.'],
+];
+if(window.TLD){TLD.subs.forEach((x,i)=>{SUBS[i][0]=x[0];SUBS[i][1]=x[1]});TL.length=0;TLD.tl.forEach(e=>TL.push(e));DUR=TLD.dur}
+let CURA=0,CURD=1;const M=i=>SUBS[i][0]-CURA;
+const CAMS={wide:[540,760,1],uncle:[270,800,1.75],nephew:[840,800,1.75],nephewClose:[860,700,2.3]};
+
+/* ---------- build ---------- */
+const stage=$('stage'),L={};
+for(const k in S){const d=document.createElement('div');d.className='scene';d.id='sc-'+k;d.innerHTML=S[k]();stage.appendChild(d);
+  L[k]={el:d,art:d.querySelector('.art'),pops:[...d.querySelectorAll('[data-at]')]};}
+const subsEl=$('subs');
+SUBS.forEach((s,i)=>{const d=document.createElement('div');d.className='sub';d.id='sub'+i;
+  d.innerHTML=`<div class="tag ${s[2]}">${s[2]=='u'?'ลุง':'หลาน'}</div><div class="th">${s[3]}</div><div class="en">${s[4]}</div>`;subsEl.appendChild(d)});
+(function(){const c=document.createElement('canvas');c.width=540;c.height=960;const x=c.getContext('2d'),im=x.createImageData(540,960),r=rng(99);
+  for(let i=0;i<im.data.length;i+=4){const v=r()*255;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255}x.putImageData(im,0,0);
+  $('grain').style.background=`url(${c.toDataURL()})`;$('grain').style.backgroundSize='1080px 1920px';})();
+const show=(id,on)=>{const e=$(id);if(e)e.style.display=on?'':'none'};
+const at=(sel,root)=>root.querySelectorAll(sel);
+const blink=(t,o)=>{const p=(t+o)%3.7;return p<.14?Math.max(.1,Math.abs(p-.07)/.07):1};
+
+function curSub(t){for(const s of SUBS)if(t>=s[0]&&t<s[1])return s;return null}
+
+const U={
+ room(lt,t,o){
+  const cams=o.cams;let ci=0;for(let i=0;i<cams.length;i++)if(t>=cams[i][0])ci=i;
+  let c=CAMS[cams[ci][1]];
+  if(ci>0){const p=ease((t-cams[ci][0])/0.9),a=CAMS[cams[ci-1][1]];c=a.map((v,i)=>v+(c[i]-v)*p)}
+  const drift=1+lt*0.006;
+  $('room-cam').setAttribute('transform',`translate(540 760) scale(${c[2]*drift}) translate(${-c[0]} ${-c[1]})`);
+  const sp=curSub(t),talk=Math.floor(t*7)%2==0;
+  const ut=sp&&sp[2]=='u'&&talk,nt=sp&&sp[2]=='n'&&talk;
+  show('U-mo',ut);show('U-mc',!ut);
+  const pose=o.pose;
+  show('N-armDown',pose=='down'||pose=='shock');show('N-armHold',pose=='pill'||pose=='capsule');show('N-armScratch',pose=='scratch');
+  show('N-bottle',pose=='pill');show('N-capsule',pose=='capsule');
+  show('N-q',pose=='scratch');show('N-x',pose=='shock');
+  const shock=pose=='shock';
+  show('N-mo',nt||shock);show('N-mc',!(nt||shock));
+  $('N-mo').setAttribute('ry',shock?13:6);$('N-mo').setAttribute('rx',shock?10:8);
+  $('N-bl').setAttribute('d',pose=='scratch'?'M-27 -18 L-10 -12':shock?'M-27 -20 L-10 -22':'M-27 -10 L-10 -12');
+  $('N-br').setAttribute('d',shock?'M10 -22 L27 -20':'M10 -12 L27 -10');
+  $('N-q').setAttribute('y',-70-Math.sin(t*4)*6);$('N-x').setAttribute('transform',`translate(0 ${-Math.abs(Math.sin(t*9))*6})`);
+  $('N-eyes').setAttribute('transform',`translate(0 6) scale(1 ${shock?1.3:blink(t,0)}) translate(0 -6)`);
+  $('U-eyes').setAttribute('transform',`translate(0 6) scale(1 ${blink(t,1.6)}) translate(0 -6)`);
+  $('N').setAttribute('transform',`translate(0 ${nt?Math.sin(t*14)*1.5:0})`);
+  $('U').setAttribute('transform',`translate(0 ${ut?Math.sin(t*12)*1.5:Math.sin(t*1.2)*1})`);
+  $('rcat-tail').setAttribute('transform',`rotate(${Math.sin(t*2.2)*14} -56 6)`);
+  $('rcat-body').setAttribute('ry',30+Math.sin(t*2)*1.5);
+  at('.star',L.room.el).forEach(s=>s.setAttribute('opacity',.35+.65*Math.abs(Math.sin(t*1.3+ +s.dataset.p))));
+  $('U-s1').setAttribute('transform',`translate(${Math.sin(t*2)*3} ${-((t*14)%14)})`);$('U-s2').setAttribute('transform',`translate(${Math.sin(t*2+1)*3} ${-((t*14+7)%14)})`);
+  $('room-cone').setAttribute('opacity',.92+Math.sin(t*9)*.04);
+ },
+ ship(lt){
+  $('sh-ship').setAttribute('transform',`translate(0 ${Math.sin(lt*1.6)*7}) rotate(${Math.sin(lt*1.2)*2.2} 450 790)`);
+  at('.wave',L.ship.el).forEach(w=>{const i=+w.dataset.i;w.setAttribute('transform',`translate(${((lt*(30+i*8)*(i%2?1:-1))%120)} ${Math.sin(lt*1.5+i)*4})`)});
+ },
+ lind(lt){
+  const h=ease((lt-M(9))/0.5);for(let i=0;i<6;i++)$('lind-t'+i).setAttribute('opacity',i==4?1:1-h*.55);
+  const t=$('lind-t4');t.querySelector('.lt-ring').setAttribute('opacity',h);t.querySelector('.lf-sad').setAttribute('opacity',1-h);t.querySelector('.lf-happy').setAttribute('opacity',h);
+ },
+ lime(){},
+ arctic(lt){at('.snow',L.arctic.el).forEach(s=>{const sp=+s.dataset.s;s.setAttribute('cx',(+s.dataset.x+Math.sin(lt*sp+ +s.dataset.y)*30));s.setAttribute('cy',(+s.dataset.y+lt*90*sp)%1300)})},
+ gpig(lt){$('gp-nose').setAttribute('cy',-4+Math.sin(lt*18)*2);$('gp').setAttribute('transform',`translate(320 930) scale(${1+Math.sin(lt*3)*.015})`)},
+ gene(){},
+ paprika(lt){const p=ease((lt-M(21))/1.2);$('pp-cr').setAttribute('transform',`scale(${Math.max(.01,p)})`);$('pp-cr').setAttribute('opacity',p)},
+ nobel(lt){$('nb-mol').setAttribute('transform',`translate(540 470) scale(${1+Math.sin(lt*1.5)*.02}) translate(-540 -470)`)},
+ factory(lt){
+  at('.cb',L.factory.el).forEach(m=>{const i=+m.dataset.i;m.setAttribute('transform',`translate(${((lt*130+i*180)%1260)-120} 1000)`)});
+  at('.tab',L.factory.el).forEach(e=>{const j=+e.dataset.j,ph=(lt*1.1+j/12)%1;e.setAttribute('cx',540+Math.sin(j*2.3)*24);e.setAttribute('cy',490+ph*360);e.setAttribute('opacity',ph<.9?1:(1-ph)*10)});
+ },
+ pauling(lt){const n=Math.floor(12*ease((lt-M(26)+0.3)/2.4));at('.pb',L.pauling.el).forEach(b=>b.setAttribute('opacity',+b.dataset.i<n?1:0))},
+ cochrane(lt){$('co-last').style.width=(100-56*ease((lt-M(29)-1.2)/1.0))+'%'},
+ guava(lt){[['gv-b0',30],['gv-b1',31],['gv-b2',31]].forEach(([id,s],k)=>{const e=$(id);e.style.width=(+e.dataset.w*ease((lt-M(s)-0.3-k*0.2)/1.0))+'%'})},
+ tip(lt){$('tip-s').style.setProperty('--w',(110*ease((lt-1.0)/.6))+'%')},
+ next(){},end(lt){$('end-rays').setAttribute('transform',`rotate(${lt*8})`)}
+};
+
+const FADE=.45;
+window.seek=function(t){
+  for(const k in L){L[k].el.style.opacity=0;L[k].el.style.zIndex=0}
+  TL.forEach((e,idx)=>{const [k,a,b,o]=e;if(t<a||t>=b+FADE||(t>=b&&idx==TL.length-1))return;
+    const nxt=TL[idx+1];if(t>=b&&nxt&&nxt[0]==k)return;
+    const Ly=L[k],lt=t-a;CURA=a;CURD=b-a;Ly.el.style.opacity=a==0?1:ease((t-a)/FADE);Ly.el.style.zIndex=10+idx;
+    if(Ly.art&&k!=='room')Ly.art.style.transform=`scale(${1+lt*0.008})`;
+    Ly.pops.forEach(p=>{const pa=p.dataset.sub?SUBS[+p.dataset.sub][0]-a+(+p.dataset.off||0):+p.dataset.at,e2=ease((lt-pa)/.45);p.style.opacity=e2;
+      const base=p.classList.contains('chip')&&p.style.left=='50%'?'translateX(-50%) ':'';
+      if(!p.classList.contains('src'))p.style.transform=base+`translateY(${(1-e2)*26}px)`;});
+    U[k](lt,t,o||{});
+  });
+  SUBS.forEach((s,i)=>{const el=$('sub'+i);const o=clamp((t-s[0])/.2)*clamp((s[1]-t)/.15);el.style.opacity=o;el.style.transform=`translateY(${(1-clamp((t-s[0])/.25))*18}px)`});
+  $('black').style.opacity=clamp((t-(DUR-1.0))/1.0)+ (t<0.35?1-t/0.35:0);
+};
+window.DUR=DUR;
+seek(0);
+</script></body></html>
