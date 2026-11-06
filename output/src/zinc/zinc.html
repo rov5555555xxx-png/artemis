@@ -53,6 +53,8 @@ body{font-family:K,sans-serif;color:#fff}
 #wipe div{position:absolute;top:0;bottom:0}
 .photo{position:absolute;border-radius:36px;overflow:hidden;border:8px solid #fff;box-shadow:0 26px 60px rgba(0,0,0,.55)}
 .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.capsvg{position:absolute;width:260px;height:600px;transform-origin:50% 50%}
+.capsvg svg{width:100%;height:100%;display:block;overflow:visible}
 .chk{position:absolute;width:120px;height:120px}
 </style></head><body>
 <div id="stage">
@@ -134,7 +136,7 @@ body{font-family:K,sans-serif;color:#fff}
 </div>
 
 <!-- S5 12.16 - 16.00 for people who care about zinc quality: inspect the pellets -->
-<div class="scene" data-s="12.16" data-e="16.0" data-bg="studio" data-tr="wipe" data-cam="12.16:1:720:540;13.6:1.07:720:440;14.1:1:720:540;16.0:1.05:760:460">
+<div class="scene" data-s="12.16" data-e="16.0" data-bg="studio" data-tr="wipe" data-cam="12.16:1:720:540;13.7:1.06:640:420;14.2:1:720:540;16.0:1.03:720:470">
  <div class="cam">
   <svg class="a" data-at="12.16" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260">
    <defs><pattern id="hex" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern>
@@ -143,17 +145,17 @@ body{font-family:K,sans-serif;color:#fff}
    <g fill="#fff" opacity=".07"><path d="M190 940V700h40v-60h50v60h40v240q0 10-10 10H200q-10 0-10-10z"/><path d="M1150 950l70-170v-110h60v110l70 170z"/><rect x="1080" y="740" width="54" height="210" rx="20"/></g>
    <rect x="-120" y="-90" width="1680" height="1260" fill="url(#vig)"/>
   </svg>
-  <div class="a glow" data-at="12.2" data-an="pop" style="left:440px;top:120px;width:560px;height:560px;opacity:.75"></div>
-  <div class="a img pel" id="cap5" data-at="12.2" data-an="pop" data-float="1.3" style="left:430px;top:250px;width:580px;height:325px"></div>
+  <div class="a glow" data-at="12.2" data-an="pop" style="left:420px;top:165px;width:520px;height:520px;opacity:.8"></div>
   <div id="pel5"></div>
-  <div class="a" data-at="14.06" data-an="pop" data-bob="0.6" style="left:1010px;top:190px"><svg width="230" height="230" viewBox="0 0 100 100"><defs><radialGradient id="gZn" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#E4E6EA"/><stop offset="1" stop-color="#9BA1AC"/></radialGradient></defs><circle cx="50" cy="50" r="46" fill="url(#gZn)"/><text x="50" y="64" text-anchor="middle" font-family="K" font-weight="900" font-style="italic" font-size="40" fill="#4A3A22">Zn</text></svg></div>
-  <div id="lens5" class="a" data-at="12.4" data-an="fade" style="left:0;top:0;width:280px;height:280px">
-   <div style="position:absolute;inset:0;border-radius:50%;overflow:hidden;background:#2A2D33;box-shadow:inset 0 0 30px rgba(0,0,0,.25)"><div id="lensImg5" class="img pel" style="position:absolute;filter:none"></div><div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.7),rgba(255,255,255,0) 40%)"></div></div>
-   <svg style="position:absolute;left:-30px;top:-30px;overflow:visible" width="340" height="340" viewBox="0 0 340 340"><circle cx="170" cy="170" r="146" fill="none" stroke="#C9A46A" stroke-width="22"/><circle cx="170" cy="170" r="146" fill="none" stroke="#F6E2B5" stroke-width="6"/><path d="M272 272l70 70" stroke="#2B2D33" stroke-width="40" stroke-linecap="round"/></svg>
+  <div id="capWrap5" class="a" data-at="12.2" data-an="pop" style="left:0;top:0;width:1440px;height:1080px"><div id="cap5" class="capsvg"></div></div>
+  <div class="a" data-at="14.5" data-an="pop" data-bob="0.6" style="left:1010px;top:190px"><svg width="230" height="230" viewBox="0 0 100 100"><defs><radialGradient id="gZn" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#E4E6EA"/><stop offset="1" stop-color="#9BA1AC"/></radialGradient></defs><circle cx="50" cy="50" r="46" fill="url(#gZn)"/><text x="50" y="64" text-anchor="middle" font-family="K" font-weight="900" font-style="italic" font-size="40" fill="#4A3A22">Zn</text></svg></div>
+  <div id="lens5" class="a" data-at="12.5" data-an="fade" style="left:0;top:0;width:280px;height:280px">
+   <div style="position:absolute;inset:0;border-radius:50%;overflow:hidden;background:#2A2D33;box-shadow:inset 0 0 30px rgba(0,0,0,.45)"><div id="lensCap5" class="capsvg"></div><div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.55),rgba(255,255,255,0) 40%)"></div></div>
+   <svg style="position:absolute;left:-30px;top:-30px;overflow:visible" width="340" height="340" viewBox="0 0 340 340"><circle cx="170" cy="170" r="146" fill="none" stroke="#C9A46A" stroke-width="22"/><circle cx="170" cy="170" r="146" fill="none" stroke="#F6E2B5" stroke-width="6"/><path d="M272 272l70 70" stroke="#2B2D33" stroke-width="40" stroke-linecap="round"/><path d="M272 272l70 70" stroke="#C9A46A" stroke-width="10" stroke-linecap="round" opacity=".6"/></svg>
   </div>
- </div>
- <div class="a big cx" data-at="13.28" data-an="up" style="top:690px;font-size:84px;color:#fff;text-shadow:0 6px 0 rgba(0,0,0,.55)">เน้น<span class="hl" data-hl="13.66">คุณภาพ</span></div>
- <div class="a big cx" data-at="14.06" data-an="pop" style="top:800px;font-size:100px;color:#F3D9A4;text-shadow:0 6px 0 #7A5B2E,0 14px 30px rgba(0,0,0,.6)">ซิงค์</div>
+  </div>
+ <div class="a big cx" data-at="13.28" data-an="up" style="top:735px;font-size:84px;color:#fff;text-shadow:0 6px 0 rgba(0,0,0,.55)">เน้น<span class="hl" data-hl="13.66">คุณภาพ</span></div>
+ <div class="a big cx" data-at="14.06" data-an="pop" style="top:830px;font-size:100px;color:#F3D9A4;text-shadow:0 6px 0 #7A5B2E,0 14px 30px rgba(0,0,0,.6)">ซิงค์</div>
 </div>
 
 <!-- S6 16.00 - 18.26 must be high quality zinc -->
@@ -228,7 +230,21 @@ const scenes=[...document.querySelectorAll('.scene')].map(el=>{
  const cam=(el.dataset.cam||'').split(';').filter(Boolean).map(k=>k.split(':').map(Number));
  return{el,s:+el.dataset.s,e:+el.dataset.e,tr:el.dataset.tr||'',parts,cam,camEl:el.querySelector('.cam'),items:[...el.querySelectorAll('.a')]}});
 const TR=0.4;
-const pel5=[];{const w=document.getElementById('pel5');if(w)for(let i=0;i<16;i++){const d=document.createElement('div');const r=18+rnd()*16;d.style.cssText=`position:absolute;width:${r*2}px;height:${r*2}px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 20%,#E3E6EB 50%,#9AA1AD 100%);box-shadow:0 8px 14px rgba(0,0,0,.25);opacity:0`;w.appendChild(d);pel5.push({d,r,a:rnd()*6.28,rad:250+rnd()*120,sp:.5+rnd()*.5,dl:i*0.06,ry:.38+rnd()*.12})}}
+const CAPSVG=(()=>{let r=7,c=()=>{r=(r*16807)%2147483647;return (r-1)/2147483646};let p='';
+ for(let y=318;y>24;y-=17)for(let x=22;x<244;x+=19){const xx=x+(c()-.5)*8+((Math.round(y/17)%2)?9:0),yy=y+(c()-.5)*6,rr=8.5+c()*3.5;p+=`<circle cx="${xx.toFixed(1)}" cy="${yy.toFixed(1)}" r="${rr.toFixed(1)}" fill="url(#gPl)"/>`}
+ return `<svg viewBox="0 0 260 600"><defs>
+ <radialGradient id="gPl" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#F3EEE3"/><stop offset="1" stop-color="#BFB6A3"/></radialGradient>
+ <linearGradient id="gGl" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".25" stop-color="#fff" stop-opacity=".08"/><stop offset=".75" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#fff" stop-opacity=".3"/></linearGradient>
+ <linearGradient id="gCr" x1="0" x2="1"><stop offset="0" stop-color="#CFC7B6"/><stop offset=".3" stop-color="#FFFDF7"/><stop offset=".55" stop-color="#F7F2E7"/><stop offset="1" stop-color="#C4BBA8"/></linearGradient>
+ <clipPath id="cTop"><path d="M22 330V132a108 108 0 01216 0V330z"/></clipPath></defs>
+ <g class="cTopG"><g clip-path="url(#cTop)"><rect x="0" y="0" width="260" height="340" fill="rgba(255,255,255,.06)"/>${p}<rect x="0" y="0" width="260" height="340" fill="url(#gGl)"/></g>
+  <path d="M22 330V132a108 108 0 01216 0V330" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="4"/>
+  <path d="M46 300V140a84 84 0 0140-70" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".55"/></g>
+ <g class="cBotG"><path d="M16 296H244V470a114 114 0 01-228 0z" fill="url(#gCr)"/><path d="M16 296H244" stroke="#B9AF9B" stroke-width="4"/>
+  <path d="M40 320V470a90 90 0 0034 70" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" opacity=".6"/>
+  <g transform="translate(138 440) rotate(90)" font-family="Arial,Helvetica,sans-serif" font-weight="700" fill="#4A4A4A" text-anchor="middle"><text x="0" y="-8" font-size="74">Zn</text><text x="0" y="52" font-size="56">Zinc</text></g></g></svg>`})();
+document.querySelectorAll('.capsvg').forEach(e=>e.innerHTML=CAPSVG);
+const pel5=[];{const w=document.getElementById('pel5');if(w)for(let i=0;i<22;i++){const d=document.createElement('div');const r=12+rnd()*12;d.style.cssText=`position:absolute;width:${r*2}px;height:${r*2}px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 20%,#F3EEE3 55%,#BFB6A3 100%);box-shadow:0 8px 14px rgba(0,0,0,.35);opacity:0`;w.appendChild(d);pel5.push({d,r,ang:rnd()*6.28,sp:180+rnd()*260,dl:rnd()*0.12})}}
 
 function crCurve(pts){const out=[];const P=pts.map(([h,l])=>[110+h*105,600-l*460]);
  for(let i=0;i<P.length-1;i++){const p0=P[Math.max(0,i-1)],p1=P[i],p2=P[i+1],p3=P[Math.min(P.length-1,i+2)];
@@ -297,13 +313,19 @@ window.render=function(t){
   $('band6').setAttribute('opacity',0.14*cl((t-8.2)/0.4));
  }
  if(document.getElementById('lens5')&&t>=12.16&&t<16.5){
-  const p=eIO(cl((t-12.45)/1.3)),lx=500+p*440,ly=430-Math.sin(p*3.14)*70,R=140,Z=1.8;
-  const L=$('lens5');L.style.left=(lx-R)+'px';L.style.top=(ly-R)+'px';L.style.opacity=t<12.4?0:(t<13.9?1:1-cl((t-13.9)/0.3));L.style.transform='none';
-  const cap=$('cap5'),cr={x:430,y:250,w:580,h:325};const ci=$('lensImg5');ci.style.width=cr.w*Z+'px';ci.style.height=cr.h*Z+'px';ci.style.left=(R-(lx-cr.x)*Z)+'px';ci.style.top=(R-(ly-cr.y)*Z)+'px';
-  for(const q of pel5){const lt=t-12.7-q.dl;if(lt<0){q.d.style.opacity=0;continue}
-   const conv=eIO(cl((t-13.75)/0.35));const ang=q.a+lt*q.sp;let x=720+Math.cos(ang)*q.rad,y=420+Math.sin(ang)*q.rad*q.ry;
-   x=x+(1125-x)*conv;y=y+(305-y)*conv;const sc=1-0.8*conv;
-   q.d.style.opacity=cl(lt*3)*(1-cl((t-14.1)/0.1));q.d.style.transform=`translate(${x-q.r}px,${y-q.r}px) scale(${sc})`}
+  const ROT=-58,SC=1.05,cx=680,cy=425+Math.sin(t*2)*8,rot=ROT+Math.sin(t*1.3)*3;
+  const ax=[Math.sin(-ROT*Math.PI/180),Math.cos(-ROT*Math.PI/180)];
+  const sp=eIO(cl((t-13.9)/0.45)); // split
+  const cap=$('cap5');cap.style.left=(cx-130)+'px';cap.style.top=(cy-300)+'px';cap.style.transform=`rotate(${rot}deg) scale(${SC})`;
+  cap.querySelector('.cTopG').setAttribute('transform',`translate(${-sp*10} ${-sp*120}) rotate(${-sp*8} 130 300)`);
+  cap.querySelector('.cBotG').setAttribute('transform',`translate(${sp*4} ${sp*30}) rotate(${sp*6} 130 300)`);
+  const p=eIO(cl((t-12.55)/1.3)),u=-235+p*215,lx=cx+ax[0]*u*SC,ly=cy+ax[1]*u*SC,R=140,Z=1.9;
+  const L=$('lens5');L.style.left=(lx-R)+'px';L.style.top=(ly-R)+'px';L.style.opacity=t<12.5?0:(t<13.85?1:1-cl((t-13.85)/0.25));L.style.transform='none';
+  const lc=$('lensCap5');lc.style.left=(R+(cx-lx)*Z-130)+'px';lc.style.top=(R+(cy-ly)*Z-300)+'px';lc.style.transform=`rotate(${rot}deg) scale(${SC*Z})`;
+  const gx=cx+ax[0]*0,gy=cy;
+  for(const q of pel5){const lt=t-13.98-q.dl;if(lt<0){q.d.style.opacity=0;continue}
+   const out=eOC(cl(lt/0.45)),conv=eIO(cl((t-14.35)/0.35));let x=gx+Math.cos(q.ang)*q.sp*out,y=gy+Math.sin(q.ang)*q.sp*0.7*out+lt*30;
+   x=x+(1125-x)*conv;y=y+(305-y)*conv;q.d.style.opacity=cl(lt*6)*(1-cl((t-14.62)/0.1));q.d.style.transform=`translate(${x-q.r}px,${y-q.r}px) scale(${1-0.7*conv})`}
  }
  if(document.getElementById('thumb6')&&t>=16&&t<18.8){const k=cl((t-16.6)/0.4);$('thumb6').setAttribute('transform',`rotate(${-12*(1-eOB(k))+Math.sin(t*6)*3} 270 300)`);
   $('eyes6').setAttribute('transform',`translate(0 ${Math.sin(t*3)*1.5})`)}
