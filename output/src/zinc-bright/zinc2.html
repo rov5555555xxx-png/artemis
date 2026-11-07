@@ -34,6 +34,7 @@ body{font-family:K,sans-serif;color:#1B2A4A}
 .capsvg{position:absolute;width:260px;height:600px;transform-origin:50% 50%}
 .capsvg svg{width:100%;height:100%;display:block;overflow:visible}
 .kid svg{overflow:visible}
+.jar svg{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 18px 20px rgba(40,50,90,.3))}
 </style></head><body>
 <div id="stage">
 
@@ -41,7 +42,7 @@ body{font-family:K,sans-serif;color:#1B2A4A}
 <div class="scene" data-s="0" data-e="1.86" data-bg="peach" data-cam="0:1.05:720:520;1.86:1:720:540">
  <div class="cam">
   <div class="a kid" data-at="0" data-an="up" style="left:400px;top:170px;width:360px;height:520px"><svg width="360" height="520" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#FF8FB1","hair":"#3A2A1E","faces":[{"e":"bored","vis":"0,1.42"},{"e":"relieved","vis":"1.42,99"}],"armR":"hold"}'></g></svg></div>
-  <div class="a img ob" id="old1" data-at="0.1" data-an="pop" style="left:690px;top:330px;width:130px;height:243px"></div>
+  <div class="a jar" id="old1" data-at="0.1" data-an="pop" style="left:690px;top:340px;width:140px;height:231px"></div>
   <div class="a" data-at="0.45" data-an="pop" style="left:600px;top:190px"><svg width="70" height="90" viewBox="0 0 70 90"><path d="M35 5C50 35 62 50 62 62a27 27 0 01-54 0c0-12 12-27 27-57z" fill="#7FD3FF" stroke="#1B2A4A" stroke-width="5"/></svg></div>
  </div>
  <div class="kt" data-at="0.05" data-st="0.07" data-fx="bounce" style="top:700px;font-size:150px">ไม่ต้องทน!</div>
@@ -79,23 +80,33 @@ body{font-family:K,sans-serif;color:#1B2A4A}
  <div class="kt" data-at="7.22" data-st="0.13" data-fx="slow" style="top:720px;font-size:120px;color:#7FD3FF">ค่อยๆ ปล่อย</div>
 </div>
 
-<!-- S4 8.84 - 12.04 zinc stays high all along, 6 hours -->
-<div class="scene" data-s="8.84" data-e="12.04" data-bg="sky" data-tr="slideup" data-cam="8.84:1:720:540;11.3:1:720:540;11.9:1.06:720:520">
+<!-- S4 8.84 - 12.04 zinc stays high all along, 6 hours: happy rider on the graph -->
+<div class="scene" data-s="8.84" data-e="12.04" data-bg="sky" data-tr="slideup" data-cam="8.84:1:720:540;11.3:1.03:760:520;12.04:1:720:540">
  <div class="cam">
-  <div class="a" data-at="8.84" data-an="fade" style="left:0;top:0;width:1440px;height:1080px"><svg width="1440" height="1080" viewBox="0 0 1440 1080"><path id="arc4" d="M230 640Q720 60 1210 640" fill="none" stroke="#fff" stroke-width="8" stroke-dasharray="4 22" stroke-linecap="round"/><g id="sun4"><circle r="58" fill="#FFD23F" stroke="#1B2A4A" stroke-width="6"/><g stroke="#FFB800" stroke-width="8" stroke-linecap="round"><path d="M0-80v-18M0 80v18M-80 0h-18M80 0h18M57-57l12-12M-57 57l-12 12M57 57l12 12M-57-57l-12-12"/></g></g></svg></div>
-  <div class="cloud a" data-at="8.9" data-an="fade" data-drift="1" style="left:200px;top:200px;width:200px;height:64px"></div>
-  <div class="a kid" data-at="8.9" data-an="up" style="left:330px;top:250px;width:360px;height:520px"><div id="jump4"><svg width="360" height="520" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#3DDC97","hair":"#2B1B12","hairStyle":"bun","faces":[{"e":"happy"}],"armL":"up","armR":"up"}'></g></svg></div></div>
-  <div class="a" data-at="9.0" data-an="pop" style="left:820px;top:230px;width:150px;height:420px">
-   <svg width="150" height="420" viewBox="0 0 150 420"><rect x="25" y="10" width="100" height="330" rx="50" fill="#fff" stroke="#1B2A4A" stroke-width="8"/><circle cx="75" cy="360" r="52" fill="#3DDC97" stroke="#1B2A4A" stroke-width="8"/><rect id="lvl4" x="45" y="330" width="60" height="0" rx="30" fill="#3DDC97"/><text x="75" y="377" text-anchor="middle" font-family="K" font-weight="900" font-size="44" fill="#1B2A4A">Zn</text></svg></div>
-  <div class="a" data-at="9.2" data-an="pop" data-bob="0.5" style="left:1000px;top:280px"><svg width="170" height="170" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#fff" stroke="#1B2A4A" stroke-width="6"/><g id="clk4"><path d="M50 50V20" stroke="#FF6B6B" stroke-width="7" stroke-linecap="round"/></g><circle cx="50" cy="50" r="5" fill="#1B2A4A"/></svg></div>
+  <div class="cloud a" data-at="8.9" data-an="fade" data-drift="1" style="left:180px;top:150px;width:200px;height:64px"></div>
+  <div class="cloud a" data-at="8.9" data-an="fade" data-drift="-1" style="left:1100px;top:140px;width:160px;height:52px"></div>
+  <div class="a kid" data-at="8.9" data-an="up" style="left:140px;top:300px;width:270px;height:390px"><div id="jump4"><svg width="270" height="390" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#3DDC97","hair":"#2B1B12","hairStyle":"bun","faces":[{"e":"happy"}],"armL":"up","armR":"up"}'></g></svg></div></div>
+  <div class="a" data-at="8.95" data-an="pop" style="left:400px;top:150px;width:900px;height:520px">
+   <svg width="900" height="520" viewBox="0 0 900 520" style="overflow:visible">
+    <defs><clipPath id="cG4"><rect id="rG4" x="0" y="0" width="0" height="520"/></clipPath></defs>
+    <rect x="6" y="6" width="888" height="508" rx="40" fill="#fff" stroke="#1B2A4A" stroke-width="7"/>
+    <rect id="band4" x="60" y="100" width="750" height="340" rx="20" fill="#3DDC97" opacity="0"/>
+    <path d="M60 440H850" stroke="#1B2A4A" stroke-width="7" stroke-linecap="round"/><path d="M60 440V70" stroke="#1B2A4A" stroke-width="7" stroke-linecap="round"/>
+    <g font-family="K" font-weight="800" font-size="34" fill="#1B2A4A" text-anchor="middle"><text x="60" y="490">0</text><text x="435" y="490">3</text><text x="810" y="490">6 ชม.</text></g>
+    <g clip-path="url(#cG4)"><path id="area4" fill="#C9F7E3"/><path id="lineB4" fill="none" stroke="#1B2A4A" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/><path id="line4" fill="none" stroke="#3DDC97" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="stars4"></g>
+    <g id="flag4" transform="translate(810 150) scale(0)"><path d="M0 0V-110" stroke="#1B2A4A" stroke-width="8" stroke-linecap="round"/><path d="M0 -110h80l-18 24 18 24H0z" fill="#FF6B6B" stroke="#1B2A4A" stroke-width="6" stroke-linejoin="round"/></g>
+    <g id="sunMini4"><circle r="26" fill="#FFD23F" stroke="#1B2A4A" stroke-width="5"/><path d="M0-40v-10M0 40v10M-40 0h-10M40 0h10" stroke="#FFB800" stroke-width="6" stroke-linecap="round"/></g>
+    <g id="rider4"><circle r="38" fill="#FFD23F" stroke="#1B2A4A" stroke-width="6"/><path d="M-18 -6q7-9 14 0M4 -6q7-9 14 0" stroke="#1B2A4A" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M-14 8Q0 26 14 8z" fill="#1B2A4A"/><ellipse cx="-24" cy="8" rx="7" ry="4" fill="#FF8FA3"/><ellipse cx="24" cy="8" rx="7" ry="4" fill="#FF8FA3"/><text x="0" y="-48" text-anchor="middle" font-family="K" font-weight="900" font-size="30" fill="#1B2A4A">Zn</text></g>
+   </svg></div>
  </div>
- <div class="kt" data-at="11.4" data-st="0.07" data-fx="jelly" style="top:690px;font-size:190px;color:#FF6B6B">6 ชม.</div>
+ <div class="kt" data-at="11.4" data-st="0.07" data-fx="jelly" style="top:705px;font-size:170px;color:#FF6B6B">6 ชม.</div>
 </div>
 
 <!-- S5 12.04 - 13.74 ordinary zinc can't -->
 <div class="scene" data-s="12.04" data-e="13.74" data-bg="lilac" data-tr="zoom" data-cam="12.04:1.06:720:500;13.74:1:720:540">
  <div class="cam">
-  <div class="a img ob" data-at="12.1" data-an="pop" data-tilt="1" style="left:520px;top:200px;width:190px;height:355px;filter:grayscale(.5) drop-shadow(0 22px 26px rgba(40,50,90,.35))"></div>
+  <div class="a jar" data-at="12.1" data-an="pop" data-tilt="1" style="left:500px;top:220px;width:210px;height:347px;filter:saturate(.6)"></div>
   <div class="a" data-at="12.3" data-an="pop" style="left:730px;top:200px"><svg width="80" height="100" viewBox="0 0 70 90"><path d="M35 5C50 35 62 50 62 62a27 27 0 01-54 0c0-12 12-27 27-57z" fill="#7FD3FF" stroke="#1B2A4A" stroke-width="5"/></svg></div>
   <div class="a" data-at="12.2" data-an="pop" style="left:760px;top:300px;width:120px;height:300px"><svg width="120" height="300" viewBox="0 0 150 420"><rect x="25" y="10" width="100" height="330" rx="50" fill="#fff" stroke="#1B2A4A" stroke-width="8"/><circle cx="75" cy="360" r="52" fill="#B8B0C8" stroke="#1B2A4A" stroke-width="8"/><rect id="lvl5" x="45" y="40" width="60" height="290" rx="30" fill="#B8B0C8"/></svg></div>
  </div>
@@ -164,6 +175,16 @@ function kid(o){const sk=o.skin||'#FFD7B5',sh=o.shirt||'#FF8FB1',hr=o.hair||'#2B
  s+=`<path d="M-100 20V-130a50 50 0 0150-50h100a50 50 0 0150 50V20z" fill="${sh}" stroke="${INK}" stroke-width="7"/><path d="M-34 -180q34 40 68 0" fill="#fff" stroke="${INK}" stroke-width="6"/>`;
  s+=`<g transform="translate(0 -290)"><circle cx="-104" cy="6" r="22" fill="${sk}" stroke="${INK}" stroke-width="6"/><circle cx="104" cy="6" r="22" fill="${sk}" stroke="${INK}" stroke-width="6"/><circle r="104" fill="${sk}" stroke="${INK}" stroke-width="7"/>${hair(o.hairStyle,hr)}`;
  (o.faces||[{e:'happy'}]).forEach(f=>{s+=`<g ${f.vis?`data-vis="${f.vis}"`:''}>${face(f.e)}</g>`});s+='</g>';return s}
+const JARSVG=`<svg viewBox="0 0 200 330"><defs><linearGradient id="gJar" x1="0" x2="1"><stop offset="0" stop-color="#DDE2EA"/><stop offset=".3" stop-color="#FFFFFF"/><stop offset=".7" stop-color="#F7F8FA"/><stop offset="1" stop-color="#D3D9E2"/></linearGradient></defs>
+ <rect x="16" y="72" width="168" height="250" rx="38" fill="url(#gJar)" stroke="${INK}" stroke-width="6"/>
+ <rect x="56" y="56" width="88" height="22" rx="6" fill="#EEF1F5" stroke="${INK}" stroke-width="6"/>
+ <rect x="42" y="8" width="116" height="54" rx="12" fill="url(#gJar)" stroke="${INK}" stroke-width="6"/>
+ <g stroke="#B9C1CE" stroke-width="4"><path d="M60 16v38M76 16v38M92 16v38M108 16v38M124 16v38M140 16v38"/></g>
+ <rect x="16" y="140" width="168" height="118" fill="#F2F4F8" stroke="${INK}" stroke-width="5"/>
+ <g transform="translate(100 186) rotate(-30)"><rect x="-34" y="-15" width="68" height="30" rx="15" fill="#fff" stroke="#9AA3B2" stroke-width="5"/><path d="M0 -15v30" stroke="#9AA3B2" stroke-width="5"/></g>
+ <path d="M50 228h100M66 242h68" stroke="#C3CAD5" stroke-width="7" stroke-linecap="round"/>
+ <path d="M34 96v190" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".9"/></svg>`;
+document.querySelectorAll('.jar').forEach(e=>e.innerHTML=JARSVG);
 document.querySelectorAll('[data-kid]').forEach(g=>g.innerHTML=kid(JSON.parse(g.dataset.kid)));
 // ---------- capsule (same model as before, brighter outline) ----------
 const CAPSVG=(()=>{let r=7,c=()=>{r=(r*16807)%2147483647;return (r-1)/2147483646};let p='';
@@ -174,6 +195,11 @@ const CAPSVG=(()=>{let r=7,c=()=>{r=(r*16807)%2147483647;return (r-1)/2147483646
  <g><path d="M16 296H244V470a114 114 0 01-228 0z" fill="url(#gCr)" stroke="${INK}" stroke-width="8"/><g transform="translate(138 440) rotate(90)" font-family="Arial,Helvetica,sans-serif" font-weight="700" fill="#4A4A4A" text-anchor="middle"><text x="0" y="-8" font-size="74">Zn</text><text x="0" y="52" font-size="56">Zinc</text></g></g></svg>`})();
 document.querySelectorAll('.capsvg').forEach(e=>e.innerHTML=CAPSVG);
 // released particles for S3
+const G4y=x=>x<130?440-290*eOC(cl((x-60)/70)):150+8*Math.sin((x-130)/45);
+const ST4=[];{const L=document.getElementById('line4');if(L){let d='';for(let x=60;x<=812;x+=4)d+=(x==60?'M':'L')+x+' '+G4y(x).toFixed(1);L.setAttribute('d',d);document.getElementById('lineB4').setAttribute('d',d);document.getElementById('area4').setAttribute('d',d+'L812 440L60 440Z');
+ const g=document.getElementById('stars4');[[185,'#FF8FB1'],[310,'#FFD23F'],[435,'#7FD3FF'],[560,'#FF8FB1'],[685,'#FFD23F']].forEach(([x,c],i)=>{const e=document.createElementNS('http://www.w3.org/2000/svg','g');
+  e.innerHTML=i%2?`<path d="M0-22l6 14 15 1-12 10 4 15-13-8-13 8 4-15-12-10 15-1z" fill="${c}" stroke="#1B2A4A" stroke-width="4" stroke-linejoin="round"/>`:`<path d="M0 18C-22 2-26-8-26-14a12 12 0 0126-4 12 12 0 0126 4c0 6-4 16-26 32z" fill="${c}" stroke="#1B2A4A" stroke-width="4"/>`;
+  g.appendChild(e);ST4.push({g:e,x,y:G4y(x)-110,t:9.1+2.2*(Math.acos(1-2*((x-60)/750))/Math.PI)})})}}
 const rel=[];{const g=document.getElementById('rel3');if(g)for(let i=0;i<18;i++){const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('r',8+rnd()*8);c.setAttribute('fill',['#FFD23F','#FF8FB1','#7FD3FF','#3DDC97'][i%4]);c.setAttribute('stroke',INK);c.setAttribute('stroke-width','3');g.appendChild(c);rel.push({c,a:rnd()*6.28,d:0.15+i*0.08,sp:120+rnd()*120})}}
 // ---------- kinetic text: split into Thai grapheme clusters ----------
 const seg=new Intl.Segmenter('th',{granularity:'grapheme'});
@@ -198,7 +224,7 @@ function camAt(keys,t){if(!keys.length)return[1,720,540];if(t<=keys[0][0])return
 const conf=[];const cw=document.getElementById('confetti');const cc=['#FFD23F','#FF8FB1','#7FD3FF','#3DDC97','#FF6B6B'];
 for(let i=0;i<80;i++){const d=document.createElement('div');d.className='conf';d.style.background=cc[i%5];cw.appendChild(d);conf.push({d,x:200+rnd()*1040,vy:240+rnd()*300,vx:(rnd()-.5)*180,r:rnd()*360,vr:(rnd()-.5)*720,dl:rnd()*0.5,sw:rnd()*6})}
 const burst2=[];{const w=document.createElement('div');document.getElementById('stage').appendChild(w);for(let i=0;i<26;i++){const d=document.createElement('div');d.className='conf';d.style.background=cc[i%5];w.appendChild(d);burst2.push({d,a:rnd()*6.28,sp:300+rnd()*350,r:rnd()*360})}}
-const ringDefs=[[2.55,945,420],[4.06,720,790],[11.4,720,800],[15.56,720,740],[18.2,720,760]];
+const ringDefs=[[2.55,945,420],[4.06,720,790],[11.3,1210,300],[11.4,720,800],[15.56,720,740],[18.2,720,760]];
 const rw=document.getElementById('rings');const rings=ringDefs.map(([t,x,y])=>{const d=document.createElement('div');d.className='ring';d.style.left=x+'px';d.style.top=y+'px';rw.appendChild(d);return{d,t}});
 function animT(an,p){switch(an){case'fade':return[eOC(p),''];case'pop':return[cl(p*4),`scale(${p<=0?0:eOB(p)})`];
  case'stamp':{const e=eOB(p);return[cl(p*5),`scale(${1.7-0.7*e}) rotate(${-8*(1-e)}deg)`]}
@@ -232,9 +258,14 @@ window.render=function(t){
   [...$('layers3').children].forEach((L,i)=>{const k=eOB(cl((t-5.7-(3-i)*0.22)/0.35));const peel=cl((t-7.35-i*0.35)/0.5);L.setAttribute('transform',`scale(${(t<5.7?0:k)*(1+0.25*peel)})`);L.setAttribute('opacity',t<5.7?0:1-peel*(i<3?1:0))});
   rel.forEach(r=>{const lt=t-7.3-r.d;if(lt<0){r.c.setAttribute('opacity',0);return}const d=eOC(cl(lt/1.2))*r.sp+60;r.c.setAttribute('cx',Math.cos(r.a)*d*1.3);r.c.setAttribute('cy',Math.sin(r.a)*d*1.3+lt*20);r.c.setAttribute('opacity',1-cl((lt-1.1)/0.4))})}
  // S4 sun + level + clock
- if($('sun4')&&t>=8.84&&t<12.5){const p=cl((t-9.0)/2.9);const x=(1-p)*(1-p)*230+2*(1-p)*p*720+p*p*1210,y=(1-p)*(1-p)*640+2*(1-p)*p*60+p*p*640;$('sun4').setAttribute('transform',`translate(${x} ${y}) rotate(${t*40})`);
-  const h=eOC(cl((t-9.1)/0.6))*280;$('lvl4').setAttribute('height',h+Math.sin(t*6)*4);$('lvl4').setAttribute('y',330-h-Math.sin(t*6)*4);$('clk4').setAttribute('transform',`rotate(${cl((t-9.2)/2.4)*180} 50 50)`);
-  $('jump4').style.transform=`translateY(${-Math.abs(Math.sin((t-8.9)*4.4))*30}px)`}
+ if($('rider4')&&t>=8.84&&t<12.6){
+  const p=eIO(cl((t-9.1)/2.2)),x=60+p*750;$('rG4').setAttribute('width',p>0?x+20:0);
+  const y=G4y(x),bob=Math.abs(Math.sin(t*9))*-10;$('rider4').setAttribute('transform',`translate(${x} ${y-44+bob}) rotate(${Math.sin(t*6)*8})`);$('rider4').style.opacity=t<9.1?0:1;
+  $('sunMini4').setAttribute('transform',`translate(${x} 50) rotate(${t*60})`);$('sunMini4').style.opacity=t<9.1?0:1;
+  ST4.forEach(s=>{const k=cl((t-s.t)/0.35);s.g.setAttribute('transform',`translate(${s.x} ${s.y-k*30}) scale(${k?eOB(k):0}) rotate(${k*40})`);s.g.setAttribute('opacity',k?1-cl((t-s.t-0.9)/0.4):0)});
+  const f=eOB(cl((t-11.3)/0.4));$('flag4').setAttribute('transform',`translate(810 150) scale(${t<11.3?0:f}) rotate(${Math.sin(t*5)*4})`);
+  $('band4').setAttribute('opacity',0.18*cl((t-11.1)/0.4));
+  $('jump4').style.transform=`translateY(${-Math.abs(Math.sin((t-8.9)*4.4))*26}px)`}
  if($('lvl5')&&t>=12.04&&t<14.2){const h=290*(1-0.75*eIO(cl((t-12.4)/1.0)));$('lvl5').setAttribute('height',h);$('lvl5').setAttribute('y',330-h)}
  for(const r of rings){const d=t-r.t;if(d<0||d>0.6){r.d.style.opacity=0;continue}const p=d/0.6;r.d.style.opacity=.9*(1-p);r.d.style.transform=`scale(${0.2+eOC(p)*1.4})`;r.d.style.borderWidth=(16*(1-p)+2)+'px'}
  for(const c of conf){const d=t-18.2-c.dl;if(d<0){c.d.style.opacity=0;continue}const cy=140+c.vy*d;c.d.style.opacity=cl((cy-140)/60)*cl((940-cy)/120);c.d.style.transform=`translate(${c.x+c.vx*d*.5+Math.sin(d*4+c.sw)*20}px,${cy}px) rotate(${c.r+c.vr*d}deg) rotateX(${d*400+c.sw*50}deg)`}
