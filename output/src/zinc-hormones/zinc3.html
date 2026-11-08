@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2)}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2)}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2)}
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1440px;height:1080px;overflow:hidden;background:#fff}
+body{font-family:K,sans-serif;color:#1B2A4A}
+#stage{position:relative;width:1440px;height:1080px;overflow:hidden;background:#FFF6E9}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.sbg{position:absolute;inset:-60px}
+.peach{background:radial-gradient(circle at 50% 35%,#FFF4EA 0%,#FFE0CC 55%,#FFC3A1 100%)}
+.sky{background:linear-gradient(180deg,#BFE8FF 0%,#E6F7FF 70%,#FFF6DA 100%)}
+.mint{background:radial-gradient(circle at 50% 40%,#F2FFF9 0%,#C9F7E3 55%,#8EE6C2 100%)}
+.sun{background:radial-gradient(circle at 50% 40%,#FFFCEB 0%,#FFEFA8 55%,#FFD45E 100%)}
+.lilac{background:radial-gradient(circle at 50% 40%,#F8F3FF 0%,#E3D6FF 55%,#C3A9FF 100%)}
+.pink{background:radial-gradient(circle at 50% 40%,#FFF5F8 0%,#FFD9E4 55%,#FFADC4 100%)}
+.cam{position:absolute;inset:0;will-change:transform}
+.a{position:absolute;opacity:0;will-change:transform}
+.img{background-position:center;background-size:contain;background-repeat:no-repeat;filter:drop-shadow(0 22px 26px rgba(40,50,90,.35))}
+.nb{background-image:url(new_bottle.png)}.bx{background-image:url(new_box.png);filter:drop-shadow(0 0 1.5px rgba(255,255,255,.9)) drop-shadow(0 22px 26px rgba(40,50,90,.35))}
+.kt{position:absolute;left:130px;width:1180px;text-align:center;font-weight:900;white-space:nowrap;line-height:1.25;color:#FFD23F;-webkit-text-stroke:14px #1B2A4A;paint-order:stroke fill;text-shadow:0 12px 0 #1B2A4A}
+.kt .g{display:inline-block;transform-origin:50% 80%;opacity:0}
+.stk{display:inline-block;padding:8px 36px 14px;border-radius:999px;font-weight:900;white-space:nowrap;line-height:1.2;border:7px solid #1B2A4A;box-shadow:0 10px 0 #1B2A4A}
+.cx{left:130px;width:1180px;text-align:center}
+.cloud{position:absolute;background:#fff;border-radius:999px;opacity:.9}
+.dot{position:absolute;border-radius:50%}
+.ring{position:absolute;width:360px;height:360px;margin:-180px 0 0 -180px;border-radius:50%;border:16px solid #fff;opacity:0}
+.conf{position:absolute;width:20px;height:30px;border-radius:6px}
+.rays{position:absolute;border-radius:50%;background:repeating-conic-gradient(rgba(255,255,255,.75) 0 9deg,rgba(255,255,255,0) 9deg 22deg);-webkit-mask:radial-gradient(circle,#000 25%,transparent 68%)}
+#stripe{position:absolute;top:-200px;width:3000px;height:1500px;transform:translateX(-3600px) skewX(-14deg)}
+#stripe div{position:absolute;top:0;bottom:0;width:160px}
+.kid svg,.jar svg{overflow:visible}
+.jar svg{width:100%;height:100%;display:block;filter:drop-shadow(0 16px 18px rgba(40,50,90,.3))}
+.hero svg{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 20px 22px rgba(40,50,90,.35))}
+.capsvg{position:absolute;width:260px;height:600px;transform-origin:50% 50%}
+.capsvg svg{width:100%;height:100%;display:block;overflow:visible}
+.bub{position:absolute;display:flex;flex-direction:column;align-items:center;gap:8px}
+.bub .c{width:230px;height:230px;border-radius:50%;border:8px solid #1B2A4A;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 0 #1B2A4A}
+.bub .c svg{width:150px;height:150px}
+.photo{position:absolute;border-radius:30px;overflow:hidden;border:9px solid #fff;box-shadow:0 0 0 7px #1B2A4A,0 22px 40px rgba(27,42,74,.35)}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+</style></head><body>
+<div id="stage">
+
+<!-- S1 0 - 3.18 many overlook it, but zinc matters for hormones -->
+<div class="scene" data-s="0" data-e="3.18" data-bg="peach" data-cam="0:1.04:720:520;3.18:1:720:540">
+ <div class="cam">
+  <div class="a kid" data-at="0" data-an="up" style="left:300px;top:200px;width:330px;height:476px"><svg width="330" height="476" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#FF8FB1","hair":"#3A2A1E","faces":[{"e":"bored","vis":"0,1.56"},{"e":"wow","vis":"1.56,99"}],"armL":"down","armR":"down"}'></g></svg></div>
+  <div class="a" id="zn1" data-at="0.3" data-an="pop" style="left:760px;top:230px;width:340px;height:340px"><div class="hero" style="width:100%;height:100%"></div></div>
+  <div class="a" data-at="0.6" data-an="pop" style="left:690px;top:180px"><svg width="70" height="90" viewBox="0 0 70 90"><text x="35" y="70" text-anchor="middle" font-family="K" font-weight="900" font-size="80" fill="#1B2A4A">?</text></svg></div>
+ </div>
+ <div class="kt" data-at="1.56" data-st="0.06" data-fx="jelly" style="top:700px;font-size:140px;color:#FF6B6B">สำคัญมาก!</div>
+</div>
+
+<!-- S2 3.18 - 10.50 hormones that need zinc -->
+<div class="scene" data-s="3.18" data-e="10.5" data-bg="sky" data-tr="stripe" data-cam="3.18:1:720:540;10.5:1.03:720:500">
+ <div class="cam">
+  <div class="a" data-at="3.2" data-an="fade" style="left:0;top:0;width:1440px;height:1080px"><svg width="1440" height="1080"><g stroke="#1B2A4A" stroke-width="7" stroke-dasharray="14 12" stroke-linecap="round" fill="none"><path id="ln1" d="M720 520L330 265"/><path id="ln2" d="M720 520L720 205"/><path id="ln3" d="M720 520L1110 265"/></g></svg></div>
+  <div class="a" data-at="3.2" data-an="pop" style="left:610px;top:415px;width:220px;height:220px"><div class="hero" style="width:100%;height:100%"></div></div>
+  <div class="a bub" data-at="3.3" data-an="pop" data-bob="0" style="left:215px;top:150px"><div class="c" style="background:#7FD3FF"><svg viewBox="0 0 100 100"><path d="M24 70c0-18 8-30 20-34l4-14 10 2-2 14c12 4 20 14 20 30z" fill="#FFD7B5" stroke="#1B2A4A" stroke-width="5" stroke-linejoin="round"/><path d="M58 22l12-12 10 10-12 12" fill="#FFD23F" stroke="#1B2A4A" stroke-width="5" stroke-linejoin="round"/><path d="M30 70h46" stroke="#1B2A4A" stroke-width="5"/></svg></div><span class="stk" style="font-size:40px;background:#fff">ซ่อมร่างกาย</span></div>
+  <div class="a bub" data-at="5.26" data-an="pop" data-bob="1.2" style="left:605px;top:90px"><div class="c" style="background:#FFB36B"><svg viewBox="0 0 100 100"><path d="M50 10c6 18 28 26 28 50a28 28 0 01-56 0c0-14 8-22 12-28 2 8 6 12 10 12 0-14 2-24 6-34z" fill="#FF6B6B" stroke="#1B2A4A" stroke-width="5" stroke-linejoin="round"/><path d="M50 52c4 8 12 12 12 20a12 12 0 01-24 0c0-8 8-12 12-20z" fill="#FFD23F"/></svg></div><span class="stk" style="font-size:40px;background:#fff">เผาผลาญ</span></div>
+  <div class="a bub" data-at="6.7" data-an="pop" data-bob="2.3" style="left:995px;top:150px"><div class="c" style="background:#FF8FB1"><svg viewBox="0 0 100 100"><circle cx="38" cy="58" r="18" fill="none" stroke="#1B2A4A" stroke-width="7"/><path d="M51 45l16-16M56 29h11v11" stroke="#1B2A4A" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="66" cy="42" r="0"/><path d="M66 82c-12-8-16-14-16-20a8 8 0 0116-2 8 8 0 0116 2c0 6-4 12-16 20z" fill="#FF6B6B" stroke="#1B2A4A" stroke-width="4"/></svg></div><span class="stk" style="font-size:40px;background:#fff">ฮอร์โมนเพศ</span></div>
+ </div>
+ <div class="kt" data-at="3.68" data-st="0.05" data-fx="bounce" data-out="9.0" style="top:690px;font-size:110px;color:#fff">ฮอร์โมนต้องใช้ซิงค์</div>
+ <div class="kt" data-at="9.58" data-st="0.05" data-fx="drop" style="top:690px;font-size:120px;color:#FFD23F">ใช้ซิงค์ทั้งนั้น!</div>
+</div>
+
+<!-- S3 10.50 - 12.02 body can't make it -->
+<div class="scene" data-s="10.5" data-e="12.02" data-bg="lilac" data-tr="zoom" data-cam="10.5:1.05:720:480;12.02:1:720:540">
+ <div class="cam">
+  <div class="a kid" data-at="10.52" data-an="up" style="left:380px;top:230px;width:300px;height:433px"><svg width="300" height="433" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#7FD3FF","hair":"#2B1B12","faces":[{"e":"sad"}],"armL":"down","armR":"down"}'></g></svg></div>
+  <div class="a" data-at="10.7" data-an="pop" style="left:700px;top:150px"><svg width="380" height="320" viewBox="0 0 380 320"><circle cx="70" cy="290" r="18" fill="#fff" stroke="#1B2A4A" stroke-width="6"/><circle cx="110" cy="250" r="26" fill="#fff" stroke="#1B2A4A" stroke-width="6"/><ellipse cx="230" cy="130" rx="140" ry="110" fill="#fff" stroke="#1B2A4A" stroke-width="8"/><g transform="translate(230 130)"><path d="M-60 40V-10l30-20v20l30-20v20l30-20V-50h20v90z" fill="#E6E9F2" stroke="#1B2A4A" stroke-width="6" stroke-linejoin="round"/><path id="x3" d="M-70-70L70 70M70-70L-70 70" stroke="#FF6B6B" stroke-width="16" stroke-linecap="round"/></g></svg></div>
+ </div>
+ <div class="kt" data-at="11.1" data-st="0.05" data-fx="shake" style="top:700px;font-size:120px;color:#FF6B6B">สร้างเองไม่ได้</div>
+</div>
+
+<!-- S4 12.02 - 15.16 not enough: hormone balance tips -->
+<div class="scene" data-s="12.02" data-e="15.16" data-bg="peach" data-tr="iris" data-cam="12.02:1:720:540;15.16:1.04:720:500">
+ <div class="cam">
+  <div class="a" data-at="12.05" data-an="pop" style="left:420px;top:160px;width:600px;height:480px"><svg width="600" height="480" viewBox="-300 -240 600 480" style="overflow:visible">
+   <path d="M0 200V-120" stroke="#1B2A4A" stroke-width="16" stroke-linecap="round"/><path d="M-120 210h240" stroke="#1B2A4A" stroke-width="16" stroke-linecap="round"/>
+   <g id="beam4"><path d="M-230 -120H230" stroke="#1B2A4A" stroke-width="14" stroke-linecap="round"/>
+    <g id="panL4"><path d="M-230 -120l-50 100M-230 -120l50 100" stroke="#1B2A4A" stroke-width="5"/><path d="M-300 -20h140a70 30 0 01-140 0z" fill="#FF8FB1" stroke="#1B2A4A" stroke-width="6"/><text x="-230" y="-30" text-anchor="middle" font-family="K" font-weight="900" font-size="38" fill="#1B2A4A">♀</text></g>
+    <g id="panR4"><path d="M230 -120l-50 100M230 -120l50 100" stroke="#1B2A4A" stroke-width="5"/><path d="M160 -20h140a70 30 0 01-140 0z" fill="#7FD3FF" stroke="#1B2A4A" stroke-width="6"/><text x="230" y="-30" text-anchor="middle" font-family="K" font-weight="900" font-size="38" fill="#1B2A4A">♂</text></g></g>
+   <circle cx="0" cy="-120" r="20" fill="#FFD23F" stroke="#1B2A4A" stroke-width="6"/></svg></div>
+  <div class="a" data-at="12.6" data-an="pop" style="left:1080px;top:230px"><svg width="110" height="110" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#fff" stroke="#1B2A4A" stroke-width="6"/><text x="50" y="66" text-anchor="middle" font-family="K" font-weight="900" font-size="46" fill="#FF6B6B">!</text></svg></div>
+ </div>
+ <div class="kt" data-at="13.08" data-st="0.05" data-fx="shake" style="top:700px;font-size:120px;color:#FF6B6B">สมดุลเสีย!</div>
+</div>
+
+<!-- S5 15.16 - 20.16 body not 100% -> take zinc -> enough -->
+<div class="scene" data-s="15.16" data-e="20.16" data-bg="mint" data-tr="stripe" data-cam="15.16:1:720:540;20.16:1.03:720:500">
+ <div class="cam">
+  <div class="a kid" data-at="15.2" data-an="up" style="left:300px;top:220px;width:310px;height:447px"><svg width="310" height="447" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#3DDC97","hair":"#2B1B12","hairStyle":"bun","faces":[{"e":"bored","vis":"0,17.3"},{"e":"happy","vis":"17.3,99"}],"armL":"down","armR":"hold"}'></g></svg></div>
+  <div class="a" data-at="17.24" data-an="pop" style="left:560px;top:330px"><svg width="90" height="54" viewBox="0 0 120 50"><path d="M25 3h35v44H25a22 22 0 010-44z" fill="#fff" stroke="#1B2A4A" stroke-width="5"/><path d="M60 3h35a22 22 0 010 44H60z" fill="#E8E2D2" stroke="#1B2A4A" stroke-width="5"/><text x="78" y="33" text-anchor="middle" font-family="K" font-weight="900" font-size="20" fill="#1B2A4A">Zn</text></svg></div>
+  <div class="a" data-at="15.3" data-an="pop" style="left:760px;top:220px"><svg width="380" height="230" viewBox="0 0 380 230"><rect x="10" y="20" width="320" height="190" rx="30" fill="#fff" stroke="#1B2A4A" stroke-width="10"/><rect x="330" y="80" width="34" height="70" rx="10" fill="#1B2A4A"/><rect id="bat5" x="34" y="44" width="0" height="142" rx="16" fill="#FFB36B"/><text id="batT5" x="170" y="140" text-anchor="middle" font-family="K" font-weight="900" font-size="64" fill="#1B2A4A">60%</text></svg></div>
+ </div>
+ <div class="kt" data-at="16.24" data-st="0.05" data-fx="bounce" data-out="17.15" style="top:700px;font-size:110px;color:#FFB36B">ไม่เต็มร้อย</div>
+ <div class="kt" data-at="17.74" data-st="0.05" data-fx="bounce" data-out="18.55" style="top:700px;font-size:120px;color:#fff">กินซิงค์</div>
+ <div class="kt" data-at="18.64" data-st="0.06" data-fx="jelly" style="top:700px;font-size:140px;color:#3DDC97">เพียงพอ!</div>
+</div>
+
+<!-- S6 20.16 - 26.26 new-innovation zinc: absorbs better, lasts longer, try this -->
+<div class="scene" data-s="20.16" data-e="26.26" data-bg="sun" data-tr="iris" data-cam="20.16:1.04:720:500;23.0:1:720:540;26.26:1.04:720:500">
+ <div class="cam">
+  <div class="a rays" data-at="20.2" data-an="pop" data-spin="14" style="left:420px;top:60px;width:600px;height:600px"></div>
+  <div class="a img nb" data-at="20.62" data-an="drop" data-float="0.3" style="left:600px;top:160px;width:240px;height:448px"></div>
+  <div class="a" data-at="21.72" data-an="stamp" data-bob="0" style="left:180px;top:230px"><span class="stk" style="font-size:54px;background:#3DDC97">ดูดซึมดีกว่า</span></div>
+  <div class="a" data-at="23.12" data-an="stamp" data-bob="1.5" style="left:880px;top:400px"><span class="stk" style="font-size:54px;background:#FF8FB1">อยู่นานกว่า</span></div>
+ </div>
+ <div class="kt" data-at="20.62" data-st="0.05" data-fx="bounce" data-out="25.1" style="top:690px;font-size:120px;color:#FFD23F">นวัตกรรมใหม่</div>
+ <div class="kt" data-at="25.24" data-st="0.06" data-fx="jelly" style="top:690px;font-size:140px;color:#FF6B6B">ลองตัวนี้!</div>
+</div>
+
+<!-- S7 26.26 - 30.94 Zinc Bisglycinate iCAP by INZENT; bisglycinate already absorbs well -->
+<div class="scene" data-s="26.26" data-e="30.94" data-bg="mint" data-tr="stripe" data-cam="26.26:1:720:540;28.2:1:720:540;30.94:1.03:720:500">
+ <div class="cam">
+  <div class="a rays" data-at="26.3" data-an="pop" data-spin="12" style="left:420px;top:40px;width:600px;height:600px"></div>
+  <div class="a img bx" data-at="26.4" data-an="right" data-float="2" style="left:740px;top:170px;width:290px;height:408px"></div>
+  <div class="a img nb" data-at="26.3" data-an="drop" data-float="0.5" style="left:510px;top:160px;width:240px;height:448px"></div>
+  <div class="a" data-at="27.84" data-an="pop" data-bob="0" style="left:1060px;top:180px"><span class="stk" style="font-size:40px;background:#fff">INZENT</span></div>
+  <div class="a kid" data-at="28.3" data-an="left" style="left:150px;top:280px;width:260px;height:375px"><svg width="260" height="375" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#FF8FB1","hair":"#3A2A1E","faces":[{"e":"happy"}],"armL":"down","armR":"thumb"}'></g></svg></div>
+ </div>
+ <div class="kt" data-at="26.3" data-st="0.04" data-fx="bounce" data-out="28.2" style="top:690px;font-size:110px;color:#fff">Bisglycinate iCAP</div>
+ <div class="kt" data-at="29.84" data-st="0.05" data-fx="drop" style="top:700px;font-size:110px;color:#3DDC97">ดูดซึมดีอยู่แล้ว</div>
+</div>
+
+<!-- S8 30.94 - 35.28 new technology: layered pellets, stays 6 hours -->
+<div class="scene" data-s="30.94" data-e="35.28" data-bg="lilac" data-tr="iris" data-cam="30.94:1:720:540;32.0:1:720:540;32.5:1.05:820:460;35.28:1.05:820:460">
+ <div class="cam">
+  <div id="cap8w" class="a" data-at="30.98" data-an="pop" style="left:0;top:0;width:1440px;height:1080px"><div id="cap8" class="capsvg"></div></div>
+  <div class="a" data-at="31.9" data-an="pop" style="left:730px;top:170px;width:440px;height:440px">
+   <svg width="440" height="440" viewBox="-220 -220 440 440" style="overflow:visible">
+    <circle r="210" fill="#fff" stroke="#1B2A4A" stroke-width="8"/>
+    <g id="layers8"><circle r="185" fill="#FFD23F" stroke="#1B2A4A" stroke-width="5"/><circle r="150" fill="#FF8FB1" stroke="#1B2A4A" stroke-width="5"/><circle r="115" fill="#7FD3FF" stroke="#1B2A4A" stroke-width="5"/><circle r="78" fill="#3DDC97" stroke="#1B2A4A" stroke-width="5"/></g>
+    <g><circle r="44" fill="#fff" stroke="#1B2A4A" stroke-width="5"/><text y="16" text-anchor="middle" font-family="K" font-weight="900" font-size="44" fill="#1B2A4A">Zn</text></g>
+    <g id="rel8"></g></svg></div>
+  <div class="a" data-at="31.9" data-an="fade" style="left:560px;top:330px"><svg width="200" height="60" viewBox="0 0 200 60"><path d="M10 30h150" stroke="#1B2A4A" stroke-width="7" stroke-dasharray="12 10" stroke-linecap="round"/></svg></div>
+ </div>
+ <div class="kt" data-at="31.42" data-st="0.05" data-fx="bounce" data-out="33.4" style="top:700px;font-size:115px;color:#fff">เทคโนโลยีใหม่</div>
+ <div class="kt" data-at="33.52" data-st="0.05" data-fx="drop" style="top:700px;font-size:115px;color:#FFD23F">อยู่ได้ 6 ชม.</div>
+</div>
+
+<!-- S9 35.28 - 38.96 from 2 hours to 6 hours (graph) -->
+<div class="scene" data-s="35.28" data-e="38.96" data-bg="sky" data-tr="slideup" data-cam="35.28:1:720:540;37.8:1.03:760:520;38.96:1:720:540">
+ <div class="cam">
+  <div class="cloud a" data-at="35.3" data-an="fade" data-drift="1" style="left:180px;top:150px;width:200px;height:64px"></div>
+  <div class="a" data-at="35.3" data-an="pop" style="left:270px;top:150px;width:900px;height:520px">
+   <svg width="900" height="520" viewBox="0 0 900 520" style="overflow:visible">
+    <defs><clipPath id="cG9"><rect id="rG9" x="0" y="0" width="0" height="520"/></clipPath><clipPath id="cO9"><rect id="rO9" x="0" y="0" width="0" height="520"/></clipPath></defs>
+    <rect x="6" y="6" width="888" height="508" rx="40" fill="#fff" stroke="#1B2A4A" stroke-width="7"/>
+    <rect id="band9" x="60" y="100" width="750" height="340" rx="20" fill="#3DDC97" opacity="0"/>
+    <path d="M60 440H850" stroke="#1B2A4A" stroke-width="7" stroke-linecap="round"/><path d="M60 440V70" stroke="#1B2A4A" stroke-width="7" stroke-linecap="round"/>
+    <g font-family="K" font-weight="800" font-size="34" fill="#1B2A4A" text-anchor="middle"><text x="60" y="490">0</text><text x="310" y="490">2</text><text x="560" y="490">4</text><text x="810" y="490">6 ชม.</text></g>
+    <g clip-path="url(#cO9)"><path id="lineOB9" fill="none" stroke="#1B2A4A" stroke-width="22" stroke-linecap="round"/><path id="lineO9" fill="none" stroke="#B8B0C8" stroke-width="12" stroke-linecap="round"/></g>
+    <g clip-path="url(#cG9)"><path id="lineB9" fill="none" stroke="#1B2A4A" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/><path id="line9" fill="none" stroke="#3DDC97" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g id="old9"><circle r="30" fill="#B8B0C8" stroke="#1B2A4A" stroke-width="5"/><circle cx="-9" cy="-4" r="4" fill="#1B2A4A"/><circle cx="9" cy="-4" r="4" fill="#1B2A4A"/><path d="M-9 12q9-7 18 0" stroke="#1B2A4A" stroke-width="4" fill="none" stroke-linecap="round"/></g>
+    <g id="rider9"><circle r="38" fill="#FFD23F" stroke="#1B2A4A" stroke-width="6"/><path d="M-18 -6q7-9 14 0M4 -6q7-9 14 0" stroke="#1B2A4A" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M-14 8Q0 26 14 8z" fill="#1B2A4A"/><text x="0" y="-48" text-anchor="middle" font-family="K" font-weight="900" font-size="30" fill="#1B2A4A">iCAP</text></g>
+    <g id="flag9" transform="translate(810 150) scale(0)"><path d="M0 0V-110" stroke="#1B2A4A" stroke-width="8" stroke-linecap="round"/><path d="M0 -110h80l-18 24 18 24H0z" fill="#FF6B6B" stroke="#1B2A4A" stroke-width="6" stroke-linejoin="round"/></g>
+   </svg></div>
+ </div>
+ <div class="kt" data-at="35.5" data-st="0.05" data-fx="bounce" data-out="36.3" style="top:700px;font-size:120px;color:#B8B0C8">เดิม 2 ชม.</div>
+ <div class="kt" data-at="36.8" data-st="0.06" data-fx="jelly" style="top:700px;font-size:140px;color:#3DDC97">เพิ่มเป็น 6 ชม.!</div>
+</div>
+
+<!-- S10 38.96 - 42.72 looking for quality zinc -->
+<div class="scene" data-s="38.96" data-e="42.72" data-bg="pink" data-tr="iris" data-cam="38.96:1:720:540;40.4:1.03:760:500;42.72:1.03:760:500">
+ <div class="cam">
+  <div class="a kid" data-at="39.0" data-an="left" style="left:170px;top:240px;width:300px;height:433px"><svg width="300" height="433" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#7FD3FF","hair":"#5A3A22","hairStyle":"bob","faces":[{"e":"bored","vis":"0,40.36"},{"e":"wow","vis":"40.36,41.6"},{"e":"happy","vis":"41.6,99"}],"armL":"down","armR":"hold"}'></g></svg></div>
+  <div class="a jar" data-label="?" data-cap="#B8B0C8" data-at="39.1" data-an="up" data-out="40.3" style="left:560px;top:330px;width:150px;height:248px"></div>
+  <div class="a jar" data-label="?" data-cap="#B8B0C8" data-at="39.2" data-an="up" data-out="40.35" style="left:1120px;top:330px;width:150px;height:248px"></div>
+  <div class="a rays" data-at="40.36" data-an="pop" data-spin="16" style="left:640px;top:60px;width:480px;height:480px"></div>
+  <div class="a img nb" data-at="40.36" data-an="pop" data-float="1" style="left:770px;top:160px;width:220px;height:411px"></div>
+  <div class="a" id="mag10" data-at="39.0" data-an="pop" data-out="40.3" style="left:480px;top:260px"><svg width="200" height="200" viewBox="0 0 200 200"><circle cx="80" cy="80" r="58" fill="rgba(255,255,255,.4)" stroke="#1B2A4A" stroke-width="12"/><path d="M122 122l56 56" stroke="#1B2A4A" stroke-width="22" stroke-linecap="round"/></svg></div>
+  <div class="a" data-at="41.9" data-an="pop" data-bob="0" style="left:1050px;top:170px"><svg width="80" height="80" viewBox="0 0 100 100"><path d="M50 88C20 66 8 50 8 33a20 20 0 0142-10 20 20 0 0142 10c0 17-12 33-42 55z" fill="#FF6B6B" stroke="#1B2A4A" stroke-width="6"/></svg></div>
+  <div class="a" data-at="42.0" data-an="pop" data-bob="1" style="left:690px;top:150px"><svg width="60" height="60" viewBox="0 0 100 100"><path d="M50 88C20 66 8 50 8 33a20 20 0 0142-10 20 20 0 0142 10c0 17-12 33-42 55z" fill="#FF8FB1" stroke="#1B2A4A" stroke-width="6"/></svg></div>
+ </div>
+ <div class="kt" data-at="39.42" data-st="0.05" data-fx="bounce" style="top:700px;font-size:120px;color:#FFD23F">ซิงค์คุณภาพ</div>
+</div>
+
+<!-- S11 42.72 - 44.98 FDA registered, standard factory -->
+<div class="scene" data-s="42.72" data-e="44.98" data-bg="mint" data-tr="stripe" data-cam="42.72:1:720:540;44.98:1.03:720:510">
+ <div class="cam">
+  <div class="a photo" data-at="42.75" data-an="left" style="left:160px;top:150px;width:380px;height:549px"><img src="fda.jpg" data-kbi="42.75" style="object-position:50% 0%"></div>
+  <div class="a" data-at="43.1" data-an="stamp" style="left:420px;top:520px"><svg width="170" height="170" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#3DDC97" stroke="#1B2A4A" stroke-width="6"/><path d="M28 52l15 15 30-32" stroke="#fff" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="a photo" data-at="43.6" data-an="right" style="left:650px;top:170px;width:620px;height:465px"><img src="factory2.jpg" data-kbi="43.6"><img src="factory1.jpg" data-xf="44.3" data-kbi="44.3"></div>
+ </div>
+ <div class="a" data-at="42.8" data-an="stamp" style="left:220px;top:740px"><span class="stk" style="font-size:60px;background:#FFD23F">มี อย.</span></div>
+ <div class="a" data-at="43.74" data-an="stamp" style="left:650px;top:740px"><span class="stk" style="font-size:54px;background:#fff">โรงงานได้มาตรฐาน</span></div>
+</div>
+
+<!-- S12 44.98 - end tap the basket; just launched -->
+<div class="scene" data-s="44.98" data-e="99" data-bg="sun" data-tr="iris" data-cam="44.98:1:720:540;46.6:1:720:540;48.13:1.04:720:500">
+ <div id="confetti"></div>
+ <div class="cam">
+  <div class="a img nb" data-at="45.0" data-an="drop" style="left:650px;top:130px;width:170px;height:317px"></div>
+  <div class="a" data-at="45.05" data-an="pop" style="left:510px;top:330px"><svg width="440" height="310" viewBox="0 0 420 300"><path d="M10 30h60l50 190h230l40-140H100" fill="none" stroke="#1B2A4A" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M95 80h295l-40 140H120z" fill="#FF8FB1" stroke="#1B2A4A" stroke-width="10" stroke-linejoin="round"/><circle cx="150" cy="268" r="24" fill="#fff" stroke="#1B2A4A" stroke-width="10"/><circle cx="320" cy="268" r="24" fill="#fff" stroke="#1B2A4A" stroke-width="10"/></svg></div>
+  <div class="a" id="new12" data-at="46.64" data-an="stamp" style="left:960px;top:160px"><svg width="230" height="230" viewBox="-60 -60 120 120"><path d="M0-56l13 20 23-8-2 24 22 10-18 16 10 22-24 0-6 24-18-16-18 16-6-24-24 0 10-22-18-16 22-10-2-24 23 8z" fill="#FF6B6B" stroke="#1B2A4A" stroke-width="5" stroke-linejoin="round"/><text y="10" text-anchor="middle" font-family="K" font-weight="900" font-size="32" fill="#fff" stroke="#1B2A4A" stroke-width="5" paint-order="stroke fill">NEW!</text></svg></div>
+  <div class="a kid" data-at="45.1" data-an="left" style="left:170px;top:280px;width:270px;height:390px"><svg width="270" height="390" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#FF8FB1","hair":"#3A2A1E","faces":[{"e":"happy"}],"armL":"down","armR":"thumb"}'></g></svg></div>
+ </div>
+ <div class="kt" data-at="45.44" data-st="0.05" data-fx="bounce" data-out="46.5" style="top:700px;font-size:110px;color:#FFD23F">กดตะกร้าเลย</div>
+ <div class="a" id="arrow12" data-at="45.5" data-an="pop" data-out="46.5" style="left:1060px;top:560px"><svg width="100" height="120" viewBox="0 0 100 120"><path d="M50 8v80M18 60l32 34 32-34" stroke="#1B2A4A" stroke-width="22" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 8v80M18 60l32 34 32-34" stroke="#FF6B6B" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+ <div class="kt" data-at="46.64" data-st="0.06" data-fx="jelly" style="top:700px;font-size:130px;color:#FF6B6B">เปิดตัวใหม่!</div>
+</div>
+
+<div id="rings"></div>
+<div id="stripe"><div style="left:0;background:#FFD23F"></div><div style="left:160px;background:#FF8FB1"></div><div style="left:320px;background:#7FD3FF"></div><div style="left:480px;width:2520px;background:#3DDC97"></div></div>
+<div id="safe" style="display:none;position:absolute;left:130px;top:130px;width:1180px;height:820px;border:3px dashed #f0f"></div>
+<svg width="0" height="0" style="position:absolute"><defs><symbol id="star" viewBox="0 0 100 100"><path d="M50 4l13 30 32 3-24 21 7 32-28-17-28 17 7-32L5 37l32-3z" fill="#FFD23F" stroke="#1B2A4A" stroke-width="6" stroke-linejoin="round"/></symbol></defs></svg>
+</div>
+<script>
+const W=1440,H=1080,INK='#1B2A4A';
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eOC=p=>1-Math.pow(1-p,3);
+const eOB=p=>{const c1=2.2,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+const eIO=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+const eBn=p=>{const n=7.5625,d=2.75;if(p<1/d)return n*p*p;if(p<2/d)return n*(p-=1.5/d)*p+.75;if(p<2.5/d)return n*(p-=2.25/d)*p+.9375;return n*(p-=2.625/d)*p+.984375};
+let seed=31;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+if(location.hash==='#safe')document.getElementById('safe').style.display='block';
+const $=id=>document.getElementById(id);
+const NS='http://www.w3.org/2000/svg';
+function face(e){const k=`stroke="${INK}" stroke-width="7" fill="none" stroke-linecap="round"`;let s='';
+ if(e==='happy')s=`<path d="M-48 -8q16-18 32 0M16 -8q16-18 32 0" ${k}/><path d="M-30 22Q0 62 30 22z" fill="${INK}"/><path d="M-16 40q16 12 32 0" fill="#FF6B6B"/>`;
+ else if(e==='wow')s=`<ellipse cx="-30" cy="-6" rx="15" ry="19" fill="${INK}"/><ellipse cx="30" cy="-6" rx="15" ry="19" fill="${INK}"/><circle cx="-25" cy="-13" r="6" fill="#fff"/><circle cx="35" cy="-13" r="6" fill="#fff"/><ellipse cx="0" cy="38" rx="13" ry="17" fill="${INK}"/>`;
+ else if(e==='bored')s=`<path d="M-48 -4h30M18 -4h30" ${k}/><path d="M-18 36q9-7 18 0t18 0" ${k}/>`;
+ else s=`<circle cx="-30" cy="-6" r="9" fill="${INK}"/><circle cx="30" cy="-6" r="9" fill="${INK}"/><path d="M-18 34q18-10 36 0" ${k}/>`;
+ return s+`<ellipse cx="-58" cy="20" rx="16" ry="10" fill="#FF8FA3" opacity=".7"/><ellipse cx="58" cy="20" rx="16" ry="10" fill="#FF8FA3" opacity=".7"/>`}
+function hair(st,c){if(st==='bun')return `<circle cx="0" cy="-118" r="34" fill="${c}" stroke="${INK}" stroke-width="6"/><path d="M-104 0C-114 -150 114 -150 104 0C92 -44 44 -66 0 -60C-44 -66 -92 -44 -104 0z" fill="${c}" stroke="${INK}" stroke-width="6"/>`;
+ return `<path d="M-104 4C-114 -150 114 -150 104 4C96 -40 50 -64 6 -50C-20 -70 -70 -58 -104 4z" fill="${c}" stroke="${INK}" stroke-width="6"/>`}
+function kid(o){const sk='#FFD7B5',sh=o.shirt||'#FF8FB1',hr=o.hair||'#2B1B12';let s='';
+ const arm=(sd,k)=>{const sx=sd*70,sy=-170;let ex,ey;if(k==='up'){ex=sd*130;ey=-330}else if(k==='hold'){ex=sd*120;ey=-200}else if(k==='thumb'){ex=sd*125;ey=-250}else{ex=sd*95;ey=-40}
+  let h=`<path d="M${sx} ${sy}L${ex} ${ey}" stroke="${INK}" stroke-width="44" stroke-linecap="round"/><path d="M${sx} ${sy}L${ex} ${ey}" stroke="${sh}" stroke-width="32" stroke-linecap="round"/><circle cx="${ex}" cy="${ey}" r="24" fill="${sk}" stroke="${INK}" stroke-width="6"/>`;
+  if(k==='thumb')h+=`<rect x="${ex-10}" y="${ey-62}" width="20" height="46" rx="10" fill="${sk}" stroke="${INK}" stroke-width="6"/>`;return h};
+ s+=arm(-1,o.armL||'down')+arm(1,o.armR||'down');
+ s+=`<path d="M-100 20V-130a50 50 0 0150-50h100a50 50 0 0150 50V20z" fill="${sh}" stroke="${INK}" stroke-width="7"/><path d="M-34 -180q34 40 68 0" fill="#fff" stroke="${INK}" stroke-width="6"/>`;
+ s+=`<g transform="translate(0 -290)"><circle cx="-104" cy="6" r="22" fill="${sk}" stroke="${INK}" stroke-width="6"/><circle cx="104" cy="6" r="22" fill="${sk}" stroke="${INK}" stroke-width="6"/><circle r="104" fill="${sk}" stroke="${INK}" stroke-width="7"/>${hair(o.hairStyle,hr)}`;
+ (o.faces||[{e:'happy'}]).forEach(f=>{s+=`<g ${f.vis?`data-vis="${f.vis}"`:''}>${face(f.e)}</g>`});s+='</g>';return s}
+document.querySelectorAll('[data-kid]').forEach(g=>g.innerHTML=kid(JSON.parse(g.dataset.kid)));
+function jarSvg(label,cap){const id='j'+Math.floor(rnd()*1e6);return `<svg viewBox="0 0 200 330"><defs><linearGradient id="${id}" x1="0" x2="1"><stop offset="0" stop-color="#DDE2EA"/><stop offset=".3" stop-color="#FFFFFF"/><stop offset=".7" stop-color="#F7F8FA"/><stop offset="1" stop-color="#D3D9E2"/></linearGradient></defs>
+ <rect x="16" y="72" width="168" height="250" rx="38" fill="url(#${id})" stroke="${INK}" stroke-width="6"/><rect x="56" y="56" width="88" height="22" rx="6" fill="#EEF1F5" stroke="${INK}" stroke-width="6"/>
+ <rect x="42" y="8" width="116" height="54" rx="12" fill="${cap||'url(#'+id+')'}" stroke="${INK}" stroke-width="6"/><g stroke="rgba(27,42,74,.25)" stroke-width="4"><path d="M60 16v38M76 16v38M92 16v38M108 16v38M124 16v38M140 16v38"/></g>
+ <g class="lab"><rect x="16" y="140" width="168" height="118" fill="#F2F4F8" stroke="${INK}" stroke-width="5"/><text x="100" y="${label==='?'?222:212}" text-anchor="middle" font-family="K" font-weight="900" font-size="${label==='?'?84:40}" fill="#8A93A6">${label}</text></g>
+ <g class="lab2" opacity="0"><rect x="16" y="140" width="168" height="118" fill="#7FA2FF" stroke="${INK}" stroke-width="5"/><text x="100" y="196" text-anchor="middle" font-family="K" font-weight="900" font-size="54" fill="#fff" stroke="${INK}" stroke-width="7" paint-order="stroke fill">Zn</text><text x="100" y="236" text-anchor="middle" font-family="K" font-weight="800" font-size="24" fill="#fff">Bisglycinate</text></g>
+ <path d="M34 96v190" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".9"/></svg>`}
+document.querySelectorAll('.jar').forEach(e=>e.innerHTML=jarSvg(e.dataset.label||'',e.dataset.cap));
+function heroSvg(sym='Zn',name='ZINC'){const id='h'+Math.floor(rnd()*1e6);
+ const bub=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="url(#${id}s)" stroke="${INK}" stroke-width="3" stroke-opacity=".6"/><ellipse cx="${x-r*.3}" cy="${y-r*.38}" rx="${r*.38}" ry="${r*.22}" fill="#fff" opacity=".85"/>`;
+ return `<svg viewBox="-110 -110 220 220"><defs>
+ <radialGradient id="${id}s" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".3" stop-color="#E9ECF2"/><stop offset=".72" stop-color="#AEB6C6"/><stop offset="1" stop-color="#7C8699"/></radialGradient>
+ <linearGradient id="${id}t" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8A94AA"/><stop offset=".55" stop-color="#4A5468"/><stop offset="1" stop-color="#2B3245"/></linearGradient>
+ <radialGradient id="${id}h" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>
+ <circle r="96" fill="url(#${id}s)" stroke="${INK}" stroke-width="5" stroke-opacity=".75"/>
+ <ellipse cx="-26" cy="-50" rx="46" ry="26" fill="url(#${id}h)"/>
+ <text x="0" y="22" text-anchor="middle" font-family="K" font-weight="900" font-size="88" fill="url(#${id}t)" stroke="#fff" stroke-width="7" paint-order="stroke fill">${sym}</text>
+ <text x="0" y="56" text-anchor="middle" font-family="K" font-weight="900" font-size="21" letter-spacing="1" fill="url(#${id}t)" stroke="#fff" stroke-width="4" paint-order="stroke fill">${name}</text>
+ <g class="bubs">${bub(-92,-80,17)}${bub(88,74,13)}${bub(-78,88,20)}${bub(96,-60,10)}</g></svg>`}
+document.querySelectorAll('.hero').forEach(e=>e.innerHTML=heroSvg());
+// kinetic text
+const seg=new Intl.Segmenter('th',{granularity:'grapheme'});
+const kts=[...document.querySelectorAll('.kt')].map(el=>{const txt=el.textContent;el.textContent='';const gs=[];for(const {segment} of seg.segment(txt)){const s=document.createElement('span');s.className='g';s.textContent=segment===' '?' ':segment;el.appendChild(s);gs.push(s)}
+ return{el,gs,at:+el.dataset.at,st:+el.dataset.st,fx:el.dataset.fx,out:el.dataset.out?+el.dataset.out:null,sc:el.closest('.scene')}});
+function ktRender(t){for(const k of kts){const vis=t>=k.at-0.05;const outk=k.out!==null?cl((t-k.out)/0.25):0;k.el.style.opacity=vis?1-outk:0;if(!vis||outk>=1)continue;
+ k.el.style.transform=outk>0?`translateY(${-60*eIO(outk)}px) scale(${1-.2*outk})`:'';
+ k.gs.forEach((g,i)=>{const lt=t-k.at-i*k.st;if(lt<0){g.style.opacity=0;return}g.style.opacity=1;let tr='';
+  if(k.fx==='bounce'){const p=cl(lt/0.38);tr=`translateY(${-90*(1-eOB(p))}px) scale(${p<=0?0:eOB(p)}) rotate(${(1-p)*-18}deg)`}
+  else if(k.fx==='drop'){const p=cl(lt/0.45);tr=`translateY(${-260*(1-eBn(p))}px)`;g.style.opacity=cl(p*4)}
+  else if(k.fx==='jelly'){const p=cl(lt/0.3);const w=lt>0.3?Math.sin((lt-.3)*20)*Math.exp(-(lt-.3)*5):0;tr=`scale(${(p<=0?0:eOB(p))*(1+0.22*w)},${(p<=0?0:eOB(p))*(1-0.22*w)})`}
+  else if(k.fx==='shake'){const p=cl(lt/0.3);tr=`scale(${p<=0?0:eOB(p)}) rotate(${Math.sin(lt*30)*8*Math.exp(-lt*2.5)}deg) translateX(${Math.sin(lt*45)*10*Math.exp(-lt*3)}px)`}
+  if(lt>0.6)tr+=` translateY(${Math.sin(t*5+i*.7)*5}px)`;g.style.transform=tr})}}
+// scenes
+const scenes=[...document.querySelectorAll('.scene')].map(el=>{const bg=document.createElement('div');bg.className='sbg '+el.dataset.bg;el.insertBefore(bg,el.firstChild);
+ const pl=document.createElement('div');pl.style.cssText='position:absolute;inset:0;pointer-events:none';el.insertBefore(pl,bg.nextSibling);const parts=[];
+ const cols=['#FFD23F','#FF8FB1','#7FA2FF','#3DDC97','#fff'];for(let k=0;k<14;k++){const d=document.createElement('div');d.className='dot';const s=10+rnd()*20;d.style.width=d.style.height=s+'px';d.style.background=cols[k%5];pl.appendChild(d);parts.push({d,x:160+rnd()*1120,y:rnd()*H,v:14+rnd()*24,ph:rnd()*6.28})}
+ const cam=(el.dataset.cam||'').split(';').filter(Boolean).map(k=>k.split(':').map(Number));
+ return{el,s:+el.dataset.s,e:+el.dataset.e,tr:el.dataset.tr||'',parts,cam,camEl:el.querySelector('.cam'),items:[...el.querySelectorAll('.a')]}});
+function camAt(keys,t){if(!keys.length)return[1,720,540];if(t<=keys[0][0])return keys[0].slice(1);for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t<=b[0]){const p=eIO(cl((t-a[0])/(b[0]-a[0])));return[1,2,3].map(j=>a[j]+(b[j]-a[j])*p)}}return keys[keys.length-1].slice(1)}
+
+// capsule (pellet) model
+const CAPSVG=(()=>{let r=7,c=()=>{r=(r*16807)%2147483647;return (r-1)/2147483646};let p='';
+ for(let y=318;y>24;y-=17)for(let x=22;x<244;x+=19){const xx=x+(c()-.5)*8+((Math.round(y/17)%2)?9:0),yy=y+(c()-.5)*6,rr=8.5+c()*3.5;p+=`<circle cx="${xx.toFixed(1)}" cy="${yy.toFixed(1)}" r="${rr.toFixed(1)}" fill="url(#gPl)"/>`}
+ return `<svg viewBox="0 0 260 600"><defs><radialGradient id="gPl" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#F6F1E6"/><stop offset="1" stop-color="#C9C0AC"/></radialGradient>
+ <linearGradient id="gCr" x1="0" x2="1"><stop offset="0" stop-color="#E6DECD"/><stop offset=".3" stop-color="#FFFDF7"/><stop offset="1" stop-color="#D9D0BD"/></linearGradient><clipPath id="cTop"><path d="M22 330V132a108 108 0 01216 0V330z"/></clipPath></defs>
+ <g><g clip-path="url(#cTop)"><rect width="260" height="340" fill="rgba(255,255,255,.55)"/>${p}</g><path d="M22 330V132a108 108 0 01216 0V330" fill="none" stroke="${INK}" stroke-width="8"/><path d="M48 300V140a84 84 0 0140-70" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".7"/></g>
+ <g><path d="M16 296H244V470a114 114 0 01-228 0z" fill="url(#gCr)" stroke="${INK}" stroke-width="8"/><g transform="translate(138 440) rotate(90)" font-family="Arial,Helvetica,sans-serif" font-weight="700" fill="#4A4A4A" text-anchor="middle"><text x="0" y="-8" font-size="74">Zn</text><text x="0" y="52" font-size="56">Zinc</text></g></g></svg>`})();
+document.querySelectorAll('.capsvg').forEach(e=>e.innerHTML=CAPSVG);
+const rel8=[];{const g=document.getElementById('rel8');if(g)for(let i=0;i<18;i++){const c=document.createElementNS(NS,'circle');c.setAttribute('r',8+rnd()*8);c.setAttribute('fill',['#FFD23F','#FF8FB1','#7FD3FF','#3DDC97'][i%4]);c.setAttribute('stroke',INK);c.setAttribute('stroke-width','3');g.appendChild(c);rel8.push({c,a:rnd()*6.28,d:0.15+i*0.08,sp:120+rnd()*120})}}
+const G9y=x=>x<130?440-290*eOC(cl((x-60)/70)):150+8*Math.sin((x-130)/45);
+const O9y=x=>x<130?440-280*eOC(cl((x-60)/70)):(x<310?160+6*Math.sin((x-130)/40):160+250*eIO(cl((x-310)/260)));
+{const d=(f)=>{let s='';for(let x=60;x<=812;x+=4)s+=(x==60?'M':'L')+x+' '+f(x).toFixed(1);return s};const a=document.getElementById('line9');if(a){a.setAttribute('d',d(G9y));$('lineB9').setAttribute('d',d(G9y));$('lineO9').setAttribute('d',d(O9y));$('lineOB9').setAttribute('d',d(O9y))}}
+const conf=[];const cw=document.getElementById('confetti');const cc=['#FFD23F','#FF8FB1','#7FD3FF','#3DDC97','#FF6B6B'];
+for(let i=0;i<80;i++){const d=document.createElement('div');d.className='conf';d.style.background=cc[i%5];cw.appendChild(d);conf.push({d,x:200+rnd()*1040,vy:240+rnd()*300,vx:(rnd()-.5)*180,r:rnd()*360,vr:(rnd()-.5)*720,dl:rnd()*0.5,sw:rnd()*6})}
+const ringDefs=[[1.56,720,790],[9.58,720,780],[13.08,720,790],[18.64,720,790],[25.24,720,790],[36.8,720,790],[40.4,880,370],[43.1,505,605],[46.64,1075,275]];
+const rw=document.getElementById('rings');const rings=ringDefs.map(([t,x,y])=>{const d=document.createElement('div');d.className='ring';d.style.left=x+'px';d.style.top=y+'px';rw.appendChild(d);return{d,t}});
+function animT(an,p){switch(an){case'fade':return[eOC(p),''];case'pop':return[cl(p*4),`scale(${p<=0?0:eOB(p)})`];
+ case'stamp':{const e=eOB(p);return[cl(p*5),`scale(${1.7-0.7*e}) rotate(${-8*(1-e)}deg)`]}
+ case'up':{const e=eOB(p);return[cl(p*3),`translateY(${120*(1-e)}px)`]}case'left':{const e=eOB(p);return[cl(p*3),`translateX(${-360*(1-e)}px)`]}
+ case'right':{const e=eOB(p);return[cl(p*3),`translateX(${360*(1-e)}px)`]}case'drop':return[cl(p*5),`translateY(${-700*(1-eBn(p))}px)`]}return[1,'']}
+const DUR={fade:.35,pop:.45,stamp:.38,up:.45,left:.5,right:.5,drop:.7};
+const TR=0.4;
+window.render=function(t){
+ scenes.forEach((sc,i)=>{const nx=scenes[i+1];const tail=(nx&&(nx.tr==='iris'||nx.tr==='zoom'||nx.tr==='slideup'))?TR:0;
+  const on=t>=sc.s&&t<sc.e+tail;sc.el.style.display=on?'block':'none';if(!on)return;
+  const lt=t-sc.s,q=cl(lt/TR);let tf='',clip='none',op=1;
+  if(sc.tr==='iris')clip=`circle(${eIO(q)*110}% at 50% 50%)`;else if(sc.tr==='zoom'){tf=`scale(${1.3-0.3*eOC(q)})`;op=q}else if(sc.tr==='slideup')tf=`translateY(${(1-eOC(q))*1080}px)`;
+  sc.el.style.transform=tf;sc.el.style.clipPath=q<1?clip:'none';sc.el.style.opacity=op;sc.el.style.zIndex=i;
+  const[s,fx,fy]=camAt(sc.cam,t);if(sc.camEl)sc.camEl.style.transform=`translate(720px,540px) scale(${s}) translate(${-fx}px,${-fy}px)`;
+  for(const p of sc.parts){const y=((p.y-p.v*t)%(H+100)+H+100)%(H+100)-50;p.d.style.transform=`translate(${p.x+Math.sin(t*.8+p.ph)*24}px,${y}px)`;p.d.style.opacity=.55*cl((y-140)/80)*cl((940-y)/80)}
+  for(const el of sc.items){const at=+el.dataset.at,an=el.dataset.an,p=cl((t-at)/DUR[an]);let[o,tr]=t<at?[0,'']:animT(an,p);const live=t-at;
+   if(el.dataset.out){const k=cl((t-+el.dataset.out)/0.28);if(k>0){o*=1-k;tr+=` translateY(${-eIO(k)*50}px) scale(${1-.2*k})`}}
+   if(el.dataset.float){const ph=+el.dataset.float;tr+=` translateY(${Math.sin(t*2.4+ph)*12}px) rotate(${Math.sin(t*1.8+ph)*3}deg)`}
+   if(el.dataset.bob){const ph=+el.dataset.bob;tr+=` translateY(${Math.sin(t*3.4+ph)*9}px) rotate(${Math.sin(t*2.6+ph)*4}deg)`}
+   if(el.dataset.drift)tr+=` translateX(${(t-sc.s)*22*el.dataset.drift}px)`;
+   if(el.dataset.spin)tr+=` rotate(${t*el.dataset.spin}deg)`;
+   if(el.dataset.swing&&live>0.35)tr+=` rotate(${Math.sin((live-.35)*8)*7*Math.exp(-(live-.35)*1.2)}deg)`;
+   if(el.classList.contains('kid')&&live>0.45)tr+=` translateY(${Math.abs(Math.sin(t*3.2))*-8}px)`;
+   el.style.opacity=o;el.style.transform=tr}});
+ ktRender(t);
+ let sx=-3200;for(const sc of scenes){if(sc.tr==='stripe'){const d=t-sc.s;if(d>-0.25&&d<0.25)sx=-3000+eIO((d+0.25)/0.5)*4600}}$('stripe').style.transform=`translateX(${sx}px) skewX(-14deg)`;
+ document.querySelectorAll('[data-vis]').forEach(g=>{const[a,b]=g.dataset.vis.split(',').map(Number);g.style.opacity=(t>=a&&t<b)?1:0});
+ document.querySelectorAll('.jumpy').forEach(j=>j.style.transform=`translateY(${-Math.abs(Math.sin(t*4.4))*24}px)`);
+ document.querySelectorAll('.hero .bubs').forEach((b,i)=>b.setAttribute('transform',`translate(0 ${Math.sin(t*3+i)*4})`));
+ document.querySelectorAll('[data-xf]').forEach(g=>{g.style.opacity=cl((t-+g.dataset.xf)/0.35)});
+ document.querySelectorAll('[data-kbi]').forEach(g=>{const d=Math.max(0,t-+g.dataset.kbi);g.style.transform=`scale(${1.02+0.03*d})`});
+ if($('zn1')&&t<3.6){const k=eOB(cl((t-1.5)/0.5));$('zn1').querySelector('.hero').style.transform=`scale(${0.55+0.45*k}) rotate(${Math.sin(t*3)*4}deg)`}
+ if($('ln1')&&t>=3.18&&t<11){['ln1','ln2','ln3'].forEach((id,i)=>{const at=[3.3,5.26,6.7][i];$(id).style.opacity=t<at?0:1;$(id).setAttribute('stroke-dashoffset',-t*60)})}
+ if($('x3')&&t>=10.5&&t<12.5){const k=cl((t-11.0)/0.35);$('x3').setAttribute('stroke-dasharray','400');$('x3').setAttribute('stroke-dashoffset',400*(1-k))}
+ if($('beam4')&&t>=12.02&&t<15.6){const k=eOB(cl((t-12.6)/1.2));const a=-16*k+Math.sin(t*3)*2*k;$('beam4').setAttribute('transform',`rotate(${a})`);
+  const r=a*Math.PI/180;$('panL4').setAttribute('transform',`translate(${-230*(Math.cos(r)-1)} ${-230*Math.sin(r)}) rotate(${-a} -230 -120)`);$('panR4').setAttribute('transform',`translate(${230*(Math.cos(r)-1)} ${230*Math.sin(r)}) rotate(${-a} 230 -120)`)}
+ if($('bat5')&&t>=15.16&&t<20.6){const v=t<18.3?0.6*eOC(cl((t-15.4)/0.5)):0.6+0.4*eOB(cl((t-18.3)/0.6));$('bat5').setAttribute('width',272*Math.min(1,v));$('bat5').setAttribute('fill',v>0.95?'#3DDC97':'#FFB36B');$('batT5').textContent=Math.round(Math.min(1,v)*100)+'%'}
+ if($('cap8')&&t>=30.94&&t<35.7){const c=$('cap8');const sl=eIO(cl((t-31.85)/0.5));c.style.left=(560-130-sl*200)+'px';c.style.top='120px';c.style.transform=`rotate(${-20+Math.sin(t*2)*4}deg) scale(${0.95-0.3*sl})`;
+  [...$('layers8').children].forEach((L,i)=>{const k=eOB(cl((t-32.0-(3-i)*0.22)/0.35));const peel=cl((t-33.6-i*0.35)/0.5);L.setAttribute('transform',`scale(${(t<32.0?0:k)*(1+0.25*peel)})`);L.setAttribute('opacity',t<32?0:1-peel*(i<3?1:0))});
+  rel8.forEach(r=>{const lt=t-33.55-r.d;if(lt<0){r.c.setAttribute('opacity',0);return}const d=eOC(cl(lt/1.2))*r.sp+60;r.c.setAttribute('cx',Math.cos(r.a)*d*1.3);r.c.setAttribute('cy',Math.sin(r.a)*d*1.3+lt*20);r.c.setAttribute('opacity',1-cl((lt-1.1)/0.4))})}
+ if($('rider9')&&t>=35.28&&t<39.4){const po=eIO(cl((t-35.4)/1.0)),xo=60+po*750;$('rO9').setAttribute('width',po>0?xo+20:0);
+  const pn=eIO(cl((t-36.2)/1.6)),xn=60+pn*750;$('rG9').setAttribute('width',pn>0?xn+20:0);
+  $('old9').setAttribute('transform',`translate(${xo} ${O9y(xo)-36})`);$('old9').style.opacity=t<35.4?0:1;
+  $('rider9').setAttribute('transform',`translate(${xn} ${G9y(xn)-44+Math.abs(Math.sin(t*9))*-10}) rotate(${Math.sin(t*6)*8})`);$('rider9').style.opacity=t<36.2?0:1;
+  const f=eOB(cl((t-37.8)/0.4));$('flag9').setAttribute('transform',`translate(810 150) scale(${t<37.8?0:f}) rotate(${Math.sin(t*5)*4})`);$('band9').setAttribute('opacity',0.18*cl((t-37.6)/0.4))}
+ if($('mag10')&&t>=38.96&&t<40.5){$('mag10').style.transform+=` translate(${Math.sin((t-39)*3)*260+130}px,${Math.cos((t-39)*4)*30}px)`}
+ if($('arrow12')&&t>45.9&&t<46.8){$('arrow12').style.transform+=` translateY(${Math.abs(Math.sin((t-45.9)*6))*22}px)`}
+ if($('new12')&&t>47){$('new12').style.transform+=` rotate(${Math.sin(t*4)*6}deg)`}
+ for(const r of rings){const d=t-r.t;if(d<0||d>0.6){r.d.style.opacity=0;continue}const p=d/0.6;r.d.style.opacity=.9*(1-p);r.d.style.transform=`scale(${0.2+eOC(p)*1.4})`;r.d.style.borderWidth=(16*(1-p)+2)+'px'}
+ for(const c of conf){const d=t-46.64-c.dl;if(d<0){c.d.style.opacity=0;continue}const cy=140+c.vy*d;c.d.style.opacity=cl((cy-140)/60)*cl((940-cy)/120);c.d.style.transform=`translate(${c.x+c.vx*d*.5+Math.sin(d*4+c.sw)*20}px,${cy}px) rotate(${c.r+c.vr*d}deg) rotateX(${d*400+c.sw*50}deg)`}
+};
+window.render(0);
+</script></body></html>
