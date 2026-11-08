@@ -105,16 +105,21 @@ body{font-family:K,sans-serif;color:#1B2A4A}
  <div class="kt" data-at="18.64" data-st="0.06" data-fx="jelly" style="top:700px;font-size:140px;color:#3DDC97">เพียงพอ!</div>
 </div>
 
-<!-- S6 20.16 - 26.26 new-innovation zinc: absorbs better, lasts longer, try this -->
-<div class="scene" data-s="20.16" data-e="26.26" data-bg="sun" data-tr="iris" data-cam="20.16:1.04:720:500;23.0:1:720:540;26.26:1.04:720:500">
+<!-- S6 20.16 - 26.26 new-innovation zinc: absorbs better, lasts longer, try this (zinc icon, high energy) -->
+<div class="scene" id="sc6" data-s="20.16" data-e="26.26" data-bg="sun" data-tr="iris" data-cam="20.16:1:720:540;20.62:1.1:720:430;20.95:1:720:540;25.1:1.02:720:520;25.3:1.09:720:450;25.6:1.02:720:520;26.26:1.04:720:500">
  <div class="cam">
-  <div class="a rays" data-at="20.2" data-an="pop" data-spin="14" style="left:420px;top:60px;width:600px;height:600px"></div>
-  <div class="a img nb" data-at="20.62" data-an="drop" data-float="0.3" style="left:600px;top:160px;width:240px;height:448px"></div>
-  <div class="a" data-at="21.72" data-an="stamp" data-bob="0" style="left:180px;top:230px"><span class="stk" style="font-size:54px;background:#3DDC97">ดูดซึมดีกว่า</span></div>
-  <div class="a" data-at="23.12" data-an="stamp" data-bob="1.5" style="left:880px;top:400px"><span class="stk" style="font-size:54px;background:#FF8FB1">อยู่นานกว่า</span></div>
+  <div class="a" data-at="20.55" data-an="pop" style="left:0;top:0;width:1440px;height:1080px"><svg width="1440" height="1080"><g id="burst6" transform="translate(720 330)"></g></svg></div>
+  <div class="a rays" data-at="20.2" data-an="pop" data-spin="22" style="left:400px;top:10px;width:640px;height:640px"></div>
+  <div class="a" data-at="20.62" data-an="stamp" style="left:540px;top:150px;width:360px;height:360px"><div class="hero" id="zn6" style="width:100%;height:100%"></div></div>
+  <div id="orb6"></div>
+  <div class="a kid" data-at="20.9" data-an="up" style="left:150px;top:330px;width:240px;height:346px"><div class="jumpy"><svg width="240" height="346" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#FF8FB1","hair":"#3A2A1E","faces":[{"e":"wow","vis":"0,23"},{"e":"happy","vis":"23,99"}],"armL":"up","armR":"up"}'></g></svg></div></div>
+  <div class="a kid" data-at="21.05" data-an="up" style="left:1050px;top:330px;width:240px;height:346px"><div class="jumpy"><svg width="240" height="346" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#7FD3FF","hair":"#5A3A22","hairStyle":"bob","faces":[{"e":"happy","vis":"0,23"},{"e":"wow","vis":"23,99"}],"armL":"up","armR":"up"}'></g></svg></div></div>
+  <div class="a" id="stA6" data-at="21.72" data-an="stamp" style="left:150px;top:180px"><span class="stk" style="font-size:52px;background:#3DDC97">ดูดซึมดีกว่า</span></div>
+  <div class="a" id="stB6" data-at="23.12" data-an="stamp" style="left:960px;top:180px"><span class="stk" style="font-size:52px;background:#FF8FB1">อยู่นานกว่า</span></div>
  </div>
- <div class="kt" data-at="20.62" data-st="0.05" data-fx="bounce" data-out="25.1" style="top:690px;font-size:120px;color:#FFD23F">นวัตกรรมใหม่</div>
- <div class="kt" data-at="25.24" data-st="0.06" data-fx="jelly" style="top:690px;font-size:140px;color:#FF6B6B">ลองตัวนี้!</div>
+ <div id="flash6" style="position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none"></div>
+ <div class="kt" data-at="20.62" data-st="0.05" data-fx="jelly" data-out="25.1" style="top:690px;font-size:130px;color:#FFD23F">นวัตกรรมใหม่!</div>
+ <div class="kt" data-at="25.24" data-st="0.06" data-fx="jelly" style="top:690px;font-size:150px;color:#FF6B6B">ลองตัวนี้!</div>
 </div>
 
 <!-- S7 26.26 - 30.94 Zinc Bisglycinate iCAP by INZENT; bisglycinate already absorbs well -->
@@ -292,9 +297,12 @@ const rel8=[];{const g=document.getElementById('rel8');if(g)for(let i=0;i<18;i++
 const G9y=x=>x<130?440-290*eOC(cl((x-60)/70)):150+8*Math.sin((x-130)/45);
 const O9y=x=>x<130?440-280*eOC(cl((x-60)/70)):(x<310?160+6*Math.sin((x-130)/40):160+250*eIO(cl((x-310)/260)));
 {const d=(f)=>{let s='';for(let x=60;x<=812;x+=4)s+=(x==60?'M':'L')+x+' '+f(x).toFixed(1);return s};const a=document.getElementById('line9');if(a){a.setAttribute('d',d(G9y));$('lineB9').setAttribute('d',d(G9y));$('lineO9').setAttribute('d',d(O9y));$('lineOB9').setAttribute('d',d(O9y))}}
+const ORB6=[],BL6=[],CB6=[];{const w=document.getElementById('orb6');if(w){for(let i=0;i<5;i++){const d=document.createElement('div');d.className='hero';d.style.cssText='position:absolute;width:80px;height:80px';d.innerHTML=heroSvg('Zn','');w.appendChild(d);ORB6.push({d,ph:i*1.2566})}
+ const g=document.getElementById('burst6');for(let i=0;i<24;i++){const p=document.createElementNS(NS,'path');const a=i/24*Math.PI*2;p.setAttribute('d',`M${Math.cos(a)*200} ${Math.sin(a)*200}L${Math.cos(a)*(330+(i%3)*40)} ${Math.sin(a)*(330+(i%3)*40)}`);p.setAttribute('stroke',['#FF6B6B','#FFD23F','#7FD3FF','#3DDC97'][i%4]);p.setAttribute('stroke-width',14);p.setAttribute('stroke-linecap','round');g.appendChild(p);BL6.push(p)}
+ const st=document.getElementById('stage');const cc2=['#FFD23F','#FF8FB1','#7FD3FF','#3DDC97','#FF6B6B'];for(let i=0;i<40;i++){const d=document.createElement('div');d.className='conf';d.style.background=cc2[i%5];d.style.zIndex=50;st.appendChild(d);CB6.push({d,a:rnd()*6.28,sp:320+rnd()*380,r:rnd()*360,t0:i<20?20.62:25.24})}}}
 const conf=[];const cw=document.getElementById('confetti');const cc=['#FFD23F','#FF8FB1','#7FD3FF','#3DDC97','#FF6B6B'];
 for(let i=0;i<80;i++){const d=document.createElement('div');d.className='conf';d.style.background=cc[i%5];cw.appendChild(d);conf.push({d,x:200+rnd()*1040,vy:240+rnd()*300,vx:(rnd()-.5)*180,r:rnd()*360,vr:(rnd()-.5)*720,dl:rnd()*0.5,sw:rnd()*6})}
-const ringDefs=[[1.56,720,790],[9.58,720,780],[13.08,720,790],[18.64,720,790],[25.24,720,790],[36.8,720,790],[40.4,880,370],[43.1,505,605],[46.64,1075,275]];
+const ringDefs=[[1.56,720,790],[9.58,720,780],[13.08,720,790],[18.64,720,790],[20.62,720,330],[21.72,330,210],[23.12,1130,210],[25.24,720,790],[36.8,720,790],[40.4,880,370],[43.1,505,605],[46.64,1075,275]];
 const rw=document.getElementById('rings');const rings=ringDefs.map(([t,x,y])=>{const d=document.createElement('div');d.className='ring';d.style.left=x+'px';d.style.top=y+'px';rw.appendChild(d);return{d,t}});
 function animT(an,p){switch(an){case'fade':return[eOC(p),''];case'pop':return[cl(p*4),`scale(${p<=0?0:eOB(p)})`];
  case'stamp':{const e=eOB(p);return[cl(p*5),`scale(${1.7-0.7*e}) rotate(${-8*(1-e)}deg)`]}
@@ -332,6 +340,15 @@ window.render=function(t){
  if($('beam4')&&t>=12.02&&t<15.6){const k=eOB(cl((t-12.6)/1.2));const a=-16*k+Math.sin(t*3)*2*k;$('beam4').setAttribute('transform',`rotate(${a})`);
   const r=a*Math.PI/180;$('panL4').setAttribute('transform',`translate(${-230*(Math.cos(r)-1)} ${-230*Math.sin(r)}) rotate(${-a} -230 -120)`);$('panR4').setAttribute('transform',`translate(${230*(Math.cos(r)-1)} ${230*Math.sin(r)}) rotate(${-a} 230 -120)`)}
  if($('bat5')&&t>=15.16&&t<20.6){const v=t<18.3?0.6*eOC(cl((t-15.4)/0.5)):0.6+0.4*eOB(cl((t-18.3)/0.6));$('bat5').setAttribute('width',272*Math.min(1,v));$('bat5').setAttribute('fill',v>0.95?'#3DDC97':'#FFB36B');$('batT5').textContent=Math.round(Math.min(1,v)*100)+'%'}
+ if($('zn6')&&t>=20.16&&t<26.7){const sc6=$('sc6').querySelector('.cam');
+  const pul=1+0.05*Math.sin(t*10)+0.12*Math.exp(-Math.max(0,t-21.72)*6)*(t>21.72)+0.12*Math.exp(-Math.max(0,t-23.12)*6)*(t>23.12)+0.15*Math.exp(-Math.max(0,t-25.24)*5)*(t>25.24);
+  $('zn6').style.transform=`scale(${pul}) rotate(${Math.sin(t*3)*6}deg)`;
+  ORB6.forEach((o,i)=>{const k=cl((t-20.9-i*0.08)/0.4);const a=t*1.6+o.ph,x=720+Math.cos(a)*270,y=330+Math.sin(a)*120;o.d.style.transform=`translate(${x-40}px,${y-40}px) scale(${k?eOB(k)*(0.8+0.25*Math.sin(a)):0})`;o.d.style.zIndex=Math.sin(a)>0?3:0});
+  const bk=cl((t-20.6)/0.35);BL6.forEach((p,i)=>{p.setAttribute('opacity',bk*(0.55+0.45*Math.sin(t*12+i)))});$('burst6').setAttribute('transform',`translate(720 330) rotate(${t*25}) scale(${0.6+0.4*eOB(bk)+0.05*Math.sin(t*10)})`);
+  let sh=0;[20.62,21.72,23.12,25.24].forEach(tt=>{const d=t-tt;if(d>0&&d<0.35)sh+=Math.sin(d*90)*14*(1-d/0.35)});sc6.style.transform+=` translate(${sh}px,${sh*0.4}px)`;
+  const fl=Math.max(0,0.75*(1-cl((t-20.62)/0.25))*(t>=20.62),0.5*(1-cl((t-25.24)/0.25))*(t>=25.24));$('flash6').style.opacity=fl;
+  ['stA6','stB6'].forEach((id,i)=>{const at=[21.72,23.12][i];if(t>at+0.4)$(id).style.transform+=` rotate(${Math.sin(t*5+i)*4}deg) translateY(${Math.sin(t*4+i)*8}px)`})}
+ CB6.forEach(c=>{const d=t-c.t0;if(d<0||d>1.3){c.d.style.opacity=0;return}const r=eOC(cl(d/0.7))*c.sp;c.d.style.opacity=1-cl((d-0.9)/0.4);c.d.style.transform=`translate(${720+Math.cos(c.a)*r}px,${360+Math.sin(c.a)*r*0.7+d*d*260}px) rotate(${c.r+d*600}deg)`});
  if($('cap8')&&t>=30.94&&t<35.7){const c=$('cap8');const sl=eIO(cl((t-31.85)/0.5));c.style.left=(560-130-sl*200)+'px';c.style.top='120px';c.style.transform=`rotate(${-20+Math.sin(t*2)*4}deg) scale(${0.95-0.3*sl})`;
   [...$('layers8').children].forEach((L,i)=>{const k=eOB(cl((t-32.0-(3-i)*0.22)/0.35));const peel=cl((t-33.6-i*0.35)/0.5);L.setAttribute('transform',`scale(${(t<32.0?0:k)*(1+0.25*peel)})`);L.setAttribute('opacity',t<32?0:1-peel*(i<3?1:0))});
   rel8.forEach(r=>{const lt=t-33.55-r.d;if(lt<0){r.c.setAttribute('opacity',0);return}const d=eOC(cl(lt/1.2))*r.sp+60;r.c.setAttribute('cx',Math.cos(r.a)*d*1.3);r.c.setAttribute('cy',Math.sin(r.a)*d*1.3+lt*20);r.c.setAttribute('opacity',1-cl((lt-1.1)/0.4))})}
