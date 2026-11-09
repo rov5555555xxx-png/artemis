@@ -1,46 +1,52 @@
 ---
 name: thai-product-clip
-description: Make a Thai product explainer / ad clip (supplements, health products) from the user's voiceover video plus product images, in the user's established style — keyword-only captions, flat scenario illustrations, user photos, original background music, varied quiet SFX, TikTok-safe margins. Use when the user sends a voiceover (mp4/audio) with product pictures and asks for a clip ("ทำคลิป", "เอาเสียงนี้ไปทำคลิป", "ทำแบบคราวที่แล้ว").
+description: Make Thai product explainer / ad clips (supplements: zinc, magnesium, probiotics...) from the user's voiceover video (upload, Google Drive file name, or link) in the user's approved styles — default is the bright cartoon style with big bouncy Thai captions, 4:3 landscape, original ukulele music and cartoon SFX; also makes cover images. Use when the user sends a voiceover/clip or a Drive file name and asks for a clip ("ทำคลิป", "ทำอันนี้ให้หน่อย", "ทำแบบที่ชอบ", "สไตล์สดใส", "ขอหน้าปก").
 ---
 
-# Thai product explainer clip
+# Thai product clip
 
-The user sells supplements (brand INZENT) on TikTok. They send: a voiceover video (often a static screenshot + Thai voice), product photos, sometimes reference tables or lifestyle photos. You build the whole clip yourself and deliver MP4s. Reply to the user in Thai, casually and concisely.
+The user (Thai, casual, writes on a phone) sells supplements on TikTok. They send a voiceover video (often a CapCut export with a presenter in a green fish mask) and want a motion-graphics clip that matches the narration. They place our clip on the top half of their 9:16 edit. Reply in Thai, casual and short. Don't ask about things already decided below; just build and deliver.
 
-Finished examples live in `output/` (vitamin D3+K2, magnesium); `output/src/magnesium/mg.html` is the most recent, approved layout.
+## Defaults the user already chose (don't ask again)
 
-## Defaults the user has already chosen (do not ask again)
+- **Style = "bright" (the one they said they love):** pastel backgrounds (peach / sky / mint / sun / lilac / pink), flat cartoon kids with navy outlines (`kid()` helper), sticker pills (`.stk`), stars/confetti, pop/bounce/drop/jelly animations, gentle camera zoom-in/out per scene. Never "grand"/dark unless asked.
+- **Format = 4:3 landscape**, page 1440×1080 CSS, render DPR 2 → 2880×2160, 30 fps. (1:1 2160² only if they ask; `templates/bright_1x1_template.html`.)
+- **Safe zone:** keep every text, product and important visual inside 130 px margins (box 130–1310 × 130–950). Camera zooms ≤ ~1.06 so things don't leave it.
+- **Captions:** few words, BIG, playful kinetic text (`.kt` with `data-fx` bounce | drop | jelly | shake), split into Thai grapheme clusters with `Intl.Segmenter`. 1 short phrase per beat, synced to the spoken word. No full subtitles. Stickers for lists/claims.
+- **Every beat gets a picture that acts out the line** (glass filling 4%→70%, balance scale tipping, battery %, race where the product overtakes, magnifier, graph with a smiling rider, molecule, crowd of people, checklist cards, crown...). If a beat looks static for >1 s, add motion (counter, arrows, sparkles, dancing kid, extra caption) — the user complains about "ค้าง".
+- **Comparisons with other products:** never show another brand. Use an unbranded white jar (`jarSvg(label,cap)`) for "old/ordinary" products.
+- **When told not to use their images:** draw everything; use an icon (glossy element ball `heroSvg('Mg','MAGNESIUM')` / `heroSvg('Zn','ZINC')`) instead of a bottle.
+- **When they allow footage images:** cut products from frames with `scripts/cut.py` (rembg) — then remove stray blobs (keep largest alpha component) and check on green; crop photos/charts from frames as `.photo` panels. Never use the masked presenter.
+- **Product box on dark backgrounds** must be a full rectangle (check corners!) — build the mask from a low threshold + convex hull, add a thin white rim.
+- **Audio:** original music `scripts/music_bright.py` (ukulele strum, bass, claps, whistle/glock hook — vary key/BPM/hook per clip if they ask for something new), SFX from the cartoon palette in `scripts/sfx_bright.py` (pop, boing, slide whistle, squeak, bike bell, party horn, tada, drum roll, sad trombone, plinks…). Don't reuse the exact same sound within a few seconds. Mix: music ≈ 13–14 dB under voice, SFX quieter. You can't listen — say so and give the measured RMS.
+- **Deliver:** `output/<name>-4x3.mp4` (voice+music+SFX) and `output/<name>-4x3-music-sfx-only.mp4`, send both with SendUserFile, plus a short Thai table of scenes. Make a cover (`templates/cover_4x3_template.html`, big readable title + product/icon, PNG 2880×2160) when asked or when frame 0 is empty. Copy sources to `output/src/<name>/`, commit and push to the session branch.
+- **Facts:** numbers/claims only from the voiceover or their images; list words Whisper got unclear and ask them to check (don't put uncertain claims on screen).
 
-- **Format:** 1:1, rendered **2160×2160** (page is 1080×1080 CSS, DPR 2), 30 fps, length = voiceover length. Only use another ratio if they ask.
-- **Safe zone (very important):** equal **130px margin on all four sides** (of 1080). Every text, product, card, photo and icon stays inside the 820×820 centre box. Nothing in corners or near edges, including decorative bubbles, stars and confetti (fade them out before the margin). No camera tilt; only gentle zoom (≤2%).
-- **Text position:** never at the top. Visual (photo / illustration / bottle) sits in the upper half of the safe box (y≈150–620), and the text sits under it in the middle-lower area (y≈600–900).
-- **Captions:** keywords only, 1–2 short phrases per beat, synced to the spoken word; highlight sweep on the key word. No full subtitles. No on-screen presenter.
-- **Visuals:** every beat gets a "สถานการณ์จำลอง" (simulated situation) so viewers can picture it: flat SVG illustrations (the `person()` / `headSvg()` helpers in the template) or the user's own photos when they fit. Use supplied photos where suitable (Ken Burns zoom + crossfade, white rounded frame); skip photos that are too low-res for 2160 or duplicate a scene, and tell the user which you skipped.
-- **Product:** cut the bottle out of the product images with rembg and make it the hero (float, sway, light shine sweep). Use the product colours for the theme (D3 = orange/yellow, magnesium = blue/navy + gold).
-- **Motion:** pop/stamp/slam entrances, varied scene transitions (swipe, iris, slide, zoom, flash — don't repeat the same one back to back), rings on big hits, counters for numbers, bars/charts for comparisons.
-- **Audio:**
-  - Original background music generated with `scripts/music.py` (adapt tempo/chords to the mood), ducked under the voice.
-  - SFX: many different sounds that match the scene (clock tick, birds, water, alarm, glass, chimes...). Don't reuse the same sound within a few seconds; vary pitch. Keep SFX quiet (~20 dB under voice peaks); music ~13 dB under the voice.
-  - You cannot listen: say so and give the measured levels.
-- **Deliver two files:** `output/<name>-1x1-2160.mp4` (voice + music + SFX) and `output/<name>-1x1-2160-music-sfx-only.mp4` (no voice). Send both with SendUserFile, copy sources to `output/src/<name>/`, commit and push to the session branch.
-- **Facts:** take numbers and claims from the user's voiceover and images only; flag anything you inferred (e.g. a promo shown in an image but not spoken, unclear words in the transcript).
+## Getting the voiceover
+
+- **Upload:** use the path given.
+- **Google Drive by name:** find it with the Google Drive `search_files` tool (`title contains '9/11/26'`), then download directly (works for link-shared files, no size limit):
+  `curl -sSL -o in.mp4 "https://drive.google.com/uc?export=download&id=<FILE_ID>"` (put downloads in their own folder). Don't use `download_file_content` for big videos.
+- **TikTok/IG links:** need network access to those hosts; IG often needs login — ask for the file instead.
 
 ## Workflow
 
-1. **Setup** (once per session): `bash .claude/skills/thai-product-clip/scripts/setup.sh`
-   (installs faster-whisper, rembg, scipy; fetches the Whisper-small model from npm and the rembg model from GitHub, because Hugging Face is blocked). ElevenLabs in this environment has no speech-to-text or sound-generation permission, so don't rely on it.
-2. **Inspect & transcribe:** use ffprobe to get the duration, make a 1-fps contact sheet to see any on-screen text, then `ffmpeg -i in.mp4 -vn -ac 1 -ar 44100 audio.wav` and `... -ar 16000 -f f32le a16.raw`, then
-   `python3 -I scripts/transcribe.py /tmp/whisper-small a16.raw "<product vocab>"`.
-   Thai output is rough: fix words from context and the images, re-run unclear spans with a start/end and a better vocab prompt, and check silent gaps (they may hide speech).
-3. **Assets:** put uploads in their own folder. Run `python3 -I scripts/cut.py <img> x0,y0,x1,y1 bottle.png` (crop box in the image's real pixels; screenshots are often 1080×2340), then composite the result on green to check it. Convert photos to JPG at ≤1600 px wide.
-4. **Page:** copy `templates/square_template.html` plus `assets/fonts/*` and the images into a build folder. Rewrite the scenes for the new script: each `.scene` has `data-s`/`data-e` (seconds), `data-bg` (night/day/morning/blue/grey or add your own), `data-tr` (transition), and elements with `data-at` + `data-an`. Keep the engine (`window.render(t)`) as is.
-5. **Check:** render stills with the `#safe` URL hash (this shows the 130px guide box) at several times, tile them with ffmpeg into one image, look at it, and fix overlaps, edge crowding and low-res images. Then render the video in the background with `DPR=2` (about 4–6 minutes) and use Monitor or the background notification; don't poll with sleep.
-6. **Audio:** `python3 -I scripts/music.py music.wav <dur>`; edit the `cues` list in `scripts/mix_sfx.py` to the new timings, then run it to get both mixes. Check the waveform and RMS.
-7. **Mux:** `ffmpeg -i video.mp4 -i mix.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest -movflags +faststart out.mp4` for each version. Make a 1–2 fps contact sheet of the final video and look at it before sending.
+1. **Setup** (skip if `/tmp/whisper-small/model.bin` exists): `bash .claude/skills/thai-product-clip/scripts/setup.sh` (or `~/.claude/skills/thai-product-clip/...` when installed at user level).
+2. **Inspect & transcribe:** ffprobe; 0.5-fps contact sheet; `ffmpeg -i in.mp4 -vn -ac 1 -ar 44100 audio.wav` and `-ar 16000 -f f32le a16.raw`; `python3 -I scripts/transcribe.py /tmp/whisper-small a16.raw ""` (use an EMPTY prompt first — a vocab prompt can make Whisper loop; re-run unclear spans with `start end`, optionally with a short phrase prompt). Print word times grouped every ~0.45 s to place beats.
+3. **Plan scenes** from the transcript (one picture per beat, text only on emphasis words).
+4. **Build** from `templates/bright_4x3_template.html` (engine: scenes with `data-s/data-e/data-bg/data-tr/data-cam`, items `.a` with `data-at/data-an/data-out/data-float/data-bob/data-spin`, kinetic `.kt`, helpers `kid()`, `jarSvg()`, `heroSvg()`, rings, confetti, stripe/iris/zoom/slideup transitions; scene-specific JS goes in `window.render`). Replace the template's scenes and its product images (`p17.png`, `ph.png`, photos) with the new clip's. Keep `window.render(t)`.
+5. **Check:** render stills with `#safe` at many times (`VW=1440 VH=1080 NODE_PATH=$(npm root -g) node scripts/render.js "/abs/page.html#safe" stills outdir t1 t2 …`), tile them, look, fix overlaps / edge crowding / empty frames / script errors (check `pageerror` with a tiny playwright snippet if stills fail).
+6. **Render** in the foreground (≈2–3 min for 50 s): `VW=1440 VH=1080 DPR=2 NODE_PATH=$(npm root -g) node scripts/render.js /abs/page.html video video.mp4 <dur>`. Background renders can be killed by container restarts.
+7. **Audio:** `python3 -I scripts/music_bright.py music.wav <dur>`; copy `scripts/sfx_bright.py`, rewrite its `cues` list for the new timings, run `python3 -I sfx.py audio.wav music.wav mix_full.wav mix_novoice.wav`.
+8. **Mux** each mix: `ffmpeg -i video.mp4 -i mix.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest -movflags +faststart out.mp4`; contact-sheet the final, then deliver.
+
+Other templates: `templates/dark_premium_4x3_template.html` (dark/gold comparison style, only if asked), `templates/square_template.html` (original 1:1 keyword style).
 
 ## Gotchas
 
-- Emoji don't render (no emoji font); use SVG icons.
-- Thai fonts: Kanit is bundled; the template's `@font-face` uses unicode-range to split Thai and Latin.
-- faster-whisper + this PyAV: pass a float32 numpy array, not a file path.
-- Rendering a 2160² frame takes ~0.2 s; ~1000 frames is about 4 minutes.
+- Emoji don't render; draw SVG icons.
+- `.kt` uses `-webkit-text-stroke` + `paint-order:stroke fill` for thick outlines.
+- When templating `heroSvg` text, don't blanket-replace `>Mg</text>` (jar labels use it too).
+- Define `$` before any init code that uses it.
+- faster-whisper + this PyAV: pass float32 numpy (transcribe.py does).
+- Rendering ≈ 0.15 s/frame at 2880×2160.

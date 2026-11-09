@@ -2,7 +2,7 @@
 # One-time setup per cloud session: Python deps + Whisper (Thai STT) + rembg model.
 # Hugging Face is blocked by the network policy, so models come from npm / GitHub releases.
 set -e
-pip install -q faster-whisper "rembg[cpu]" scipy 2>&1 | grep -v WARNING || true
+pip install -q faster-whisper "rembg[cpu]" scipy opencv-python-headless yt-dlp 2>&1 | grep -v WARNING || true
 M=${WHISPER_DIR:-/tmp/whisper-small}
 if [ ! -f "$M/model.bin" ]; then
   mkdir -p "$M/dl" && cd "$M/dl"
