@@ -20,6 +20,7 @@ The user (Thai, casual, writes on a phone) sells supplements on TikTok. They sen
 - **Product box on dark backgrounds** must be a full rectangle (check corners!) — build the mask from a low threshold + convex hull, add a thin white rim.
 - **Audio:** original music `scripts/music_bright.py` (ukulele strum, bass, claps, whistle/glock hook — vary key/BPM/hook per clip if they ask for something new), SFX from the cartoon palette in `scripts/sfx_bright.py` (pop, boing, slide whistle, squeak, bike bell, party horn, tada, drum roll, sad trombone, plinks…). Don't reuse the exact same sound within a few seconds. Mix: music ≈ 13–14 dB under voice, SFX quieter. You can't listen — say so and give the measured RMS.
 - **Deliver:** `output/<name>-4x3.mp4` (voice+music+SFX) and `output/<name>-4x3-music-sfx-only.mp4`, send both with SendUserFile, plus a short Thai table of scenes. Make a cover (`templates/cover_4x3_template.html`, big readable title + product/icon, PNG 2880×2160) when asked or when frame 0 is empty. Copy sources to `output/src/<name>/`, commit and push to the session branch.
+- **Openings:** the title/topic must be readable on frame 0 (no slow build-up — viewers swipe away). Start with everything already on screen and animate it (slam/pulse), not fade in from nothing.
 - **Facts:** numbers/claims only from the voiceover or their images; list words Whisper got unclear and ask them to check (don't put uncertain claims on screen).
 
 ## Getting the voiceover

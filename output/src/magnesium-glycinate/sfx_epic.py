@@ -106,7 +106,8 @@ def sub_drop(d=1.0):
 def scan(d=0.8):
     t=T(d); f=900+600*np.sin(2*np.pi*1.5*t); return 0.3*np.sin(2*np.pi*np.cumsum(f)/SR)*np.sin(np.pi*t/d)
 cues=[
- (0.0, whoosh(0.8,150,3000), .4, 0), (0.2, sub_drop(), .4, 0), (0.5, whoosh(0.5,300,5000), .25, .5),
+ (0.0, impact(), .55, 0), (0.0, shimmer(1.2), .3, 0), (0.12, whoosh(0.5,300,5000), .3, -.5), (0.12, whoosh(0.5,300,5000), .3, .5), (0.25, sub_drop(), .4, 0),
+ *[(0.35+i*1.2, crackle(0.7), .12, (i%2-.5)) for i in range(5)],
  (1.38, shimmer(1.0), .25, 0),
  (3.1, hud_beep(1600), .25, -.3), (3.15, hud_beep(2000), .25, .3), (4.0, hud_beep(1400), .2, -.5), (5.08, hud_beep(1400), .2, .5),
  (5.66, impact(), .35, 0), (5.66, glitch(), .2, 0),

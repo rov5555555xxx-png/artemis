@@ -48,20 +48,23 @@ body{font-family:K,sans-serif;color:#fff}
 </style></head><body>
 <div id="stage">
 
-<!-- G1 0 - 6.82 two orbs: which one? -->
-<div class="scene" data-s="0" data-e="6.82" data-bg="void" data-cam="0:1.12:720:500;3.0:1.04:720:520;6.82:1:720:540">
- <div class="aur" data-spin="8"></div><div class="floor"></div>
+<!-- G1 0 - 6.82 OPEN: title at frame 0, energy clash between two orbs -->
+<div class="scene" data-s="0" data-e="6.82" data-bg="void" data-cam="0:1.18:720:460;0.5:1.06:720:500;3.0:1.02:720:520;6.82:1:720:540">
+ <div class="aur" data-spin="18"></div><div class="floor"></div>
  <div class="cam">
-  <div class="a orb" data-at="0.2" data-an="blur" data-float="0" style="left:240px;top:220px;width:300px;height:300px"><b style="font-size:110px">Mg</b></div>
-  <div class="a orb" data-at="0.5" data-an="blur" data-float="1.6" style="left:900px;top:220px;width:300px;height:300px"><b style="font-size:110px">Mg</b></div>
-  <div class="a ring" data-at="3.1" data-an="blur" data-spin="60" style="left:210px;top:190px;width:360px;height:360px;border-style:dashed"></div>
-  <div class="a ring" data-at="3.15" data-an="blur" data-spin="-60" style="left:870px;top:190px;width:360px;height:360px;border-style:dashed"></div>
-  <div class="a hud" data-at="4.0" data-an="blur" style="left:255px;top:560px;font-size:38px">GLYCINATE</div>
-  <div class="a hud" data-at="5.08" data-an="blur" style="left:885px;top:560px;font-size:38px">BISGLYCINATE</div>
-  <div class="a hud gold" data-at="3.1" data-an="blur" style="left:635px;top:330px;font-size:52px">70%</div>
+  <div class="a" data-at="0" data-an="show" data-spin="25" style="left:220px;top:-180px;width:1000px;height:1000px;border-radius:50%;background:repeating-conic-gradient(rgba(120,190,255,.35) 0 4deg,transparent 4deg 12deg);-webkit-mask:radial-gradient(circle,#000 10%,transparent 62%);mix-blend-mode:screen"></div>
+  <div class="a" data-at="0" data-an="show" style="left:0;top:0;width:1440px;height:1080px"><svg width="1440" height="1080" style="overflow:visible"><g id="bolts1" fill="none" stroke-linecap="round" stroke-linejoin="round"></g></svg></div>
+  <div class="a orb" id="o1L" data-at="0" data-an="show" style="left:200px;top:200px;width:320px;height:320px"><b style="font-size:118px">Mg</b></div>
+  <div class="a orb" id="o1R" data-at="0" data-an="show" style="left:920px;top:200px;width:320px;height:320px"><b style="font-size:118px">Mg</b></div>
+  <div class="a ring" data-at="0" data-an="show" data-spin="70" style="left:170px;top:170px;width:380px;height:380px;border-style:dashed"></div>
+  <div class="a ring" data-at="0" data-an="show" data-spin="-70" style="left:890px;top:170px;width:380px;height:380px;border-style:dashed"></div>
+  <div class="a hud" data-at="0" data-an="show" style="left:225px;top:560px;font-size:44px">GLYCINATE</div>
+  <div class="a hud" data-at="0" data-an="show" style="left:900px;top:560px;font-size:44px">BISGLYCINATE</div>
+  <div class="a" id="vs1" data-at="0" data-an="show" style="left:600px;top:250px;width:240px;height:220px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:170px;font-style:italic;color:#fff;-webkit-text-stroke:6px #FFB020;text-shadow:0 0 30px #FF8A00,0 0 70px #FF5A00,0 8px 0 #7A2E00">VS</div>
+  <div class="a hud gold" data-at="3.1" data-an="blur" style="left:640px;top:470px;font-size:46px">70%</div>
  </div>
- <div class="kt" data-at="1.38" data-st="0.05" data-fx="cine" data-out="5.55" style="top:690px;font-size:130px">ตัวไหนดี?</div>
- <div class="kt red" data-at="5.66" data-st="0.05" data-fx="cine" style="top:690px;font-size:130px">เหมือนกันมาก</div>
+ <div class="kt" data-at="0" data-st="0.0" data-fx="instant" data-out="5.55" style="top:690px;font-size:120px">ตัวไหนดีกว่ากัน?</div>
+ <div class="kt red" data-at="5.66" data-st="0.05" data-fx="slam" style="top:690px;font-size:130px">เหมือนกันมาก</div>
 </div>
 
 <!-- G2 6.82 - 12.34 they fuse: same molecule, bound to glycine -->
@@ -201,7 +204,8 @@ const kts=[...document.querySelectorAll('.kt')].map(el=>{const txt=el.textConten
 function ktRender(t){for(const k of kts){const vis=t>=k.at-0.05;const outk=k.out!==null?cl((t-k.out)/0.25):0;k.el.style.opacity=vis?1-outk:0;if(!vis||outk>=1)continue;
  k.el.style.transform=outk>0?`scale(${1+.15*outk})`:'';k.el.style.filter=outk>0?`blur(${outk*10}px)`:'';
  k.gs.forEach((g,i)=>{const lt=t-k.at-i*k.st;if(lt<0){g.style.opacity=0;return}let tr='',op=1,bl=0;
-  if(k.fx==='cine'){const p=eOC(cl(lt/0.45));tr=`scale(${1.8-0.8*p}) translateY(${(1-p)*-20}px)`;op=p;bl=(1-p)*14}
+  if(k.fx==='instant'){const p=eOC(cl(lt/0.25));tr=`scale(${1+0.25*(1-p)+0.03*Math.sin(t*6)})`;op=1;bl=0}
+  else if(k.fx==='cine'){const p=eOC(cl(lt/0.45));tr=`scale(${1.8-0.8*p}) translateY(${(1-p)*-20}px)`;op=p;bl=(1-p)*14}
   else{const p=cl(lt/0.28);const e=eOC(p);tr=`scale(${2.6-1.6*e})`;op=cl(p*3);bl=(1-e)*10}
   if(lt>0.6)tr+=` translateY(${Math.sin(t*3+i*.5)*3}px)`;g.style.opacity=op;g.style.transform=tr;if(g._f===undefined)g._f=getComputedStyle(g).filter;g.style.filter=(bl>0.2?`blur(${bl}px) `:'')+(g._f==='none'?'':g._f)})}}
 // scenes
@@ -211,14 +215,15 @@ const scenes=[...document.querySelectorAll('.scene')].map(el=>{const bg=document
  const cam=(el.dataset.cam||'').split(';').filter(Boolean).map(k=>k.split(':').map(Number));
  return{el,s:+el.dataset.s,e:+el.dataset.e,tr:el.dataset.tr||'',parts,cam,camEl:el.querySelector('.cam'),items:[...el.querySelectorAll('.a')],aur:el.querySelector('.aur')}});
 function camAt(keys,t){if(!keys.length)return[1,720,540];if(t<=keys[0][0])return keys[0].slice(1);for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t<=b[0]){const p=eIO(cl((t-a[0])/(b[0]-a[0])));return[1,2,3].map(j=>a[j]+(b[j]-a[j])*p)}}return keys[keys.length-1].slice(1)}
-const HITS=[0.2,1.38,5.66,6.82,10.0,12.34,15.32,16.42,22.52,26.52,27.34,30.56,31.26,33.98,38.64,40.86,42.46,46.34,50.76];
-const SHOCK=[[10.0,720,340],[15.32,720,770],[26.52,720,760],[30.56,720,770],[42.46,720,780],[50.76,720,770],[5.66,720,770]];
+const HITS=[0.25,1.38,5.66,6.82,10.0,12.34,15.32,16.42,22.52,26.52,27.34,30.56,31.26,33.98,38.64,40.86,42.46,46.34,50.76];
+const SHOCK=[[0.12,720,360],[0.25,360,360],[0.25,1080,360],[10.0,720,340],[15.32,720,770],[26.52,720,760],[30.56,720,770],[42.46,720,780],[50.76,720,770],[5.66,720,770]];
 const sw=$('shocks');const shocks=SHOCK.map(([t,x,y])=>{const d=document.createElement('div');d.className='shock';d.style.left=x+'px';d.style.top=y+'px';sw.appendChild(d);return{d,t}});
 const stw=$('streaks');const streaks=[];for(let i=0;i<8;i++){const d=document.createElement('div');d.className='streak';d.style.width=(300+rnd()*500)+'px';d.style.top=(150+rnd()*760)+'px';stw.appendChild(d);streaks.push({d,ph:rnd()*20,sp:900+rnd()*900})}
 function anim(an,p){switch(an){case'fade':return[eOC(p),'',0];
  case'blur':{const e=eOC(p);return[e,`scale(${1.25-0.25*e})`,(1-e)*16]}
+ case'show':return[1,'',0];
  case'rise':{const e=eOB(p);return[cl(p*3),`translateY(${(1-e)*260}px) scale(${0.85+0.15*e})`,(1-eOC(p))*8]}}return[1,'',0]}
-const DUR={fade:.4,blur:.5,rise:.8};const TR=0.35;
+const DUR={fade:.4,blur:.5,rise:.8,show:.01};const TR=0.35;
 window.render=function(t){
  let flash=0;
  scenes.forEach((sc,i)=>{const on=t>=sc.s&&t<sc.e;sc.el.style.display=on?'block':'none';if(!on)return;
@@ -240,6 +245,11 @@ window.render=function(t){
  ktRender(t);
  document.querySelectorAll('[data-kbi]').forEach(g=>{const d=Math.max(0,t-+g.dataset.kbi);g.style.transform=`scale(${1.04+0.03*d})`});
  document.querySelectorAll('[data-scan]').forEach(s=>{s.style.top=(((t*260)%560)-80)+'px'});
+ // G1 opening: orbs slam in, VS pulses, lightning between orbs
+ if($('o1L')&&t<7.2){const k=eOB(cl((t+0.22)/0.45));$('o1L').style.transform+=` translateX(${(1-k)*-420}px) scale(${1+0.06*Math.sin(t*7)})`;$('o1R').style.transform+=` translateX(${(1-k)*420}px) scale(${1+0.06*Math.sin(t*7+1)})`;
+  const v=cl((t+0.12)/0.3);$('vs1').style.transform=`scale(${v<=0?3:(3-2*eOB(v))+0.06*Math.sin(t*9)}) rotate(${Math.sin(t*4)*3}deg)`;$('vs1').style.opacity=v>0?1:0;
+  const g=$('bolts1');let h='';for(let b=0;b<3;b++){let x=520,y=360+(b-1)*30,d=`M${x} ${y}`;const sd=Math.floor(t*14)+b*7;let r=sd;const R=()=>{r=(r*16807+11)%2147483647;return r/2147483647};for(let i=1;i<=10;i++){x=520+i*40;y=360+(b-1)*20*Math.sin(i)+(R()-.5)*70;d+=`L${x} ${y}`}
+   const o=(0.5+0.5*Math.sin(t*23+b*2))*cl((t-0.3)/0.2);h+=`<path d="${d}" stroke="#BFE8FF" stroke-width="${b==1?7:4}" opacity="${o}" style="filter:drop-shadow(0 0 10px #6FC8FF) drop-shadow(0 0 22px #3A8BFF)"/>`}g.innerHTML=h}
  // G2 fuse
  if($('gA')&&t>=6.82&&t<12.4){const k=eIO(cl((t-8.9)/1.1));const after=cl((t-10.9)/0.5);$('gA').style.transform+=` translateX(${k*330-after*230}px) scale(${1+0.25*cl((t-10)/0.2)*(1-after*0.3)})`;$('gB').style.transform+=` translateX(${-k*330}px)`;$('gB').style.opacity*=1-cl((t-9.95)/0.1)}
  // G3 gauges
