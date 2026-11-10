@@ -40,6 +40,8 @@ The user (Thai, casual, writes on a phone) sells supplements on TikTok. They sen
 7. **Audio:** `python3 -I scripts/music_bright.py music.wav <dur>`; copy `scripts/sfx_bright.py`, rewrite its `cues` list for the new timings, run `python3 -I sfx.py audio.wav music.wav mix_full.wav mix_novoice.wav`.
 8. **Mux** each mix: `ffmpeg -i video.mp4 -i mix.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest -movflags +faststart out.mp4`; contact-sheet the final, then deliver.
 
+Grand / cinematic style (when they ask for อลังการ): `templates/grand_cinematic_4x3_template.html` (dark void, aurora, perspective grid floor, glowing orbs, holographic HUD tags, metallic kinetic text `cine`/`slam`, flash/glitch/zoomblur transitions, shockwaves, light streaks) with `scripts/music_epic.py out.wav <dur> <hit times>` and `scripts/sfx_epic.py`. It renders slowly (blur/glow): render in 3 parallel parts with `scripts/render_part.js page.html partN.mp4 f0 f1` (each as its own background process) and concat; never one background render (30-min limit). AI stills: ElevenLabs `creative_generate_image` (gpt-image-2.6-sunburst, ~190 credits) works on the free plan but is often 'busy' (only one attempt per turn); AI video needs a paid plan. Download results from elevenlabsusercontent.com.
+
 Other templates: `templates/dark_premium_4x3_template.html` (dark/gold comparison style, only if asked), `templates/square_template.html` (original 1:1 keyword style).
 
 ## Gotchas
