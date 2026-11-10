@@ -46,17 +46,17 @@ body{font-family:K,sans-serif;color:#1B2A4A}
 .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 </style></head><body>
 <div id="stage">
-<!-- S1 0 - 6.82 confused: glycinate or bisglycinate (both 70%) -->
-<div class="scene" data-s="0" data-e="6.82" data-bg="lilac" data-cam="0:1.04:720:520;6.82:1:720:540">
+<!-- S1 0 - 6.82 title on frame 0; big 70% -->
+<div class="scene" data-s="0" data-e="6.82" data-bg="lilac" data-cam="0:1.03:720:520;6.82:1:720:540">
  <div class="cam">
-  <div class="a kid" data-at="0" data-an="up" style="left:590px;top:230px;width:260px;height:375px"><svg width="260" height="375" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#FF8FB1","hair":"#3A2A1E","faces":[{"e":"wow","vis":"0,3"},{"e":"sad","vis":"3,99"}],"armL":"up","armR":"down"}'></g></svg></div>
-  <div class="a" data-at="0.3" data-an="pop" data-bob="0" style="left:170px;top:190px;width:300px;height:300px"><div class="hero" data-sym="Mg" data-name="Glycinate" style="width:100%;height:100%"></div></div>
-  <div class="a" data-at="0.45" data-an="pop" data-bob="1.5" style="left:970px;top:190px;width:300px;height:300px"><div class="hero" data-sym="Mg" data-name="Bisglycinate" style="width:100%;height:100%"></div></div>
-  <div class="a" data-at="3.1" data-an="stamp" style="left:230px;top:500px"><span class="stk" style="font-size:44px;background:#3DDC97">70%</span></div>
-  <div class="a" data-at="3.2" data-an="stamp" style="left:1030px;top:500px"><span class="stk" style="font-size:44px;background:#3DDC97">70%</span></div>
-  <div class="a" data-at="1.0" data-an="pop" data-bob="0.7" style="left:540px;top:170px"><svg width="90" height="110" viewBox="0 0 110 140"><text x="55" y="120" text-anchor="middle" font-family="K" font-weight="900" font-size="150" fill="#FFD23F" stroke="#1B2A4A" stroke-width="10" paint-order="stroke fill">?</text></svg></div>
+  <div class="a" data-at="0" data-an="show" data-bob="0" style="left:160px;top:170px;width:320px;height:320px"><div class="hero" data-sym="Mg" data-name="" style="width:100%;height:100%"></div></div>
+  <div class="a" data-at="0" data-an="show" data-bob="1.5" style="left:960px;top:170px;width:320px;height:320px"><div class="hero" data-sym="Mg" data-name="" style="width:100%;height:100%"></div></div>
+  <div class="a" data-at="0" data-an="show" style="left:120px;top:500px;width:400px;text-align:center"><span class="stk" style="font-size:52px;background:#FFD23F">Glycinate</span></div>
+  <div class="a" data-at="0" data-an="show" style="left:920px;top:500px;width:400px;text-align:center"><span class="stk" style="font-size:52px;background:#7FD3FF">Bisglycinate</span></div>
+  <div class="a" id="vs1b" data-at="0" data-an="show" data-out="2.95" style="left:520px;top:230px;width:400px;text-align:center;font-weight:900;font-size:170px;font-style:italic;color:#FF6B6B;-webkit-text-stroke:14px #1B2A4A;paint-order:stroke fill;text-shadow:0 12px 0 #1B2A4A">VS</div>
  </div>
- <div class="kt" data-at="1.38" data-st="0.05" data-fx="bounce" data-out="5.55" style="top:690px;font-size:130px;color:#fff">กินตัวไหนดี?</div>
+ <div class="kt" data-at="3.1" data-st="0.08" data-fx="jelly" style="left:470px;width:500px;top:200px;font-size:210px;color:#3DDC97">70%</div>
+ <div class="kt" data-at="0" data-st="0" data-fx="instant" data-out="5.55" style="top:690px;font-size:130px;color:#fff">ตัวไหนดีกว่า?</div>
  <div class="kt" data-at="5.66" data-st="0.05" data-fx="shake" style="top:690px;font-size:130px;color:#FF6B6B">เหมือนกันมาก!</div>
 </div>
 
@@ -229,7 +229,8 @@ const kts=[...document.querySelectorAll('.kt')].map(el=>{const txt=el.textConten
 function ktRender(t){for(const k of kts){const vis=t>=k.at-0.05;const outk=k.out!==null?cl((t-k.out)/0.25):0;k.el.style.opacity=vis?1-outk:0;if(!vis||outk>=1)continue;
  k.el.style.transform=outk>0?`translateY(${-60*eIO(outk)}px) scale(${1-.2*outk})`:'';
  k.gs.forEach((g,i)=>{const lt=t-k.at-i*k.st;if(lt<0){g.style.opacity=0;return}g.style.opacity=1;let tr='';
-  if(k.fx==='bounce'){const p=cl(lt/0.38);tr=`translateY(${-90*(1-eOB(p))}px) scale(${p<=0?0:eOB(p)}) rotate(${(1-p)*-18}deg)`}
+  if(k.fx==='instant'){tr=`scale(${1+0.025*Math.sin(t*6)})`}
+  else if(k.fx==='bounce'){const p=cl(lt/0.38);tr=`translateY(${-90*(1-eOB(p))}px) scale(${p<=0?0:eOB(p)}) rotate(${(1-p)*-18}deg)`}
   else if(k.fx==='drop'){const p=cl(lt/0.45);tr=`translateY(${-260*(1-eBn(p))}px)`;g.style.opacity=cl(p*4)}
   else if(k.fx==='jelly'){const p=cl(lt/0.3);const w=lt>0.3?Math.sin((lt-.3)*20)*Math.exp(-(lt-.3)*5):0;tr=`scale(${(p<=0?0:eOB(p))*(1+0.22*w)},${(p<=0?0:eOB(p))*(1-0.22*w)})`}
   else if(k.fx==='shake'){const p=cl(lt/0.3);tr=`scale(${p<=0?0:eOB(p)}) rotate(${Math.sin(lt*30)*8*Math.exp(-lt*2.5)}deg) translateX(${Math.sin(lt*45)*10*Math.exp(-lt*3)}px)`}
@@ -251,13 +252,13 @@ const BEN=[['ความเครียด','#FF8FB1',16.94,330,230],['คว�
  const l=document.createElementNS(NS,'path');l.setAttribute('d',`M720 410L${x} ${y}`);l.dataset.at=at;L.appendChild(l)})}
 const PILLS=[];{const w=document.getElementById('pills8');if(w)for(let i=0;i<5;i++){const d=document.createElement('div');d.className='a';d.dataset.at=38.9+i*0.22;d.dataset.an='drop';d.style.cssText=`left:${620+i*120}px;top:${330+(i%2)*60}px`;d.innerHTML=`<svg width="120" height="60" viewBox="0 0 120 50"><path d="M25 3h35v44H25a22 22 0 010-44z" fill="#fff" stroke="#1B2A4A" stroke-width="5"/><path d="M60 3h35a22 22 0 010 44H60z" fill="#E8E2D2" stroke="#1B2A4A" stroke-width="5"/></svg>`;w.appendChild(d)}}
 scenes.forEach(sc=>sc.items=[...sc.el.querySelectorAll('.a')]);
-const ringDefs=[[1.38,720,770],[5.66,720,770],[10.0,720,190],[15.32,720,770],[26.52,720,410],[30.56,720,780],[42.46,720,800],[50.76,720,780]];
+const ringDefs=[[3.1,720,330],[5.66,720,770],[10.0,720,190],[15.32,720,770],[26.52,720,410],[30.56,720,780],[42.46,720,800],[50.76,720,780]];
 const rw=document.getElementById('rings');const rings=ringDefs.map(([t,x,y])=>{const d=document.createElement('div');d.className='ring';d.style.left=x+'px';d.style.top=y+'px';rw.appendChild(d);return{d,t}});
 function animT(an,p){switch(an){case'fade':return[eOC(p),''];case'pop':return[cl(p*4),`scale(${p<=0?0:eOB(p)})`];
  case'stamp':{const e=eOB(p);return[cl(p*5),`scale(${1.7-0.7*e}) rotate(${-8*(1-e)}deg)`]}
  case'up':{const e=eOB(p);return[cl(p*3),`translateY(${120*(1-e)}px)`]}case'left':{const e=eOB(p);return[cl(p*3),`translateX(${-360*(1-e)}px)`]}
- case'right':{const e=eOB(p);return[cl(p*3),`translateX(${360*(1-e)}px)`]}case'drop':return[cl(p*5),`translateY(${-700*(1-eBn(p))}px)`]}return[1,'']}
-const DUR={fade:.35,pop:.45,stamp:.38,up:.45,left:.5,right:.5,drop:.7};const TR=0.4;
+ case'right':{const e=eOB(p);return[cl(p*3),`translateX(${360*(1-e)}px)`]}case'show':return[1,''];case'drop':return[cl(p*5),`translateY(${-700*(1-eBn(p))}px)`]}return[1,'']}
+const DUR={fade:.35,pop:.45,stamp:.38,up:.45,left:.5,right:.5,drop:.7,show:.01};const TR=0.4;
 window.render=function(t){
  scenes.forEach((sc,i)=>{const nx=scenes[i+1];const tail=(nx&&(nx.tr==='iris'||nx.tr==='zoom'||nx.tr==='slideup'))?TR:0;
   const on=t>=sc.s&&t<sc.e+tail;sc.el.style.display=on?'block':'none';if(!on)return;
