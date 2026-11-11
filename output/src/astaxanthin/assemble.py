@@ -42,6 +42,8 @@ scenes.forEach(sc=>sc.items=[...sc.el.querySelectorAll('.a')]);
 '''
 T=T.replace('const ringDefs=',init+'const ringDefs=',1)
 rend='''
+ if(t<6.4&&$('box1')){const k=Math.min(1,t/5.4);$('box1').style.transform=`rotate(${Math.sin(t*(14+10*k))*(2+4*k)}deg) translateY(${-Math.abs(Math.sin(t*7))*(6+14*k)}px)`;
+  const d=t-5.35;$('lid1').style.transform=d>0?`translate(${d*300}px,${-d*1400+d*d*900}px) rotate(${d*260}deg)`:'';}
  if(t<6.5&&$('mag1'))$('mag1').style.transform=`translate(${-230+Math.sin(t*2.2)*150}px,${Math.cos(t*3.1)*45}px)`;
  if(t>=6.3&&t<9.2)$('cnt2').textContent=Math.round(60*eOC(cl((t-8.35)/0.8)));
  if(t>=12.5&&t<17.4){const k=t>14.5?1+0.05*Math.sin((t-14.5)*7):1;$('gold3').style.transform=`scale(${k})`;XC.forEach(c=>{const k=cl((t-c.t)/0.3);c.e.setAttribute('transform',`translate(${c.x} ${c.y+Math.sin(t*6+c.x)*3}) scale(${k?eOB(k):0})`)})}
