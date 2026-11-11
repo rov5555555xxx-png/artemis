@@ -38,8 +38,13 @@ window.extra=function(t){
  scenes.forEach((sc,i)=>{if(sc.el.style.display==='none')return;const bg=sc.el.querySelector('.sbg');const x=(t*26)%400,y=(t*18)%400;bg.style.backgroundPosition=`${x}px ${y}px, ${x}px ${y}px, 0 0`;
   sc.el.querySelectorAll('.scal').forEach((s,j)=>s.style.backgroundPosition=`${(j?-1:1)*t*30}px 0`)});
  // clocks
- const ck=(id,h)=>{const e=$(id+'h');if(!e)return;e.setAttribute('transform',`rotate(${h*30})`);const a=h/12*Math.PI*2;$(id+'w').setAttribute('d',h>0.01?`M0 0V-80A80 80 0 ${a>Math.PI?1:0} 1 ${Math.sin(a)*80} ${-Math.cos(a)*80}Z`:'');$(id+'t').textContent=h>0.05?`${Math.round(h)} ชม.`:''};
- if(t<3.5)ck('ck1',2*eOC(cl((t-0.2)/2.0)));
+ const ck=(id,h)=>{const e=$(id+'h');if(!e)return;e.setAttribute('transform',`rotate(${h*30})`);const a=h/12*Math.PI*2;$(id+'w').setAttribute('d',h>0.01?`M0 0V-80A80 80 0 ${a>Math.PI?1:0} 1 ${Math.sin(a)*80} ${-Math.cos(a)*80}Z`:'');$(id+'t').textContent=(h>0.05&&id!=='ckA')?`${Math.round(h)} ชม.`:''};
+ if(t<1.4)ck('ckA',0.5*eOC(cl((t-0.9)/0.4)));
+ if(t>=1.8&&t<2.3)ck('ckB',0.5+1.5*eOC(cl((t-1.82)/0.35)));
+ if(t>=2.2&&t<3.5)ck('ck1',2);
+ {let f=0;for(const c of [0.9,1.35,1.8,2.25,3.0]){const d=t-c;if(d>=0&&d<0.14)f=Math.max(f,0.55*(1-d/0.14))}$('flash').style.opacity=f}
+ if(t>=1.35&&t<1.85){const j=document.querySelector('.scene[data-s="1.35"] .jar');if(j)j.style.transform+=` rotate(${-10+Math.sin(t*40)*3}deg)`;
+  let s='';for(let i=0;i<8;i++){const a=i/8*Math.PI*2+0.3,d=cl((t-1.38-i*0.03)/0.3);if(d<=0)continue;const r=200+d*130;s+=ZB(720+Math.cos(a)*r,400+Math.sin(a)*r*0.8,26*(d<1?eOB(d):1))}$('pops1').innerHTML=s}
  if(t>=21.8&&t<26)ck('ck6',6*eOC(cl((t-24.75)/0.6)));
  // graph draw + rider
  if(t>=3&&t<7.8){const p=cl((t-3.1)/3.6);const L=GLEN*p;$('gline').style.strokeDasharray=GLEN;$('gline').style.strokeDashoffset=GLEN-L;
@@ -61,12 +66,3 @@ window.extra=function(t){
  // S8 tap
  if(t>=30.1){const tap=Math.max(0,Math.sin((t-30.6)*9));$('hand8').style.transform+=` translate(${-tap*30}px,${-tap*20}px)`;$('cart8').style.transform+=` scale(${1+0.05*Math.max(0,Math.sin((t-30.6)*9-0.6))})`}
 };
-// black zinc jar (unbranded drawing)
-document.querySelectorAll('.bjar').forEach(e=>e.innerHTML=`<svg viewBox="0 0 200 345" width="100%" height="100%" style="overflow:visible;filter:drop-shadow(0 18px 20px rgba(27,42,74,.35))"><defs><linearGradient id="bjg" x1="0" x2="1"><stop offset="0" stop-color="#1a1d24"/><stop offset=".28" stop-color="#4a505c"/><stop offset=".45" stop-color="#2a2e37"/><stop offset="1" stop-color="#0f1116"/></linearGradient><linearGradient id="bjc" x1="0" x2="1"><stop offset="0" stop-color="#22252c"/><stop offset=".35" stop-color="#5a606c"/><stop offset="1" stop-color="#15171c"/></linearGradient></defs>
-<rect x="40" y="6" width="120" height="58" rx="12" fill="url(#bjc)" stroke="${INK}" stroke-width="6"/><g stroke="rgba(255,255,255,.18)" stroke-width="4"><path d="M58 14v42M74 14v42M90 14v42M106 14v42M122 14v42M138 14v42"/></g>
-<rect x="54" y="60" width="92" height="22" rx="6" fill="#2a2e37" stroke="${INK}" stroke-width="6"/>
-<rect x="14" y="78" width="172" height="260" rx="40" fill="url(#bjg)" stroke="${INK}" stroke-width="6"/>
-<rect x="14" y="150" width="172" height="124" fill="#111318" stroke="${INK}" stroke-width="5"/><path d="M14 158h172M14 266h172" stroke="#D8DEE9" stroke-width="3" opacity=".7"/>
-<g transform="translate(100 196)"><circle r="30" fill="#C9D2E3" stroke="#fff" stroke-width="3"/><ellipse cx="-9" cy="-11" rx="11" ry="6.5" fill="#fff" opacity=".9"/><text y="11" text-anchor="middle" font-family="K" font-weight="900" font-size="30" fill="#2B3245">Zn</text></g>
-<text x="100" y="257" text-anchor="middle" font-family="K" font-weight="900" font-size="24" letter-spacing="3" fill="#fff">ZINC</text>
-<path d="M32 100v200" stroke="#fff" stroke-width="9" stroke-linecap="round" opacity=".35"/></svg>`);
