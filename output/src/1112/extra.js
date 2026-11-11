@@ -35,6 +35,9 @@ scenes.forEach(sc=>{['top','bot'].forEach(k=>{const d=document.createElement('di
 // particle dots -> rings
 scenes.forEach(sc=>sc.parts.forEach((p,k)=>{const c=['#FFD23F','#FF8FB1','#7FA2FF','#3DDC97','#fff'][k%5];p.d.style.border='6px solid '+c}));
 window.extra=function(t){
+ if(t<1.9){const p=1+0.035*Math.sin(t*11);const b=$('burst1');if(b)b.style.transform+=` scale(${p}) rotate(${Math.sin(t*7)*1.2}deg)`;
+  const k=$('kt1b');if(k&&t<1.75)k.style.transform=`scale(${1+0.045*Math.max(0,Math.sin(t*11+0.6))}) rotate(${Math.sin(t*6)*-1.5}deg)`;
+  const g=(Math.floor(t*6)%2)?'#FF2E3D':'#FF1744';if(k)k.style.color=g}
  scenes.forEach((sc,i)=>{if(sc.el.style.display==='none')return;const bg=sc.el.querySelector('.sbg');const x=(t*26)%400,y=(t*18)%400;bg.style.backgroundPosition=`${x}px ${y}px, ${x}px ${y}px, 0 0`;
   sc.el.querySelectorAll('.scal').forEach((s,j)=>s.style.backgroundPosition=`${(j?-1:1)*t*30}px 0`)});
  // clocks
