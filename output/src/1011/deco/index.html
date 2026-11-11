@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:C;src:url(chonburi-latin-400-normal.woff2)}
+@font-face{font-family:C;src:url(chonburi-thai-400-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:L;src:url(limelight-latin-400-normal.woff2)}
+@font-face{font-family:Pr;src:url(poiret-one-latin-400-normal.woff2)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1440px;height:1080px;overflow:hidden;background:#15110c}
+body{font-family:C,serif;color:#f2e6c8}
+#stage{position:relative;width:1440px;height:1080px;overflow:hidden;background:#0d0a07}
+.scene{position:absolute;inset:0;display:none;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#2a2016 0%,#17120c 55%,#0f0b07 100%)}
+.scene.em{background:radial-gradient(ellipse at 50% 46%,#1d3a31 0%,#14211b 50%,#0e0c08 100%)}
+.scene.bu{background:radial-gradient(ellipse at 50% 42%,#3a1720 0%,#1f0f12 55%,#0f0a08 100%)}
+.cam{position:absolute;inset:0}
+.a{position:absolute;opacity:0;transform-origin:50% 50%}
+.dec{position:absolute;left:0;top:0;width:1440px;height:1080px;overflow:visible;pointer-events:none}
+.grain{position:absolute;inset:0;background:url(grain.png);opacity:.5;pointer-events:none;z-index:60;mix-blend-mode:overlay}
+.kt{position:absolute;left:130px;width:1180px;top:812px;text-align:center;z-index:40;white-space:nowrap;transform-origin:50% 50%}
+.kt .plate{display:inline-block;position:relative;padding:6px 70px 20px;background:rgba(14,10,7,.9);border-top:3px solid #d8b45c;border-bottom:3px solid #d8b45c;box-shadow:0 0 0 0 transparent,inset 0 7px 0 -4px #0e0a07,inset 0 9px 0 -4px #a8843a,inset 0 -7px 0 -4px #0e0a07,inset 0 -9px 0 -4px #a8843a}
+.kt .plate:before,.kt .plate:after{content:'';position:absolute;top:14px;bottom:14px;width:34px;border:3px solid #d8b45c;background:#0e0a07}
+.kt .plate:before{left:-30px;border-right:none;clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+.kt .plate:after{right:-30px;border-left:none}
+.kt .tx{font-size:80px;line-height:1.35;letter-spacing:1px}
+.kt.big .tx{font-size:100px}
+.kt .g{display:inline-block;background:linear-gradient(180deg,#fff3c4 0%,#f0cf78 38%,#b98a32 62%,#f6dc8e 82%,#9a6f25 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 #2a1d0c)}
+.pl{display:inline-block;padding:4px 26px 8px;font-family:L;font-size:38px;color:#f2e6c8;background:#120e09;border:3px solid #d8b45c;outline:2px solid #8a6a2c;outline-offset:4px;letter-spacing:2px;white-space:nowrap}
+.pl.th{font-family:C;font-size:34px;letter-spacing:0}
+.pl.bu{background:#6e1626}
+.pl.em{background:#1b4a3c}
+.cx{text-align:center}
+svg{overflow:visible}
+</style></head><body>
+<div id="stage">
+<svg width="0" height="0" style="position:absolute"><defs>
+ <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b4a1a"/><stop offset=".3" stop-color="#d8b45c"/><stop offset=".5" stop-color="#fff0b8"/><stop offset=".7" stop-color="#d8b45c"/><stop offset="1" stop-color="#6b4a1a"/></linearGradient>
+ <linearGradient id="goldH" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#7a5620"/><stop offset=".35" stop-color="#d8b45c"/><stop offset=".5" stop-color="#fff3c4"/><stop offset=".65" stop-color="#d8b45c"/><stop offset="1" stop-color="#7a5620"/></linearGradient>
+ <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a6324"/><stop id="sh1" offset=".45" stop-color="#d8b45c"/><stop id="sh2" offset=".5" stop-color="#fff6d0"/><stop id="sh3" offset=".55" stop-color="#d8b45c"/><stop offset="1" stop-color="#8a6324"/></linearGradient>
+ <radialGradient id="emer" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#3f8f74"/><stop offset=".6" stop-color="#1b4a3c"/><stop offset="1" stop-color="#0c241d"/></radialGradient>
+ <radialGradient id="burg" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#c0394f"/><stop offset=".6" stop-color="#7a1a2c"/><stop offset="1" stop-color="#3a0b14"/></radialGradient>
+ <linearGradient id="ivory" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#bfb294"/><stop offset=".35" stop-color="#f7efd9"/><stop offset="1" stop-color="#a99c7e"/></linearGradient>
+ <linearGradient id="lac" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4a0f1b"/><stop offset=".35" stop-color="#a3253b"/><stop offset="1" stop-color="#3a0b14"/></linearGradient>
+ <radialGradient id="bulb" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fffbe6"/><stop offset=".45" stop-color="#ffe9a3"/><stop offset="1" stop-color="#ffcf5a" stop-opacity="0"/></radialGradient>
+</defs></svg>
+
+<!-- S1 0-6.8 -->
+<div class="scene" data-s="0" data-e="6.8" data-cam="0:1.04:720:520;6.8:1:720:540">
+ <svg class="dec" data-dec="burst"></svg><svg class="dec" data-dec="frame"></svg>
+ <div class="cam">
+  <div class="a" id="mL1" data-at="-1" data-an="fade" data-breathe="0" style="left:240px;top:190px;width:340px;height:340px"></div>
+  <div class="a" id="mR1" data-at="-1" data-an="fade" data-breathe="1.6" style="left:860px;top:190px;width:340px;height:340px"></div>
+  <div class="a cx" data-at="-1" data-an="fade" style="left:210px;top:565px;width:400px"><span class="pl em">Glycinate</span></div>
+  <div class="a cx" data-at="-1" data-an="fade" style="left:830px;top:565px;width:400px"><span class="pl em">Bisglycinate</span></div>
+  <div class="a" data-at="-1" data-an="fade" data-out="2.55" data-bob="0" style="left:640px;top:260px;width:160px;height:200px"><svg viewBox="0 0 160 200" width="160" height="200"><text x="80" y="170" text-anchor="middle" font-family="L" font-size="210" fill="url(#gold)" stroke="#2a1d0c" stroke-width="3">?</text></svg></div>
+  <div class="a" data-at="2.7" data-an="ignite" style="left:595px;top:255px;width:250px;height:250px"><svg viewBox="0 0 250 250" width="250" height="250" id="dial1"></svg></div>
+  <div class="a" data-at="4.0" data-an="ignite" data-out="5.8" style="left:220px;top:170px;width:380px;height:380px"><svg viewBox="0 0 380 380" width="380" height="380" class="bulbring" data-n="22" data-r="182"></svg></div>
+  <div class="a" data-at="4.95" data-an="ignite" data-out="5.8" style="left:840px;top:170px;width:380px;height:380px"><svg viewBox="0 0 380 380" width="380" height="380" class="bulbring" data-n="22" data-r="182"></svg></div>
+ </div>
+ <div class="kt big" data-at="-0.3" data-st="0" data-fx="center" data-plate="none" data-out="2.6"><span class="plate"><span class="tx">แมกนีเซียมตัวไหนดี?</span></span></div>
+ <div class="kt" data-at="2.75" data-fx="center" data-plate="unfold" data-out="3.9"><span class="plate"><span class="tx">ดูดซึมได้ 70%</span></span></div>
+ <div class="kt" data-at="4.0" data-fx="center" data-plate="unfold" data-out="5.75"><span class="plate"><span class="tx">ระหว่าง 2 ตัวนี้</span></span></div>
+ <div class="kt big" data-at="5.85" data-fx="center" data-plate="unfold"><span class="plate"><span class="tx">เหมือนกันมาก!</span></span></div>
+ <div class="grain"></div>
+</div>
+
+<!-- S2 6.8-12.3 -->
+<div class="scene em" data-s="6.8" data-e="12.3" data-tr="split" data-cam="6.8:1:720:540;9.9:1.03:720:480;12.3:1.05:720:470">
+ <svg class="dec" data-dec="burst2"></svg><svg class="dec" data-dec="frame"></svg>
+ <div class="cam">
+  <div class="a" id="bal2" data-at="6.85" data-an="unfold" data-out="9.85" style="left:220px;top:150px;width:1000px;height:560px"><svg viewBox="0 0 1000 560" width="1000" height="560" id="balsvg"></svg></div>
+  <div class="a" id="merge2" data-at="9.95" data-an="pop" style="left:545px;top:140px;width:350px;height:350px"></div>
+  <div class="a" data-at="9.95" data-an="ignite" style="left:525px;top:120px;width:390px;height:390px"><svg viewBox="0 0 390 390" width="390" height="390" class="bulbring" data-n="24" data-r="188"></svg></div>
+  <div class="a" id="mol2" data-at="10.6" data-an="unfold" style="left:400px;top:520px;width:640px;height:240px"></div>
+  <div class="a" id="crA2" data-at="9.85" data-an="fade" style="left:0;top:0;width:240px;height:240px"></div>
+  <div class="a" id="crB2" data-at="9.85" data-an="fade" style="left:0;top:0;width:240px;height:240px"></div>
+ </div>
+ <div class="kt" data-at="6.9" data-fx="center" data-plate="unfold" data-out="8.2" style="top:40px"><span class="plate"><span class="tx">ตัวไหนดูดซึมดีกว่า?</span></span></div>
+ <div class="kt" data-at="8.3" data-fx="center" data-plate="unfold" data-out="9.8"><span class="plate"><span class="tx">จริงๆ ไม่ใช่แค่เหมือน</span></span></div>
+ <div class="kt big" data-at="9.95" data-fx="center" data-plate="unfold"><span class="plate"><span class="tx">คือตัวเดียวกัน!</span></span></div>
+ <div class="grain"></div>
+</div>
+
+<!-- S3 12.3-16.4 -->
+<div class="scene" data-s="12.3" data-e="16.4" data-tr="split" data-cam="12.3:1:720:540;14.1:1.02:560:520;15.2:1.02:900:520;16.4:1:720:540">
+ <svg class="dec" data-dec="chev"></svg><svg class="dec" data-dec="frame"></svg>
+ <div class="cam">
+  <div class="a" data-at="12.35" data-an="unfold" style="left:160px;top:150px;width:600px;height:600px"><svg viewBox="0 0 600 600" width="600" height="600" id="dials3"></svg></div>
+  <div class="a" data-at="14.16" data-an="unfold" style="left:800px;top:160px;width:470px;height:250px"><svg viewBox="0 0 470 250" width="470" height="250" id="struct3"></svg></div>
+  <div class="a" data-at="14.3" data-an="ignite" style="left:990px;top:240px;width:90px;height:90px"><svg viewBox="0 0 90 90" width="90" height="90"><path d="M14 34h62M14 58h62" stroke="url(#goldH)" stroke-width="12" stroke-linecap="square"/></svg></div>
+  <div class="a" data-at="15.3" data-an="unfold" style="left:800px;top:440px;width:470px;height:300px"><div style="position:relative;width:470px;height:300px"><div id="nm3a" class="pl em" style="position:absolute;left:60px;top:20px">Glycinate</div><div id="nm3b" class="pl em" style="position:absolute;left:60px;top:140px">Bisglycinate</div></div></div>
+ </div>
+ <div class="kt" data-at="12.35" data-fx="center" data-plate="unfold" data-out="14.05"><span class="plate"><span class="tx">ดูดซึม 70% เท่ากัน</span></span></div>
+ <div class="kt" data-at="14.16" data-fx="center" data-plate="unfold" data-out="15.2"><span class="plate"><span class="tx">โครงสร้างเดียวกัน</span></span></div>
+ <div class="kt big" data-at="15.32" data-fx="center" data-plate="unfold"><span class="plate"><span class="tx">ต่างกันแค่ชื่อ</span></span></div>
+ <div class="grain"></div>
+</div>
+
+<!-- S4 16.4-22.5 -->
+<div class="scene em" data-s="16.4" data-e="22.5" data-tr="split" data-cam="16.4:1.03:720:500;22.5:1:720:540">
+ <svg class="dec" data-dec="burst"></svg><svg class="dec" data-dec="frame"></svg>
+ <div class="cam" id="meds4"></div>
+ <div class="kt" data-at="16.45" data-fx="center" data-plate="unfold" data-out="19.5"><span class="plate"><span class="tx">ช่วยได้หลายเรื่อง</span></span></div>
+ <div class="kt" data-at="19.62" data-fx="center" data-plate="unfold" data-out="20.95"><span class="plate"><span class="tx">ผ่อนคลายกล้ามเนื้อ</span></span></div>
+ <div class="kt" data-at="21.05" data-fx="center" data-plate="unfold"><span class="plate"><span class="tx">เลือดและหัวใจ</span></span></div>
+ <div class="grain"></div>
+</div>
+
+<!-- S5 22.5-26.0 -->
+<div class="scene" data-s="22.5" data-e="26.0" data-tr="split" data-cam="22.5:1.05:720:500;26:1:720:540">
+ <svg class="dec" data-dec="burst"></svg><svg class="dec" data-dec="frame"></svg>
+ <div class="cam">
+  <div class="a" id="mL5" data-at="22.5" data-an="fade" data-breathe="0" style="left:240px;top:190px;width:340px;height:340px"></div>
+  <div class="a" id="mR5" data-at="22.5" data-an="fade" data-breathe="1.6" style="left:860px;top:190px;width:340px;height:340px"></div>
+  <div class="a cx" data-at="22.5" data-an="fade" style="left:210px;top:565px;width:400px"><span class="pl em">Glycinate</span></div>
+  <div class="a cx" data-at="22.5" data-an="fade" style="left:830px;top:565px;width:400px"><span class="pl em">Bisglycinate</span></div>
+  <div class="a" data-at="22.6" data-an="ignite" style="left:650px;top:300px;width:140px;height:120px"><svg viewBox="0 0 140 120" width="140" height="120"><path d="M16 40h108M16 80h108" stroke="url(#goldH)" stroke-width="16"/></svg></div>
+  <div class="a" data-at="23.95" data-an="pop" style="left:470px;top:150px;width:150px;height:150px"><svg viewBox="0 0 150 150" width="150" height="150" class="check"></svg></div>
+  <div class="a" data-at="25.0" data-an="pop" style="left:1090px;top:150px;width:150px;height:150px"><svg viewBox="0 0 150 150" width="150" height="150" class="check"></svg></div>
+ </div>
+ <div class="kt" data-at="22.55" data-fx="center" data-plate="unfold" data-out="23.6"><span class="plate"><span class="tx">ทุกอย่างเหมือนกันหมด</span></span></div>
+ <div class="kt big" data-at="23.7" data-fx="center" data-plate="unfold"><span class="plate"><span class="tx">กินตัวไหนก็ได้</span></span></div>
+ <div class="grain"></div>
+</div>
+
+<!-- S6 26.0-31.2 -->
+<div class="scene bu" data-s="26.0" data-e="31.2" data-tr="split" data-cam="26:1:720:540;28.3:1.04:720:470;31.2:1.04:720:470">
+ <svg class="dec" data-dec="burst2"></svg><svg class="dec" data-dec="frame"></svg>
+ <div class="cam">
+  <div class="a" data-at="26.02" data-an="unfoldY" style="left:450px;top:120px;width:540px;height:640px"><svg viewBox="0 0 540 640" width="540" height="640" id="cert6"></svg></div>
+  <div class="a" data-at="26.55" data-an="seal" style="left:560px;top:250px;width:320px;height:320px"><svg viewBox="0 0 320 320" width="320" height="320" id="wax6"></svg></div>
+  <div class="a" id="mag6" data-at="28.35" data-an="pop" style="left:0;top:0;width:260px;height:260px"><svg viewBox="0 0 260 260" width="260" height="260" id="magsvg"></svg></div>
+  <div class="a" data-at="29.3" data-an="pop" style="left:940px;top:470px;width:170px;height:170px"><svg viewBox="0 0 150 150" width="170" height="170" class="check"></svg></div>
+ </div>
+ <div class="kt big" data-at="26.1" data-fx="center" data-plate="unfold" data-out="28.25"><span class="plate"><span class="tx">ขอแค่มี อย.</span></span></div>
+ <div class="kt" data-at="28.35" data-fx="center" data-plate="unfold" data-out="30.1"><span class="plate"><span class="tx">ต้องตรวจสอบได้จริง</span></span></div>
+ <div class="kt big" data-at="30.2" data-fx="center" data-plate="unfold"><span class="plate"><span class="tx">และที่สำคัญ...</span></span></div>
+ <div class="grain"></div>
+</div>
+
+<!-- S7 31.2-33.9 tower rises -->
+<div class="scene" data-s="31.2" data-e="33.9" data-tr="split" data-cam="31.2:1:720:560;33.9:1.05:720:420">
+ <svg class="dec" id="lights7"></svg><svg class="dec" data-dec="frame"></svg>
+ <div class="cam">
+  <div class="a" id="tw7" data-at="31.2" data-an="fade" style="left:420px;top:120px;width:600px;height:660px;transform-origin:50% 100%"><svg viewBox="0 0 600 660" width="600" height="660" id="towsvg"></svg></div>
+ </div>
+ <div class="kt big" data-at="31.25" data-fx="center" data-plate="unfold" data-out="32.35"><span class="plate"><span class="tx">ปริมาณต้องสูง!</span></span></div>
+ <div class="kt" data-at="32.4" data-fx="center" data-plate="unfold"><span class="plate"><span class="tx">สูงพอดูแลร่างกาย</span></span></div>
+ <div class="grain"></div>
+</div>
+
+<!-- S8 33.9-40.8 -->
+<div class="scene" data-s="33.9" data-e="40.8" data-tr="split" data-cam="33.9:1:720:540;38.6:1.02:820:520;40.8:1.04:900:520">
+ <svg class="dec" data-dec="chev"></svg><svg class="dec" data-dec="frame"></svg>
+ <div class="cam">
+  <div class="a" id="jar8" data-at="33.95" data-an="unfold" style="left:180px;top:170px;width:300px;height:470px"></div>
+  <div class="a" data-at="34.0" data-an="unfold" style="left:510px;top:200px;width:300px;height:300px"><svg viewBox="0 0 300 300" width="300" height="300" id="dial8"></svg></div>
+  <div class="a" data-at="36.95" data-an="ignite" data-out="38.55" style="left:540px;top:520px;width:250px;height:120px" class="cx"><span class="pl th bu" style="font-size:48px">ต่ำมาก</span></div>
+  <div class="a" data-at="38.6" data-an="fade" style="left:800px;top:180px;width:480px;height:440px"><svg viewBox="0 0 480 440" width="480" height="440" id="pills8"></svg></div>
+  <div class="a" data-at="39.95" data-an="seal" style="left:880px;top:420px;width:380px;height:200px"><svg viewBox="0 0 380 200" width="380" height="200" id="no8"></svg></div>
+ </div>
+ <div class="kt" data-at="34.0" data-fx="center" data-plate="unfold" data-out="36.85"><span class="plate"><span class="tx">ในตลาดมีแค่ 300–500 mg</span></span></div>
+ <div class="kt" data-at="36.95" data-fx="center" data-plate="unfold" data-out="38.55"><span class="plate"><span class="tx">ถือว่าต่ำมาก</span></span></div>
+ <div class="kt" data-at="38.65" data-fx="center" data-plate="unfold" data-out="39.95"><span class="plate"><span class="tx">ต้องกินวันละ 3–5 เม็ด?</span></span></div>
+ <div class="kt big" data-at="40.0" data-fx="center" data-plate="unfold"><span class="plate"><span class="tx">ไม่ไหว!</span></span></div>
+ <div class="grain"></div>
+</div>
+
+<!-- S9 40.8-44.3 hero 800 -->
+<div class="scene bu" data-s="40.8" data-e="44.3" data-tr="split" data-cam="40.8:1.06:720:470;42.3:1:720:520;44.3:1.03:720:500">
+ <svg class="dec" id="rays9"></svg><svg class="dec" data-dec="frame"></svg>
+ <div class="cam">
+  <div class="a" data-at="40.82" data-an="up" style="left:420px;top:560px;width:600px;height:200px"><svg viewBox="0 0 600 200" width="600" height="200" id="ped9"></svg></div>
+  <div class="a" id="jar9" data-at="40.9" data-an="up" style="left:560px;top:150px;width:320px;height:500px"></div>
+  <div class="a" data-at="42.3" data-an="ignite" style="left:950px;top:190px;width:300px;height:200px"><svg viewBox="0 0 300 200" width="300" height="200" id="m800"></svg></div>
+  <div class="a" data-at="43.25" data-an="unfold" style="left:170px;top:230px;width:330px;height:300px"><svg viewBox="0 0 330 300" width="330" height="300" id="pill9"></svg></div>
+ </div>
+ <div class="kt" data-at="40.9" data-fx="center" data-plate="unfold" data-out="42.2"><span class="plate"><span class="tx">แนะนำ Bisglycinate</span></span></div>
+ <div class="kt big" data-at="42.3" data-fx="center" data-plate="unfold" data-out="43.15"><span class="plate"><span class="tx">800 mg ไปเลย</span></span></div>
+ <div class="kt" data-at="43.25" data-fx="center" data-plate="unfold"><span class="plate"><span class="tx">ทานวันละ 1–2 เม็ด</span></span></div>
+ <div class="grain"></div>
+</div>
+
+<!-- S10 44.3-end -->
+<div class="scene em" data-s="44.3" data-e="99" data-tr="split" data-cam="44.3:1:720:540;47.2:1.03:480:520;48.4:1.03:960:520;50.6:1:720:540;52.1:1.03:720:520">
+ <svg class="dec" data-dec="burst"></svg><svg class="dec" data-dec="frame"></svg><svg class="dec" id="spark10"></svg>
+ <div class="cam">
+  <div class="a" data-at="44.32" data-an="unfoldY" style="left:160px;top:140px;width:540px;height:620px;transform-origin:50% 100%"><svg viewBox="0 0 540 620" width="540" height="620" id="archL"></svg></div>
+  <div class="a" data-at="47.5" data-an="unfoldY" style="left:740px;top:140px;width:540px;height:620px;transform-origin:50% 100%"><svg viewBox="0 0 540 620" width="540" height="620" id="archR"></svg></div>
+  <div class="a" data-at="45.4" data-an="ignite" style="left:440px;top:460px;width:220px;height:180px"><svg viewBox="0 0 220 180" width="220" height="180" id="one10"></svg></div>
+  <div class="a" data-at="49.45" data-an="ignite" style="left:1010px;top:460px;width:250px;height:180px"><svg viewBox="0 0 250 180" width="250" height="180" id="two10"></svg></div>
+  <div class="a" id="medEnd" data-at="51.0" data-an="pop" style="left:620px;top:130px;width:200px;height:200px"></div>
+ </div>
+ <div class="kt" data-at="44.5" data-fx="center" data-plate="unfold" data-out="47.25"><span class="plate"><span class="tx">กินผักประจำ ทาน 1 เม็ด</span></span></div>
+ <div class="kt" data-at="47.35" data-fx="center" data-plate="unfold" data-out="49.0"><span class="plate"><span class="tx">ไม่ได้แตะผักเลย?</span></span></div>
+ <div class="kt big" data-at="49.1" data-fx="center" data-plate="unfold" data-out="49.95"><span class="plate"><span class="tx">แนะนำ 2 เม็ด</span></span></div>
+ <div class="kt" data-at="50.05" data-fx="center" data-plate="unfold"><span class="plate"><span class="tx">ได้แมกนีเซียมเพียงพอ</span></span></div>
+ <div class="grain"></div>
+</div>
+<svg class="dec" id="seam" style="z-index:80"></svg>
+<div id="safe" style="display:none;position:absolute;left:130px;top:130px;width:1180px;height:820px;border:3px dashed #f0f;z-index:99"></div>
+</div>
+<script src="../engine.js"></script>
+<script>
+const G='url(#gold)',GH='url(#goldH)',IV='#f2e6c8',BK='#0e0a07';
+// engraved gold line: dark underline, gold line, hairline highlight
+function gl(d,w=4,o={}){return `<path d="${d}" fill="none" stroke="#1a1208" stroke-width="${w+2.4}" stroke-linecap="${o.cap||'round'}" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="${o.col||GH}" stroke-width="${w}" stroke-linecap="${o.cap||'round'}" stroke-linejoin="round"/>${w>3?`<path d="${d}" fill="none" stroke="#fff6d6" stroke-width="${w*0.22}" stroke-linecap="round" stroke-linejoin="round" opacity=".7" transform="translate(-.6 -.8)"/>`:''}`}
+const circ=(cx,cy,r)=>`M${cx-r} ${cy}a${r} ${r} 0 1 0 ${2*r} 0a${r} ${r} 0 1 0 ${-2*r} 0z`;
+const rr=(x,y,w,h,r)=>`M${x+r} ${y}h${w-2*r}a${r} ${r} 0 0 1 ${r} ${r}v${h-2*r}a${r} ${r} 0 0 1 ${-r} ${r}h${-(w-2*r)}a${r} ${r} 0 0 1 ${-r} ${-r}v${-(h-2*r)}a${r} ${r} 0 0 1 ${r} ${-r}z`;
+const fillG=(d,f,w=3)=>`<path d="${d}" fill="${f}"/>`+gl(d,w);
+function medal(sym='Mg',fill='url(#emer)',sub=''){let s=`<svg viewBox="-130 -130 260 260" width="100%" height="100%">`;
+ for(let i=0;i<32;i++){const a=i/32*Math.PI*2;s+=`<path d="M${Math.cos(a)*104} ${Math.sin(a)*104}L${Math.cos(a)*(i%2?118:128)} ${Math.sin(a)*(i%2?118:128)}" stroke="${G}" stroke-width="${i%2?2:4}"/>`}
+ s+=`<path d="${circ(0,0,102)}" fill="#120d08"/>`+gl(circ(0,0,102),5)+gl(circ(0,0,92),2);
+ s+=`<path d="${circ(0,0,86)}" fill="${fill}"/>`;
+ for(let i=0;i<24;i++){const a=i/24*Math.PI*2;s+=`<path d="M${Math.cos(a)*30} ${Math.sin(a)*30}L${Math.cos(a)*84} ${Math.sin(a)*84}" stroke="#f0cf78" stroke-width="1.2" opacity=".35"/>`}
+ s+=`<text x="0" y="30" text-anchor="middle" font-family="L" font-size="92" fill="url(#sheen)" stroke="#2a1d0c" stroke-width="2.5" paint-order="stroke fill">${sym}</text>`;
+ return s+'</svg>'}
+function bulbRing(n,r,c){let s='';for(let i=0;i<n;i++){const a=i/n*Math.PI*2-Math.PI/2;const x=c+Math.cos(a)*r,y=c+Math.sin(a)*r;s+=`<circle cx="${x}" cy="${y}" r="15" fill="url(#bulb)" class="bl" data-i="${i}"/><circle cx="${x}" cy="${y}" r="5.5" fill="#fffbe6" stroke="#8a6a2c" stroke-width="1.5"/>`}return s}
+function djar(lines,hero){const body=hero?'url(#lac)':'url(#ivory)';const lab=lines.map((l,i)=>`<text x="150" y="${292+i*50}" text-anchor="middle" font-family="${l.f||'L'}" font-size="${l.s||38}" fill="${l.c||'url(#sheen)'}">${l.t}</text>`).join('');
+ return `<svg viewBox="0 0 300 470" width="100%" height="100%">${fillG(rr(46,18,208,80,10),hero?'url(#goldH)':'#3a332a')}${hero?[70,100,130,160,190,220].map(x=>`<path d="M${x} 24v68" stroke="#6b4a1a" stroke-width="3"/>`).join(''):''}
+ ${fillG(rr(76,96,148,24,4),'#2a241c')}${fillG(rr(22,116,256,344,40),body,hero?4:2.5)}${fillG(rr(22,200,256,190,0),hero?'#120d08':'#d9cfb6',hero?4:2)}
+ ${hero?gl('M22 214H278M22 376H278',2)+`<g transform="translate(150 160) scale(.3)">${medal('Mg','url(#burg)').replace(/<\/?svg[^>]*>/g,'')}</g>`:''}${lab}
+ <path d="M40 140v300" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".35"/></svg>`}
+function pillD(x,y,r=0,s=1){return `<g transform="translate(${x} ${y}) rotate(${r}) scale(${s})"><path d="M-48 0a48 24 0 1 0 96 0a48 24 0 1 0 -96 0z" fill="url(#ivory)"/>${gl('M-48 0a48 24 0 1 0 96 0a48 24 0 1 0 -96 0z',2.5)}<path d="M0 -24v48" stroke="#a99c7e" stroke-width="2"/></g>`}
+function checkD(){return `<path d="${circ(75,75,66)}" fill="url(#emer)"/>`+gl(circ(75,75,66),5)+gl('M40 78l24 24 48-52',12)}
+function deco(){document.querySelectorAll('svg[data-dec]').forEach(sv=>{const t=sv.dataset.dec;let s='';
+ if(t==='burst'||t==='burst2'){const cy=t==='burst'?420:380;for(let i=0;i<48;i++){const a=i/48*Math.PI*2;s+=`<path d="M720 ${cy}L${720+Math.cos(a)*1100} ${cy+Math.sin(a)*1100}" stroke="#d8b45c" stroke-width="${i%2?1:2.2}" opacity="${i%2?.10:.18}"/>`}
+  for(const r of [260,380,520])s+=`<circle cx="720" cy="${cy}" r="${r}" fill="none" stroke="#d8b45c" stroke-width="1.2" opacity=".14"/>`}
+ if(t==='chev'){for(let k=0;k<7;k++){const y=960-k*34;s+=`<path d="M60 ${y}L720 ${y-120}L1380 ${y}" fill="none" stroke="#d8b45c" stroke-width="2" opacity="${.22-k*.025}"/>`}
+  for(let i=0;i<24;i++){s+=`<path d="M${60+i*55} 60l27 40l27 -40" fill="none" stroke="#d8b45c" stroke-width="1.6" opacity=".15"/>`}}
+ if(t==='frame'){const f=(i)=>`M${40+i} ${110+i}V${40+i}H${110+i}M${1400-i} ${110+i}V${40+i}H${1330-i}M${40+i} ${970-i}V${1040-i}H${110+i}M${1400-i} ${970-i}V${1040-i}H${1330-i}`;
+  s+=gl(f(0),4)+gl(f(14),2)+gl('M150 40H1290M150 1040H1290',2)+gl('M40 150V930M1400 150V930',2);
+  // stepped crown top centre
+  s+=gl('M620 40V58H660V74H780V58H820V40',3)+gl('M620 1040V1022H660V1006H780V1022H820V1040',3);
+  for(const [x,y,a] of [[70,70,0],[1370,70,90],[70,1010,-90],[1370,1010,180]]){s+=`<g transform="translate(${x} ${y}) rotate(${a})">${[0,1,2,3,4].map(i=>{const q=i/4*Math.PI/2;return gl(`M0 0L${Math.cos(q)*60} ${Math.sin(q)*60}`,1.6)}).join('')}</g>`}}
+ sv.innerHTML=s})}
+const ICON={
+ stress:gl('M-24 30Q-34 0 -24 -22Q-8 -40 14 -32Q30 -22 28 0L34 10L26 14L26 28',3)+gl('M-30 -40l8 -12l8 10l8 -12l8 10l8 -12l8 10',3,{col:'#e0586e'}),
+ worry:gl('M-24 30Q-34 0 -24 -22Q-8 -40 14 -32Q30 -22 28 0L34 10L26 14L26 28',3)+gl('M-6 -50a8 8 0 1 1 8 8a14 14 0 1 1 -14 -14a20 20 0 1 1 20 20',3),
+ sleep:gl('M8 -40a34 34 0 1 0 26 52a28 28 0 1 1 -26 -52z',3.5)+`<text x="22" y="-28" font-family="L" font-size="26" fill="url(#gold)">z</text><text x="38" y="-46" font-family="L" font-size="20" fill="url(#gold)">z</text>`,
+ migraine:gl('M-24 30Q-34 0 -24 -22Q-8 -40 14 -32Q30 -22 28 0L34 10L26 14L26 28',3)+gl('M-8 -58L-20 -30H-6L-16 -6L12 -38H-2L8 -58Z',3,{col:'#f6dc8e'}),
+ muscle:gl('M-40 24Q-38 -6 -12 -10Q-4 -40 14 -44Q28 -40 22 -26Q10 -22 8 -10Q34 -6 36 18Q30 34 -40 34Z',3.5),
+ heart:`<path d="M0 32Q-44 4 -40 -18Q-36 -38 -14 -36Q-4 -34 0 -22Q4 -34 14 -36Q36 -38 40 -18Q44 4 0 32Z" fill="url(#burg)"/>`+gl('M0 32Q-44 4 -40 -18Q-36 -38 -14 -36Q-4 -34 0 -22Q4 -34 14 -36Q36 -38 40 -18Q44 4 0 32Z',3)+gl('M-34 0H-14L-6 -14L4 14L12 0H34',2.5)};
+function build(){
+ for(const id of ['mL1','mL5','crA2'])$(id).innerHTML=medal('Mg','url(#emer)');
+ for(const id of ['mR1','mR5','crB2'])$(id).innerHTML=medal('Mg','url(#emer)');
+ $('merge2').innerHTML=medal('Mg','url(#emer)');
+ document.querySelectorAll('.bulbring').forEach(sv=>{const vb=sv.viewBox.baseVal.width;sv.innerHTML=bulbRing(+sv.dataset.n,+sv.dataset.r,vb/2)});
+ document.querySelectorAll('.check').forEach(sv=>sv.innerHTML=checkD());
+ // dial 70% (S1)
+ const dial=(cx,cy,r,id,lab)=>{let s=`<path d="${circ(cx,cy,r)}" fill="#120d08"/>`+gl(circ(cx,cy,r),5)+gl(circ(cx,cy,r-12),1.6);
+  for(let i=0;i<=10;i++){const a=Math.PI*(0.75+1.5*i/10);s+=gl(`M${cx+Math.cos(a)*(r-18)} ${cy+Math.sin(a)*(r-18)}L${cx+Math.cos(a)*(r-(i%5?30:40))} ${cy+Math.sin(a)*(r-(i%5?30:40))}`,i%5?1.6:3)}
+  s+=`<g id="${id}">${gl(`M${cx} ${cy}L${cx} ${cy-r+46}`,6,{col:'#e0586e'})}</g><path d="${circ(cx,cy,12)}" fill="url(#gold)"/>`;
+  s+=`<text id="${id}t" x="${cx}" y="${cy+r*0.55}" text-anchor="middle" font-family="L" font-size="${r*0.36}" fill="url(#sheen)">0%</text>`;
+  if(lab)s+=`<text x="${cx}" y="${cy+r+44}" text-anchor="middle" font-family="L" font-size="30" fill="${IV}">${lab}</text>`;return s};
+ $('dial1').innerHTML=dial(125,125,115,'nd1','');
+ $('dials3').innerHTML=dial(150,260,130,'nd3a','Glycinate')+dial(450,260,130,'nd3b','Bisglycinate');
+ $('dial8').innerHTML=dial(150,150,135,'nd8','').replace(/0%<\/text>/,'0</text>');
+ // balance
+ $('balsvg').innerHTML=fillG('M470 540L490 170H510L530 540Z','#1a130b')+gl('M470 540L490 170H510L530 540Z',3)+fillG('M380 520H620V550H380Z','#1a130b')+gl('M400 520V500H600V520',3)+`<g id="beamBar">${fillG(rr(140,150,720,18,4),'url(#gold)',2)}</g><g id="panL2">${fillG('M-110 0H110L80 40H-80Z','#1a130b')}${gl('M-100 0L0 -150L100 0',2)}</g><g id="panR2">${fillG('M-110 0H110L80 40H-80Z','#1a130b')}${gl('M-100 0L0 -150L100 0',2)}</g>`+`<path d="${circ(500,160,20)}" fill="url(#burg)"/>`+gl(circ(500,160,20),3);
+ // molecule
+ const ar=(sx)=>{let q='';const pts=[[sx*110,-40],[sx*200,-10],[sx*290,-50],[sx*200,60],[sx*110,40]];q+=gl(`M0 0L${pts[0]}L${pts[1]}L${pts[2]}M${pts[1]}L${pts[3]}M0 0L${pts[4]}L${pts[3]}`,3);
+  pts.forEach((p,i)=>q+=`<path d="${circ(p[0],p[1],i==2?18:22)}" fill="${['url(#burg)','#2a241c','url(#burg)','url(#emer)','url(#burg)'][i]}"/>`+gl(circ(p[0],p[1],i==2?18:22),2.5));return q};
+ $('mol2').innerHTML=`<svg viewBox="0 0 640 240" width="640" height="240"><g transform="translate(320 110)">${ar(-1)}${ar(1)}<path d="${circ(0,0,44)}" fill="url(#gold)"/>${gl(circ(0,0,44),3)}<text x="0" y="14" text-anchor="middle" font-family="L" font-size="40" fill="#2a1d0c">Mg</text></g></svg>`;
+ const mini=(x)=>`<g transform="translate(${x} 125) scale(.42)">${[[-110,-40],[-200,-10],[110,-40],[200,-10],[-110,40],[110,40]].map(p=>gl(`M0 0L${p}`,6)+`<path d="${circ(p[0],p[1],26)}" fill="url(#burg)"/>`+gl(circ(p[0],p[1],26),4)).join('')}<path d="${circ(0,0,46)}" fill="url(#gold)"/><text x="0" y="16" text-anchor="middle" font-family="L" font-size="44" fill="#2a1d0c">Mg</text></g>`;
+ $('struct3').innerHTML=`<path d="${rr(4,4,462,242,6)}" fill="#120d08"/>`+gl(rr(4,4,462,242,6),3)+gl(rr(14,14,442,222,3),1.4)+mini(110)+mini(360);
+ // six medallions
+ const F=[['stress','เครียด',16.9],['worry','กังวล',17.55],['sleep','นอนหลับ',18.25],['migraine','ไมเกรน',18.9],['muscle','กล้ามเนื้อ',19.9],['heart','หัวใจ & เลือด',21.2]];
+ $('meds4').innerHTML=F.map(([ic,lab,at],i)=>{const cx=330+(i%3)*390,cy=i<3?235:525;
+  return `<div class="a" data-at="${at}" data-an="ignite" data-breathe="${i}" style="left:${cx-135}px;top:${cy-140}px;width:270px;height:270px"><svg viewBox="-130 -130 260 260" width="270" height="270">${bulbRing(16,118,0)}<path d="${circ(0,0,96)}" fill="#120d08"/>${gl(circ(0,0,96),4)}${gl(circ(0,0,86),1.5)}<g transform="scale(1.45)">${ICON[ic]}</g></svg></div><div class="a cx" data-at="${at+0.08}" data-an="unfold" style="left:${cx-170}px;top:${cy+100}px;width:340px"><span class="pl th" style="font-size:38px">${lab}</span></div>`}).join('');
+ // certificate + wax
+ let c=`<path d="M20 60L60 20H480L520 60V600L480 620H60L20 600Z" fill="#efe4c9"/>`+gl('M20 60L60 20H480L520 60V600L480 620H60L20 600Z',5)+gl('M40 70L70 40H470L500 70V590L470 600H70L40 590Z',1.6);
+ for(let i=0;i<9;i++)c+=`<path d="M110 ${130+i*50}h${200+((i*37)%110)}" stroke="#b8aa88" stroke-width="9" stroke-linecap="round"/>`;
+ $('cert6').innerHTML=c;
+ let w='';for(let i=0;i<20;i++){const a=i/20*Math.PI*2,r1=150,r2=136;w+=`${i?'L':'M'}${160+Math.cos(a)*r1} ${160+Math.sin(a)*r1}L${160+Math.cos(a+Math.PI/20)*r2} ${160+Math.sin(a+Math.PI/20)*r2}`}w+='Z';
+ $('wax6').innerHTML=`<path d="${w}" fill="url(#burg)"/>`+gl(w,3)+gl(circ(160,160,112),2.5)+`<text x="160" y="205" text-anchor="middle" font-family="C" font-size="128" fill="url(#gold)" stroke="#2a0b10" stroke-width="2">อย.</text>`;
+ $('magsvg').innerHTML=gl('M170 170L240 240',20,{col:'url(#gold)'})+`<path d="${circ(110,110,86)}" fill="rgba(140,200,180,.18)"/>`+gl(circ(110,110,86),9);
+ // tower (setbacks)
+ let t='';const lv=[[60,540,480,120],[110,420,380,120],[160,300,280,120],[210,190,180,110],[250,100,100,90]];
+ lv.forEach(([x,y,w,h],i)=>{t+=`<path d="M${x} ${y}h${w}v${h}h${-w}z" fill="url(#ivory)" opacity=".92"/><path d="M${x+w*0.55} ${y}h${w*0.45}v${h}h${-w*0.45}z" fill="#8a7e64" opacity=".55"/>`+gl(`M${x} ${y+h}V${y}H${x+w}V${y+h}`,3);
+  for(let k=1;k<Math.floor(w/26);k++)t+=`<path d="M${x+k*26} ${y+12}v${h-24}" stroke="#2a241c" stroke-width="5" opacity=".55"/>`});
+ t+=gl('M300 100V20',4)+`<g id="twc" transform="translate(300 0) scale(.42)">${medal('Mg','url(#burg)').replace(/<\/?svg[^>]*>/g,'')}</g>`;
+ $('towsvg').innerHTML=t;
+ $('jar8').innerHTML=djar([{t:'Bisglycinate',s:30,c:'#3a332a'},{t:'300–500 mg',s:38,c:'#3a332a'}],false);
+ $('jar9').innerHTML=djar([{t:'Bisglycinate',s:32},{t:'800 mg',s:58}],true);
+ $('no8').innerHTML=`<path d="M30 20H350L370 100L350 180H30L10 100Z" fill="url(#burg)"/>`+gl('M30 20H350L370 100L350 180H30L10 100Z',4)+`<text x="190" y="128" text-anchor="middle" font-family="C" font-size="84" fill="url(#gold)">ไม่ไหว!</text>`;
+ $('ped9').innerHTML=fillG('M60 200V150H120V100H200V50H400V100H480V150H540V200Z','#120d08',3)+gl('M90 175H510M150 125H450M230 75H370',1.4);
+ $('m800').innerHTML=`<path d="M20 30L50 4H250L280 30V170L250 196H50L20 170Z" fill="#120d08"/>`+gl('M20 30L50 4H250L280 30V170L250 196H50L20 170Z',4)+bulbRingRect()+`<text x="150" y="140" text-anchor="middle" font-family="L" font-size="104" fill="url(#sheen)">800</text>`;
+ $('pill9').innerHTML=`<path d="${rr(10,10,310,280,6)}" fill="#120d08"/>`+gl(rr(10,10,310,280,6),3)+pillD(100,110,-12,1.2)+`<text x="100" y="236" text-anchor="middle" font-family="L" font-size="60" fill="url(#sheen)">1</text>`+pillD(232,90,10,1.1)+pillD(242,150,-6,1.1)+`<text x="236" y="236" text-anchor="middle" font-family="L" font-size="60" fill="url(#sheen)">2</text>`+gl('M165 50V260',1.6);
+ const arch=(inner)=>`<path d="M20 620V200Q20 20 270 20Q520 20 520 200V620Z" fill="#120d08"/>`+gl('M20 620V200Q20 20 270 20Q520 20 520 200V620',5)+gl('M40 620V205Q40 42 270 42Q500 42 500 205V620',1.6)+[...Array(9)].map((_,i)=>{const a=Math.PI+i/8*Math.PI;return gl(`M270 210L${270+Math.cos(a)*220} ${210+Math.sin(a)*180}`,1.2)}).join('')+inner;
+ $('archL').innerHTML=arch(`<g transform="translate(250 380)">${gl('M-120 60Q-110 160 0 160Q110 160 120 60Z',4)}<path d="M-120 60Q-110 160 0 160Q110 160 120 60Z" fill="#2a1d0c" opacity=".6"/>${[['M-60 60Q-80 -50 -30 -110Q0 -50 -10 60','url(#emer)'],['M-20 60Q-10 -90 40 -120Q60 -40 20 60','url(#emer)'],['M40 60Q70 -30 110 -40Q110 30 70 60','url(#emer)'],['M-100 60Q-110 0 -80 -30Q-60 10 -70 60','url(#emer)'],['M-30 66Q0 46 30 66L20 130Q0 140 -20 130Z','url(#burg)']].map(([d,f])=>`<path d="${d}" fill="${f}"/>`+gl(d,2.5)).join('')}</g>`);
+ $('archR').innerHTML=arch(`<g transform="translate(250 400)"><path d="M-130 0Q-120 110 0 120Q120 110 130 0Z" fill="#1a130b"/>${gl('M-130 0Q-120 110 0 120Q120 110 130 0Z',4)}${gl('M-130 0Q0 30 130 0Q0 -24 -130 0Z',3)}</g><g transform="translate(270 220)">${gl('M-40 -40L40 40M40 -40L-40 40',10,{col:'#e0586e'})}</g>`);
+ $('one10').innerHTML=`<path d="${rr(6,6,208,168,6)}" fill="#120d08"/>`+gl(rr(6,6,208,168,6),3)+pillD(110,66,-10,1.3)+`<text x="110" y="150" text-anchor="middle" font-family="C" font-size="44" fill="url(#gold)">1 เม็ด</text>`;
+ $('two10').innerHTML=`<path d="${rr(6,6,238,168,6)}" fill="#3a0f18"/>`+gl(rr(6,6,238,168,6),3)+pillD(80,66,-10,1.1)+pillD(170,66,12,1.1)+`<text x="125" y="150" text-anchor="middle" font-family="C" font-size="44" fill="url(#gold)">2 เม็ด</text>`;
+ $('medEnd').innerHTML=medal('Mg','url(#burg)');
+}
+function bulbRingRect(){let s='';const pts=[];for(let i=0;i<9;i++)pts.push([50+i*25,18]);for(let i=0;i<9;i++)pts.push([250-i*25,182]);return pts.map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="9" fill="url(#bulb)" class="bl" data-i="${i}"/><circle cx="${x}" cy="${y}" r="3.5" fill="#fffbe6"/>`).join('')}
+deco();build();initEngine();
+const SPARK=[...Array(26)].map((_,i)=>({x:180+rnd()*1080,y:150+rnd()*600,t:51+rnd()*1.1,s:10+rnd()*22}));
+window.render=function(t){
+ engineRender(t);
+ // sheen sweep on gold text
+ const sp=((t*0.35)%1.4)-0.2;for(const [id,o] of [['sh1',-0.05],['sh2',0],['sh3',0.05]])$(id).setAttribute('offset',cl(sp+o));
+ // bulbs chase
+ document.querySelectorAll('.bl').forEach(b=>{const i=+b.dataset.i;b.setAttribute('opacity',(Math.floor(t*8)+i)%3===0?1:0.45)});
+ // dials
+ const nd=(id,v,max=100)=>{const g=$(id);if(!g)return;const sv=g.closest('svg');const a=-135+270*v/max;const c=g.querySelector('path').getAttribute('d').match(/M([\d.]+) ([\d.]+)/);g.setAttribute('transform',`rotate(${a} ${c[1]} ${c[2]})`);const tx=$(id+'t');if(tx)tx.textContent=Math.round(v)+(max==100?'%':'')};
+ if(t>=2.6&&t<7.4)nd('nd1',70*eOC(cl((t-2.75)/0.8)));
+ if(t>=12.2&&t<16.9){nd('nd3a',70*eOC(cl((t-12.5)/1.0)));nd('nd3b',70*eOC(cl((t-12.65)/1.0)));
+  if(t>15.3){const p=eIO(cl((t-15.4)/0.6));const sw=Math.sin(p*Math.PI);$('nm3a').style.transform=`translate(${sw*120}px,${p*120}px)`;$('nm3b').style.transform=`translate(${-sw*120}px,${-p*120}px)`}}
+ if(t>=33.9&&t<41.3){let v=500*eOC(cl((t-34.6)/1.2));if(t>36.95&&t<38.5)v-=Math.abs(Math.sin(t*10))*25;nd('nd8',v,800)}
+ // balance
+ if(t>=6.8&&t<12.8){const p=t-6.85;const ang=p<2.2?Math.sin(p*3.2)*10*Math.exp(-p*0.25):10*Math.sin(2.2*3.2)*Math.exp(-0.55)*Math.max(0,1-(p-2.2)/0.7)*Math.cos((p-2.2)*6);
+  const a=ang*Math.PI/180;$('beamBar').setAttribute('transform',`rotate(${ang} 500 160)`);
+  const lx=500-340*Math.cos(a),ly=160-340*Math.sin(a)+150,rx=500+340*Math.cos(a),ry=160+340*Math.sin(a)+150;
+  $('panL2').setAttribute('transform',`translate(${lx} ${ly})`);$('panR2').setAttribute('transform',`translate(${rx} ${ry})`);
+  const m=eIO(cl((t-9.9)/0.5));const ax=220+lx-120,ay=150+ly-230,bx=220+rx-120,by=150+ry-230;const cx=600,cy=195;
+  const A=$('crA2'),B=$('crB2');const show=t>=6.85&&t<10.45;
+  A.style.left=lerp(ax,cx,m)+'px';A.style.top=lerp(ay,cy,m)+'px';B.style.left=lerp(bx,cx,m)+'px';B.style.top=lerp(by,cy,m)+'px';
+  A.style.opacity=B.style.opacity=show?(t<7.2?cl((t-6.85)/0.3):1)*(1-cl((t-10.3)/0.15)):0}
+ if(t>=28.3&&t<31.9){const p=cl((t-28.35)/1.4);const m=$('mag6');m.style.left=(520+Math.sin(p*Math.PI*2)*170)+'px';m.style.top=(260+p*240)+'px'}
+ // tower rises + searchlights
+ if(t>=31.2&&t<34.4){const p=eOB(cl((t-31.3)/1.3));$('tw7').style.transform=`scaleY(${0.2+0.8*p})`;$('tw7').style.opacity=1;
+  let s='';for(const [x,ph] of [[360,0],[1080,1.7]]){const a=-90+Math.sin(t*1.6+ph)*28;const r=a*Math.PI/180;s+=`<path d="M${x} 940L${x+Math.cos(r-0.06)*1100} ${940+Math.sin(r-0.06)*1100}L${x+Math.cos(r+0.06)*1100} ${940+Math.sin(r+0.06)*1100}Z" fill="#fff0b8" opacity=".09"/>`}$('lights7').innerHTML=s}
+ // pills S8
+ if(t>=33.9&&t<41.3){let s='';const n=t<38.65?0:t<39.0?3:t<39.35?4:5;const pos=[[110,300,-14],[240,320,8],[370,296,-6],[180,220,16],[310,232,-10]];
+  for(let i=0;i<n;i++){const at=38.65+(i<3?i*0.06:i==3?0.35:0.7);const d=cl((t-at)/0.35);s+=pillD(pos[i][0],pos[i][1]-160*(1-eOC(d)),pos[i][2],1.3)}
+  if(n)s+=`<text x="410" y="110" text-anchor="middle" font-family="L" font-size="120" fill="url(#sheen)" stroke="#2a1d0c" stroke-width="3">${n}</text><text x="410" y="160" text-anchor="middle" font-family="C" font-size="36" fill="${IV}">เม็ด/วัน</text>`;
+  $('pills8').innerHTML=s}
+ // rays S9
+ if(t>=40.8&&t<45){let s='';const rot=t*6;for(let i=0;i<36;i++){const a=(i/36*360+rot)*Math.PI/180;const a2=a+Math.PI/72;s+=`<path d="M720 400L${720+Math.cos(a)*1200} ${400+Math.sin(a)*1200}L${720+Math.cos(a2)*1200} ${400+Math.sin(a2)*1200}Z" fill="#d8b45c" opacity="${i%2?.05:.12}"/>`}$('rays9').innerHTML=s}
+ // sparkles end
+ if(t>=50.9){let s='';for(const p of SPARK){const d=t-p.t;if(d<0)continue;const k=Math.sin(Math.min(1,d/0.5)*Math.PI)*(0.6+0.4*Math.sin(t*9+p.x));const r=p.s*Math.max(0,k);s+=`<path d="M${p.x} ${p.y-r}Q${p.x} ${p.y} ${p.x+r} ${p.y}Q${p.x} ${p.y} ${p.x} ${p.y+r}Q${p.x} ${p.y} ${p.x-r} ${p.y}Q${p.x} ${p.y} ${p.x} ${p.y-r}Z" fill="#fff0b8"/>`}$('spark10').innerHTML=s}
+ // gold seam during split transitions
+ let seam=0;for(const sc of SCENES){if(sc.tr==='split'){const d=t-sc.s;if(d>=0&&d<0.5)seam=Math.max(seam,1-d/0.5)}}
+ $('seam').innerHTML=seam?`<path d="M720 0V1080" stroke="#fff0b8" stroke-width="${3+seam*8}" opacity="${seam}"/>`:'';
+};
+window.render(0);
+</script>
+</body></html>
