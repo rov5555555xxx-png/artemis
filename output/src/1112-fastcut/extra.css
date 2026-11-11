@@ -1,0 +1,19 @@
+/* new patterned backgrounds: pattern layer (animated) + base gradient */
+.b-sun{--base:radial-gradient(circle at 50% 38%,#FFFBE6 0%,#FFE98A 60%,#FFC93D 100%)}
+.b-sky{--base:linear-gradient(180deg,#A8DBFF 0%,#D6F0FF 65%,#F2FBFF 100%)}
+.b-pink{--base:radial-gradient(circle at 50% 38%,#FFF1F6 0%,#FFC7DA 60%,#FF9EBE 100%)}
+.b-mint{--base:radial-gradient(circle at 50% 38%,#F0FFF8 0%,#BDF3DA 60%,#7EE0B6 100%)}
+.b-lilac{--base:radial-gradient(circle at 50% 38%,#F7F2FF 0%,#DCCBFF 60%,#B79BFF 100%)}
+.b-peach{--base:radial-gradient(circle at 50% 38%,#FFF3EA 0%,#FFD3B8 60%,#FFAE85 100%)}
+.p-dots{background:radial-gradient(circle,rgba(255,255,255,.55) 11px,transparent 12px) 0 0/84px 84px,var(--base)}
+.p-grid{background:linear-gradient(rgba(255,255,255,.5) 4px,transparent 4px) 0 0/90px 90px,linear-gradient(90deg,rgba(255,255,255,.5) 4px,transparent 4px) 0 0/90px 90px,var(--base)}
+.p-stripe{background:repeating-linear-gradient(45deg,rgba(255,255,255,.32) 0 26px,transparent 26px 64px) 0 0/181px 181px,var(--base)}
+.p-check{background:conic-gradient(rgba(255,255,255,.3) 25%,transparent 0 50%,rgba(255,255,255,.3) 0 75%,transparent 0) 0 0/120px 120px,var(--base)}
+.p-zig{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cpath d='M0 40l30-24l30 24l30-24l30 24' fill='none' stroke='white' stroke-opacity='.5' stroke-width='9' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0/120px 60px,var(--base)}
+.p-plus{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110'%3E%3Cpath d='M30 18v24M18 30h24M85 73v24M73 85h24' stroke='white' stroke-opacity='.6' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E") 0 0/110px 110px,var(--base)}
+.p-wave{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='70'%3E%3Cpath d='M0 35q20-22 40 0t40 0t40 0t40 0' fill='none' stroke='white' stroke-opacity='.5' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E") 0 0/160px 70px,var(--base)}
+.scal{position:absolute;left:-60px;right:-60px;height:90px;background:radial-gradient(circle at 50% 100%,#fff 44px,transparent 45px) 0 0/96px 90px;opacity:.95}
+.scal.top{top:-46px;transform:scaleY(-1)}
+.scal.bot{bottom:-44px}
+.card{display:flex;align-items:center;gap:16px;background:#fff;border:7px solid #1B2A4A;border-radius:28px;box-shadow:0 10px 0 #1B2A4A;padding:12px 30px 12px 18px;font-weight:900;font-size:52px;white-space:nowrap}
+.dot{background:none!important}

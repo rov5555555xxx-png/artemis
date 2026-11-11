@@ -1,0 +1,127 @@
+<!-- S1 0-3.0 opening: fast alternating cuts (jar / clock / jar / clock / both) -->
+<div class="scene" data-s="0" data-e="0.9" data-bg="b-sun p-dots" data-cam="0:1.0:720:520;0.9:1.06:720:470">
+ <div class="cam">
+  <div class="a jar" data-label="Zn" data-at="-1" data-an="pop" style="left:560px;top:110px;width:320px;height:528px"></div>
+  <div class="a" data-at="-1" data-an="pop" style="left:870px;top:170px"><span class="stk" style="font-size:52px;background:#fff">ซิงค์ปกติ</span></div>
+ </div>
+ <div class="kt" data-at="-0.3" data-st="0" data-fx="jelly" style="top:690px;font-size:130px;color:#fff">กินซิงค์ปกติ</div>
+</div>
+<div class="scene" data-s="0.9" data-e="1.35" data-bg="b-pink p-stripe" data-cam="0.9:1.0:720:500;1.35:1.1:720:470">
+ <div class="cam">
+  <div class="a" data-at="0.4" data-an="fade" style="left:420px;top:110px;width:600px;height:600px"><svg viewBox="-110 -110 220 220" width="600" height="600" class="clock" data-id="ckA"></svg></div>
+  <div class="a" data-at="0.92" data-an="stamp" style="left:1040px;top:180px"><svg width="150" height="190" viewBox="0 0 110 140"><text x="55" y="120" text-anchor="middle" font-family="K" font-weight="900" font-size="150" fill="#FFD23F" stroke="#1B2A4A" stroke-width="10" paint-order="stroke fill">?</text></svg></div>
+ </div>
+</div>
+<div class="scene" data-s="1.35" data-e="1.8" data-bg="b-sky p-zig" data-cam="1.35:1.12:720:420;1.8:1.02:720:500">
+ <div class="cam">
+  <div class="a jar" data-label="Zn" data-at="0.9" data-an="fade" style="left:540px;top:100px;width:360px;height:594px;transform-origin:50% 50%"></div>
+  <svg class="a" data-at="0.9" data-an="fade" id="pops1" style="left:0;top:0;width:1440px;height:1080px;overflow:visible"></svg>
+ </div>
+</div>
+<div class="scene" data-s="1.8" data-e="2.25" data-bg="b-mint p-plus" data-cam="1.8:1.08:720:440;2.25:1:720:520">
+ <div class="cam">
+  <div class="a" data-at="1.3" data-an="fade" style="left:470px;top:120px;width:500px;height:500px"><svg viewBox="-110 -110 220 220" width="500" height="500" class="clock" data-id="ckB"></svg></div>
+ </div>
+ <div class="kt" data-at="1.8" data-st="0.03" data-fx="drop" style="top:690px;font-size:140px;color:#fff">ดูดซึม...</div>
+</div>
+<div class="scene" data-s="2.25" data-e="3.0" data-bg="b-sun p-check" data-cam="2.25:1.06:720:480;3.0:1:720:540">
+ <div class="cam">
+  <div class="a jar" data-label="Zn" data-at="2.25" data-an="drop" data-float="0" style="left:300px;top:150px;width:250px;height:412px"></div>
+  <div class="a" data-at="2.25" data-an="pop" style="left:720px;top:150px;width:420px;height:420px"><svg viewBox="-110 -110 220 220" width="420" height="420" class="clock" data-id="ck1"></svg></div>
+  <div class="a" data-at="2.35" data-an="stamp" style="left:880px;top:500px"><span class="stk" style="font-size:60px;background:#FF6B6B;color:#fff">แค่ 2 ชม.</span></div>
+ </div>
+ <div class="kt" data-at="2.25" data-st="0.04" data-fx="shake" style="top:690px;font-size:140px;color:#FFD23F">แค่ 2 ชม.!</div>
+</div>
+
+<!-- S2 3.0-7.2 then it drops fast; after 8 hours almost nothing -->
+<div class="scene" data-s="3.0" data-e="7.2" data-bg="b-sky p-grid" data-tr="stripe" data-cam="3.0:1:720:540;5.4:1.03:860:500;7.2:1.04:900:500">
+ <div class="cam">
+  <div class="a" data-at="3.02" data-an="up" style="left:150px;top:140px;width:1140px;height:540px;border-radius:36px;background:#fff;border:8px solid #1B2A4A;box-shadow:0 12px 0 #1B2A4A"><svg viewBox="0 0 1140 540" width="1124" height="524" id="graph2"></svg></div>
+  <div class="a" data-at="4.05" data-an="stamp" data-out="5.3" style="left:820px;top:160px"><span class="stk" style="font-size:50px;background:#FF6B6B;color:#fff">ลดเร็วมาก!</span></div>
+  <div class="a" data-at="5.9" data-an="stamp" style="left:980px;top:170px"><span class="stk" style="font-size:50px;background:#FFD23F">8 ชม.</span></div>
+ </div>
+ <div class="kt" data-at="3.1" data-st="0.045" data-fx="drop" data-out="5.3" style="top:715px;font-size:110px;color:#fff">แล้วค่อยๆ ลดลง</div>
+ <div class="kt" data-at="5.45" data-st="0.045" data-fx="shake" style="top:715px;font-size:110px;color:#FF6B6B">8 ชม. แทบไม่เหลือ!</div>
+</div>
+
+<!-- S3 7.2-11.4 normal zinc releases too fast; body can't store it in time -->
+<div class="scene" data-s="7.2" data-e="11.4" data-bg="b-pink p-zig" data-tr="iris" data-cam="7.2:1.04:720:500;9.0:1:720:540;11.4:1.03:760:510">
+ <div class="cam">
+  <div class="a jar" data-label="Zn" data-at="7.22" data-an="drop" id="jar3" style="left:190px;top:260px;width:220px;height:363px"></div>
+  <div class="a kid" data-at="8.9" data-an="up" style="left:850px;top:200px;width:330px;height:480px"><svg width="330" height="480" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#7FD3FF","hair":"#3A2A1E","faces":[{"e":"wow","vis":"0,10.2"},{"e":"sad","vis":"10.2,99"}],"armL":"up","armR":"up"}'></g></svg></div>
+  <svg class="a" data-at="7.3" data-an="fade" id="balls3" style="left:0;top:0;width:1440px;height:1080px;overflow:visible"></svg>
+  <div class="a" data-at="10.4" data-an="stamp" style="left:560px;top:150px"><span class="stk" style="font-size:50px;background:#fff">เก็บไม่ทัน!</span></div>
+ </div>
+ <div class="kt" data-at="7.3" data-st="0.045" data-fx="shake" data-out="8.9" style="top:700px;font-size:120px;color:#FF6B6B">ปล่อยเร็วมาก!</div>
+ <div class="kt" data-at="9.0" data-st="0.045" data-fx="bounce" data-out="10.3" style="top:700px;font-size:110px;color:#fff">ดูดซึมเร็วไป</div>
+ <div class="kt" data-at="10.4" data-st="0.045" data-fx="drop" style="top:700px;font-size:100px;color:#FFD23F">ร่างกายเก็บไว้ไม่ทัน</div>
+</div>
+
+<!-- S4 11.4-18.2 hence this one: new technology, many layers, no too-fast release -->
+<div class="scene" data-s="11.4" data-e="18.2" data-bg="b-mint p-plus" data-tr="zoom" data-cam="11.4:1.08:720:440;12.6:1:720:520;14.4:1.02:720:480;16.3:1.04:620:480;18.2:1.02:700:500">
+ <div class="cam">
+  <div class="a rays" data-at="11.45" data-an="pop" data-spin="14" style="left:420px;top:60px;width:600px;height:600px"></div>
+  <svg class="a" data-at="14.45" data-an="fade" id="layers4" style="left:420px;top:60px;width:600px;height:600px;overflow:visible" viewBox="0 0 600 600"></svg>
+  <div class="a img icap" data-at="11.5" data-an="drop" data-float="0" data-out="14.3" style="left:602px;top:120px;width:236px;height:440px"></div>
+  <div class="a hero" data-at="14.35" data-an="pop" data-float="0" style="left:580px;top:220px;width:280px;height:280px"></div>
+  <div class="a" data-at="13.55" data-an="stamp" data-bob="0" style="left:180px;top:170px"><span class="stk" style="font-size:48px;background:#FFD23F">เทคโนโลยีใหม่</span></div>
+  <div class="a" data-at="15.8" data-an="stamp" data-bob="1" style="left:980px;top:180px"><span class="stk" style="font-size:48px;background:#FF8FB1">หลายชั้น</span></div>
+  <div class="a" data-at="16.4" data-an="left" style="left:170px;top:420px;width:220px;height:160px"><svg viewBox="0 0 220 160" width="220" height="160" id="snail4"></svg></div>
+  <svg class="a" data-at="16.4" data-an="fade" id="drip4" style="left:0;top:0;width:1440px;height:1080px;overflow:visible"></svg>
+ </div>
+ <div class="kt" data-at="11.5" data-st="0.045" data-fx="bounce" data-out="12.5" style="top:700px;font-size:120px;color:#fff">จึงมีตัวนี้!</div>
+ <div class="kt" data-at="12.6" data-st="0.05" data-fx="jelly" data-out="13.45" style="top:700px;font-size:130px;color:#FFD23F">ซิงค์ iCAP</div>
+ <div class="kt" data-at="13.55" data-st="0.045" data-fx="jelly" data-out="16.2" style="top:700px;font-size:120px;color:#3DDC97">เทคโนโลยีใหม่</div>
+ <div class="kt" data-at="16.3" data-st="0.04" data-fx="drop" style="top:700px;font-size:100px;color:#fff">ไม่ปล่อยเร็วเกินไป</div>
+</div>
+
+<!-- S5 18.2-21.8 before only 2 hours, now 6 hours -->
+<div class="scene" data-s="18.2" data-e="21.8" data-bg="b-lilac p-stripe" data-tr="stripe" data-cam="18.2:1:720:540;20.2:1.03:720:500;21.8:1.04:720:490">
+ <div class="cam">
+  <div class="a" data-at="18.22" data-an="up" style="left:150px;top:150px;width:1140px;height:500px;border-radius:36px;background:#fff;border:8px solid #1B2A4A;box-shadow:0 12px 0 #1B2A4A"><svg viewBox="0 0 1140 500" width="1124" height="484" id="bars5"></svg></div>
+ </div>
+ <div class="kt" data-at="18.3" data-st="0.045" data-fx="drop" data-out="20.1" style="top:700px;font-size:110px;color:#fff">แต่ก่อนแค่ 2 ชม.</div>
+ <div class="kt" data-at="20.2" data-st="0.05" data-fx="jelly" style="top:690px;font-size:130px;color:#3DDC97">เพิ่มเป็น 6 ชม.!</div>
+</div>
+
+<!-- S6 21.8-25.2 innovation: zinc stays in the body longer -->
+<div class="scene" data-s="21.8" data-e="25.2" data-bg="b-peach p-wave" data-tr="iris" data-cam="21.8:1.05:720:480;23.9:1:720:530;25.2:1.03:720:510">
+ <div class="cam">
+  <div class="a rays" data-at="21.82" data-an="pop" data-spin="-10" style="left:430px;top:60px;width:580px;height:580px"></div>
+  <div class="a kid" data-at="21.85" data-an="up" style="left:545px;top:150px;width:350px;height:510px"><svg width="350" height="510" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#3DDC97","hair":"#2B1B12","hairStyle":"bun","faces":[{"e":"happy"}],"armL":"up","armR":"thumb"}'></g></svg></div>
+  <svg class="a" data-at="22.9" data-an="fade" id="orbit6" style="left:0;top:0;width:1440px;height:1080px;overflow:visible"></svg>
+  <div class="a" data-at="21.9" data-an="stamp" data-bob="0" style="left:170px;top:170px"><span class="stk" style="font-size:52px;background:#FFD23F">นวัตกรรม</span></div>
+  <div class="a" data-at="24.7" data-an="stamp" data-bob="1" style="left:960px;top:200px;width:300px;height:300px"><svg viewBox="-110 -110 220 220" width="300" height="300" class="clock" data-id="ck6"></svg></div>
+ </div>
+ <div class="kt" data-at="22.0" data-st="0.045" data-fx="bounce" data-out="23.8" style="top:700px;font-size:110px;color:#fff">ซิงค์อยู่ในร่างกาย</div>
+ <div class="kt" data-at="23.9" data-st="0.05" data-fx="jelly" style="top:700px;font-size:130px;color:#FFD23F">นานกว่าเดิม!</div>
+</div>
+
+<!-- S7 25.2-30.1 Thai-made, Thai factory, FDA number, safe -->
+<div class="scene" data-s="25.2" data-e="30.1" data-bg="b-sky p-check" data-tr="stripe" data-cam="25.2:1.04:720:500;30.1:1:720:540">
+ <div class="cam">
+  <div class="a rays" data-at="25.25" data-an="pop" data-spin="14" style="left:450px;top:40px;width:540px;height:540px"></div>
+  <div class="a img icap" data-at="25.25" data-an="drop" data-float="0" style="left:613px;top:110px;width:214px;height:400px"></div>
+  <div class="a" data-at="27.1" data-an="left" style="left:150px;top:440px"><div class="card"><svg viewBox="0 0 100 100" width="96" height="96" id="ic_flag"></svg><span>ของคนไทย</span></div></div>
+  <div class="a" data-at="28.0" data-an="right" style="left:920px;top:440px"><div class="card"><svg viewBox="0 0 100 100" width="96" height="96" id="ic_fac"></svg><span>โรงงานไทย</span></div></div>
+  <div class="a" data-at="28.85" data-an="left" style="left:150px;top:190px"><div class="card"><svg viewBox="0 0 100 100" width="96" height="96" id="ic_fda"></svg><span>มี อย.</span></div></div>
+  <div class="a" data-at="29.7" data-an="right" style="left:920px;top:190px"><div class="card"><svg viewBox="0 0 100 100" width="96" height="96" id="ic_safe"></svg><span>ปลอดภัย</span></div></div>
+ </div>
+ <div class="kt" data-at="25.3" data-st="0.045" data-fx="bounce" data-out="25.95" style="top:715px;font-size:110px;color:#fff">ใครสนใจ!</div>
+ <div class="kt" data-at="26.05" data-st="0.05" data-fx="jelly" data-out="27.0" style="top:715px;font-size:120px;color:#FFD23F">ซิงค์ iCAP</div>
+ <div class="kt" data-at="27.1" data-st="0.045" data-fx="drop" data-out="28.75" style="top:715px;font-size:110px;color:#FFD23F">ผลิตในไทย</div>
+ <div class="kt" data-at="28.85" data-st="0.045" data-fx="jelly" style="top:715px;font-size:110px;color:#3DDC97">มี อย. ปลอดภัย</div>
+</div>
+
+<!-- S8 30.1-end tap the orange basket -->
+<div class="scene" data-s="30.1" data-e="99" data-bg="b-sun p-dots" data-tr="iris" data-cam="30.1:1.06:720:470;31.5:1:720:530;32.2:1.02:720:520">
+ <div id="confetti"></div>
+ <div class="cam">
+  <div class="a rays" data-at="30.15" data-an="pop" data-spin="16" style="left:420px;top:40px;width:600px;height:600px"></div>
+  <div class="a" data-at="30.2" data-an="drop" id="cart8" style="left:520px;top:180px;width:400px;height:360px"><svg viewBox="0 0 400 360" width="400" height="360" id="cartsvg"></svg></div>
+  <div class="a" data-at="30.6" data-an="right" id="hand8" style="left:860px;top:330px;width:200px;height:240px"><svg viewBox="0 0 200 240" width="200" height="240" id="handsvg"></svg></div>
+  <div class="a img icap" data-at="30.3" data-an="drop" data-bob="0" style="left:250px;top:170px;width:172px;height:320px"></div>
+ </div>
+ <div class="kt" data-at="30.2" data-st="0.04" data-fx="bounce" data-out="31.4" style="top:690px;font-size:110px;color:#FF8A3D">กดตะกร้าสีส้ม</div>
+ <div class="kt" data-at="31.5" data-st="0.05" data-fx="jelly" style="top:680px;font-size:140px;color:#FF8A3D">ได้เลย!</div>
+</div>
