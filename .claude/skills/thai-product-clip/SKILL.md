@@ -53,3 +53,6 @@ Other templates: `templates/dark_premium_4x3_template.html` (dark/gold compariso
 - Define `$` before any init code that uses it.
 - faster-whisper + this PyAV: pass float32 numpy (transcribe.py does).
 - Rendering ≈ 0.15 s/frame at 2880×2160.
+- Product cutouts: crop WIDE around the product (never clip its edges), try `birefnet-general`; keep the largest component and fill only interior holes — do NOT convex-hull a bottle (it adds background triangles at the shoulders). Check on green AND cream; the user spots leftover background and half-cut bottles immediately.
+- If the user says to use the bottle "from the clip", take a clean frame without overlay text (product on a table) and cut it; warm the colour slightly if the room light is blue.
+- Mystery opening that worked: title on frame 0 + black silhouette of the real bottle (made from the clean cutout, so cap/neck/shoulders read as a jar, not a spray can) with a "?", revealed with rays on the "this one" line.
