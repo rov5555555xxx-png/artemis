@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="th"><head><meta charset="utf-8"><style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2)}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2)}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2)}
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1440px;height:1080px;overflow:hidden;background:#fff}
+body{font-family:K,sans-serif;color:#1B2A4A}
+#stage{position:relative;width:1440px;height:1080px;overflow:hidden;background:#FFF6E9}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.sbg{position:absolute;inset:-60px}
+.peach{background:radial-gradient(circle at 50% 35%,#FFF4EA 0%,#FFE0CC 55%,#FFC3A1 100%)}
+.sky{background:linear-gradient(180deg,#BFE8FF 0%,#E6F7FF 70%,#FFF6DA 100%)}
+.mint{background:radial-gradient(circle at 50% 40%,#F2FFF9 0%,#C9F7E3 55%,#8EE6C2 100%)}
+.sun{background:radial-gradient(circle at 50% 40%,#FFFCEB 0%,#FFEFA8 55%,#FFD45E 100%)}
+.lilac{background:radial-gradient(circle at 50% 40%,#F8F3FF 0%,#E3D6FF 55%,#C3A9FF 100%)}
+.pink{background:radial-gradient(circle at 50% 40%,#FFF5F8 0%,#FFD9E4 55%,#FFADC4 100%)}
+.cam{position:absolute;inset:0;will-change:transform}
+.a{position:absolute;opacity:0;will-change:transform}
+.img{background-position:center;background-size:contain;background-repeat:no-repeat;filter:drop-shadow(0 22px 26px rgba(40,50,90,.35))}
+.p17{background-image:url(p17.png)}.ph{background-image:url(ph.png)}.bx{background-image:url(new_box.png);filter:drop-shadow(0 0 1.5px rgba(255,255,255,.9)) drop-shadow(0 22px 26px rgba(40,50,90,.35))}
+.kt{position:absolute;left:130px;width:1180px;text-align:center;font-weight:900;white-space:nowrap;line-height:1.25;color:#FFD23F;-webkit-text-stroke:14px #1B2A4A;paint-order:stroke fill;text-shadow:0 12px 0 #1B2A4A}
+.kt .g{display:inline-block;transform-origin:50% 80%;opacity:0}
+.stk{display:inline-block;padding:8px 36px 14px;border-radius:999px;font-weight:900;white-space:nowrap;line-height:1.2;border:7px solid #1B2A4A;box-shadow:0 10px 0 #1B2A4A}
+.cx{left:130px;width:1180px;text-align:center}
+.cloud{position:absolute;background:#fff;border-radius:999px;opacity:.9}
+.dot{position:absolute;border-radius:50%}
+.ring{position:absolute;width:360px;height:360px;margin:-180px 0 0 -180px;border-radius:50%;border:16px solid #fff;opacity:0}
+.conf{position:absolute;width:20px;height:30px;border-radius:6px}
+.rays{position:absolute;border-radius:50%;background:repeating-conic-gradient(rgba(255,255,255,.75) 0 9deg,rgba(255,255,255,0) 9deg 22deg);-webkit-mask:radial-gradient(circle,#000 25%,transparent 68%)}
+#stripe{position:absolute;top:-200px;width:3000px;height:1500px;transform:translateX(-3600px) skewX(-14deg)}
+#stripe div{position:absolute;top:0;bottom:0;width:160px}
+.kid svg,.jar svg{overflow:visible}
+.jar svg{width:100%;height:100%;display:block;filter:drop-shadow(0 16px 18px rgba(40,50,90,.3))}
+.hero svg{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 20px 22px rgba(40,50,90,.35))}
+.capsvg{position:absolute;width:260px;height:600px;transform-origin:50% 50%}
+.capsvg svg{width:100%;height:100%;display:block;overflow:visible}
+.bub{position:absolute;display:flex;flex-direction:column;align-items:center;gap:8px}
+.bub .c{width:230px;height:230px;border-radius:50%;border:8px solid #1B2A4A;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 0 #1B2A4A}
+.bub .c svg{width:150px;height:150px}
+.photo{position:absolute;border-radius:30px;overflow:hidden;border:9px solid #fff;box-shadow:0 0 0 7px #1B2A4A,0 22px 40px rgba(27,42,74,.35)}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+</style><style>.kt .g{opacity:1}.kt{position:absolute}</style></head><body><div id="stage">
+<div class="sbg pink" style="position:absolute;inset:-60px"></div>
+<div class="rays" style="position:absolute;left:90px;top:240px;width:640px;height:640px"></div>
+<div class="img" style="position:absolute;left:255px;top:330px;width:316px;height:580px;background-image:url(bottle.png);transform:rotate(-5deg)"></div>
+<svg style="position:absolute;left:150px;top:760px" width="130" height="110" viewBox="0 0 150 120"><use href="#gel"/></svg>
+<svg style="position:absolute;left:540px;top:820px;transform:rotate(25deg)" width="110" height="90" viewBox="0 0 150 120"><use href="#gel"/></svg>
+<svg style="position:absolute;left:170px;top:330px" width="80" height="80" viewBox="0 0 100 100"><use href="#star"/></svg>
+<div class="kt" style="left:130px;width:1180px;top:105px;font-size:190px;color:#FF5A6E">แอสตา 12 mg</div>
+<div style="position:absolute;left:640px;top:375px;width:670px;text-align:center"><span class="stk" style="font-size:62px;background:#FFD23F">กินวันละ 2 เม็ด</span></div>
+<div class="kt" style="left:620px;width:710px;top:480px;font-size:180px;color:#3DDC97;transform:rotate(-3deg)">ไม่แพง!</div>
+<div style="position:absolute;left:640px;top:745px;width:670px;text-align:center"><span class="stk" style="font-size:52px;background:#fff">1 ใน 5 แอสตาคุณภาพ</span></div>
+<svg width="0" height="0" style="position:absolute"><defs><symbol id="gel" viewBox="0 0 150 120"><ellipse cx="75" cy="62" rx="68" ry="50" fill="#9E1F2A" stroke="#1B2A4A" stroke-width="7"/><ellipse cx="75" cy="62" rx="54" ry="38" fill="#C8323E"/><ellipse cx="52" cy="40" rx="24" ry="11" fill="#fff" opacity=".75" transform="rotate(-18 52 40)"/></symbol><symbol id="star" viewBox="0 0 100 100"><path d="M50 4l13 30 32 3-24 21 7 32-28-17-28 17 7-32L5 37l32-3z" fill="#FFD23F" stroke="#1B2A4A" stroke-width="6" stroke-linejoin="round"/></symbol></defs></svg>
+</div></body></html>
