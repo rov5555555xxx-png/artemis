@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2)}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2)}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2)}
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1440px;height:1080px;overflow:hidden;background:#000}
+body{font-family:K,sans-serif;color:#fff}
+#stage{position:relative;width:1440px;height:1080px;overflow:hidden;background:#02040C}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.sbg{position:absolute;inset:-80px}
+.void{background:radial-gradient(ellipse at 50% 45%,#0F2A66 0%,#071433 40%,#02040C 80%)}
+.deep{background:radial-gradient(ellipse at 50% 60%,#13305E 0%,#060E26 50%,#010208 90%)}
+.violet{background:radial-gradient(ellipse at 50% 45%,#2B1466 0%,#100A33 45%,#030210 85%)}
+.ember{background:radial-gradient(ellipse at 50% 45%,#3A0F1E 0%,#16060D 50%,#030103 90%)}
+.cam{position:absolute;inset:0;will-change:transform}
+.a{position:absolute;opacity:0;will-change:transform}
+.aur{position:absolute;inset:-200px;background:conic-gradient(from 0deg at 50% 50%,rgba(70,140,255,.0),rgba(70,140,255,.28),rgba(140,90,255,.0),rgba(0,220,255,.22),rgba(70,140,255,.0));filter:blur(80px);mix-blend-mode:screen}
+.floor{position:absolute;left:-400px;right:-400px;top:640px;height:700px;background:repeating-linear-gradient(90deg,rgba(90,170,255,.35) 0 2px,transparent 2px 90px),repeating-linear-gradient(0deg,rgba(90,170,255,.35) 0 2px,transparent 2px 90px);transform:perspective(500px) rotateX(70deg);transform-origin:50% 0;-webkit-mask:linear-gradient(#000,transparent 80%)}
+.orb{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFFFFF 0%,#BFE6FF 12%,#4FA8FF 45%,#0A3FB8 80%,#061E66 100%);box-shadow:0 0 60px 10px rgba(80,170,255,.75),0 0 160px 40px rgba(40,110,255,.4),inset -20px -30px 60px rgba(0,10,60,.6)}
+.orb b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;text-shadow:0 0 20px #8FD0FF,0 4px 0 #0A2C80}
+.ring{position:absolute;border-radius:50%;border:3px solid rgba(140,210,255,.8);box-shadow:0 0 18px rgba(120,200,255,.8)}
+.glowtxt{font-weight:900;white-space:nowrap;letter-spacing:2px}
+.kt{position:absolute;left:130px;width:1180px;text-align:center;font-weight:900;white-space:nowrap;line-height:1.25}
+.kt .g{display:inline-block;opacity:0;background:linear-gradient(180deg,#FFFFFF 0%,#DDF1FF 40%,#7DB8FF 70%,#E6F4FF 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(110,190,255,.9)) drop-shadow(0 6px 0 #0A2C80)}
+.kt.gold .g{background:linear-gradient(180deg,#FFF8E1 0%,#FFE08A 40%,#E0A32E 70%,#FFF1C2 100%);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 16px rgba(255,200,90,.9)) drop-shadow(0 6px 0 #6A3F00)}
+.kt.red .g{background:linear-gradient(180deg,#FFFFFF 0%,#FFC2C8 40%,#FF4B5C 75%,#FFE0E3 100%);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 16px rgba(255,70,90,.95)) drop-shadow(0 6px 0 #5A0010)}
+.hud{position:absolute;padding:10px 30px 14px;border:3px solid rgba(130,210,255,.9);border-radius:14px;background:rgba(10,40,90,.55);box-shadow:0 0 22px rgba(90,180,255,.8),inset 0 0 18px rgba(90,180,255,.35);font-weight:800;white-space:nowrap;color:#E8F6FF;text-shadow:0 0 10px #6FC3FF}
+.hud.warn{border-color:rgba(255,110,120,.95);background:rgba(90,10,20,.55);box-shadow:0 0 22px rgba(255,80,100,.85),inset 0 0 18px rgba(255,80,100,.35);color:#FFE8EA;text-shadow:0 0 10px #FF5C6C}
+.hud.gold{border-color:rgba(255,215,120,.95);background:rgba(80,50,0,.5);box-shadow:0 0 22px rgba(255,200,90,.85),inset 0 0 18px rgba(255,200,90,.35);color:#FFF5DA;text-shadow:0 0 10px #FFC94D}
+.frame{position:absolute;overflow:hidden;border-radius:18px;border:3px solid rgba(130,210,255,.95);box-shadow:0 0 30px rgba(90,180,255,.8),0 0 80px rgba(40,120,255,.4)}
+.frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.frame .scan{position:absolute;left:0;right:0;height:80px;background:linear-gradient(transparent,rgba(120,210,255,.45),transparent);mix-blend-mode:screen}
+.full{position:absolute;inset:-40px}
+.full img{width:100%;height:100%;object-fit:cover}
+.beam{position:absolute;width:420px;height:1100px;background:linear-gradient(180deg,rgba(140,200,255,.55),rgba(140,200,255,0) 80%);filter:blur(18px);transform-origin:50% 0;mix-blend-mode:screen}
+.img{background-position:center;background-size:contain;background-repeat:no-repeat}
+.mgb{background-image:url(mg_bottle.png);filter:drop-shadow(0 0 40px rgba(110,180,255,.7)) drop-shadow(0 30px 30px rgba(0,0,0,.6))}
+.shock{position:absolute;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:50%;border:10px solid rgba(170,225,255,.9);box-shadow:0 0 40px rgba(120,200,255,1);opacity:0}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:90}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(0,0,0,.65));pointer-events:none;z-index:80}
+.streak{position:absolute;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,#9FD8FF,#fff,transparent);box-shadow:0 0 12px #8FD0FF}
+.spark{position:absolute;border-radius:50%;background:#CFEAFF;box-shadow:0 0 8px #8FD0FF}
+</style></head><body>
+<div id="stage">
+
+<!-- G1 0 - 6.82 OPEN: title at frame 0, energy clash between two orbs -->
+<div class="scene" data-s="0" data-e="6.82" data-bg="void" data-cam="0:1.18:720:460;0.5:1.06:720:500;3.0:1.02:720:520;6.82:1:720:540">
+ <div class="aur" data-spin="18"></div><div class="floor"></div>
+ <div class="cam">
+  <div class="a" data-at="0" data-an="show" data-spin="25" style="left:220px;top:-180px;width:1000px;height:1000px;border-radius:50%;background:repeating-conic-gradient(rgba(120,190,255,.35) 0 4deg,transparent 4deg 12deg);-webkit-mask:radial-gradient(circle,#000 10%,transparent 62%);mix-blend-mode:screen"></div>
+  <div class="a" data-at="0" data-an="show" style="left:0;top:0;width:1440px;height:1080px"><svg width="1440" height="1080" style="overflow:visible"><g id="bolts1" fill="none" stroke-linecap="round" stroke-linejoin="round"></g></svg></div>
+  <div class="a orb" id="o1L" data-at="0" data-an="show" style="left:200px;top:200px;width:320px;height:320px"><b style="font-size:118px">Mg</b></div>
+  <div class="a orb" id="o1R" data-at="0" data-an="show" style="left:920px;top:200px;width:320px;height:320px"><b style="font-size:118px">Mg</b></div>
+  <div class="a ring" data-at="0" data-an="show" data-spin="70" style="left:170px;top:170px;width:380px;height:380px;border-style:dashed"></div>
+  <div class="a ring" data-at="0" data-an="show" data-spin="-70" style="left:890px;top:170px;width:380px;height:380px;border-style:dashed"></div>
+  <div class="a hud" data-at="0" data-an="show" style="left:225px;top:560px;font-size:44px">GLYCINATE</div>
+  <div class="a hud" data-at="0" data-an="show" style="left:900px;top:560px;font-size:44px">BISGLYCINATE</div>
+  <div class="a" id="vs1" data-at="0" data-an="show" style="left:600px;top:250px;width:240px;height:220px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:170px;font-style:italic;color:#fff;-webkit-text-stroke:6px #FFB020;text-shadow:0 0 30px #FF8A00,0 0 70px #FF5A00,0 8px 0 #7A2E00">VS</div>
+  <div class="a hud gold" data-at="3.1" data-an="blur" style="left:640px;top:470px;font-size:46px">70%</div>
+ </div>
+ <div class="kt" data-at="0" data-st="0.0" data-fx="instant" data-out="5.55" style="top:690px;font-size:120px">ตัวไหนดีกว่ากัน?</div>
+ <div class="kt red" data-at="5.66" data-st="0.05" data-fx="slam" style="top:690px;font-size:130px">เหมือนกันมาก</div>
+</div>
+
+<!-- G2 6.82 - 12.34 they fuse: same molecule, bound to glycine -->
+<div class="scene" data-s="6.82" data-e="12.34" data-bg="violet" data-tr="flash" data-cam="6.82:1:720:540;9.9:1.08:720:420;10.1:1:720:540;12.34:1.04:720:500">
+ <div class="aur" data-spin="-10"></div>
+ <div class="cam">
+  <div class="a orb" id="gA" data-at="6.85" data-an="blur" style="left:250px;top:200px;width:280px;height:280px"><b style="font-size:100px">Mg</b></div>
+  <div class="a orb" id="gB" data-at="6.9" data-an="blur" style="left:910px;top:200px;width:280px;height:280px"><b style="font-size:100px">Mg</b></div>
+  <div class="a frame" data-at="11.08" data-an="blur" style="left:800px;top:170px;width:480px;height:307px"><img src="molecule.jpg" data-kbi="11.08"><div class="scan" data-scan="1"></div></div>
+  <div class="a hud" data-at="11.64" data-an="blur" style="left:860px;top:510px;font-size:40px">จับกับไกลซีน</div>
+ </div>
+ <div class="kt" data-at="7.38" data-st="0.05" data-fx="cine" data-out="9.85" style="top:690px;font-size:120px">ตัวไหนดีกว่า?</div>
+ <div class="kt gold" data-at="10.0" data-st="0.06" data-fx="slam" style="top:680px;font-size:150px">ตัวเดียวกัน!</div>
+</div>
+
+<!-- G3 12.34 - 16.42 holographic gauges: both 70%, only the name differs -->
+<div class="scene" data-s="12.34" data-e="16.42" data-bg="deep" data-tr="glitch" data-cam="12.34:1:720:540;16.42:1.05:720:500">
+ <div class="floor"></div>
+ <div class="cam">
+  <div class="a" data-at="12.4" data-an="blur" style="left:200px;top:140px;width:440px;height:440px"><svg width="440" height="440" viewBox="-220 -220 440 440"><circle r="170" fill="none" stroke="rgba(120,200,255,.2)" stroke-width="30"/><circle id="gaA" r="170" fill="none" stroke="#6FD0FF" stroke-width="30" stroke-linecap="round" transform="rotate(-90)" style="filter:drop-shadow(0 0 12px #5FC0FF)"/><text id="gtA" y="26" text-anchor="middle" font-family="K" font-weight="900" font-size="90" fill="#E8F6FF">0%</text></svg></div>
+  <div class="a" data-at="12.5" data-an="blur" style="left:800px;top:140px;width:440px;height:440px"><svg width="440" height="440" viewBox="-220 -220 440 440"><circle r="170" fill="none" stroke="rgba(120,200,255,.2)" stroke-width="30"/><circle id="gaB" r="170" fill="none" stroke="#6FD0FF" stroke-width="30" stroke-linecap="round" transform="rotate(-90)" style="filter:drop-shadow(0 0 12px #5FC0FF)"/><text id="gtB" y="26" text-anchor="middle" font-family="K" font-weight="900" font-size="90" fill="#E8F6FF">0%</text></svg></div>
+  <div class="a hud" id="tA3" data-at="12.6" data-an="blur" style="left:300px;top:600px;font-size:38px">GLYCINATE</div>
+  <div class="a hud" id="tB3" data-at="12.7" data-an="blur" style="left:880px;top:600px;font-size:38px">BISGLYCINATE</div>
+ </div>
+ <div class="kt" data-at="12.34" data-st="0.05" data-fx="cine" data-out="15.2" style="top:700px;font-size:110px">ดูดซึม 70% เท่ากัน</div>
+ <div class="kt red" data-at="15.32" data-st="0.06" data-fx="slam" style="top:690px;font-size:140px">ต่างแค่ชื่อ</div>
+</div>
+
+<!-- G4 16.42 - 22.52 AI image: calm sleep + benefit holo tags -->
+<div class="scene" data-s="16.42" data-e="22.52" data-bg="deep" data-tr="flash" data-cam="16.42:1.12:720:520;22.52:1:720:540">
+ <div class="cam">
+  <div class="full a" data-at="16.42" data-an="fade"><img src="ai_sleep.png" data-kbi="16.42" style="object-position:50% 50%"></div>
+  <div class="a" data-at="16.42" data-an="fade" style="left:0;top:0;width:1440px;height:1080px;background:linear-gradient(180deg,rgba(2,6,20,.15),rgba(2,6,20,.55))"></div>
+  <div class="a hud" data-at="16.94" data-an="blur" data-bob="0" style="left:170px;top:170px;font-size:44px">ความเครียด</div>
+  <div class="a hud" data-at="17.52" data-an="blur" data-bob="1" style="left:560px;top:150px;font-size:44px">ความกังวล</div>
+  <div class="a hud" data-at="18.22" data-an="blur" data-bob="2" style="left:990px;top:170px;font-size:44px">การนอนหลับ</div>
+  <div class="a hud" data-at="18.88" data-an="blur" data-bob="3" style="left:180px;top:430px;font-size:44px">ไมเกรน</div>
+  <div class="a hud" data-at="20.2" data-an="blur" data-bob="4" style="left:1000px;top:430px;font-size:44px">กล้ามเนื้อ</div>
+  <div class="a hud" data-at="21.52" data-an="blur" data-bob="5" style="left:560px;top:560px;font-size:44px">หัวใจ · ไหลเวียนเลือด</div>
+ </div>
+ <div class="kt" data-at="16.6" data-st="0.05" data-fx="cine" style="top:730px;font-size:110px">ช่วยได้หลายเรื่อง</div>
+</div>
+
+<!-- G5 22.52 - 27.34 either one works, just needs FDA -->
+<div class="scene" data-s="22.52" data-e="27.34" data-bg="void" data-tr="glitch" data-cam="22.52:1.04:720:520;27.34:1:720:540">
+ <div class="aur" data-spin="12"></div><div class="floor"></div>
+ <div class="cam">
+  <div class="a beam" data-at="22.55" data-an="fade" style="left:180px;top:-40px;transform:rotate(-8deg)"></div>
+  <div class="a beam" data-at="22.6" data-an="fade" style="left:840px;top:-40px;transform:rotate(8deg)"></div>
+  <div class="a orb" data-at="22.6" data-an="blur" data-float="0.4" style="left:260px;top:230px;width:260px;height:260px"><b style="font-size:94px">Mg</b></div>
+  <div class="a orb" data-at="22.7" data-an="blur" data-float="2" style="left:920px;top:230px;width:260px;height:260px"><b style="font-size:94px">Mg</b></div>
+  <div class="a hud" data-at="23.68" data-an="blur" style="left:255px;top:530px;font-size:36px">GLYCINATE ✓</div>
+  <div class="a hud" data-at="25.0" data-an="blur" style="left:895px;top:530px;font-size:36px">BISGLYCINATE ✓</div>
+ </div>
+ <div class="kt" data-at="23.68" data-st="0.05" data-fx="cine" data-out="26.4" style="top:690px;font-size:120px">ตัวไหนก็ได้</div>
+ <div class="kt gold" data-at="26.52" data-st="0.06" data-fx="slam" style="top:680px;font-size:150px">ขอแค่มี อย.</div>
+</div>
+
+<!-- G6 27.34 - 31.26 verifiable registration; then "most importantly" -->
+<div class="scene" data-s="27.34" data-e="31.26" data-bg="deep" data-tr="flash" data-cam="27.34:1:720:540;30.5:1.06:720:460;31.26:1.06:720:460">
+ <div class="cam">
+  <div class="a frame" data-at="27.4" data-an="blur" style="left:200px;top:160px;width:500px;height:471px"><img src="fda.jpg" data-kbi="27.4" style="object-position:50% 20%"><div class="scan" data-scan="1"></div></div>
+  <div class="a hud" data-at="28.96" data-an="blur" style="left:790px;top:250px;font-size:50px">ตรวจสอบได้</div>
+  <div class="a hud" data-at="29.52" data-an="blur" style="left:790px;top:380px;font-size:50px">ไม่ได้สวม อย.</div>
+ </div>
+ <div class="kt red" data-at="30.56" data-st="0.06" data-fx="slam" style="top:690px;font-size:150px">ที่สำคัญ!</div>
+</div>
+
+<!-- G7 31.26 - 33.98 dose must be high: energy column -->
+<div class="scene" data-s="31.26" data-e="33.98" data-bg="void" data-tr="zoomblur" data-cam="31.26:1.1:720:460;33.98:1:720:540">
+ <div class="aur" data-spin="20"></div>
+ <div class="cam">
+  <div class="a" data-at="31.3" data-an="blur" style="left:600px;top:140px;width:240px;height:520px"><svg width="240" height="520" viewBox="0 0 240 520"><rect x="40" y="10" width="160" height="480" rx="40" fill="rgba(20,60,140,.4)" stroke="#8FD0FF" stroke-width="6" style="filter:drop-shadow(0 0 14px #5FC0FF)"/><rect id="col7" x="56" y="474" width="128" height="0" rx="28" fill="url(#gcol)"/><defs><linearGradient id="gcol" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#1E6BFF"/><stop offset="1" stop-color="#B9F0FF"/></linearGradient></defs></svg></div>
+  <div class="a hud gold" data-at="32.4" data-an="blur" style="left:880px;top:200px;font-size:52px">HIGH DOSE</div>
+ </div>
+ <div class="kt gold" data-at="31.3" data-st="0.05" data-fx="cine" style="top:690px;font-size:130px">ปริมาณต้องสูง</div>
+</div>
+
+<!-- G8 33.98 - 40.86 market 300-500 mg is low; 3-5 tabs a day -->
+<div class="scene" data-s="33.98" data-e="40.86" data-bg="ember" data-tr="glitch" data-cam="33.98:1:720:540;38.6:1.04:720:500;40.86:1:720:540">
+ <div class="cam">
+  <div class="a frame" data-at="34.0" data-an="blur" data-out="38.5" style="left:170px;top:160px;width:540px;height:425px;border-color:rgba(255,120,130,.95);box-shadow:0 0 30px rgba(255,80,100,.8)"><img src="caps.jpg" data-kbi="34.0" style="filter:saturate(.6)"></div>
+  <div class="a hud warn" data-at="35.58" data-an="blur" data-out="38.5" style="left:790px;top:230px;font-size:62px">300–500 mg</div>
+  <div class="a hud warn" data-at="37.56" data-an="blur" data-out="38.5" style="left:830px;top:380px;font-size:52px">ต่ำมาก</div>
+  <div id="pillsG"></div>
+ </div>
+ <div class="kt red" data-at="38.64" data-st="0.05" data-fx="slam" style="top:690px;font-size:120px">3–5 เม็ด/วัน ไม่ไหว</div>
+</div>
+
+<!-- G9 40.86 - 46.34 hero reveal: bisglycinate 800 mg, 1-2 tablets -->
+<div class="scene" data-s="40.86" data-e="46.34" data-bg="void" data-tr="flash" data-cam="40.86:1.15:720:420;42.4:1.02:720:520;42.6:1.08:720:480;46.34:1:720:540">
+ <div class="aur" data-spin="14"></div><div class="floor"></div>
+ <div class="cam">
+  <div class="a beam" data-at="40.9" data-an="fade" style="left:510px;top:-60px"></div>
+  <div class="a beam" data-at="41.0" data-an="fade" style="left:330px;top:-60px;transform:rotate(-14deg)"></div>
+  <div class="a beam" data-at="41.0" data-an="fade" style="left:690px;top:-60px;transform:rotate(14deg)"></div>
+  <div class="a" data-at="41.0" data-an="fade" style="left:470px;top:560px;width:500px;height:90px;border-radius:50%;background:radial-gradient(ellipse,rgba(150,210,255,.9),rgba(60,140,255,.2) 60%,transparent 70%)"></div>
+  <div class="a img mgb" data-at="41.0" data-an="rise" data-float="0.3" style="left:610px;top:130px;width:220px;height:457px"></div>
+  <div class="a hud" data-at="43.24" data-an="blur" style="left:930px;top:200px;font-size:50px">วันละ 1–2 เม็ด</div>
+  <div class="a frame" data-at="44.82" data-an="blur" style="left:150px;top:200px;width:380px;height:261px"><img src="tab1.jpg" data-kbi="44.82"></div>
+ </div>
+ <div class="kt gold" data-at="42.46" data-st="0.07" data-fx="slam" data-out="45.2" style="top:680px;font-size:190px">800 mg</div>
+ <div class="kt" data-at="45.34" data-st="0.05" data-fx="cine" style="top:700px;font-size:110px">กินผักเยอะ 1 เม็ด</div>
+</div>
+
+<!-- G10 46.34 - end no veggies: 2 tablets; enough -->
+<div class="scene" data-s="46.34" data-e="99" data-bg="deep" data-tr="glitch" data-cam="46.34:1:720:540;50.6:1:720:540;50.8:1.08:720:480;52.1:1.04:720:500">
+ <div class="aur" data-spin="16"></div>
+ <div class="cam">
+  <div class="a frame" data-at="46.4" data-an="blur" style="left:180px;top:170px;width:560px;height:384px"><img src="tab2.jpg" data-kbi="46.4"></div>
+  <div class="a hud warn" data-at="47.86" data-an="blur" data-out="50.5" style="left:800px;top:220px;font-size:46px">ไม่ได้กินผัก</div>
+  <div class="a hud" data-at="49.1" data-an="blur" data-out="50.5" style="left:820px;top:350px;font-size:56px">วันละ 2 เม็ด</div>
+  <div class="a img mgb" data-at="50.6" data-an="rise" data-float="0.2" style="left:910px;top:150px;width:200px;height:416px"></div>
+ </div>
+ <div class="kt gold" data-at="50.76" data-st="0.06" data-fx="slam" style="top:690px;font-size:150px">เพียงพอ</div>
+</div>
+
+<div id="shocks"></div><div id="streaks"></div>
+<div id="vig"></div><div id="flash"></div>
+<div id="safe" style="display:none;position:absolute;left:130px;top:130px;width:1180px;height:820px;border:3px dashed #f0f;z-index:99"></div>
+</div>
+<script>
+const W=1440,H=1080;
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eOC=p=>1-Math.pow(1-p,3);
+const eOB=p=>{const c1=1.7,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+const eIO=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+let seed=41;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+const $=id=>document.getElementById(id);
+if(location.hash==='#safe')$('safe').style.display='block';
+// pills G8
+{const w=$('pillsG');for(let i=0;i<5;i++){const d=document.createElement('div');d.className='a';d.dataset.at=38.9+i*0.2;d.dataset.an='rise';d.style.cssText=`left:${300+i*170}px;top:${330+(i%2)*70}px;filter:drop-shadow(0 0 16px rgba(255,90,110,.9))`;d.innerHTML=`<svg width="140" height="70" viewBox="0 0 120 50"><path d="M25 3h35v44H25a22 22 0 010-44z" fill="#fff"/><path d="M60 3h35a22 22 0 010 44H60z" fill="#E8E2D2"/></svg>`;w.appendChild(d)}}
+// kinetic text
+const seg=new Intl.Segmenter('th',{granularity:'grapheme'});
+const kts=[...document.querySelectorAll('.kt')].map(el=>{const txt=el.textContent;el.textContent='';const gs=[];for(const {segment} of seg.segment(txt)){const s=document.createElement('span');s.className='g';s.textContent=segment===' '?' ':segment;el.appendChild(s);gs.push(s)}
+ return{el,gs,at:+el.dataset.at,st:+el.dataset.st,fx:el.dataset.fx,out:el.dataset.out?+el.dataset.out:null}});
+function ktRender(t){for(const k of kts){const vis=t>=k.at-0.05;const outk=k.out!==null?cl((t-k.out)/0.25):0;k.el.style.opacity=vis?1-outk:0;if(!vis||outk>=1)continue;
+ k.el.style.transform=outk>0?`scale(${1+.15*outk})`:'';k.el.style.filter=outk>0?`blur(${outk*10}px)`:'';
+ k.gs.forEach((g,i)=>{const lt=t-k.at-i*k.st;if(lt<0){g.style.opacity=0;return}let tr='',op=1,bl=0;
+  if(k.fx==='instant'){const p=eOC(cl(lt/0.25));tr=`scale(${1+0.25*(1-p)+0.03*Math.sin(t*6)})`;op=1;bl=0}
+  else if(k.fx==='cine'){const p=eOC(cl(lt/0.45));tr=`scale(${1.8-0.8*p}) translateY(${(1-p)*-20}px)`;op=p;bl=(1-p)*14}
+  else{const p=cl(lt/0.28);const e=eOC(p);tr=`scale(${2.6-1.6*e})`;op=cl(p*3);bl=(1-e)*10}
+  if(lt>0.6)tr+=` translateY(${Math.sin(t*3+i*.5)*3}px)`;g.style.opacity=op;g.style.transform=tr;if(g._f===undefined)g._f=getComputedStyle(g).filter;g.style.filter=(bl>0.2?`blur(${bl}px) `:'')+(g._f==='none'?'':g._f)})}}
+// scenes
+const scenes=[...document.querySelectorAll('.scene')].map(el=>{const bg=document.createElement('div');bg.className='sbg '+el.dataset.bg;el.insertBefore(bg,el.firstChild);
+ const pl=document.createElement('div');pl.style.cssText='position:absolute;inset:0;pointer-events:none';el.insertBefore(pl,bg.nextSibling);const parts=[];
+ for(let k=0;k<60;k++){const d=document.createElement('div');d.className='spark';const s=1.5+rnd()*4;d.style.width=d.style.height=s+'px';pl.appendChild(d);parts.push({d,x:rnd()*W,y:rnd()*H,v:20+rnd()*60,ph:rnd()*6.28,tw:rnd()*6})}
+ const cam=(el.dataset.cam||'').split(';').filter(Boolean).map(k=>k.split(':').map(Number));
+ return{el,s:+el.dataset.s,e:+el.dataset.e,tr:el.dataset.tr||'',parts,cam,camEl:el.querySelector('.cam'),items:[...el.querySelectorAll('.a')],aur:el.querySelector('.aur')}});
+function camAt(keys,t){if(!keys.length)return[1,720,540];if(t<=keys[0][0])return keys[0].slice(1);for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t<=b[0]){const p=eIO(cl((t-a[0])/(b[0]-a[0])));return[1,2,3].map(j=>a[j]+(b[j]-a[j])*p)}}return keys[keys.length-1].slice(1)}
+const HITS=[0.25,1.38,5.66,6.82,10.0,12.34,15.32,16.42,22.52,26.52,27.34,30.56,31.26,33.98,38.64,40.86,42.46,46.34,50.76];
+const SHOCK=[[0.12,720,360],[0.25,360,360],[0.25,1080,360],[10.0,720,340],[15.32,720,770],[26.52,720,760],[30.56,720,770],[42.46,720,780],[50.76,720,770],[5.66,720,770]];
+const sw=$('shocks');const shocks=SHOCK.map(([t,x,y])=>{const d=document.createElement('div');d.className='shock';d.style.left=x+'px';d.style.top=y+'px';sw.appendChild(d);return{d,t}});
+const stw=$('streaks');const streaks=[];for(let i=0;i<8;i++){const d=document.createElement('div');d.className='streak';d.style.width=(300+rnd()*500)+'px';d.style.top=(150+rnd()*760)+'px';stw.appendChild(d);streaks.push({d,ph:rnd()*20,sp:900+rnd()*900})}
+function anim(an,p){switch(an){case'fade':return[eOC(p),'',0];
+ case'blur':{const e=eOC(p);return[e,`scale(${1.25-0.25*e})`,(1-e)*16]}
+ case'show':return[1,'',0];
+ case'rise':{const e=eOB(p);return[cl(p*3),`translateY(${(1-e)*260}px) scale(${0.85+0.15*e})`,(1-eOC(p))*8]}}return[1,'',0]}
+const DUR={fade:.4,blur:.5,rise:.8,show:.01};const TR=0.35;
+window.render=function(t){
+ let flash=0;
+ scenes.forEach((sc,i)=>{const on=t>=sc.s&&t<sc.e;sc.el.style.display=on?'block':'none';if(!on)return;
+  const lt=t-sc.s,q=cl(lt/TR);let tf='',fl='';
+  if(sc.tr==='flash'){flash=Math.max(flash,0.9*(1-cl(lt/0.3)))}
+  if(sc.tr==='glitch'&&lt<0.3){const k=1-lt/0.3;tf=`translateX(${Math.sin(lt*120)*30*k}px) skewX(${Math.sin(lt*90)*6*k}deg)`;fl=`hue-rotate(${k*90}deg) saturate(${1+k*2})`}
+  if(sc.tr==='zoomblur'&&lt<0.4){const k=1-lt/0.4;tf=`scale(${1+0.4*k})`;fl=`blur(${k*14}px)`}
+  sc.el.style.transform=tf;sc.el.style.filter=fl;
+  let[s,fx,fy]=camAt(sc.cam,t);let sh=0;HITS.forEach(h=>{const d=t-h;if(d>0&&d<0.3)sh+=Math.sin(d*80)*10*(1-d/0.3)});
+  if(sc.camEl)sc.camEl.style.transform=`translate(${720+sh}px,${540+sh*.5}px) scale(${s}) translate(${-fx}px,${-fy}px)`;
+  if(sc.aur)sc.aur.style.transform=`rotate(${t*(+sc.aur.dataset.spin||10)}deg)`;
+  for(const p of sc.parts){const y=((p.y-p.v*t)%(H+40)+H+40)%(H+40)-20;p.d.style.transform=`translate(${p.x+Math.sin(t*.6+p.ph)*30}px,${y}px)`;p.d.style.opacity=.3+.7*Math.abs(Math.sin(t*2+p.tw))}
+  for(const el of sc.items){const at=+el.dataset.at,an=el.dataset.an,p=cl((t-at)/DUR[an]);let[o,tr,bl]=t<at?[0,'',0]:anim(an,p);
+   if(el.dataset.out){const k=cl((t-+el.dataset.out)/0.3);if(k>0){o*=1-k;tr+=` scale(${1+.1*k})`;bl+=k*12}}
+   if(el.dataset.float){const ph=+el.dataset.float;tr+=` translateY(${Math.sin(t*1.8+ph)*12}px)`}
+   if(el.dataset.bob){const ph=+el.dataset.bob;tr+=` translateY(${Math.sin(t*2.4+ph)*7}px)`}
+   if(el.dataset.spin)tr+=` rotate(${t*el.dataset.spin}deg)`;
+   el.style.opacity=o;el.style.transform=tr;el.style.filter=bl>0.3?`blur(${bl}px)`:''}});
+ ktRender(t);
+ document.querySelectorAll('[data-kbi]').forEach(g=>{const d=Math.max(0,t-+g.dataset.kbi);g.style.transform=`scale(${1.04+0.03*d})`});
+ document.querySelectorAll('[data-scan]').forEach(s=>{s.style.top=(((t*260)%560)-80)+'px'});
+ // G1 opening: orbs slam in, VS pulses, lightning between orbs
+ if($('o1L')&&t<7.2){const k=eOB(cl((t+0.22)/0.45));$('o1L').style.transform+=` translateX(${(1-k)*-420}px) scale(${1+0.06*Math.sin(t*7)})`;$('o1R').style.transform+=` translateX(${(1-k)*420}px) scale(${1+0.06*Math.sin(t*7+1)})`;
+  const v=cl((t+0.12)/0.3);$('vs1').style.transform=`scale(${v<=0?3:(3-2*eOB(v))+0.06*Math.sin(t*9)}) rotate(${Math.sin(t*4)*3}deg)`;$('vs1').style.opacity=v>0?1:0;
+  const g=$('bolts1');let h='';for(let b=0;b<3;b++){let x=520,y=360+(b-1)*30,d=`M${x} ${y}`;const sd=Math.floor(t*14)+b*7;let r=sd;const R=()=>{r=(r*16807+11)%2147483647;return r/2147483647};for(let i=1;i<=10;i++){x=520+i*40;y=360+(b-1)*20*Math.sin(i)+(R()-.5)*70;d+=`L${x} ${y}`}
+   const o=(0.5+0.5*Math.sin(t*23+b*2))*cl((t-0.3)/0.2);h+=`<path d="${d}" stroke="#BFE8FF" stroke-width="${b==1?7:4}" opacity="${o}" style="filter:drop-shadow(0 0 10px #6FC8FF) drop-shadow(0 0 22px #3A8BFF)"/>`}g.innerHTML=h}
+ // G2 fuse
+ if($('gA')&&t>=6.82&&t<12.4){const k=eIO(cl((t-8.9)/1.1));const after=cl((t-10.9)/0.5);$('gA').style.transform+=` translateX(${k*330-after*230}px) scale(${1+0.25*cl((t-10)/0.2)*(1-after*0.3)})`;$('gB').style.transform+=` translateX(${-k*330}px)`;$('gB').style.opacity*=1-cl((t-9.95)/0.1)}
+ // G3 gauges
+ if($('gaA')&&t>=12.3&&t<16.8){const p=eOC(cl((t-12.6)/1.1)),C=2*Math.PI*170;['A','B'].forEach(x=>{$('ga'+x).setAttribute('stroke-dasharray',`${C*0.7*p} ${C}`);$('gt'+x).textContent=Math.round(70*p)+'%'});
+  const k=cl((t-15.32)/0.4);if(k>0&&k<1){$('tA3').style.transform+=` translateX(${Math.sin(k*40)*20}px)`;$('tB3').style.transform+=` translateX(${-Math.sin(k*40)*20}px)`}
+  if(t>15.5){$('tA3').textContent='BISGLYCINATE';$('tB3').textContent='GLYCINATE'}else{$('tA3').textContent='GLYCINATE';$('tB3').textContent='BISGLYCINATE'}}
+ // G7 column
+ if($('col7')&&t>=31.2&&t<34.4){const h=450*eOB(cl((t-31.5)/1.1))+Math.sin(t*20)*4;$('col7').setAttribute('height',Math.max(0,h));$('col7').setAttribute('y',474-h)}
+ HITS.forEach(h=>{const d=t-h;if(d>=0&&d<0.15)flash=Math.max(flash,0.35*(1-d/0.15))});
+ $('flash').style.opacity=flash;
+ for(const s of shocks){const d=t-s.t;if(d<0||d>0.7){s.d.style.opacity=0;continue}const p=d/0.7;s.d.style.opacity=1-p;s.d.style.transform=`scale(${0.3+eOC(p)*3})`;s.d.style.borderWidth=(10*(1-p)+1)+'px'}
+ for(const s of streaks){const x=((t*s.sp+s.ph*300)%(W+1400))-800;s.d.style.transform=`translateX(${x}px)`;s.d.style.opacity=.55}
+};
+window.render(0);
+</script></body></html>
