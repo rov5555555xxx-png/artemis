@@ -56,6 +56,8 @@ From their re-edit of the 11/12 zinc clip — they layered these on top of our c
 
 - **INZENT Zinc Bisglycinate iCAP (Pellet Technology), black/brown jar, silver cap, "6 hrs"** — the user's zinc. Whisper hears "iCAP" as "ไอ้แข็บ/ไอแคป". Clean cutout: `assets/products/inzent_zinc_icap.png` (add white rim drop-shadow on light backgrounds). Use it whenever the voiceover says "ตัวนี้"/the product name, unless told to draw everything.
 
+- **INZENT Magnesium Bisglycinate (iFLOW), brown jar, blue hex label, 800 mg/tablet, 30 tablets** — cutout `assets/products/inzent_magnesium.png`. The user wants the product shown at the start and again on the "ผลิตที่ไทย โรงงานไทย" line.
+
 ## Gotchas
 
 - Emoji don't render; draw SVG icons.
