@@ -69,23 +69,30 @@ svg{overflow:visible}
  <div class="cap" data-at="5.4">ฟอร์มที่|นิยม|ในต่างประเทศ</div>
 </div>
 
-<!-- S3 6.54-9.08 coated in many layers -> slow release (top view) -->
-<div class="scene" data-s="6.54" data-e="9.08" data-cam="6.54:1:720:560;9.08:1.06:720:570">
+<!-- S3 6.54-9.08 CLOSE-UP ON THE HAND: fingers pinch a pellet, layers wrap it -->
+<div class="scene" data-s="6.54" data-e="9.08" data-cam="6.54:1:720:540;9.08:1.08:700:550">
  <div class="sky ember"></div>
- <div class="cam"><svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="pel3" transform="translate(720 610)"></g></svg></div>
+ <div class="cam">
+  <div id="bok3" style="position:absolute;inset:0"></div>
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="pel3" transform="translate(760 560)"></g><g id="hand3"></g></svg>
+ </div>
  <div class="cap" data-at="6.6" data-out="7.6">เคลือบ|หลายชั้น|</div>
  <div class="cap" data-at="7.68">ชะลอ|การปลดปล่อย|</div>
 </div>
 
-<!-- S4 9.08-10.26 why? -->
-<div class="scene" data-s="9.08" data-e="10.26" data-cam="9.08:1.0:720:560;10.26:1.06:720:560">
- <div class="sky dusk"></div>
+<!-- S4 9.08-10.26 DRONE: top-down on a lone person with a long evening shadow -->
+<div class="scene" data-s="9.08" data-e="10.26" data-cam="9.08:0.84:720:560:30;10.26:1.12:720:560:0">
+ <div class="sky" style="background:#7A2A12"></div>
  <div class="cam">
-  <div class="sun" style="left:420px;top:380px;width:600px;height:600px"></div>
-  <svg class="grass" viewBox="0 0 1840 62"><path class="gp" fill="#0D0503"/></svg>
-  <div class="ground"></div>
-  <div class="a" data-at="9.08" data-an="fade" style="left:720px;top:840px"><svg width="1" height="1"><g id="pp4"></g></svg></div>
-  <div class="a" data-at="9.3" data-an="pop" data-bob="0" style="left:800px;top:330px"><svg width="150" height="190" viewBox="0 0 150 190"><text x="75" y="165" text-anchor="middle" font-family="K" font-weight="900" font-size="200" fill="#FFD27A">?</text></svg></div>
+  <div style="position:absolute;left:-700px;top:-800px;width:2840px;height:2680px;background:radial-gradient(circle at 50% 50%,#EE9A52 0%,#D06A2E 25%,#9A3A18 55%,#4A140A 85%)"></div>
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="tufts4"></g>
+   <g transform="translate(720 600)"><rect x="-700" y="-70" width="1400" height="140" fill="#B25424" opacity=".55" transform="rotate(-12)"/>
+    <g transform="rotate(-123.5) scale(1 1.7)" opacity=".6"><g id="shad4"></g></g>
+    <g transform="scale(1.5)"><ellipse cx="0" cy="0" rx="62" ry="30" fill="#0D0503"/>
+    <path id="arm4" d="M40 -6 L70 -40" stroke="#0D0503" stroke-width="22" stroke-linecap="round"/>
+    <circle cx="0" cy="0" r="30" fill="#1E0B05" stroke="#FFE6A6" stroke-width="3"/></g>
+   </g></svg>
+  <div class="a" data-at="9.25" data-an="pop" data-bob="0" style="left:790px;top:440px"><svg width="130" height="170" viewBox="0 0 150 190"><text x="75" y="165" text-anchor="middle" font-family="K" font-weight="900" font-size="200" fill="#FFE6A6">?</text></svg></div>
  </div>
  <div class="cap" data-at="9.1" style="font-size:120px">ทำไมต้อง|เคลือบ?|</div>
 </div>
@@ -114,20 +121,35 @@ svg{overflow:visible}
  <div class="cap" data-at="16.12">จนครบ |8 ชม.|</div>
 </div>
 
-<!-- S6 17.08-22.64 this one: slow release, slow absorb -->
-<div class="scene" data-s="17.08" data-e="22.64" data-cam="17.08:1.06:720:560;18.6:1:720:540;22.64:1.03:720:530">
+<!-- S6a 17.08-18.66 LOW ANGLE: the product towers over the camera at grass level -->
+<div class="scene" data-s="17.08" data-e="18.66" data-cam="17.08:1.1:720:700;18.66:1:720:560">
  <div class="sky gold"></div>
  <div class="cam">
-  <div class="sun" id="sun6" style="left:470px;top:330px;width:500px;height:500px"></div>
+  <div class="sun" id="sun6" style="left:400px;top:360px;width:640px;height:640px"></div>
+  <div class="ground" style="top:925px"></div>
+  <div class="a" data-at="17.08" data-an="fade" style="left:440px;top:928px"><svg width="1" height="1"><g id="tp6a"></g></svg></div>
+  <div class="a" data-at="17.08" data-an="fade" style="left:1000px;top:928px"><svg width="1" height="1"><g id="tp6b"></g></svg></div>
+  <div class="a" data-at="17.08" data-an="fade" style="left:532px;top:285px;width:376px;height:700px">
+   <div style="position:absolute;inset:0;transform:perspective(700px) rotateX(15deg);transform-origin:50% 100%">
+    <div class="prod sil" style="position:absolute;inset:0"></div>
+    <div class="prod rim" id="jar6c" style="position:absolute;inset:0;opacity:0"></div>
+   </div>
+  </div>
+  <svg style="position:absolute;left:-200px;top:840px;width:1840px;height:170px" viewBox="0 0 1840 170"><path class="gpB" fill="#070302"/></svg>
+ </div>
+ <div class="cap" data-at="17.1">แต่|ตัวนี้|</div>
+</div>
+
+<!-- S6b 18.66-22.64 slow release, slow absorb (hourglass) -->
+<div class="scene" data-s="18.66" data-e="22.64" data-cam="18.66:1:720:540;22.64:1.03:720:530">
+ <div class="sky gold"></div>
+ <div class="cam">
+  <div class="sun" style="left:470px;top:330px;width:500px;height:500px"></div>
   <svg class="grass" viewBox="0 0 1840 62"><path class="gp" fill="#0D0503"/></svg>
   <div class="ground"></div>
-  <div class="a" id="jar6w" data-at="17.08" data-an="fade" style="left:577px;top:370px;width:252px;height:470px">
-   <div class="prod sil" style="position:absolute;inset:0"></div>
-   <div class="prod rim" id="jar6c" style="position:absolute;inset:0;opacity:0"></div>
-  </div>
+  <div class="a prod rim" data-at="18.66" data-an="fade" data-float="0" style="left:317px;top:370px;width:252px;height:470px"></div>
   <div class="a" id="hg6" data-at="18.7" data-an="rise" style="left:930px;top:420px"><svg width="300" height="420" viewBox="0 0 300 420"><g id="hgl"></g></svg></div>
  </div>
- <div class="cap" data-at="17.1" data-out="18.55">แต่|ตัวนี้|</div>
  <div class="cap" data-at="18.66" data-out="20.06">|ค่อยๆ| ปลดปล่อย</div>
  <div class="cap" data-at="20.16" data-out="21.38">ร่างกาย|ค่อยๆ| ดูดซึม</div>
  <div class="cap" data-at="21.46">|ค่อยๆ| ได้รับซิงค์</div>
@@ -156,21 +178,29 @@ svg{overflow:visible}
  <div class="cap" data-at="28.16">6 ชม.แรก |ไม่ลดลงเลย|</div>
 </div>
 
-<!-- S8 30.92-32.38 this is the advantage -->
-<div class="scene" data-s="30.92" data-e="32.38" data-cam="30.92:1.06:720:560;32.38:1:720:540">
+<!-- S8 30.92-32.38 PEEKING: from behind rocks and grass at the glowing product -->
+<div class="scene" data-s="30.92" data-e="32.38" data-cam="30.92:1.12:720:570;32.38:1.03:720:550">
  <div class="sky gold"></div>
- <div class="cam">
+ <div class="cam" id="cam8">
   <div class="a" data-at="30.92" data-an="fade" data-spin="8" style="left:220px;top:110px;width:1000px;height:1000px;border-radius:50%;background:repeating-conic-gradient(rgba(255,238,200,.32) 0 6deg,rgba(255,238,200,0) 6deg 18deg);-webkit-mask:radial-gradient(circle,#000 18%,transparent 66%)"></div>
   <div class="sun" style="left:470px;top:330px;width:500px;height:500px"></div>
   <svg class="grass" viewBox="0 0 1840 62"><path class="gp" fill="#0D0503"/></svg>
   <div class="ground"></div>
-  <div class="a prod rim" data-at="30.92" data-an="rise" data-float="0" style="left:577px;top:360px;width:252px;height:470px"></div>
+  <div class="a prod rim" data-at="30.92" data-an="fade" style="left:608px;top:420px;width:224px;height:420px"></div>
+ </div>
+ <div id="peek8" style="position:absolute;inset:0;pointer-events:none">
+  <svg width="1440" height="1080" style="position:absolute;left:0;top:0">
+   <path id="rockL" d="M-160 1180 L-160 180 C40 150 210 250 280 420 C340 570 320 790 400 1180 Z" fill="#070302" stroke="rgba(255,214,150,.35)" stroke-width="4"/>
+   <path id="rockR" d="M1600 1180 L1600 100 C1400 140 1250 300 1200 480 C1160 650 1180 880 1080 1180 Z" fill="#070302" stroke="rgba(255,214,150,.35)" stroke-width="4"/>
+   <path id="leafT" d="M820 -60 C930 110 1120 170 1290 150 C1220 50 1060 -20 820 -60 Z" fill="#070302"/>
+  </svg>
+  <svg style="position:absolute;left:-200px;top:910px;width:1840px;height:170px" viewBox="0 0 1840 170"><path class="gpB" fill="#070302"/></svg>
  </div>
  <div class="cap" data-at="30.95">ข้อดีของ|ซิงค์ตัวนี้|</div>
 </div>
 
-<!-- S9 32.38-35.92 made in Thailand, Thai factory, new iCAP innovation -->
-<div class="scene" data-s="32.38" data-e="35.92" data-cam="32.38:1:720:540;35.92:1.05:720:560">
+<!-- S9 32.38-35.92 DRONE crane-down: made in Thailand, Thai factory, new iCAP innovation -->
+<div class="scene" data-s="32.38" data-e="35.92" data-cam="32.38:1.45:780:300:-8;34.4:1.03:720:530:0;35.92:1:720:540:0">
  <div class="sky dusk"></div>
  <div class="cam">
   <div class="sun" style="left:820px;top:380px;width:460px;height:460px"></div>
@@ -204,7 +234,7 @@ svg{overflow:visible}
  <div class="cap" data-at="41.08">อยู่ในร่างกาย|นานขึ้น|</div>
 </div>
 
-<!-- S11 42.84-end CTA yellow basket, just launched -->
+<!-- S11 42.84-end CLOSE-UP HAND taps the basket. CTA yellow basket, just launched -->
 <div class="scene" data-s="42.84" data-e="99" data-cam="42.84:1.05:720:560;44.6:1:720:540;48.5:1.03:720:530">
  <div class="sky gold"></div>
  <div class="cam">
@@ -213,8 +243,8 @@ svg{overflow:visible}
   <svg class="grass" viewBox="0 0 1840 62"><path class="gp" fill="#0D0503"/></svg>
   <div class="ground"></div>
   <div class="a prod rim" data-at="42.86" data-an="rise" data-float="0.5" style="left:577px;top:360px;width:252px;height:470px"></div>
-  <div class="a" data-at="44.7" data-an="pop" data-bob="0" style="left:950px;top:500px"><svg width="220" height="220" viewBox="-110 -110 220 220"><circle r="104" fill="#1A0805" stroke="#FFE6A6" stroke-width="5"/><g id="bsk"></g></svg></div>
-  <div class="a" data-at="45.2" data-an="pop" style="left:1080px;top:640px"><svg width="90" height="110" viewBox="0 0 90 110" id="tap11"><path d="M30 8a10 10 0 0120 0v40l22 6c8 2 12 8 10 16l-6 28H34L12 64c-4-6 2-14 10-10l8 6z" fill="#FFF3E4" stroke="#2A0907" stroke-width="5" stroke-linejoin="round"/></svg></div>
+  <div class="a" data-at="44.7" data-an="pop" style="left:950px;top:500px"><svg width="220" height="220" viewBox="-110 -110 220 220"><circle r="104" fill="#1A0805" stroke="#FFE6A6" stroke-width="5"/><g id="bsk"></g></svg></div>
+  <div class="a" data-at="44.95" data-an="fade" style="left:0;top:0;width:1440px;height:1080px"><svg width="1440" height="1080"><g id="hand11"><g id="ph11" transform="translate(1088 642) rotate(-38)"></g></g></svg></div>
   <div class="a" data-at="46.64" data-an="stamp" style="left:250px;top:480px"><span class="pill" style="font-size:50px;transform:rotate(-6deg);display:inline-block">เปิดตัวใหม่!</span></div>
  </div>
  <div class="cap" data-at="42.9" data-out="44.6">นวัตกรรม|ใหม่|ของซิงค์</div>
@@ -239,7 +269,7 @@ if(location.hash==='#safe')$('safe').style.display='block';
 const mk=(tag,attrs,parent)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e};
 
 // grass silhouettes
-document.querySelectorAll('.gp').forEach(p=>{let d='M0 62';let x=0;while(x<1840){const w=6+rnd()*10,h=14+rnd()*44,lean=(rnd()-.5)*14;d+=` L${x.toFixed(1)} 62 Q${(x+w*.3+lean*.4).toFixed(1)} ${(62-h*.6).toFixed(1)} ${(x+w/2+lean).toFixed(1)} ${(62-h).toFixed(1)} Q${(x+w*.7+lean*.2).toFixed(1)} ${(62-h*.5).toFixed(1)} ${(x+w).toFixed(1)} 62`;x+=w*0.7}d+=' L1840 62 Z';p.setAttribute('d',d)});
+document.querySelectorAll('.gp,.gpB').forEach(p=>{const B=p.classList.contains('gpB'),G=B?170:62;let d=`M0 ${G}`;let x=0;while(x<1840){const w=B?14+rnd()*26:6+rnd()*10,h=B?50+rnd()*118:14+rnd()*44,lean=(rnd()-.5)*(B?40:14);d+=` L${x.toFixed(1)} ${G} Q${(x+w*.3+lean*.4).toFixed(1)} ${(G-h*.6).toFixed(1)} ${(x+w/2+lean).toFixed(1)} ${(G-h).toFixed(1)} Q${(x+w*.7+lean*.2).toFixed(1)} ${(G-h*.5).toFixed(1)} ${(x+w).toFixed(1)} ${G}`;x+=w*0.7}d+=` L1840 ${G} Z`;p.setAttribute('d',d)});
 
 // silhouette person: feet at origin
 function person(g,h,face=1){const o={g,h,face};const lw=h*0.085;
@@ -276,13 +306,21 @@ function pellet(g,R,n){const o={rings:[]};const step=R/(n+1.6);
  for(let i=n;i>=1;i--){const r=step*(1.6+i);const c=mk('g',{},g);
   mk('circle',{r,fill:i%2?'#2A0C06':'#3B1308',stroke:CREAM,'stroke-width':4},c);
   mk('circle',{r:r-step*0.5,fill:'none',stroke:'rgba(255,214,150,.18)','stroke-width':2},c);o.rings.unshift(c)}
- o.core=mk('g',{},g);ball(o.core,step*1.6,'Zn');return o}
-const P3=pellet($('pel3'),262,4);
+ o.core=mk('g',{},g);ball(o.core,step*1.6,'Zn');o.coreR=step*1.6;o.rr=[];for(let i=1;i<=n;i++)o.rr.push(step*(1.6+i));return o}
+const P3=pellet($('pel3'),228,4);
+{const g=$('hand3');const st=(w,c)=>({fill:'none',stroke:c,'stroke-width':w,'stroke-linecap':'round','stroke-linejoin':'round'});
+ const parts=[['M300 760 L380 742 L402 792',56],['M330 690 L420 652 L452 702',60],['M360 622 L450 540 L532 502',62],['M300 880 L430 760 L538 642',70]];
+ const palm='M90 1120 L120 760 C160 650 280 600 370 610 L420 700 L330 900 L300 1120 Z';
+ mk('path',{d:palm,fill:CREAM,stroke:CREAM,'stroke-width':12,'stroke-linejoin':'round'},g);parts.forEach(([d,w])=>mk('path',{d,...st(w+10,CREAM)},g));
+ mk('path',{d:palm,fill:INK,stroke:INK,'stroke-width':2,'stroke-linejoin':'round'},g);parts.forEach(([d,w])=>mk('path',{d,...st(w,INK)},g))}
+const BOK=[];for(let i=0;i<10;i++){const d=document.createElement('div');const r=60+rnd()*120;d.style.cssText=`position:absolute;width:${2*r}px;height:${2*r}px;border-radius:50%;background:radial-gradient(circle,rgba(255,214,150,${.18+rnd()*.2}) 0%,rgba(255,214,150,.08) 60%,rgba(255,214,150,0) 72%)`;$('bok3').appendChild(d);BOK.push({d,x:rnd()*1440-r,y:rnd()*1080-r,v:(rnd()-.5)*30})}
+{const g=$('tufts4');for(let k=0;k<44;k++){const y=-700+k*58;let d='';for(let x=-700;x<=2140;x+=60){d+=(x===-700?'M':'L')+x+' '+(y+Math.sin(x*0.004+k)*14).toFixed(1)}mk('path',{d,fill:'none',stroke:'#7E2C12','stroke-width':22,'stroke-linecap':'round',opacity:.45},g)}}
+const sh4=person($('shad4'),330,1);
 const arc3=mk('path',{fill:'none',stroke:GOLD,'stroke-width':10,'stroke-linecap':'round'},$('pel3'));
 const P9=pellet($('pel9'),110,3);
 
 // people
-const pp1a=person($('pp1a'),300,1),pp1b=person($('pp1b'),280,-1),pp4=person($('pp4'),330,1);
+const pp1a=person($('pp1a'),300,1),pp1b=person($('pp1b'),280,-1);const tp6a=person($('tp6a'),95,1),tp6b=person($('tp6b'),88,-1);tp6a.set({arms:[0.2,2.7],tilt:-0.3});tp6b.set({arms:[0.1,-0.1],tilt:-0.3,face:-1});
 pp1a.set({arms:[0.2,2.4],tilt:0.15});pp1b.set({arms:[0.1,-0.2],tilt:0.2,face:-1});
 
 // graphs
@@ -329,6 +367,12 @@ const SMK=[];{const g=$('fac9');
  mk('path',{d:'M-38 -14 Q-30 -66 0 -66 Q30 -66 38 -14',fill:'none',stroke:'#2A0907','stroke-width':3},g);
  for(const x of [-26,0,26])mk('line',{x1:x,y1:4,x2:x*0.85,y2:44,stroke:'#2A0907','stroke-width':6,'stroke-linecap':'round'},g)}
 
+{const g=$('ph11');const sh=[['line',{x1:0,y1:22,x2:0,y2:160},46],['line',{x1:60,y1:400,x2:70,y2:900},170],['line',{x1:-34,y1:270,x2:30,y2:210},42]];
+ const fist='M-30 150 C-34 120 10 118 22 140 L40 150 C70 140 115 150 120 190 L118 280 C110 330 60 340 20 330 L-30 300 Z';
+ for(const pass of [0,1]){const c=pass?INK:CREAM,a=pass?0:10;
+  mk('path',{d:fist,fill:c,stroke:c,'stroke-width':2+a,'stroke-linejoin':'round'},g);
+  for(const [x,y] of [[50,178],[86,196],[100,236]])mk('circle',{cx:x,cy:y,r:30+a/2,fill:c},g);
+  sh.forEach(([tag,at,w])=>mk(tag,{...at,stroke:c,'stroke-width':w+a,'stroke-linecap':'round'},g))}}
 // dust
 const DUST=[];for(let i=0;i<34;i++){const d=document.createElement('div');d.className='dust';const s=2+rnd()*5;d.style.width=d.style.height=s+'px';$('dustL').appendChild(d);DUST.push({d,x:rnd()*W,y:rnd()*H,v:8+rnd()*18,ph:rnd()*6.28,o:.2+rnd()*.45})}
 
@@ -343,7 +387,7 @@ function capRender(t){for(const k of caps){const vis=t>=k.at;const ok=k.out!==nu
 
 // scenes
 const scenes=[...document.querySelectorAll('.scene')].map(el=>({el,s:+el.dataset.s,e:+el.dataset.e,cam:(el.dataset.cam||'').split(';').filter(Boolean).map(k=>k.split(':').map(Number)),camEl:el.querySelector('.cam'),items:[...el.querySelectorAll('.a')]}));
-function camAt(keys,t){if(!keys.length)return[1,720,540];if(t<=keys[0][0])return keys[0].slice(1);for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t<=b[0]){const p=eIO(cl((t-a[0])/(b[0]-a[0])));return[1,2,3].map(j=>a[j]+(b[j]-a[j])*p)}}return keys[keys.length-1].slice(1)}
+function camAt(keys,t){const g=(k,j)=>k[j]||0;if(!keys.length)return[1,720,540,0];if(t<=keys[0][0])return[1,2,3,4].map(j=>g(keys[0],j));for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t<=b[0]){const p=eIO(cl((t-a[0])/(b[0]-a[0])));return[1,2,3,4].map(j=>g(a,j)+(g(b,j)-g(a,j))*p)}}return[1,2,3,4].map(j=>g(keys[keys.length-1],j))}
 function animT(an,p){switch(an){case'fade':return[eOC(p),''];case'pop':return[cl(p*3),`scale(${p<=0?0:eOB(p)})`];
  case'rise':{const e=eOC(p);return[e,`translateY(${(1-e)*60}px)`]}
  case'stamp':{const e=eOB(p);return[cl(p*4),`scale(${1.5-0.5*e})`]}}return[1,'']}
@@ -352,7 +396,7 @@ const DUR={fade:.5,pop:.5,rise:.6,stamp:.4};const XF=0.4;
 window.render=function(t){
  scenes.forEach((sc,i)=>{const nx=scenes[i+1];const on=t>=sc.s&&t<(nx?sc.e+XF:999);sc.el.style.display=on?'block':'none';if(!on)return;
   sc.el.style.zIndex=i;sc.el.style.opacity=i===0?1:eIO(cl((t-sc.s)/XF));
-  const[s,fx,fy]=camAt(sc.cam,t);if(sc.camEl)sc.camEl.style.transform=`translate(720px,540px) scale(${s}) translate(${-fx}px,${-fy}px)`;
+  const[s,fx,fy,rr]=camAt(sc.cam,t);if(sc.camEl)sc.camEl.style.transform=`translate(720px,540px) scale(${s}) rotate(${rr}deg) translate(${-fx}px,${-fy}px)`;
   for(const el of sc.items){const at=+el.dataset.at,an=el.dataset.an,p=at<0?1:cl((t-at)/DUR[an]);let[o,tr]=t<at?[0,'']:animT(an,p);
    if(el.dataset.out){const k=cl((t-+el.dataset.out)/0.28);if(k>0){o*=1-k;tr+=` translateY(${-eIO(k)*30}px)`}}
    if(el.dataset.float){const ph=+el.dataset.float;tr+=` translateY(${Math.sin(t*1.8+ph)*8}px)`}
@@ -368,22 +412,25 @@ window.render=function(t){
  // S3: layers wrap the core one by one, then a slow timer arc
  if(t>6.4&&t<9.6){P3.core.setAttribute('transform',`scale(${eOB(cl((t-6.54)/0.4))})`);
   P3.rings.forEach((r,i)=>{const k=cl((t-6.75-i*0.3)/0.35);r.setAttribute('transform',`scale(${k?0.6+0.4*eOB(k):0})`);r.setAttribute('opacity',cl(k*2))});
-  const k=cl((t-7.7)/1.6);const R=280,a0=-Math.PI/2,a1=a0+k*Math.PI*1.3;arc3.setAttribute('d',k>0?`M${Math.cos(a0)*R} ${Math.sin(a0)*R} A${R} ${R} 0 ${a1-a0>Math.PI?1:0} 1 ${Math.cos(a1)*R} ${Math.sin(a1)*R}`:'');
-  $('pel3').setAttribute('transform',`translate(720 610) rotate(${(t-6.54)*6})`)}
+  const k=cl((t-7.7)/1.6);const R=250,a0=-Math.PI/2,a1=a0+k*Math.PI*1.3;arc3.setAttribute('d',k>0?`M${Math.cos(a0)*R} ${Math.sin(a0)*R} A${R} ${R} 0 ${a1-a0>Math.PI?1:0} 1 ${Math.cos(a1)*R} ${Math.sin(a1)*R}`:'');
+  $('pel3').setAttribute('transform',`translate(760 560) rotate(${(t-6.54)*6})`);BOK.forEach(b=>b.d.style.transform=`translate(${b.x+b.v*(t-6.5)}px,${b.y}px)`);let rn=P3.coreR;P3.rings.forEach((r,i)=>{const k=cl((t-6.75-i*0.3)/0.35);rn=Math.max(rn,P3.rr[i]*(k?0.6+0.4*eOB(k):0))});rn=Math.max(rn,P3.coreR*eOB(cl((t-6.54)/0.4)));$('hand3').setAttribute('transform',`translate(${(228-rn)*0.95+Math.sin(t*1.7)*4} ${(228-rn)*0.25+Math.sin(t*2.3)*3})`)}
  // S4: puzzled person scratching head
- if(t>9&&t<10.8)pp4.set({arms:[0.15,2.6+0.25*Math.sin(t*12)],tilt:0.25*Math.sin(t*2+1),legs:[0.1,-0.1]});
+ if(t>9&&t<10.8){$('arm4').setAttribute('d',`M40 -6 L${30+Math.sin(t*12)*8} ${-22+Math.cos(t*12)*5}`);sh4.set({arms:[0.15,2.6+0.25*Math.sin(t*12)],tilt:0.2,legs:[0.1,-0.1]})}
  // S5: fast curve, walker at constant speed
  if(t>10.2&&t<17.6){const hw=8*cl((t-11.2)/5.8);hillDraw($('hill5'),$('rim5'),fFast,hw);
   const v=fFast(hw),sl=(fFast(hw+0.05)-fFast(Math.max(0,hw-0.05)))/0.1*380/120;w5.set({x:X(hw),y:Y(v)-2,lean:-Math.atan(sl)*57.3*0.6,...walkPose(t*9)});
   const a=cl((t-13.3)/0.35);drawOn($('ann5'),ellD(X(2),Y(1)-6,70,52),a);$('ann5').style.opacity=a?1:0;
   const b=cl((t-16.12)/0.35);drawOn($('ann5b'),ellD(X(8),880,48,40),b);$('ann5b').style.opacity=b?1:0}
- // S6: jar lights up, hourglass trickles slowly
- if(t>17&&t<23.2){const k=eIO(cl((t-17.4)/0.9));$('jar6c').style.opacity=k;$('sun6').style.transform=`scale(${0.8+0.25*k})`;
-  const m=eIO(cl((t-18.4)/0.7));$('jar6w').style.transform+=` translateX(${-260*m}px)`;
-  const q=cl((t-18.9)/3.9);const topH=150*(1-q)+8;HG.top.setAttribute('y',200-topH);HG.top.setAttribute('height',topH);
+ // S6a: low angle, jar lights up; S6b: hourglass trickles slowly
+ if(t>17&&t<19.2){const k=eIO(cl((t-17.4)/0.9));$('jar6c').style.opacity=k;$('sun6').style.transform=`scale(${0.8+0.25*k})`}
+ if(t>18.5&&t<23.2){const q=cl((t-18.9)/3.9);const topH=150*(1-q)+8;HG.top.setAttribute('y',200-topH);HG.top.setAttribute('height',topH);
   const bh=20+120*q;HG.bot.setAttribute('d',`M30 394 L30 ${394-bh*0.35} Q150 ${394-bh*1.25} 270 ${394-bh*0.35} L270 394 Z`);
   HG.str.setAttribute('y2',394-bh*0.8);HG.str.setAttribute('opacity',t>18.9?1:0);
   HG.dots.forEach((d,i)=>{const f=((t*0.9+i/5)%1);d.setAttribute('cy',210+f*(394-bh*0.8-210));d.setAttribute('opacity',t>18.9?1-f*0.5:0)})}
+ // S8: peeking - rocks part a little, handheld sway, foreground parallax
+ if(t>30.8&&t<32.9){const k=eIO(cl((t-31.0)/0.7));const hx=Math.sin(t*2.1)*6+Math.sin(t*5.3)*2,hy=Math.sin(t*1.7)*4;
+  $('rockL').setAttribute('transform',`translate(${-90*k} 0)`);$('rockR').setAttribute('transform',`translate(${90*k} 0)`);$('leafT').setAttribute('transform',`translate(${60*k} ${-40*k})`);
+  $('peek8').style.transform=`translate(${hx*2.2}px,${hy*2.2}px)`;$('cam8').style.transform+=` translate(${hx}px,${hy}px)`}
  // S7: compare; new curve at constant speed, bracket over 0-6h
  if(t>22.5&&t<31.4){const hw=8*cl((t-23.4)/6.2);hillDraw($('hill7'),$('rim7'),fNew,hw);
   const v=fNew(hw),sl=(fNew(hw+0.05)-fNew(Math.max(0,hw-0.05)))/0.1*380/120;w7.set({x:X(hw),y:Y(v)-2,lean:-Math.atan(sl)*57.3*0.6,...walkPose(t*8,0.4)});
@@ -397,8 +444,8 @@ window.render=function(t){
  if(t>35.8&&t<43.3){const path=[[35.9,250,840],[37.7,250,840],[38.5,470,720],[39.7,470,720],[40.6,880,560],[99,880,560]];
   let x=250,y=840,walking=false,jump=0;for(let i=0;i<path.length-1;i++){const a=path[i],b=path[i+1];if(t>=a[0]&&t<b[0]){const p=(t-a[0])/(b[0]-a[0]);if(a[1]!==b[1]){walking=true;const e=eIO(p);x=a[1]+(b[1]-a[1])*e;y=a[2]+(b[2]-a[2])*e-Math.sin(Math.PI*e)*90}else{x=a[1];y=a[2]}break}}
   const cheer=t>41.08;w10.set({x,y,...(walking?walkPose(t*10,0.5):{legs:cheer?[0.25,-0.25]:[0.1,-0.1],arms:cheer?[2.6+0.2*Math.sin(t*8),-2.6-0.2*Math.sin(t*8)]:[0.15,-0.15],bob:cheer?Math.abs(Math.sin(t*6))*10:0})})}
- // S11: tap hand presses basket
- if(t>45)$('tap11').style.transform=`translateY(${Math.abs(Math.sin((t-45.2)*4))*-14}px)`;
+ // S11: close-up hand slides in and taps the basket
+ if(t>44.9){const e=eOC(cl((t-44.95)/0.45));const tp=t>45.4?Math.abs(Math.sin((t-45.4)*4)):0;const o=300*(1-e)+22*(1-tp);$('hand11').setAttribute('transform',`translate(${o*0.63} ${o*0.78})`)}
  for(const p of DUST){const y=((p.y-p.v*t)%(H+40)+H+40)%(H+40)-20;p.d.style.transform=`translate(${p.x+Math.sin(t*.6+p.ph)*30}px,${y}px)`;p.d.style.opacity=p.o*(0.6+0.4*Math.sin(t*1.5+p.ph))}
  capRender(t);
  $('fadeK').style.opacity=cl((t-47.9)/0.6)*0.85;
