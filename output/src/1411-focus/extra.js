@@ -38,20 +38,60 @@ const IC3={gauge:`<path d="M10 70a40 40 0 0 1 80 0" fill="none" stroke="#3DDC97"
 document.querySelectorAll('svg.ic3').forEach(s=>s.innerHTML=IC3[s.dataset.ic]);
 
 scenes.forEach(sc=>sc.parts.forEach(p=>p.d.style.display='none'));
+
+// ---------- animated landscapes behind each scene (soft, slow: focus stays centre)
+const LS={};
+function cloud(x,y,s,o=1){return `<g class="cl" data-x="${x}" data-s="${s}" transform="translate(${x} ${y}) scale(${s})" opacity="${o}"><ellipse cx="0" cy="0" rx="90" ry="40" fill="#fff"/><circle cx="-40" cy="-20" r="40" fill="#fff"/><circle cx="20" cy="-36" r="52" fill="#fff"/><circle cx="70" cy="-12" r="34" fill="#fff"/></g>`}
+function city(base,col,lit,seed0){let s='';let x=-20,k=seed0;const r=()=>{k=(k*9301+49297)%233280;return k/233280};while(x<1460){const w=70+r()*90,h=140+r()*300;s+=`<rect x="${x}" y="${base-h}" width="${w}" height="${h+200}" fill="${col}"/>`;for(let wy=base-h+20;wy<base-20;wy+=34)for(let wx=x+12;wx<x+w-16;wx+=26){s+=`<rect class="win" data-p="${r()}" x="${wx}" y="${wy}" width="12" height="16" rx="2" fill="${lit}" opacity="${r()<0.5?0.9:0.15}"/>`}x+=w+6}return s}
+function mountains(cols,base){return `<path d="M-20 ${base}L180 ${base-260}L330 ${base-140}L520 ${base-330}L700 ${base-160}L880 ${base-300}L1080 ${base-120}L1260 ${base-280}L1460 ${base-90}V1100H-20Z" fill="${cols[0]}"/><path d="M-20 ${base+80}L240 ${base-120}L470 ${base+20}L760 ${base-160}L1010 ${base+30}L1240 ${base-110}L1460 ${base+40}V1100H-20Z" fill="${cols[1]}"/><path d="M-20 ${base+190}Q360 ${base+90} 720 ${base+170}T1460 ${base+150}V1100H-20Z" fill="${cols[2]}"/>`}
+function buildLand(type){let s='';const sky=(a,b)=>`<defs><linearGradient id="g_${type}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="1440" height="1080" fill="url(#g_${type})"/>`;
+ if(type==='city-day'){s=sky('#8FD3FF','#E9F7FF')+cloud(200,160,1)+cloud(900,120,.8)+cloud(1300,230,.9)+city(1080,'#B9C7DA','#FFFFFF',3)+city(1080,'#93A5BF','#FFF6C8',7).replace(/height="(\d+)"/g,(m,h)=>m)}
+ else if(type==='sunset'){s=sky('#FF7A59','#FFD29A')+`<circle class="sunbg" cx="720" cy="640" r="140" fill="#FFE07A" opacity=".9"/>`+cloud(260,200,.9,.7)+cloud(1150,160,1,.7)+mountains(['#C2577A','#8E3B66','#5B2A55'],760)}
+ else if(type==='clouds'){s=sky('#A8DCFF','#F2FAFF')+cloud(150,250,1.6)+cloud(700,170,1.3)+cloud(1250,280,1.7)+cloud(450,820,1.8,.9)+cloud(1100,880,1.6,.9)}
+ else if(type==='meadow'){s=sky('#9FDBFF','#EAF9FF')+cloud(300,150,1)+cloud(1100,200,1.1)+`<path d="M-20 760Q360 640 720 720T1460 700V1100H-20Z" fill="#9BD67A"/><path d="M-20 860Q420 780 820 860T1460 840V1100H-20Z" fill="#6FBF5A"/>`+[...Array(14)].map((_,i)=>`<g class="fl" transform="translate(${80+i*100} ${900+(i%3)*30})"><path d="M0 0v-24" stroke="#3F8F3A" stroke-width="4"/><circle cy="-28" r="9" fill="${['#FF8FB1','#FFD23F','#fff'][i%3]}"/></g>`).join('')}
+ else if(type==='sunny'){s=sky('#6EC8FF','#E6F7FF')+cloud(220,260,1)+cloud(1220,220,1.1)+mountains(['#9CC9E8','#79B3D6','#8FD07A'],820)}
+ else if(type==='city-dusk'){s=sky('#5A4E9A','#FF9E7A')+cloud(300,180,1,.5)+cloud(1100,140,.9,.5)+city(1080,'#4C4672','#FFD98A',11)}
+ else if(type==='city-night'){s=sky('#141B45','#3A3F7A')+[...Array(60)].map((_,i)=>`<circle class="st" data-p="${(i*37%100)/100}" cx="${(i*233)%1440}" cy="${(i*97)%560}" r="${1.5+(i%3)}" fill="#fff"/>`).join('')+`<g transform="translate(1180 170)"><circle r="60" fill="#FFF3B0"/><circle cx="24" cy="-14" r="52" fill="#141B45"/></g>`+city(1080,'#232A5C','#FFD98A',5)}
+ else if(type==='mountain-morning'){s=sky('#FFC9A8','#FFF3E0')+`<circle cx="720" cy="560" r="120" fill="#FFE3A0"/>`+cloud(250,220,1,.85)+cloud(1180,180,1.1,.85)+mountains(['#A7B8E0','#7F95C9','#7FBF8F'],760)}
+ else if(type==='beach'){s=sky('#7FD3FF','#E8F8FF')+cloud(250,170,1)+cloud(1150,140,1.1)+`<rect y="700" width="1440" height="400" fill="#4FB3E8"/><g class="wv"><path d="M-80 720q60 -20 120 0t120 0t120 0t120 0t120 0t120 0t120 0t120 0t120 0t120 0t120 0t120 0t120 0t120 0" fill="none" stroke="#fff" stroke-width="6" opacity=".7"/><path d="M-80 800q60 -20 120 0t120 0t120 0t120 0t120 0t120 0t120 0t120 0t120 0t120 0t120 0t120 0t120 0t120 0" fill="none" stroke="#fff" stroke-width="6" opacity=".5"/></g><path d="M-20 930Q720 860 1460 930V1100H-20Z" fill="#FFE2A8"/>`}
+ return s}
+scenes.forEach(sc=>{const ty=sc.el.dataset.land;if(!ty)return;const sv=document.createElementNS(NS,'svg');sv.setAttribute('class','land');sv.setAttribute('viewBox','0 0 1440 1080');sv.style.cssText='position:absolute;left:-40px;top:-30px;width:1520px;height:1140px';sv.innerHTML=buildLand(ty);sc.el.insertBefore(sv,sc.el.children[1]);
+ const sp=document.createElement('div');sp.className='spot';sc.el.insertBefore(sp,sv.nextSibling);
+ sc.land={sv,cl:[...sv.querySelectorAll('.cl')].map(c=>({c,x:+c.dataset.x,s:+c.dataset.s,y:+c.getAttribute('transform').match(/translate\([\d.-]+ ([\d.-]+)/)[1]})),win:[...sv.querySelectorAll('.win')],st:[...sv.querySelectorAll('.st')],wv:sv.querySelector('.wv'),fl:[...sv.querySelectorAll('.fl')],sun:sv.querySelector('.sunbg')}});
+function landRender(t){scenes.forEach(sc=>{if(!sc.land||sc.el.style.display==='none')return;const L=sc.land;const lt=t-sc.s;
+ L.cl.forEach((c,i)=>{const x=((c.x+lt*(14+i*5)+200)%1840)-200;c.c.setAttribute('transform',`translate(${x} ${c.y}) scale(${c.s})`)});
+ L.win.forEach((w,i)=>{if(i%7===0){const p=+w.dataset.p;w.setAttribute('opacity',Math.sin(t*1.3+p*20)>0.6?0.95:0.2)}});
+ L.st.forEach(s=>{const p=+s.dataset.p;s.setAttribute('opacity',0.4+0.6*Math.abs(Math.sin(t*2+p*30)))});
+ if(L.wv)L.wv.setAttribute('transform',`translate(${(t*40)%120} ${Math.sin(t*2)*4})`);
+ L.fl.forEach((f,i)=>{const tr=f.getAttribute('transform').replace(/ rotate\([^)]*\)/,'');f.setAttribute('transform',tr+` rotate(${Math.sin(t*2+i)*8})`)});
+ if(L.sun)L.sun.setAttribute('cy',640+lt*12);
+ L.sv.style.transform=`translate(${Math.sin(t*0.3)*8}px,0) scale(${1+lt*0.004})`})}
+// ---------- vitamin-D ring around a character
+document.querySelectorAll('svg.dring').forEach(sv=>{const id=sv.dataset.id,night=sv.dataset.mode==='night';const C=2*Math.PI*170;
+ sv.innerHTML=`<defs><clipPath id="${id}cp"><circle r="138"/></clipPath></defs><circle r="150" fill="${night?'#2D3E8F':'#BFE8FF'}" stroke="${INK}" stroke-width="8"/>
+ <g clip-path="url(#${id}cp)"><g transform="translate(0 175) scale(.62)">${kid({shirt:night?'#7FA2FF':'#3DDC97',hair:'#2B1B12',faces:[{e:night?'bored':'happy'}],armL:'down',armR:'down'})}</g></g>
+ <circle r="170" fill="none" stroke="#fff" stroke-width="40"/><circle r="170" fill="none" stroke="${INK}" stroke-width="4" opacity=".25"/>
+ <circle id="${id}a" r="170" fill="none" stroke="#FFC21A" stroke-width="30" stroke-linecap="round" stroke-dasharray="0 ${C}" transform="rotate(-90)"/>
+ <circle r="190" fill="none" stroke="${INK}" stroke-width="6"/><circle r="150" fill="none" stroke="${INK}" stroke-width="6"/>
+ <g transform="translate(0 196)"><rect x="-150" y="-32" width="300" height="64" rx="32" fill="#fff" stroke="${INK}" stroke-width="6"/><text id="${id}t" y="14" text-anchor="middle" font-family="K" font-weight="900" font-size="38" fill="${INK}">0%</text></g>
+ <g id="${id}sp" opacity="0">${[...Array(10)].map((_,i)=>`<path d="M0 -205L8 -235L0 -265L-8 -235Z" fill="#FFD23F" stroke="${INK}" stroke-width="3" transform="rotate(${i*36})"/>`).join('')}</g>`;sv._C=C});
+function setRing(id,p,flash){const a=$(id+'a');if(!a)return;const C=2*Math.PI*170;a.setAttribute('stroke-dasharray',`${C*p} ${C}`);a.setAttribute('stroke',p>=0.995?'#3DDC97':'#FFC21A');$(id+'t').textContent=`วิตามินดี ${Math.round(p*100)}%`;const sp=$(id+'sp');sp.setAttribute('opacity',flash);sp.setAttribute('transform',`scale(${0.9+0.25*flash}) rotate(${flash*30})`)}
+
 window.extra=function(t){
+ landRender(t);
  hlRender(t);
  if(t>=3.6&&t<9.2){let v=0.15+0.04*Math.sin(t*3);if(t>5.8)v=lerp(v,0.92,eOC(cl((t-5.9)/1.3)));setGauge('g2',v,t>6.4?'2000–5000 IU':'');
   let s='';for(let i=0;i<10;i++){const d=t-5.9-i*0.13;if(d<0||d>0.9)continue;const p=d/0.9;s+=CAPS(720,lerp(40,470,eIO(p)),i*36+d*240,0.9*(1-p*0.4))}$('pour2').innerHTML=s}
  if(t>=8.5&&t<12){$('row3').style.opacity=cl((t-9.6)/0.25)}
  if(t>=11.3&&t<14){setGauge('g4',lerp(0.9,0.22,eOB(cl((t-11.55)/0.8))),'600 IU')}
- if(t>=13.3&&t<19.6){let s='';const sx=720,sy=95;s+=`<g transform="translate(${sx} ${sy}) rotate(${t*16})">${[...Array(12)].map((_,i)=>`<rect x="-7" y="-82" width="14" height="28" rx="7" fill="#FFB300" stroke="${INK}" stroke-width="4" transform="rotate(${i*30})"/>`).join('')}<circle r="48" fill="#FFD23F" stroke="${INK}" stroke-width="7"/></g>`;
-  if(t<17)for(let i=0;i<4;i++){const d=((t*1.4+i/4)%1);s+=`<path d="M${720+(i-1.5)*34} ${160+d*60}v20" stroke="#FFB300" stroke-width="9" stroke-linecap="round" opacity="${Math.sin(d*Math.PI)}"/>`}
-  $('sun5').innerHTML=s;let p=0.08+0.52*eOC(cl((t-14.2)/2.2));if(t>17.5)p=lerp(p,1,eOB(cl((t-17.6)/0.8)));setTank('t5',Math.min(1,p),t);
-  let q='';const d=t-17.0;if(d>=0&&d<0.65)q=CAPS(720,lerp(60,330,eIO(d/0.65)),d*300,1.1);$('pill5').innerHTML=q}
+ if(t>=13.3&&t<19.6){let s='';const sx=720,sy=60;s+=`<g transform="translate(${sx} ${sy}) rotate(${t*16})">${[...Array(12)].map((_,i)=>`<rect x="-7" y="-82" width="14" height="28" rx="7" fill="#FFB300" stroke="${INK}" stroke-width="4" transform="rotate(${i*30})"/>`).join('')}<circle r="48" fill="#FFD23F" stroke="${INK}" stroke-width="7"/></g>`;
+  if(t<17)for(let i=0;i<5;i++){const d=((t*1.3+i/5)%1);s+=`<path d="M${720+(i-2)*30} ${120+d*40}v18" stroke="#FFB300" stroke-width="9" stroke-linecap="round" opacity="${Math.sin(d*Math.PI)}"/>`}
+  $('sun5').innerHTML=s;let p=0.04+0.56*eOC(cl((t-14.2)/2.2));let fl=0;if(t>17.55){p=lerp(p,1,eOB(cl((t-17.55)/0.6)));fl=Math.max(0,1-Math.abs(t-18.2)/0.6)}setRing('r5',Math.min(1,p),fl);
+  let q='';const d=t-17.0;if(d>=0&&d<0.6)q=CAPS(720,lerp(60,370,eIO(d/0.6)),d*400,1.1*(1-0.3*d));$('pill5').innerHTML=q}
  if(t>=19.0&&t<25.6){const p=cl((t-19.3)/5.0);const a=Math.PI*(1-p*1.2);const sx=300+Math.cos(a)*200,sy=330-Math.sin(a)*240;$('sunO').setAttribute('transform',`translate(${sx} ${sy})`);
   const night=cl((p-0.72)/0.2);$('moonO').setAttribute('opacity',night);$('moonO').setAttribute('transform','translate(430 150)');$('starsO').setAttribute('opacity',night);
   const c1=night>0?`rgb(${Math.round(lerp(255,30,night))},${Math.round(lerp(150,40,night))},${Math.round(lerp(90,110,night))})`:(p>0.55?`rgb(255,${Math.round(lerp(211,150,(p-0.55)/0.17))},${Math.round(lerp(255,90,(p-0.55)/0.17))})`:'#7FD3FF');
   $('sk1').setAttribute('stop-color',c1);$('sk2').setAttribute('stop-color',night>0?`rgb(${Math.round(lerp(255,60,night))},${Math.round(lerp(220,70,night))},${Math.round(lerp(180,140,night))})`:'#DFF4FF')}
- if(t>=24.9&&t<28.4){let p=0.18;let s='';for(let i=0;i<2;i++){const at=25.6+i*0.6,d=t-at;if(d<0)continue;if(d<0.6)s+=CAPS(720,lerp(40,300,eIO(d/0.6)),d*400,1.1);p+=0.41*eOB(cl((d-0.5)/0.6))}$('pill7').innerHTML=s;setTank('t7',Math.min(1,p),t)}
+ if(t>=24.9&&t<28.4){let p=0.18;let s='';let fl=0;for(let i=0;i<2;i++){const at=25.6+i*0.6,d=t-at;if(d<0)continue;if(d<0.55)s+=CAPS(720,lerp(40,370,eIO(d/0.55)),d*400,1.1*(1-0.3*d));p+=0.41*eOB(cl((d-0.5)/0.5))}if(t>26.7)fl=Math.max(0,1-Math.abs(t-27.2)/0.5);$('pill7').innerHTML=s;setRing('r7',Math.min(1,p),fl)}
  if(t>=31.4){const dp=eIO(cl((t-31.7)/0.6));$('drop9').style.transform+=` translateY(${dp*260}px)`;$('drop9').style.opacity=1-cl((t-32.2)/0.1);const tap=Math.max(0,Math.sin((t-32.3)*8));$('hand9').style.transform+=` translate(${-tap*26}px,${-tap*18}px)`;$('cart9').style.transform+=` scale(${1+0.04*Math.max(0,Math.sin((t-32.3)*8-0.6))})`}
 };
