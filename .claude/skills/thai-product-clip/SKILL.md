@@ -58,6 +58,20 @@ From their re-edit of the 11/12 zinc clip — they layered these on top of our c
 
 - **INZENT Magnesium Bisglycinate (iFLOW), brown jar, blue hex label, 800 mg/tablet, 30 tablets** — cutout `assets/products/inzent_magnesium.png`. The user wants the product shown at the start and again on the "ผลิตที่ไทย โรงงานไทย" line.
 
+
+## User feedback log (apply by default)
+
+- "ตากาสายล้าง" in Whisper = **ตะกร้าสีเหลือง** (yellow basket), not orange. Yellow basket on a non-yellow background.
+- Put the opening product/title group dead centre (product centred on the x axis, extra icons to the side).
+- Never show another colour for the hero element ball than its real one: Mg ball = blue (like the product's Mg badge), not grey (grey reads as oxide). Zn = silver is fine.
+- Red annotation circle goes on the thing being praised (e.g. the Bisglycinate bar), not on the competitor.
+- Motion must be smooth: constant speeds in races/chases, no slow-then-sudden jumps.
+- Real-photo inserts: hide anything that shows whose hands they are (painted/long nails, rings). Remove fingers on the background by inpainting the tile/floor; rebuild the bottle silhouette along its true edge line; recolour remaining nails to a natural tone. Keep annotation positions exactly.
+- Label/ingredient photos: use the widest version that shows the whole panel; zoom the camera in on the circled number instead of cropping it tight.
+- Dose line on screen: just "1–2 เม็ด" (big text), no tablet diagrams.
+- Cover: one product on the right, plain jar crossed out on the left, arrow, number badge (small form note under it if asked, e.g. "BISGLYCINATE (20%)"), red headline on yellow comic burst.
+- Keep video files under ~45 MB (re-encode crf 21) so GitHub doesn't warn.
+
 ## Gotchas
 
 - Emoji don't render; draw SVG icons.
