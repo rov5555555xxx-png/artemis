@@ -73,6 +73,7 @@ From their re-edit of the 11/12 zinc clip — they layered these on top of our c
 - Dose line on screen: just "1–2 เม็ด" (big text), no tablet diagrams.
 - Cover: one product on the right, plain jar crossed out on the left, arrow, number badge (small form note under it if asked, e.g. "BISGLYCINATE (20%)"), red headline on yellow comic burst.
 - Highlight caption style (asked for in 14/11/26): words rise in one by one, key words get a yellow (or pink for warnings) marker swipe behind them; see `output/src/1411` (`.hl` captions, `hlRender`). Pair with moving simulations (dose gauge, body tank filling, day/night office, calendar ticks).
+- Single-focus style (user preferred over the busy highlight version, 14/11/26): everything happens at screen centre in one spot (object ~y 380, caption right under it ~y 700), static calm background with a soft vignette, no moving patterns/particles/side stickers, centred zoom transitions, only the essential word coloured red and slightly larger. Too many simultaneous motions = viewer doesn't know where to look. Source: `output/src/1411-focus`. Note: set `.cam{transform-origin:0 0}` so camera zooms land on the intended point.
 - Keep video files under ~45 MB (re-encode crf 21) so GitHub doesn't warn.
 
 ## Gotchas
