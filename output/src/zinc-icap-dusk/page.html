@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2)}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2)}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2)}
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1440px;height:1080px;overflow:hidden;background:#140503}
+body{font-family:K,sans-serif;color:#FFF3E4}
+#stage{position:relative;width:1440px;height:1080px;overflow:hidden;background:#140503}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.sky{position:absolute;inset:-80px}
+.dusk{background:radial-gradient(ellipse 75% 70% at 50% 68%,#FFC274 0%,#F2843A 20%,#C9491F 45%,#6A1D0E 74%,#260806 100%)}
+.ember{background:radial-gradient(circle at 50% 50%,#EB7434 0%,#A43A18 34%,#4A120A 68%,#180504 100%)}
+.gold{background:radial-gradient(ellipse 80% 75% at 50% 66%,#FFD999 0%,#F7A04B 24%,#D35A24 50%,#73220F 78%,#2A0907 100%)}
+.cam{position:absolute;inset:0;will-change:transform}
+.sun{position:absolute;border-radius:50%;background:radial-gradient(circle,#FFF6DC 0%,#FFE6A8 28%,rgba(255,200,120,.55) 42%,rgba(255,160,80,0) 70%)}
+.ground{position:absolute;left:-200px;right:-200px;top:840px;height:500px;background:#0D0503}
+.grass{position:absolute;left:-200px;top:780px;width:1840px;height:62px}
+.a{position:absolute;opacity:0;will-change:transform}
+.prod{background:url(p.png) center/contain no-repeat}
+.sil{filter:brightness(0)}
+.rim{filter:drop-shadow(0 0 2px rgba(255,226,170,.95)) drop-shadow(0 18px 30px rgba(20,4,0,.6))}
+.cap{position:absolute;left:130px;width:1180px;top:150px;text-align:center;font-weight:800;font-size:96px;line-height:1.2;white-space:nowrap;color:#FFF3E4;text-shadow:0 4px 0 rgba(60,12,4,.55),0 10px 30px rgba(50,8,0,.55)}
+.cap .g{display:inline-block;opacity:0}
+.cap .h{color:#FFD27A}
+.lab{position:absolute;font-weight:600;font-size:28px;letter-spacing:7px;color:rgba(255,236,210,.9);white-space:nowrap;text-align:center}
+.pill{display:inline-block;padding:6px 30px 10px;border-radius:999px;font-weight:800;white-space:nowrap;background:#FFD27A;color:#2A0907;box-shadow:0 8px 24px rgba(30,5,0,.5)}
+.dust{position:absolute;border-radius:50%;background:#FFE9C4}
+svg{overflow:visible}
+</style></head><body>
+<div id="stage">
+
+<!-- S1 0-1.98 what is this one? (title readable on frame 0) -->
+<div class="scene" data-s="0" data-e="1.98" data-cam="0:1.0:720:540;1.98:1.05:720:520">
+ <div class="sky dusk"></div>
+ <div class="cam">
+  <div class="sun" id="sun1" style="left:470px;top:330px;width:500px;height:500px"></div>
+  <svg class="grass" viewBox="0 0 1840 62"><path class="gp" fill="#0D0503"/></svg>
+  <div class="ground"></div>
+  <div class="a prod sil" id="jar1" data-at="-1" data-an="fade" style="left:602px;top:400px;width:236px;height:440px"></div>
+  <div class="a" data-at="-1" data-an="fade" data-bob="0" style="left:650px;top:500px;width:140px;height:180px"><svg width="140" height="180" viewBox="0 0 140 180"><text x="70" y="150" text-anchor="middle" font-family="K" font-weight="900" font-size="180" fill="#FFD27A">?</text></svg></div>
+  <div class="a" data-at="-1" data-an="fade" style="left:380px;top:840px"><svg width="1" height="1"><g id="pp1a"></g></svg></div>
+  <div class="a" data-at="-1" data-an="fade" style="left:1070px;top:840px"><svg width="1" height="1"><g id="pp1b"></g></svg></div>
+  <div class="a" data-at="0.9" data-an="pop" data-bob="1" style="left:300px;top:450px"><svg width="90" height="110" viewBox="0 0 90 110"><text x="45" y="95" text-anchor="middle" font-family="K" font-weight="900" font-size="110" fill="#FFE9C4" opacity=".85">?</text></svg></div>
+  <div class="a" data-at="1.2" data-an="pop" data-bob="2" style="left:1100px;top:430px"><svg width="90" height="110" viewBox="0 0 90 110"><text x="45" y="95" text-anchor="middle" font-family="K" font-weight="900" font-size="110" fill="#FFE9C4" opacity=".85">?</text></svg></div>
+ </div>
+ <div class="cap" data-at="-1" data-pulse="1">ซิงค์ตัวนี้ |คืออะไร?|</div>
+</div>
+
+<!-- S2 1.98-6.54 bisglycinate: already absorbs well, popular abroad -->
+<div class="scene" data-s="1.98" data-e="6.54" data-cam="1.98:1.04:720:540;6.54:1:720:540">
+ <div class="sky dusk"></div>
+ <div class="cam">
+  <div class="sun" style="left:520px;top:300px;width:400px;height:400px"></div>
+  <svg class="grass" viewBox="0 0 1840 62"><path class="gp" fill="#0D0503"/></svg>
+  <div class="ground"></div>
+  <div class="a" id="zn2" data-at="2.0" data-an="pop" style="left:720px;top:520px"><svg width="1" height="1"><g id="ball2"></g></svg></div>
+  <div class="a" data-at="3.6" data-an="pop" data-out="5.3" style="left:850px;top:330px"><svg width="110" height="110" viewBox="-55 -55 110 110"><circle r="48" fill="#FFE6A6"/><path d="M-22 2l14 15 28-30" stroke="#2A0907" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="a lab" data-at="4.3" data-an="rise" data-out="5.3" style="left:420px;width:600px;top:728px">ZINC BISGLYCINATE</div>
+  <div class="a" id="globe2" data-at="5.4" data-an="pop" style="left:1000px;top:560px"><svg width="1" height="1"><g id="glb"></g></svg></div>
+  <div class="a" id="plane2" data-at="5.6" data-an="fade" style="left:0;top:0"><svg width="1" height="1"><path id="arc2" d="M820 600 Q 880 330 1000 380" fill="none" stroke="#FFE6A6" stroke-width="5" stroke-dasharray="12 12" stroke-linecap="round"/></svg></div>
+ </div>
+ <div class="cap" data-at="2.5" data-out="4.2">ฟอร์มที่|ดูดซึมดี|อยู่แล้ว</div>
+ <div class="cap" data-at="4.3" data-out="5.3">ซิงค์|บิสไกลซิเนต|</div>
+ <div class="cap" data-at="5.4">ฟอร์มที่|นิยม|ในต่างประเทศ</div>
+</div>
+
+<!-- S3 6.54-9.08 coated in many layers -> slow release (top view) -->
+<div class="scene" data-s="6.54" data-e="9.08" data-cam="6.54:1:720:560;9.08:1.06:720:570">
+ <div class="sky ember"></div>
+ <div class="cam"><svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="pel3" transform="translate(720 610)"></g></svg></div>
+ <div class="cap" data-at="6.6" data-out="7.6">เคลือบ|หลายชั้น|</div>
+ <div class="cap" data-at="7.68">ชะลอ|การปลดปล่อย|</div>
+</div>
+
+<!-- S4 9.08-10.26 why? -->
+<div class="scene" data-s="9.08" data-e="10.26" data-cam="9.08:1.0:720:560;10.26:1.06:720:560">
+ <div class="sky dusk"></div>
+ <div class="cam">
+  <div class="sun" style="left:420px;top:380px;width:600px;height:600px"></div>
+  <svg class="grass" viewBox="0 0 1840 62"><path class="gp" fill="#0D0503"/></svg>
+  <div class="ground"></div>
+  <div class="a" data-at="9.08" data-an="fade" style="left:720px;top:840px"><svg width="1" height="1"><g id="pp4"></g></svg></div>
+  <div class="a" data-at="9.3" data-an="pop" data-bob="0" style="left:800px;top:330px"><svg width="150" height="190" viewBox="0 0 150 190"><text x="75" y="165" text-anchor="middle" font-family="K" font-weight="900" font-size="200" fill="#FFD27A">?</text></svg></div>
+ </div>
+ <div class="cap" data-at="9.1" style="font-size:120px">ทำไมต้อง|เคลือบ?|</div>
+</div>
+
+<!-- S5 10.26-17.08 bisglycinate absorbs too fast: peak 2h then down to 8h -->
+<div class="scene" data-s="10.26" data-e="17.08" data-cam="10.26:1:720:540;12.6:1:720:540;13.4:1.05:560:560;14.8:1.05:560:560;15.6:1:720:540;17.08:1.02:760:540">
+ <div class="sky dusk"></div>
+ <div class="cam">
+  <div class="sun" style="left:820px;top:420px;width:420px;height:420px"></div>
+  <div class="ground"></div>
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080">
+   <path id="hill5" fill="#0D0503"/>
+   <path id="rim5" fill="none" stroke="#FFDDA6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+   <g id="ticks5"></g>
+   <g id="walk5"></g>
+   <path id="ann5" fill="none" stroke="#FFE6A6" stroke-width="7" stroke-linecap="round"/>
+   <path id="ann5b" fill="none" stroke="#FFE6A6" stroke-width="7" stroke-linecap="round"/>
+  </svg>
+  <div class="a lab" data-at="14.2" data-an="fade" style="left:700px;width:300px;top:470px;font-size:26px">BISGLYCINATE</div>
+  <div class="a" data-at="13.3" data-an="pop" style="left:395px;top:312px"><span class="pill" style="font-size:44px">2 ชม.</span></div>
+  <div class="a" data-at="16.12" data-an="pop" style="left:1100px;top:600px"><span class="pill" style="font-size:44px">8 ชม.</span></div>
+ </div>
+ <div class="cap" data-at="10.72" data-out="12.62">ดูดซึม|เร็วเกินไป|</div>
+ <div class="cap" data-at="12.72" data-out="14.75">|2 ชม.| ก็ถึงจุดสูงสุด</div>
+ <div class="cap" data-at="14.86" data-out="16.02">แล้ว|ค่อยๆ ลดลง|</div>
+ <div class="cap" data-at="16.12">จนครบ |8 ชม.|</div>
+</div>
+
+<!-- S6 17.08-22.64 this one: slow release, slow absorb -->
+<div class="scene" data-s="17.08" data-e="22.64" data-cam="17.08:1.06:720:560;18.6:1:720:540;22.64:1.03:720:530">
+ <div class="sky gold"></div>
+ <div class="cam">
+  <div class="sun" id="sun6" style="left:470px;top:330px;width:500px;height:500px"></div>
+  <svg class="grass" viewBox="0 0 1840 62"><path class="gp" fill="#0D0503"/></svg>
+  <div class="ground"></div>
+  <div class="a" id="jar6w" data-at="17.08" data-an="fade" style="left:577px;top:370px;width:252px;height:470px">
+   <div class="prod sil" style="position:absolute;inset:0"></div>
+   <div class="prod rim" id="jar6c" style="position:absolute;inset:0;opacity:0"></div>
+  </div>
+  <div class="a" id="hg6" data-at="18.7" data-an="rise" style="left:930px;top:420px"><svg width="300" height="420" viewBox="0 0 300 420"><g id="hgl"></g></svg></div>
+ </div>
+ <div class="cap" data-at="17.1" data-out="18.55">แต่|ตัวนี้|</div>
+ <div class="cap" data-at="18.66" data-out="20.06">|ค่อยๆ| ปลดปล่อย</div>
+ <div class="cap" data-at="20.16" data-out="21.38">ร่างกาย|ค่อยๆ| ดูดซึม</div>
+ <div class="cap" data-at="21.46">|ค่อยๆ| ได้รับซิงค์</div>
+</div>
+
+<!-- S7 22.64-30.92 stays longer: high up to 6h, no drop in first 6h -->
+<div class="scene" data-s="22.64" data-e="30.92" data-cam="22.64:1:720:540;26.0:1:720:540;27.0:1.04:640:540;30.92:1.02:700:540">
+ <div class="sky dusk"></div>
+ <div class="cam">
+  <div class="sun" style="left:880px;top:430px;width:400px;height:400px"></div>
+  <div class="ground"></div>
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080">
+   <path id="hill7" fill="#0D0503"/>
+   <path id="rim7" fill="none" stroke="#FFC24A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+   <path id="old7" fill="none" stroke="rgba(255,236,214,.6)" stroke-width="5" stroke-dasharray="14 12" stroke-linecap="round"/>
+   <g id="ticks7"></g>
+   <g id="walk7"></g>
+   <path id="br7" fill="none" stroke="#FFE6A6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="a lab" id="oldlab7" data-at="22.8" data-an="fade" style="left:450px;width:300px;top:398px;font-size:24px;letter-spacing:4px;color:rgba(255,236,214,.75)">BISGLYCINATE</div>
+  <div class="a" data-at="27.3" data-an="pop" style="left:700px;top:420px"><span class="pill" style="font-size:46px">6 ชม.</span></div>
+  <div class="a lab" data-at="25.0" data-an="fade" style="left:1050px;width:220px;top:470px;color:#FFC24A;font-weight:800;font-size:34px;letter-spacing:3px">iCAP</div>
+ </div>
+ <div class="cap" data-at="22.7" data-out="26.08">อยู่ในร่างกาย|ได้นานกว่า|</div>
+ <div class="cap" data-at="26.18" data-out="28.06">สูงได้ถึง |6 ชม.|</div>
+ <div class="cap" data-at="28.16">6 ชม.แรก |ไม่ลดลงเลย|</div>
+</div>
+
+<!-- S8 30.92-32.38 this is the advantage -->
+<div class="scene" data-s="30.92" data-e="32.38" data-cam="30.92:1.06:720:560;32.38:1:720:540">
+ <div class="sky gold"></div>
+ <div class="cam">
+  <div class="a" data-at="30.92" data-an="fade" data-spin="8" style="left:220px;top:110px;width:1000px;height:1000px;border-radius:50%;background:repeating-conic-gradient(rgba(255,238,200,.32) 0 6deg,rgba(255,238,200,0) 6deg 18deg);-webkit-mask:radial-gradient(circle,#000 18%,transparent 66%)"></div>
+  <div class="sun" style="left:470px;top:330px;width:500px;height:500px"></div>
+  <svg class="grass" viewBox="0 0 1840 62"><path class="gp" fill="#0D0503"/></svg>
+  <div class="ground"></div>
+  <div class="a prod rim" data-at="30.92" data-an="rise" data-float="0" style="left:577px;top:360px;width:252px;height:470px"></div>
+ </div>
+ <div class="cap" data-at="30.95">ข้อดีของ|ซิงค์ตัวนี้|</div>
+</div>
+
+<!-- S9 32.38-35.92 made in Thailand, Thai factory, new iCAP innovation -->
+<div class="scene" data-s="32.38" data-e="35.92" data-cam="32.38:1:720:540;35.92:1.05:720:560">
+ <div class="sky dusk"></div>
+ <div class="cam">
+  <div class="sun" style="left:820px;top:380px;width:460px;height:460px"></div>
+  <div class="ground"></div>
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="smoke9"></g><g id="fac9"></g><g id="flag9"></g></svg>
+  <div class="a" data-at="34.68" data-an="pop" style="left:1090px;top:460px"><svg width="1" height="1"><g id="pel9"></g></svg></div>
+ </div>
+ <div class="cap" data-at="32.4" data-out="33.55">ผลิต|ในไทย|</div>
+ <div class="cap" data-at="33.64" data-out="34.6">|โรงงานไทย|</div>
+ <div class="cap" data-at="34.68">นวัตกรรมใหม่ |iCAP|</div>
+</div>
+
+<!-- S10 35.92-42.84 good absorption already, upgraded to stay longer -->
+<div class="scene" data-s="35.92" data-e="42.84" data-cam="35.92:1:720:540;39.6:1:720:540;41.0:1.03:760:560;42.84:1.03:760:560">
+ <div class="sky dusk"></div>
+ <div class="cam">
+  <div class="sun" style="left:880px;top:250px;width:440px;height:440px"></div>
+  <svg class="grass" viewBox="0 0 1840 62"><path class="gp" fill="#0D0503"/></svg>
+  <div class="ground"></div>
+  <div class="a" data-at="35.95" data-an="rise" style="left:330px;top:720px;width:400px;height:160px;background:#0D0503;border-top:5px solid #FFDDA6"></div>
+  <div class="a" data-at="36.05" data-an="rise" style="left:730px;top:560px;width:420px;height:320px;background:#0D0503;border-top:5px solid #FFC24A"></div>
+  <div class="a lab" data-at="37.74" data-an="rise" style="left:330px;width:400px;top:760px;letter-spacing:1px;font-size:46px;font-weight:800">ดูดซึมดี</div>
+  <div class="a lab" data-at="41.08" data-an="rise" style="left:730px;width:420px;top:610px;letter-spacing:1px;font-size:46px;font-weight:800;color:#FFD27A">+ อยู่ได้นานขึ้น</div>
+  <div class="a lab" data-at="41.2" data-an="fade" style="left:730px;width:420px;top:680px;font-size:24px;letter-spacing:5px">iCAP</div>
+  <div class="a prod rim" data-at="40.7" data-an="rise" data-float="1" style="left:1020px;top:352px;width:113px;height:210px"></div>
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="walk10"></g></svg>
+ </div>
+ <div class="cap" data-at="35.95" data-out="37.64">อยู่ได้|นานกว่าเดิม|</div>
+ <div class="cap" data-at="37.74" data-out="39.66">บิสไกลซิเนต |ดูดซึมดี|</div>
+ <div class="cap" data-at="39.76" data-out="40.98">|พัฒนา|ขึ้นไปอีก</div>
+ <div class="cap" data-at="41.08">อยู่ในร่างกาย|นานขึ้น|</div>
+</div>
+
+<!-- S11 42.84-end CTA yellow basket, just launched -->
+<div class="scene" data-s="42.84" data-e="99" data-cam="42.84:1.05:720:560;44.6:1:720:540;48.5:1.03:720:530">
+ <div class="sky gold"></div>
+ <div class="cam">
+  <div class="a" data-at="42.84" data-an="fade" data-spin="6" style="left:220px;top:110px;width:1000px;height:1000px;border-radius:50%;background:repeating-conic-gradient(rgba(255,238,200,.28) 0 6deg,rgba(255,238,200,0) 6deg 18deg);-webkit-mask:radial-gradient(circle,#000 18%,transparent 66%)"></div>
+  <div class="sun" style="left:470px;top:330px;width:500px;height:500px"></div>
+  <svg class="grass" viewBox="0 0 1840 62"><path class="gp" fill="#0D0503"/></svg>
+  <div class="ground"></div>
+  <div class="a prod rim" data-at="42.86" data-an="rise" data-float="0.5" style="left:577px;top:360px;width:252px;height:470px"></div>
+  <div class="a" data-at="44.7" data-an="pop" data-bob="0" style="left:950px;top:500px"><svg width="220" height="220" viewBox="-110 -110 220 220"><circle r="104" fill="#1A0805" stroke="#FFE6A6" stroke-width="5"/><g id="bsk"></g></svg></div>
+  <div class="a" data-at="45.2" data-an="pop" style="left:1080px;top:640px"><svg width="90" height="110" viewBox="0 0 90 110" id="tap11"><path d="M30 8a10 10 0 0120 0v40l22 6c8 2 12 8 10 16l-6 28H34L12 64c-4-6 2-14 10-10l8 6z" fill="#FFF3E4" stroke="#2A0907" stroke-width="5" stroke-linejoin="round"/></svg></div>
+  <div class="a" data-at="46.64" data-an="stamp" style="left:250px;top:480px"><span class="pill" style="font-size:50px;transform:rotate(-6deg);display:inline-block">เปิดตัวใหม่!</span></div>
+ </div>
+ <div class="cap" data-at="42.9" data-out="44.6">นวัตกรรม|ใหม่|ของซิงค์</div>
+ <div class="cap" data-at="44.7">กด|ตะกร้าสีเหลือง|ได้เลย</div>
+</div>
+
+<div id="dustL" style="position:absolute;inset:0;pointer-events:none;z-index:50"></div>
+<div id="fadeK" style="position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;z-index:60"></div>
+<div id="safe" style="display:none;position:absolute;left:130px;top:130px;width:1180px;height:820px;border:3px dashed #0f0;z-index:99"></div>
+</div>
+<script>
+const W=1440,H=1080,INK='#0D0503',CREAM='#FFE6A6',GOLD='#FFC24A';
+const NS='http://www.w3.org/2000/svg';
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eOC=p=>1-Math.pow(1-p,3);
+const eOB=p=>{const c1=1.7,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+const eIO=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+const ss=(a,b,x)=>{const p=cl((x-a)/(b-a));return p*p*(3-2*p)};
+let seed=11;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+const $=id=>document.getElementById(id);
+if(location.hash==='#safe')$('safe').style.display='block';
+const mk=(tag,attrs,parent)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e};
+
+// grass silhouettes
+document.querySelectorAll('.gp').forEach(p=>{let d='M0 62';let x=0;while(x<1840){const w=6+rnd()*10,h=14+rnd()*44,lean=(rnd()-.5)*14;d+=` L${x.toFixed(1)} 62 Q${(x+w*.3+lean*.4).toFixed(1)} ${(62-h*.6).toFixed(1)} ${(x+w/2+lean).toFixed(1)} ${(62-h).toFixed(1)} Q${(x+w*.7+lean*.2).toFixed(1)} ${(62-h*.5).toFixed(1)} ${(x+w).toFixed(1)} 62`;x+=w*0.7}d+=' L1840 62 Z';p.setAttribute('d',d)});
+
+// silhouette person: feet at origin
+function person(g,h,face=1){const o={g,h,face};const lw=h*0.085;
+ o.legL=mk('line',{stroke:INK,'stroke-width':lw,'stroke-linecap':'round'},g);o.legR=mk('line',{stroke:INK,'stroke-width':lw,'stroke-linecap':'round'},g);
+ o.armB=mk('line',{stroke:INK,'stroke-width':lw*0.85,'stroke-linecap':'round'},g);
+ o.body=mk('line',{stroke:INK,'stroke-width':h*0.19,'stroke-linecap':'round'},g);
+ o.head=mk('circle',{r:h*0.095,fill:INK},g);
+ o.armF=mk('line',{stroke:INK,'stroke-width':lw*0.85,'stroke-linecap':'round'},g);
+ o.set=({x=0,y=0,legs=[0.12,-0.12],arms=[0.15,-0.15],lean=0,tilt=0,bob=0,face=o.face})=>{
+  g.setAttribute('transform',`translate(${x} ${y-bob}) scale(${face} 1) rotate(${lean})`);
+  const hipY=-h*0.47,shY=-h*0.75,L=h*0.45,A=h*0.36;
+  const leg=(el,a)=>{el.setAttribute('x1',0);el.setAttribute('y1',hipY);el.setAttribute('x2',Math.sin(a)*L);el.setAttribute('y2',hipY+Math.cos(a)*L)};
+  leg(o.legL,legs[0]);leg(o.legR,legs[1]);
+  o.body.setAttribute('x1',0);o.body.setAttribute('y1',hipY+h*0.04);o.body.setAttribute('x2',h*0.01);o.body.setAttribute('y2',shY);
+  const arm=(el,a)=>{el.setAttribute('x1',0);el.setAttribute('y1',shY+h*0.02);el.setAttribute('x2',Math.sin(a)*A);el.setAttribute('y2',shY+h*0.02+Math.cos(a)*A)};
+  arm(o.armB,arms[0]);arm(o.armF,arms[1]);
+  o.head.setAttribute('cx',Math.sin(tilt)*h*0.05+h*0.01);o.head.setAttribute('cy',-h*0.89+Math.abs(tilt)*h*0.02)};
+ o.set({});return o}
+const walkPose=(ph,amp=0.5)=>({legs:[Math.sin(ph)*amp,-Math.sin(ph)*amp],arms:[-Math.sin(ph)*amp*0.8,Math.sin(ph)*amp*0.8],bob:Math.abs(Math.cos(ph))*4});
+
+// element ball silhouette
+function ball(g,r,sym){mk('circle',{r:r+26,fill:'rgba(255,214,150,.14)'},g);mk('circle',{r,fill:INK,stroke:CREAM,'stroke-width':5},g);
+ mk('circle',{r:r-18,fill:'none',stroke:'rgba(255,230,170,.25)','stroke-width':3},g);
+ const t=mk('text',{x:0,y:r*0.22,'text-anchor':'middle','font-family':'K','font-weight':900,'font-size':r*0.78,fill:CREAM},g);t.textContent=sym;
+ const s=mk('text',{x:0,y:r*0.55,'text-anchor':'middle','font-family':'K','font-weight':600,'font-size':r*0.15,'letter-spacing':3,fill:'rgba(255,230,190,.8)'},g);s.textContent='ZINC';return g}
+ball($('ball2'),170,'Zn');
+// globe
+const GL={g:$('glb'),mer:[]};{const g=GL.g;mk('circle',{r:150,fill:INK,stroke:CREAM,'stroke-width':5},g);
+ for(const y of [-90,-45,0,45,90]){const rx=Math.sqrt(150*150-y*y);mk('line',{x1:-rx,y1:y,x2:rx,y2:y,stroke:'rgba(255,214,150,.5)','stroke-width':3},g)}
+ for(let i=0;i<4;i++)GL.mer.push(mk('ellipse',{cx:0,cy:0,rx:10,ry:150,fill:'none',stroke:'rgba(255,214,150,.5)','stroke-width':3},g))}
+
+// pellet (top view): core + layers
+function pellet(g,R,n){const o={rings:[]};const step=R/(n+1.6);
+ for(let i=n;i>=1;i--){const r=step*(1.6+i);const c=mk('g',{},g);
+  mk('circle',{r,fill:i%2?'#2A0C06':'#3B1308',stroke:CREAM,'stroke-width':4},c);
+  mk('circle',{r:r-step*0.5,fill:'none',stroke:'rgba(255,214,150,.18)','stroke-width':2},c);o.rings.unshift(c)}
+ o.core=mk('g',{},g);ball(o.core,step*1.6,'Zn');return o}
+const P3=pellet($('pel3'),262,4);
+const arc3=mk('path',{fill:'none',stroke:GOLD,'stroke-width':10,'stroke-linecap':'round'},$('pel3'));
+const P9=pellet($('pel9'),110,3);
+
+// people
+const pp1a=person($('pp1a'),300,1),pp1b=person($('pp1b'),280,-1),pp4=person($('pp4'),330,1);
+pp1a.set({arms:[0.2,2.4],tilt:0.15});pp1b.set({arms:[0.1,-0.2],tilt:0.2,face:-1});
+
+// graphs
+const X=h=>230+h*120,Y=v=>830-v*380;
+const fFast=h=>(h/2)*Math.exp(1-h/2);
+const fNew=h=>0.8*ss(0,1.7,h)-(h>6?0.32*ss(6,8,h):0);
+function curvePts(f,h1){const pts=[];const n=Math.max(2,Math.ceil(h1*14));for(let i=0;i<=n;i++){const h=h1*i/n;pts.push([X(h),Y(f(h))])}return pts}
+const P=pts=>pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+function ticks(g){for(const h of [0,2,4,6,8]){mk('line',{x1:X(h),y1:842,x2:X(h),y2:858,stroke:'rgba(255,230,190,.7)','stroke-width':4},g);const t=mk('text',{x:X(h),y:900,'text-anchor':'middle','font-family':'K','font-weight':600,'font-size':34,fill:'rgba(255,230,190,.85)'},g);t.textContent=h}
+ const t=mk('text',{x:X(8)+70,y:900,'text-anchor':'middle','font-family':'K','font-weight':600,'font-size':30,fill:'rgba(255,230,190,.85)'},g);t.textContent='ชม.'}
+ticks($('ticks5'));ticks($('ticks7'));
+$('old7').setAttribute('d',P(curvePts(fFast,8)));
+const w5=person($('walk5'),150,1),w7=person($('walk7'),150,1),w10=person($('walk10'),170,1);
+function hillDraw(hill,rim,f,h1){const pts=curvePts(f,Math.max(0.001,h1));rim.setAttribute('d',P(pts));hill.setAttribute('d',P(pts)+` L${pts[pts.length-1][0]} 845 L${X(0)} 845 Z`)}
+function drawOn(path,d,p){path.setAttribute('d',d);const L=path.getTotalLength();path.style.strokeDasharray=L;path.style.strokeDashoffset=L*(1-p)}
+const ellD=(cx,cy,rx,ry)=>{let d='';for(let i=0;i<=40;i++){const a=-2.0+i/40*Math.PI*2.15;const w=1+0.06*Math.sin(i*0.7);d+=(i?'L':'M')+(cx+Math.cos(a)*rx*w).toFixed(1)+' '+(cy+Math.sin(a)*ry*w).toFixed(1)}return d};
+
+// hourglass
+const HG={};{const g=$('hgl');
+ mk('rect',{x:20,y:0,width:260,height:26,rx:8,fill:INK,stroke:CREAM,'stroke-width':4},g);mk('rect',{x:20,y:394,width:260,height:26,rx:8,fill:INK,stroke:CREAM,'stroke-width':4},g);
+ const glass='M50 26 C50 130 140 170 140 210 C140 250 50 290 50 394 L250 394 C250 290 160 250 160 210 C160 170 250 130 250 26 Z';
+ mk('path',{d:glass,fill:'rgba(255,230,190,.12)'},g);
+ const cp=mk('clipPath',{id:'hgc'},g);mk('path',{d:glass},cp);
+ const sg=mk('g',{'clip-path':'url(#hgc)'},g);
+ HG.top=mk('rect',{x:40,width:220,fill:'#FFC85A'},sg);HG.bot=mk('path',{fill:'#FFC85A'},sg);HG.str=mk('line',{x1:150,x2:150,y1:205,stroke:'#FFC85A','stroke-width':5},sg);
+ HG.dots=[];for(let i=0;i<5;i++)HG.dots.push(mk('circle',{r:4,cx:150,fill:'#FFE3A0'},sg));
+ mk('path',{d:glass,fill:'none',stroke:CREAM,'stroke-width':5},g);
+ mk('line',{x1:34,y1:26,x2:34,y2:394,stroke:INK,'stroke-width':12},g);mk('line',{x1:266,y1:26,x2:266,y2:394,stroke:INK,'stroke-width':12},g)}
+
+// factory
+const SMK=[];{const g=$('fac9');
+ let d='M180 845 L180 640 L300 640 L300 600 L340 600 L340 640 L400 640 L400 680 L470 620 L470 680 L540 620 L540 680 L610 620 L610 680 L680 620 L680 845 Z';mk('path',{d,fill:INK},g);
+ d='M690 845 L690 560 L720 560 L720 420 L760 420 L760 560 L800 560 L800 470 L838 470 L838 560 L960 560 L960 845 Z';mk('path',{d,fill:INK},g);
+ for(let i=0;i<6;i++)mk('rect',{x:470+i*70-50,y:715,width:30,height:30,fill:'#FFC85A',opacity:.8},g);
+ for(let i=0;i<3;i++)for(let j=0;j<2;j++)mk('rect',{x:715+i*80,y:610+j*70,width:38,height:34,fill:'#FFC85A',opacity:.8},g);
+ const sg=$('smoke9');for(let i=0;i<14;i++){const c=mk('circle',{fill:'rgba(40,12,6,.55)'},sg);SMK.push({c,x:i%2?740:819,y0:i%2?420:470,ph:i/14})}
+ const fg=$('flag9');mk('line',{x1:330,y1:600,x2:330,y2:470,stroke:INK,'stroke-width':6},fg);
+ const fl=mk('g',{id:'flagw',transform:'translate(333 474)'},fg);
+ [['#A51931',0],['#F4F5F8',13],['#2D2A4A',26],['#F4F5F8',52],['#A51931',65]].forEach(([c,y],k)=>mk('rect',{x:0,y,width:110,height:k==2?26:13,fill:c},fl))}
+
+// basket
+{const g=$('bsk');mk('path',{d:'M-62 -14 L62 -14 L48 58 L-48 58 Z',fill:'#FFD21F',stroke:'#2A0907','stroke-width':7,'stroke-linejoin':'round'},g);
+ mk('path',{d:'M-38 -14 Q-30 -66 0 -66 Q30 -66 38 -14',fill:'none',stroke:'#FFD21F','stroke-width':12,'stroke-linecap':'round'},g);
+ mk('path',{d:'M-38 -14 Q-30 -66 0 -66 Q30 -66 38 -14',fill:'none',stroke:'#2A0907','stroke-width':3},g);
+ for(const x of [-26,0,26])mk('line',{x1:x,y1:4,x2:x*0.85,y2:44,stroke:'#2A0907','stroke-width':6,'stroke-linecap':'round'},g)}
+
+// dust
+const DUST=[];for(let i=0;i<34;i++){const d=document.createElement('div');d.className='dust';const s=2+rnd()*5;d.style.width=d.style.height=s+'px';$('dustL').appendChild(d);DUST.push({d,x:rnd()*W,y:rnd()*H,v:8+rnd()*18,ph:rnd()*6.28,o:.2+rnd()*.45})}
+
+// captions
+const seg=new Intl.Segmenter('th',{granularity:'grapheme'});
+const caps=[...document.querySelectorAll('.cap')].map(el=>{const txt=el.textContent;el.textContent='';const gs=[];let hl=false;
+ for(const {segment} of seg.segment(txt)){if(segment==='|'){hl=!hl;continue}const s=document.createElement('span');s.className='g'+(hl?' h':'');s.textContent=segment===' '?' ':segment;el.appendChild(s);gs.push(s)}
+ return{el,gs,at:+el.dataset.at,out:el.dataset.out?+el.dataset.out:null,pulse:!!el.dataset.pulse}});
+function capRender(t){for(const k of caps){const vis=t>=k.at;const ok=k.out!==null?cl((t-k.out)/0.22):0;k.el.style.opacity=vis?1-ok:0;if(!vis||ok>=1)continue;
+ k.el.style.transform=(ok>0?`translateY(${-30*eIO(ok)}px)`:'')+(k.pulse?` scale(${1+0.025*Math.sin(t*5)})`:'');
+ k.gs.forEach((g,i)=>{const lt=t-k.at-i*0.022;if(k.at<0){g.style.opacity=1;g.style.transform='';return}const p=cl(lt/0.35);g.style.opacity=eOC(p);g.style.transform=`translateY(${(1-eOC(p))*34}px)`})}}
+
+// scenes
+const scenes=[...document.querySelectorAll('.scene')].map(el=>({el,s:+el.dataset.s,e:+el.dataset.e,cam:(el.dataset.cam||'').split(';').filter(Boolean).map(k=>k.split(':').map(Number)),camEl:el.querySelector('.cam'),items:[...el.querySelectorAll('.a')]}));
+function camAt(keys,t){if(!keys.length)return[1,720,540];if(t<=keys[0][0])return keys[0].slice(1);for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t<=b[0]){const p=eIO(cl((t-a[0])/(b[0]-a[0])));return[1,2,3].map(j=>a[j]+(b[j]-a[j])*p)}}return keys[keys.length-1].slice(1)}
+function animT(an,p){switch(an){case'fade':return[eOC(p),''];case'pop':return[cl(p*3),`scale(${p<=0?0:eOB(p)})`];
+ case'rise':{const e=eOC(p);return[e,`translateY(${(1-e)*60}px)`]}
+ case'stamp':{const e=eOB(p);return[cl(p*4),`scale(${1.5-0.5*e})`]}}return[1,'']}
+const DUR={fade:.5,pop:.5,rise:.6,stamp:.4};const XF=0.4;
+
+window.render=function(t){
+ scenes.forEach((sc,i)=>{const nx=scenes[i+1];const on=t>=sc.s&&t<(nx?sc.e+XF:999);sc.el.style.display=on?'block':'none';if(!on)return;
+  sc.el.style.zIndex=i;sc.el.style.opacity=i===0?1:eIO(cl((t-sc.s)/XF));
+  const[s,fx,fy]=camAt(sc.cam,t);if(sc.camEl)sc.camEl.style.transform=`translate(720px,540px) scale(${s}) translate(${-fx}px,${-fy}px)`;
+  for(const el of sc.items){const at=+el.dataset.at,an=el.dataset.an,p=at<0?1:cl((t-at)/DUR[an]);let[o,tr]=t<at?[0,'']:animT(an,p);
+   if(el.dataset.out){const k=cl((t-+el.dataset.out)/0.28);if(k>0){o*=1-k;tr+=` translateY(${-eIO(k)*30}px)`}}
+   if(el.dataset.float){const ph=+el.dataset.float;tr+=` translateY(${Math.sin(t*1.8+ph)*8}px)`}
+   if(el.dataset.bob){const ph=+el.dataset.bob;tr+=` translateY(${Math.sin(t*3+ph)*9}px) rotate(${Math.sin(t*2.2+ph)*5}deg)`}
+   if(el.dataset.spin)tr+=` rotate(${t*el.dataset.spin}deg)`;
+   el.style.opacity=o;el.style.transform=tr}});
+ // S1: people look, jar breathes
+ if(t<2.4){$('sun1').style.transform=`scale(${1+0.04*Math.sin(t*3)})`;pp1a.set({arms:[0.2,2.5+0.15*Math.sin(t*4)],tilt:0.15+0.08*Math.sin(t*2.5),bob:0});pp1b.set({arms:[0.1,-0.2],tilt:0.2+0.1*Math.sin(t*3),face:-1})}
+ // S2: ball moves left when globe arrives; globe spins
+ if(t>1.9&&t<7){const k=eIO(cl((t-5.3)/0.6));$('zn2').style.left=(720-280*k)+'px';$('zn2').style.transform+=` scale(${1-0.18*k})`;
+  GL.mer.forEach((m,i)=>{const a=(t*0.9+i*Math.PI/4)%Math.PI;m.setAttribute('rx',Math.abs(Math.cos(a))*150)});
+  const ap=cl((t-5.6)/0.8);drawOn($('arc2'),'M560 560 Q 700 300 880 470',eOC(ap))}
+ // S3: layers wrap the core one by one, then a slow timer arc
+ if(t>6.4&&t<9.6){P3.core.setAttribute('transform',`scale(${eOB(cl((t-6.54)/0.4))})`);
+  P3.rings.forEach((r,i)=>{const k=cl((t-6.75-i*0.3)/0.35);r.setAttribute('transform',`scale(${k?0.6+0.4*eOB(k):0})`);r.setAttribute('opacity',cl(k*2))});
+  const k=cl((t-7.7)/1.6);const R=280,a0=-Math.PI/2,a1=a0+k*Math.PI*1.3;arc3.setAttribute('d',k>0?`M${Math.cos(a0)*R} ${Math.sin(a0)*R} A${R} ${R} 0 ${a1-a0>Math.PI?1:0} 1 ${Math.cos(a1)*R} ${Math.sin(a1)*R}`:'');
+  $('pel3').setAttribute('transform',`translate(720 610) rotate(${(t-6.54)*6})`)}
+ // S4: puzzled person scratching head
+ if(t>9&&t<10.8)pp4.set({arms:[0.15,2.6+0.25*Math.sin(t*12)],tilt:0.25*Math.sin(t*2+1),legs:[0.1,-0.1]});
+ // S5: fast curve, walker at constant speed
+ if(t>10.2&&t<17.6){const hw=8*cl((t-11.2)/5.8);hillDraw($('hill5'),$('rim5'),fFast,hw);
+  const v=fFast(hw),sl=(fFast(hw+0.05)-fFast(Math.max(0,hw-0.05)))/0.1*380/120;w5.set({x:X(hw),y:Y(v)-2,lean:-Math.atan(sl)*57.3*0.6,...walkPose(t*9)});
+  const a=cl((t-13.3)/0.35);drawOn($('ann5'),ellD(X(2),Y(1)-6,70,52),a);$('ann5').style.opacity=a?1:0;
+  const b=cl((t-16.12)/0.35);drawOn($('ann5b'),ellD(X(8),880,48,40),b);$('ann5b').style.opacity=b?1:0}
+ // S6: jar lights up, hourglass trickles slowly
+ if(t>17&&t<23.2){const k=eIO(cl((t-17.4)/0.9));$('jar6c').style.opacity=k;$('sun6').style.transform=`scale(${0.8+0.25*k})`;
+  const m=eIO(cl((t-18.4)/0.7));$('jar6w').style.transform+=` translateX(${-260*m}px)`;
+  const q=cl((t-18.9)/3.9);const topH=150*(1-q)+8;HG.top.setAttribute('y',200-topH);HG.top.setAttribute('height',topH);
+  const bh=20+120*q;HG.bot.setAttribute('d',`M30 394 L30 ${394-bh*0.35} Q150 ${394-bh*1.25} 270 ${394-bh*0.35} L270 394 Z`);
+  HG.str.setAttribute('y2',394-bh*0.8);HG.str.setAttribute('opacity',t>18.9?1:0);
+  HG.dots.forEach((d,i)=>{const f=((t*0.9+i/5)%1);d.setAttribute('cy',210+f*(394-bh*0.8-210));d.setAttribute('opacity',t>18.9?1-f*0.5:0)})}
+ // S7: compare; new curve at constant speed, bracket over 0-6h
+ if(t>22.5&&t<31.4){const hw=8*cl((t-23.4)/6.2);hillDraw($('hill7'),$('rim7'),fNew,hw);
+  const v=fNew(hw),sl=(fNew(hw+0.05)-fNew(Math.max(0,hw-0.05)))/0.1*380/120;w7.set({x:X(hw),y:Y(v)-2,lean:-Math.atan(sl)*57.3*0.6,...walkPose(t*8,0.4)});
+  $('old7').style.opacity=cl((t-22.7)/0.5);
+  const b=cl((t-27.0)/0.5);const by=Y(0.8)-46;drawOn($('br7'),`M${X(0.2)} ${by+18} L${X(0.2)} ${by} L${X(6)} ${by} L${X(6)} ${by+18}`,eOC(b));$('br7').style.opacity=b?1:0}
+ // S9: smoke + flag wave
+ if(t>32.3&&t<36.4){SMK.forEach(s=>{const f=((t*0.25+s.ph)%1);s.c.setAttribute('cx',s.x+f*80+Math.sin(f*6)*10);s.c.setAttribute('cy',s.y0-f*260);s.c.setAttribute('r',12+f*46);s.c.setAttribute('opacity',(1-f)*0.9)});
+  $('flagw').setAttribute('transform',`translate(333 474) skewY(${Math.sin(t*4)*4})`);
+  P9.rings.forEach((r,i)=>{const k=cl((t-34.8-i*0.15)/0.3);r.setAttribute('transform',`scale(${k?0.6+0.4*eOB(k):0})`)})}
+ // S10: figure climbs the steps (smooth arcs)
+ if(t>35.8&&t<43.3){const path=[[35.9,250,840],[37.7,250,840],[38.5,470,720],[39.7,470,720],[40.6,880,560],[99,880,560]];
+  let x=250,y=840,walking=false,jump=0;for(let i=0;i<path.length-1;i++){const a=path[i],b=path[i+1];if(t>=a[0]&&t<b[0]){const p=(t-a[0])/(b[0]-a[0]);if(a[1]!==b[1]){walking=true;const e=eIO(p);x=a[1]+(b[1]-a[1])*e;y=a[2]+(b[2]-a[2])*e-Math.sin(Math.PI*e)*90}else{x=a[1];y=a[2]}break}}
+  const cheer=t>41.08;w10.set({x,y,...(walking?walkPose(t*10,0.5):{legs:cheer?[0.25,-0.25]:[0.1,-0.1],arms:cheer?[2.6+0.2*Math.sin(t*8),-2.6-0.2*Math.sin(t*8)]:[0.15,-0.15],bob:cheer?Math.abs(Math.sin(t*6))*10:0})})}
+ // S11: tap hand presses basket
+ if(t>45)$('tap11').style.transform=`translateY(${Math.abs(Math.sin((t-45.2)*4))*-14}px)`;
+ for(const p of DUST){const y=((p.y-p.v*t)%(H+40)+H+40)%(H+40)-20;p.d.style.transform=`translate(${p.x+Math.sin(t*.6+p.ph)*30}px,${y}px)`;p.d.style.opacity=p.o*(0.6+0.4*Math.sin(t*1.5+p.ph))}
+ capRender(t);
+ $('fadeK').style.opacity=cl((t-47.9)/0.6)*0.85;
+};
+window.render(0);
+</script>
+</body></html>
