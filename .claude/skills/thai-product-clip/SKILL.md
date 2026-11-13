@@ -59,6 +59,8 @@ From their re-edit of the 11/12 zinc clip — they layered these on top of our c
 - **INZENT Magnesium Bisglycinate (iFLOW), brown jar, blue hex label, 800 mg/tablet, 30 tablets** — cutout `assets/products/inzent_magnesium.png`. The user wants the product shown at the start and again on the "ผลิตที่ไทย โรงงานไทย" line.
 
 
+- **INZENT Vitamin D3+K2 (orange/yellow label, brown jar, 30 capsules)** — cutout `assets/products/inzent_d3k2.png`; 1 capsule = 15 mcg = 600 IU (from the user's footage).
+
 ## User feedback log (apply by default)
 
 - "ตากาสายล้าง" in Whisper = **ตะกร้าสีเหลือง** (yellow basket), not orange. Yellow basket on a non-yellow background.
@@ -70,6 +72,7 @@ From their re-edit of the 11/12 zinc clip — they layered these on top of our c
 - Label/ingredient photos: use the widest version that shows the whole panel; zoom the camera in on the circled number instead of cropping it tight.
 - Dose line on screen: just "1–2 เม็ด" (big text), no tablet diagrams.
 - Cover: one product on the right, plain jar crossed out on the left, arrow, number badge (small form note under it if asked, e.g. "BISGLYCINATE (20%)"), red headline on yellow comic burst.
+- Highlight caption style (asked for in 14/11/26): words rise in one by one, key words get a yellow (or pink for warnings) marker swipe behind them; see `output/src/1411` (`.hl` captions, `hlRender`). Pair with moving simulations (dose gauge, body tank filling, day/night office, calendar ticks).
 - Keep video files under ~45 MB (re-encode crf 21) so GitHub doesn't warn.
 
 ## Gotchas
