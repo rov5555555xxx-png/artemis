@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="th"><head><meta charset="utf-8"><style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2)}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2)}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2)}
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1440px;height:1080px;overflow:hidden;background:#fff}
+body{font-family:K,sans-serif;color:#1B2A4A}
+#stage{position:relative;width:1440px;height:1080px;overflow:hidden;background:#FFF6E9}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.sbg{position:absolute;inset:-60px}
+.peach{background:radial-gradient(circle at 50% 35%,#FFF4EA 0%,#FFE0CC 55%,#FFC3A1 100%)}
+.sky{background:linear-gradient(180deg,#BFE8FF 0%,#E6F7FF 70%,#FFF6DA 100%)}
+.mint{background:radial-gradient(circle at 50% 40%,#F2FFF9 0%,#C9F7E3 55%,#8EE6C2 100%)}
+.sun{background:radial-gradient(circle at 50% 40%,#FFFCEB 0%,#FFEFA8 55%,#FFD45E 100%)}
+.lilac{background:radial-gradient(circle at 50% 40%,#F8F3FF 0%,#E3D6FF 55%,#C3A9FF 100%)}
+.pink{background:radial-gradient(circle at 50% 40%,#FFF5F8 0%,#FFD9E4 55%,#FFADC4 100%)}
+.cam{position:absolute;inset:0;will-change:transform}
+.a{position:absolute;opacity:0;will-change:transform}
+.img{background-position:center;background-size:contain;background-repeat:no-repeat;filter:drop-shadow(0 22px 26px rgba(40,50,90,.35))}
+.p17{background-image:url(p17.png)}.ph{background-image:url(ph.png)}.bx{background-image:url(new_box.png);filter:drop-shadow(0 0 1.5px rgba(255,255,255,.9)) drop-shadow(0 22px 26px rgba(40,50,90,.35))}
+.kt{position:absolute;left:130px;width:1180px;text-align:center;font-weight:900;white-space:nowrap;line-height:1.25;color:#FFD23F;-webkit-text-stroke:14px #1B2A4A;paint-order:stroke fill;text-shadow:0 12px 0 #1B2A4A}
+.kt .g{display:inline-block;transform-origin:50% 80%;opacity:0}
+.stk{display:inline-block;padding:8px 36px 14px;border-radius:999px;font-weight:900;white-space:nowrap;line-height:1.2;border:7px solid #1B2A4A;box-shadow:0 10px 0 #1B2A4A}
+.cx{left:130px;width:1180px;text-align:center}
+.cloud{position:absolute;background:#fff;border-radius:999px;opacity:.9}
+.dot{position:absolute;border-radius:50%}
+.ring{position:absolute;width:360px;height:360px;margin:-180px 0 0 -180px;border-radius:50%;border:16px solid #fff;opacity:0}
+.conf{position:absolute;width:20px;height:30px;border-radius:6px}
+.rays{position:absolute;border-radius:50%;background:repeating-conic-gradient(rgba(255,255,255,.75) 0 9deg,rgba(255,255,255,0) 9deg 22deg);-webkit-mask:radial-gradient(circle,#000 25%,transparent 68%)}
+#stripe{position:absolute;top:-200px;width:3000px;height:1500px;transform:translateX(-3600px) skewX(-14deg)}
+#stripe div{position:absolute;top:0;bottom:0;width:160px}
+.kid svg,.jar svg{overflow:visible}
+.jar svg{width:100%;height:100%;display:block;filter:drop-shadow(0 16px 18px rgba(40,50,90,.3))}
+.hero svg{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 20px 22px rgba(40,50,90,.35))}
+.capsvg{position:absolute;width:260px;height:600px;transform-origin:50% 50%}
+.capsvg svg{width:100%;height:100%;display:block;overflow:visible}
+.bub{position:absolute;display:flex;flex-direction:column;align-items:center;gap:8px}
+.bub .c{width:230px;height:230px;border-radius:50%;border:8px solid #1B2A4A;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 0 #1B2A4A}
+.bub .c svg{width:150px;height:150px}
+.photo{position:absolute;border-radius:30px;overflow:hidden;border:9px solid #fff;box-shadow:0 0 0 7px #1B2A4A,0 22px 40px rgba(27,42,74,.35)}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* new patterned backgrounds: pattern layer (animated) + base gradient */
+.b-sun{--base:radial-gradient(circle at 50% 38%,#FFFBE6 0%,#FFE98A 60%,#FFC93D 100%)}
+.b-sky{--base:linear-gradient(180deg,#A8DBFF 0%,#D6F0FF 65%,#F2FBFF 100%)}
+.b-pink{--base:radial-gradient(circle at 50% 38%,#FFF1F6 0%,#FFC7DA 60%,#FF9EBE 100%)}
+.b-mint{--base:radial-gradient(circle at 50% 38%,#F0FFF8 0%,#BDF3DA 60%,#7EE0B6 100%)}
+.b-lilac{--base:radial-gradient(circle at 50% 38%,#F7F2FF 0%,#DCCBFF 60%,#B79BFF 100%)}
+.b-peach{--base:radial-gradient(circle at 50% 38%,#FFF3EA 0%,#FFD3B8 60%,#FFAE85 100%)}
+.p-dots{background:radial-gradient(circle,rgba(255,255,255,.55) 11px,transparent 12px) 0 0/84px 84px,var(--base)}
+.p-grid{background:linear-gradient(rgba(255,255,255,.5) 4px,transparent 4px) 0 0/90px 90px,linear-gradient(90deg,rgba(255,255,255,.5) 4px,transparent 4px) 0 0/90px 90px,var(--base)}
+.p-stripe{background:repeating-linear-gradient(45deg,rgba(255,255,255,.32) 0 26px,transparent 26px 64px) 0 0/181px 181px,var(--base)}
+.p-check{background:conic-gradient(rgba(255,255,255,.3) 25%,transparent 0 50%,rgba(255,255,255,.3) 0 75%,transparent 0) 0 0/120px 120px,var(--base)}
+.p-zig{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cpath d='M0 40l30-24l30 24l30-24l30 24' fill='none' stroke='white' stroke-opacity='.5' stroke-width='9' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0/120px 60px,var(--base)}
+.p-plus{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110'%3E%3Cpath d='M30 18v24M18 30h24M85 73v24M73 85h24' stroke='white' stroke-opacity='.6' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E") 0 0/110px 110px,var(--base)}
+.p-wave{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='70'%3E%3Cpath d='M0 35q20-22 40 0t40 0t40 0t40 0' fill='none' stroke='white' stroke-opacity='.5' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E") 0 0/160px 70px,var(--base)}
+.scal{position:absolute;left:-60px;right:-60px;height:90px;background:radial-gradient(circle at 50% 100%,#fff 44px,transparent 45px) 0 0/96px 90px;opacity:.95}
+.scal.top{top:-46px;transform:scaleY(-1)}
+.scal.bot{bottom:-44px}
+.card{display:flex;align-items:center;gap:16px;background:#fff;border:7px solid #1B2A4A;border-radius:28px;box-shadow:0 10px 0 #1B2A4A;padding:12px 30px 12px 18px;font-weight:900;font-size:52px;white-space:nowrap}
+.dot{background:none!important}
+
+.kt{position:absolute;left:130px;width:1180px;text-align:center;font-weight:900;white-space:nowrap;line-height:1.25;-webkit-text-stroke:16px #1B2A4A;paint-order:stroke fill;text-shadow:0 12px 0 #1B2A4A}
+.scal{position:absolute;left:-60px;right:-60px;height:90px;background:radial-gradient(circle at 50% 100%,#fff 44px,transparent 45px) 0 0/96px 90px}
+</style></head><body><div id="stage">
+<div class="b-sun p-dots" style="position:absolute;inset:0"></div>
+<div class="scal" style="top:-46px;transform:scaleY(-1)"></div><div class="scal" style="bottom:-44px"></div>
+<div class="rays" style="left:640px;top:-60px;width:760px;height:760px"></div>
+<!-- left: tired kid + empty battery -->
+<div style="position:absolute;left:150px;top:150px;width:320px;height:465px"><svg width="320" height="465" viewBox="-180 -500 360 520" id="kidT"></svg></div>
+<div style="position:absolute;left:190px;top:110px"><svg width="240" height="130" viewBox="0 0 360 200"><rect x="10" y="20" width="300" height="160" rx="30" fill="#fff" stroke="#1B2A4A" stroke-width="12"/><rect x="314" y="70" width="34" height="60" rx="10" fill="#1B2A4A"/><rect x="30" y="40" width="40" height="120" rx="14" fill="#FF4D4D"/></svg></div>
+<svg style="position:absolute;left:470px;top:320px" width="200" height="150" viewBox="0 0 200 150"><path d="M10 75H150M110 25l50 50l-50 50" fill="none" stroke="#1B2A4A" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 75H150M110 25l50 50l-50 50" fill="none" stroke="#FFD23F" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<!-- right: real product photo -->
+<div style="position:absolute;left:700px;top:100px;width:560px;height:560px;border-radius:30px;overflow:hidden;border:10px solid #fff;box-shadow:0 0 0 8px #1B2A4A,0 26px 40px rgba(27,42,74,.4);transform:rotate(3deg)"><img src="ph_pouchc.jpg" style="width:100%;height:100%;object-fit:cover"></div>
+<div style="position:absolute;left:1080px;top:470px;transform:rotate(8deg)"><svg width="230" height="130" viewBox="0 0 360 200"><rect x="10" y="20" width="300" height="160" rx="30" fill="#fff" stroke="#1B2A4A" stroke-width="12"/><rect x="314" y="70" width="34" height="60" rx="10" fill="#1B2A4A"/><rect x="30" y="40" width="260" height="120" rx="16" fill="#3DDC97"/><path d="M175 50L135 110H165L150 155L195 90H165L180 50Z" fill="#FFD23F" stroke="#1B2A4A" stroke-width="6" stroke-linejoin="round"/></svg></div>
+<!-- headline -->
+<svg style="position:absolute;left:100px;top:690px;overflow:visible" width="1240" height="280" viewBox="0 0 1240 280"><polygon points="1220,140 1101,164 1168,201 1018,209 1021,251 866,241 805,283 671,256 557,289 468,251 320,270 291,227 135,228 171,188 33,171 128,140 33,109 171,92 135,52 291,53 320,10 468,29 557,-9 671,24 805,-3 866,39 1021,29 1018,71 1168,79 1101,116" fill="#1B2A4A" transform="translate(0 14)"/><polygon points="1220,140 1101,164 1168,201 1018,209 1021,251 866,241 805,283 671,256 557,289 468,251 320,270 291,227 135,228 171,188 33,171 128,140 33,109 171,92 135,52 291,53 320,10 468,29 557,-9 671,24 805,-3 866,39 1021,29 1018,71 1168,79 1101,116" fill="#FFD23F" stroke="#1B2A4A" stroke-width="10" stroke-linejoin="round"/></svg>
+<div class="kt" style="top:732px;font-size:108px;color:#FF2E3D">เหนื่อย? นึกถึงวิตามินบี!</div>
+</div><script>
+const INK='#1B2A4A';
+function face(){return `<path d="M-48 -4h30M18 -4h30" stroke="${INK}" stroke-width="7" stroke-linecap="round"/><path d="M-18 36q9-7 18 0t18 0" stroke="${INK}" stroke-width="7" fill="none" stroke-linecap="round"/><ellipse cx="-58" cy="20" rx="16" ry="10" fill="#FF8FA3" opacity=".7"/><ellipse cx="58" cy="20" rx="16" ry="10" fill="#FF8FA3" opacity=".7"/>`}
+const sk='#FFD7B5',sh='#7FA2FF';const arm=(sd)=>{const sx=sd*70,sy=-170,ex=sd*95,ey=-40;return `<path d="M${sx} ${sy}L${ex} ${ey}" stroke="${INK}" stroke-width="44" stroke-linecap="round"/><path d="M${sx} ${sy}L${ex} ${ey}" stroke="${sh}" stroke-width="32" stroke-linecap="round"/><circle cx="${ex}" cy="${ey}" r="24" fill="${sk}" stroke="${INK}" stroke-width="6"/>`};
+document.getElementById('kidT').innerHTML=arm(-1)+arm(1)+`<path d="M-100 20V-130a50 50 0 0150-50h100a50 50 0 0150 50V20z" fill="${sh}" stroke="${INK}" stroke-width="7"/><g transform="translate(0 -290)"><circle r="104" fill="${sk}" stroke="${INK}" stroke-width="7"/><path d="M-104 4C-114 -150 114 -150 104 4C96 -40 50 -64 6 -50C-20 -70 -70 -58 -104 4z" fill="#2B1B12" stroke="${INK}" stroke-width="6"/>${face()}<path d="M70 -40q12 20 0 30q-12 -10 0 -30z" fill="#7FD3FF" stroke="${INK}" stroke-width="4"/></g>`;
+</script></body></html>
