@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2)}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2)}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2)}
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1440px;height:1080px;overflow:hidden;background:#000}
+body{font-family:K,sans-serif;color:#fff}
+#stage{position:relative;width:1440px;height:1080px;overflow:hidden;background:#0E0F12}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.sbg{position:absolute;inset:-60px}
+.studio{background:radial-gradient(circle at 50% 42%,#4A4E57 0%,#22252B 45%,#0B0C0F 100%)}
+.split{background:linear-gradient(90deg,#0F2A63 0%,#163A7A 46%,#1B1D22 54%,#0B0C0F 100%)}
+.lab{background:radial-gradient(circle at 50% 42%,#FFFFFF 0%,#EEF1F6 50%,#C9D0DC 100%)}
+.champ{background:radial-gradient(circle at 50% 30%,#FFFDF7 0%,#F6EAD2 50%,#D8BE8E 100%)}
+.light{background:radial-gradient(circle at 50% 40%,#FFFFFF 0%,#E7E9EE 55%,#B9BEC8 100%)}
+.cam{position:absolute;inset:0;will-change:transform}
+.a{position:absolute;opacity:0;will-change:transform}
+.img{background-position:center;background-size:contain;background-repeat:no-repeat;filter:drop-shadow(0 28px 34px rgba(0,0,0,.55))}
+.nb{background-image:url(new_bottle.png)}.ob{background-image:url(old_bottle.png)}.bx{background-image:url(new_box.png)}
+.img.bx{filter:drop-shadow(0 0 1.5px rgba(255,255,255,.85)) drop-shadow(0 28px 34px rgba(0,0,0,.55))}.pel{background-image:url(pellet.png)}
+.shine{position:absolute;inset:0;background:linear-gradient(105deg,rgba(255,255,255,0) 0 42%,rgba(255,255,255,.5) 50%,rgba(255,255,255,0) 58% 100%) no-repeat;background-size:300% 100%}
+.nb .shine{-webkit-mask:url(new_bottle.png) center/contain no-repeat}.ob .shine{-webkit-mask:url(old_bottle.png) center/contain no-repeat}.bx .shine{-webkit-mask:url(new_box.png) center/contain no-repeat}
+.rays{position:absolute;border-radius:50%;background:repeating-conic-gradient(rgba(255,226,170,.28) 0 7deg,rgba(255,255,255,0) 7deg 18deg);-webkit-mask:radial-gradient(circle,#000 20%,transparent 68%)}
+.glow{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,236,200,.75),rgba(217,185,138,.35) 38%,rgba(217,185,138,0) 70%)}
+.glowB{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(120,170,255,.55),rgba(46,196,182,.2) 40%,rgba(0,0,0,0) 70%)}
+.card{position:absolute;border-radius:40px;overflow:hidden}
+.card.old{background:linear-gradient(160deg,#2A5BC0,#123478 70%);border:6px solid #4F86F0;box-shadow:0 24px 50px rgba(0,0,0,.45)}
+.card.new{background:linear-gradient(160deg,#3A3D44,#121317 70%);border:6px solid #D9B98A;box-shadow:0 24px 50px rgba(0,0,0,.55),0 0 60px rgba(217,185,138,.25)}
+.big{font-weight:900;white-space:nowrap;line-height:1.15;text-align:center}
+.cx{left:170px;width:1100px}
+.gold{color:#F3D9A4;text-shadow:0 6px 0 #7A5B2E,0 14px 30px rgba(0,0,0,.6)}
+.wht{color:#fff;text-shadow:0 6px 0 rgba(0,0,0,.55),0 14px 30px rgba(0,0,0,.5)}
+.pill{display:inline-block;padding:10px 40px 16px;border-radius:999px;font-weight:900;white-space:nowrap;line-height:1.2}
+.p-gold{background:linear-gradient(90deg,#F6E2B5,#D2A867);color:#16171B;box-shadow:0 9px 0 #8A6731,0 18px 30px rgba(0,0,0,.45)}
+.p-blue{background:#2EC4B6;color:#0B2240;box-shadow:0 9px 0 #12756C,0 18px 30px rgba(0,0,0,.4)}
+.p-dark{background:#16171B;color:#F3D9A4;border:4px solid #D9B98A;box-shadow:0 9px 0 #000,0 18px 30px rgba(0,0,0,.5)}
+.p-red{background:#E5484D;color:#fff;box-shadow:0 9px 0 #8E1A1D,0 18px 30px rgba(0,0,0,.4)}
+.p-white{background:#fff;color:#16171B;box-shadow:0 9px 0 #9AA0AC,0 18px 30px rgba(0,0,0,.4)}
+.hl{background:linear-gradient(transparent 60%,rgba(217,185,138,.75) 60%,rgba(217,185,138,.75) 92%,transparent 92%) no-repeat;background-size:0% 100%;padding:0 8px}
+.bar{position:absolute;height:84px;border-radius:42px;background:rgba(255,255,255,.12);border:4px solid rgba(255,255,255,.25);overflow:hidden}
+.bar .fl{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:42px}
+.tick{position:absolute;font-weight:800;font-size:32px;color:rgba(255,255,255,.7);transform:translateX(-50%)}
+.dust{position:absolute;border-radius:50%;background:#fff}
+.ring{position:absolute;width:420px;height:420px;margin:-210px 0 0 -210px;border-radius:50%;border:16px solid #F3D9A4;opacity:0}
+.conf{position:absolute;width:20px;height:32px;border-radius:5px}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+#wipe{position:absolute;top:-200px;width:2600px;height:1500px;transform:translateX(-3200px) skewX(-16deg)}
+#wipe div{position:absolute;top:0;bottom:0}
+.photo{position:absolute;border-radius:36px;overflow:hidden;border:8px solid #fff;box-shadow:0 26px 60px rgba(0,0,0,.55)}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.capsvg{position:absolute;width:260px;height:600px;transform-origin:50% 50%}
+.capsvg svg{width:100%;height:100%;display:block;overflow:visible}
+.chk{position:absolute;width:120px;height:120px}
+.cu{position:absolute}
+.cal{position:absolute}
+.capbig{position:absolute;width:260px;height:600px;transform-origin:50% 50%}
+.capbig svg{width:100%;height:100%;display:block;overflow:visible}
+.b30{background-image:url(box30.png)}.b60{background-image:url(box60.png)}
+.mk{position:absolute;pointer-events:none}
+</style></head><body>
+<div id="stage">
+
+
+
+<!-- S1 0-3.3 -->
+<div class="scene" data-s="0" data-e="3.3" data-bg="studio" data-cam="0:1.04:720:480;3.3:1:720:540">
+ <div class="cam"><svg class="a" data-at="-1" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260"><defs><pattern id="hx1" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern></defs><rect x="-120" y="-90" width="1680" height="1260" fill="url(#hx1)"/></svg>
+  <div class="a glow" data-at="-1" data-an="fade" style="left:370px;top:40px;width:700px;height:620px"></div>
+  <div class="a photo" data-at="-1" data-an="pop" style="left:290px;top:90px;width:860px;height:494px;border-color:#F3D9A4"><img src="p_intest.jpg" data-kbi="-1"></div>
+  <div class="a mk" data-at="1.0" data-an="fade" data-mk="ellipse" style="left:800px;top:120px;width:340px;height:330px"></div>
+ </div>
+ <div class="a big cx wht" data-at="-1" data-an="fade" style="top:640px;font-size:76px">โพรไบโอติก</div>
+ <div class="a cx" data-at="-1" data-an="slam" style="top:745px;text-align:center"><span class="pill p-gold" style="font-size:80px">จัดการ H.pylori โดยตรง!</span></div>
+</div>
+<!-- S2 3.3-8.1 -->
+<div class="scene" data-s="3.3" data-e="8.1" data-bg="studio" data-tr="wipe" data-cam="3.3:1:720:500;8.1:1.03:720:480">
+ <div class="cam"><svg class="a" data-at="3.3" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260"><defs><pattern id="hx2" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern></defs><rect x="-120" y="-90" width="1680" height="1260" fill="url(#hx2)"/></svg>
+  <div class="a photo" data-at="3.32" data-an="pop" style="left:290px;top:90px;width:860px;height:494px;border-color:#F3D9A4"><img src="p_chart1.jpg" data-kbi="3.32"></div>
+  <div class="a mk" data-at="4.7" data-an="fade" data-mk="ellipse" style="left:480px;top:320px;width:190px;height:190px"></div><div class="a mk" data-at="6.3" data-an="fade" data-mk="ellipse" style="left:870px;top:320px;width:190px;height:190px"></div>
+ </div>
+ <div class="a big cx wht" data-at="3.4" data-an="up" data-out="5.9" style="top:700px;font-size:80px">ยับยั้งเชื้อ<span class="hl" data-hl="4.6">เกาะติดกระเพาะ</span></div>
+ <div class="a big cx gold" data-at="6.0" data-an="up" style="top:700px;font-size:84px">ยับยั้ง<span class="hl" data-hl="6.4">การลุกลาม!</span></div>
+</div>
+<!-- S3 8.1-11.5 -->
+<div class="scene" data-s="8.1" data-e="11.5" data-bg="studio" data-tr="flash" data-cam="8.1:1.06:720:460;11.5:1:720:520">
+ <div class="cam"><svg class="a" data-at="8.1" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260"><defs><pattern id="hx3" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern></defs><rect x="-120" y="-90" width="1680" height="1260" fill="url(#hx3)"/></svg>
+  <div class="a rays" data-at="8.1" data-an="fade" data-spin="12" style="left:320px;top:-80px;width:800px;height:800px"></div>
+  <div class="a glow" data-at="8.12" data-an="pop" style="left:420px;top:60px;width:600px;height:560px"></div>
+  <div class="a photo" data-at="8.12" data-an="pop" style="left:420px;top:70px;width:600px;height:443px;border-color:#F3D9A4"><img src="p_bottle.jpg" data-kbi="8.12"></div>
+  <div class="a mk" data-at="8.7" data-an="fade" data-mk="box" style="left:555px;top:300px;width:330px;height:120px"></div>
+ </div>
+ <div class="a cx" data-at="8.15" data-an="slam" data-out="10.2" style="top:560px;text-align:center"><span class="pill p-gold" style="font-size:80px">Probio-H</span></div>
+ <div class="a cx" data-at="10.3" data-an="stamp" style="top:570px;text-align:center"><span class="pill p-red" style="font-size:66px">ไม่ได้ช่วยเรื่องอื่นเลย!</span></div>
+</div>
+<!-- S4 11.5-15.8 -->
+<div class="scene" data-s="11.5" data-e="15.8" data-bg="studio" data-tr="zoom" data-cam="11.5:1:720:540;15.8:1.04:720:500">
+ <div class="cam"><svg class="a" data-at="11.5" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260"><defs><pattern id="hx4" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern></defs><rect x="-120" y="-90" width="1680" height="1260" fill="url(#hx4)"/></svg>
+  <div class="a glow" data-at="11.55" data-an="pop" style="left:420px;top:60px;width:600px;height:600px"></div>
+  <svg class="a" id="stom4" data-at="11.55" data-an="pop" style="left:470px;top:110px;width:500px;height:500px;overflow:visible" viewBox="0 0 500 500"></svg>
+  <svg class="a" id="bugs4" data-at="11.6" data-an="fade" style="left:0;top:0;width:1440px;height:1080px;overflow:visible"></svg>
+ </div>
+ <div class="a big cx wht" data-at="11.6" data-an="up" data-out="13.9" style="top:700px;font-size:84px">สร้างมาเพื่อ<span class="hl" data-hl="12.2">กระเพาะ</span></div>
+ <div class="a cx" data-at="14.0" data-an="slam" style="top:700px;text-align:center"><span class="pill p-gold" style="font-size:84px">เท่านั้น!</span></div>
+</div>
+<!-- S5 15.8-21 -->
+<div class="scene" data-s="15.8" data-e="21.0" data-bg="studio" data-tr="wipe" data-cam="15.8:1:720:540;21:1.03:720:510">
+ <div class="cam"><svg class="a" data-at="15.8" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260"><defs><pattern id="hx5" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern></defs><rect x="-120" y="-90" width="1680" height="1260" fill="url(#hx5)"/></svg>
+  <div class="a photo" data-at="15.82" data-an="pop" style="left:420px;top:150px;width:600px;height:344px;border-color:#F3D9A4"><img src="p_man.jpg" data-kbi="15.82"></div>
+  <div class="a" data-at="16.4" data-an="stamp" data-bob="0" style="left:140px;top:160px"><span class="pill p-dark" style="font-size:44px">ท้องอืด</span></div>
+  <div class="a" data-at="17.2" data-an="stamp" data-bob="1" style="left:1040px;top:160px"><span class="pill p-dark" style="font-size:44px">กรดไหลย้อน</span></div>
+  <div class="a" data-at="18.0" data-an="stamp" data-bob="2" style="left:140px;top:420px"><span class="pill p-dark" style="font-size:44px">แสบท้อง</span></div>
+  <div class="a" data-at="18.7" data-an="stamp" data-bob="3" style="left:1020px;top:420px"><span class="pill p-red" style="font-size:44px">กระเพาะอักเสบ</span></div>
+ </div>
+ <div class="a big cx gold" data-at="19.4" data-an="up" style="top:700px;font-size:84px"><span class="hl" data-hl="19.8">เกือบทุกอาการ!</span></div>
+</div>
+<!-- S6 21-24.7 -->
+<div class="scene" data-s="21.0" data-e="24.7" data-bg="studio" data-tr="zoom" data-cam="21:1:720:540;24.7:1.03:720:510">
+ <div class="cam"><svg class="a" data-at="21" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260"><defs><pattern id="hx6" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern></defs><rect x="-120" y="-90" width="1680" height="1260" fill="url(#hx6)"/></svg><svg class="a" id="crowd6" data-at="21.05" data-an="fade" style="left:0;top:0;width:1440px;height:1080px;overflow:visible"></svg></div>
+ <div class="a big cx wht" data-at="21.1" data-an="up" data-out="23.0" style="top:700px;font-size:84px">วิจัยในคน <span class="hl" data-hl="21.6">200 คน</span></div>
+ <div class="a big cx gold" data-at="23.1" data-an="up" style="top:700px;font-size:84px">กินนาน <span class="hl" data-hl="23.6">2 เดือน</span></div>
+</div>
+<!-- S7 24.7-28.8 -->
+<div class="scene" data-s="24.7" data-e="28.8" data-bg="studio" data-tr="wipe" data-cam="24.7:1:720:500;28.8:1.03:720:480">
+ <div class="cam"><svg class="a" data-at="24.7" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260"><defs><pattern id="hx7" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern></defs><rect x="-120" y="-90" width="1680" height="1260" fill="url(#hx7)"/></svg><div class="a photo" data-at="24.72" data-an="pop" style="left:290px;top:90px;width:860px;height:494px;border-color:#F3D9A4"><img src="p_sym.jpg" data-kbi="24.72"></div></div>
+ <div class="a cx" data-at="24.8" data-an="slam" data-out="26.0" style="top:700px;text-align:center"><span class="pill p-gold" style="font-size:76px">ทุกอาการดีขึ้น!</span></div>
+ <div class="a big cx wht" data-at="26.1" data-an="up" style="top:700px;font-size:80px">เชื้อ H.pylori <span class="hl" data-hl="26.8">ก็ลดลง</span></div>
+</div>
+<!-- S8 28.8-30.9 -->
+<div class="scene" data-s="28.8" data-e="30.9" data-bg="studio" data-tr="zoom" data-cam="28.8:1:720:500;30.9:1.04:720:480">
+ <div class="cam"><svg class="a" data-at="28.8" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260"><defs><pattern id="hx8" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern></defs><rect x="-120" y="-90" width="1680" height="1260" fill="url(#hx8)"/></svg><div class="a photo" data-at="28.82" data-an="pop" style="left:290px;top:90px;width:860px;height:494px;border-color:#F3D9A4"><img src="p_load.jpg" data-kbi="28.82"></div><div class="a mk" data-at="29.3" data-an="fade" data-mk="ellipse" style="left:430px;top:250px;width:520px;height:120px"></div></div>
+ <div class="a big cx gold" data-at="28.85" data-an="up" style="top:700px;font-size:80px">เปลี่ยน<span class="hl" data-hl="29.3">ชัดใน 2 เดือน</span></div>
+</div>
+<!-- S9 30.9-36.6 -->
+<div class="scene" data-s="30.9" data-e="36.6" data-bg="studio" data-tr="wipe" data-cam="30.9:1:720:540;36.6:1.03:720:510">
+ <div class="cam"><svg class="a" data-at="30.9" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260"><defs><pattern id="hx9" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern></defs><rect x="-120" y="-90" width="1680" height="1260" fill="url(#hx9)"/></svg><svg class="a" id="dose9" data-at="30.95" data-an="fade" style="left:0;top:0;width:1440px;height:1080px;overflow:visible"></svg></div>
+ <div class="a big cx wht" data-at="31.0" data-an="up" data-out="33.1" style="top:700px;font-size:80px">กินตาม<span class="hl" data-hl="31.6">งานวิจัย</span></div>
+ <div class="a cx" data-at="33.2" data-an="slam" data-out="34.95" style="top:700px;text-align:center"><span class="pill p-gold" style="font-size:74px">วันละ 2 เม็ด ท้องว่าง</span></div>
+ <div class="a big cx gold" data-at="35.05" data-an="up" style="top:700px;font-size:84px">ติดต่อกัน <span class="hl" data-hl="35.5">2 เดือน</span></div>
+</div>
+<!-- S10 36.6-end -->
+<div class="scene" data-s="36.6" data-e="99" data-bg="studio" data-tr="flash" data-cam="36.6:1.05:720:480;41.9:1:720:530">
+ <div id="confetti"></div>
+ <div class="cam"><svg class="a" data-at="36.6" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260"><defs><pattern id="hx10" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern></defs><rect x="-120" y="-90" width="1680" height="1260" fill="url(#hx10)"/></svg>
+  <div class="a rays" data-at="36.6" data-an="fade" data-spin="12" style="left:320px;top:-100px;width:800px;height:800px"></div>
+  <div class="a glow" data-at="36.62" data-an="pop" style="left:420px;top:60px;width:600px;height:560px"></div>
+  <div class="a photo" data-at="36.62" data-an="pop" style="left:480px;top:80px;width:480px;height:354px;border-color:#F3D9A4"><img src="p_bottle.jpg" data-kbi="36.62"></div>
+  <div class="a" data-at="40.6" data-an="left" id="cart10" style="left:160px;top:380px;width:260px;height:234px"><svg viewBox="0 0 400 360" width="260" height="234" class="cart"></svg></div>
+  <div class="a" data-at="40.8" data-an="left" id="hand10" style="left:360px;top:470px;width:150px;height:180px"><svg viewBox="0 0 200 240" width="150" height="180" class="hand"></svg></div>
+ </div>
+ <div class="a big cx wht" data-at="36.7" data-an="up" data-out="38.95" style="top:680px;font-size:76px">ปัญหากระเพาะ / <span class="hl" data-hl="37.4">H.pylori</span></div>
+ <div class="a cx" data-at="39.05" data-an="slam" data-out="40.55" style="top:690px;text-align:center"><span class="pill p-gold" style="font-size:74px">ไว้ใจตัวนี้ได้เลย!</span></div>
+ <div class="a big cx gold" data-at="40.65" data-an="up" style="top:690px;font-size:84px">กด<span class="hl" data-hl="41.0">ตะกร้าซ้ายล่าง</span></div>
+</div>
+<div id="rings"></div>
+<div id="wipe"><div style="left:-90px;width:90px;background:#2EC4B6"></div><div style="left:0;right:0;background:#16171B"></div><div style="right:-90px;width:90px;background:#D9B98A"></div></div>
+<div id="flash"></div>
+<div id="safe" style="display:none;position:absolute;left:130px;top:130px;width:1180px;height:820px;border:3px dashed #f0f"></div>
+</div>
+<script>
+const W=1440,H=1080,DUR_T=25.33;
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eOC=p=>1-Math.pow(1-p,3);
+const eOB=p=>{const c1=1.9,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+const eIO=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+let seed=9;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+if(location.hash==='#safe')document.getElementById('safe').style.display='block';
+document.querySelectorAll('.img.nb,.img.ob,.img.bx').forEach((b,i)=>{const s=document.createElement('div');s.className='shine';s.dataset.ph=i*0.37;b.appendChild(s)});
+const scenes=[...document.querySelectorAll('.scene')].map(el=>{
+ const bg=document.createElement('div');bg.className='sbg '+el.dataset.bg;el.insertBefore(bg,el.firstChild);
+ const pl=document.createElement('div');pl.style.cssText='position:absolute;inset:0;pointer-events:none';el.insertBefore(pl,bg.nextSibling);
+ const parts=[];if(el.dataset.bg!=='light'&&el.dataset.bg!=='split')for(let k=0;k<34;k++){const d=document.createElement('div');d.className='dust';const s=2+rnd()*5;d.style.width=d.style.height=s+'px';pl.appendChild(d);parts.push({d,x:170+rnd()*1100,y:rnd()*H,v:10+rnd()*25,ph:rnd()*6.28,tw:rnd()*6})}
+ const cam=(el.dataset.cam||'').split(';').filter(Boolean).map(k=>k.split(':').map(Number));
+ return{el,s:+el.dataset.s,e:+el.dataset.e,tr:el.dataset.tr||'',parts,cam,camEl:el.querySelector('.cam'),items:[...el.querySelectorAll('.a')]}});
+const TR=0.4;
+const CAPSVG=(()=>{let r=7,c=()=>{r=(r*16807)%2147483647;return (r-1)/2147483646};let p='';
+ for(let y=318;y>24;y-=17)for(let x=22;x<244;x+=19){const xx=x+(c()-.5)*8+((Math.round(y/17)%2)?9:0),yy=y+(c()-.5)*6,rr=8.5+c()*3.5;p+=`<circle cx="${xx.toFixed(1)}" cy="${yy.toFixed(1)}" r="${rr.toFixed(1)}" fill="url(#gPl)"/>`}
+ return `<svg viewBox="0 0 260 600"><defs>
+ <radialGradient id="gPl" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#F3EEE3"/><stop offset="1" stop-color="#BFB6A3"/></radialGradient>
+ <linearGradient id="gGl" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".25" stop-color="#fff" stop-opacity=".08"/><stop offset=".75" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#fff" stop-opacity=".3"/></linearGradient>
+ <linearGradient id="gCr" x1="0" x2="1"><stop offset="0" stop-color="#CFC7B6"/><stop offset=".3" stop-color="#FFFDF7"/><stop offset=".55" stop-color="#F7F2E7"/><stop offset="1" stop-color="#C4BBA8"/></linearGradient>
+ <clipPath id="cTop"><path d="M22 330V132a108 108 0 01216 0V330z"/></clipPath></defs>
+ <g class="cTopG"><g clip-path="url(#cTop)"><rect x="0" y="0" width="260" height="340" fill="rgba(255,255,255,.06)"/>${p}<rect x="0" y="0" width="260" height="340" fill="url(#gGl)"/></g>
+  <path d="M22 330V132a108 108 0 01216 0V330" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="4"/>
+  <path d="M46 300V140a84 84 0 0140-70" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".55"/></g>
+ <g class="cBotG"><path d="M16 296H244V470a114 114 0 01-228 0z" fill="url(#gCr)"/><path d="M16 296H244" stroke="#B9AF9B" stroke-width="4"/>
+  <path d="M40 320V470a90 90 0 0034 70" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" opacity=".6"/>
+  <g transform="translate(138 440) rotate(90)" font-family="Arial,Helvetica,sans-serif" font-weight="700" fill="#4A4A4A" text-anchor="middle"><text x="0" y="-8" font-size="74">Zn</text><text x="0" y="52" font-size="56">Zinc</text></g></g></svg>`})();
+document.querySelectorAll('.capsvg').forEach(e=>e.innerHTML=CAPSVG);
+const pel5=[];{const w=document.getElementById('pel5');if(w)for(let i=0;i<22;i++){const d=document.createElement('div');const r=12+rnd()*12;d.style.cssText=`position:absolute;width:${r*2}px;height:${r*2}px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 20%,#F3EEE3 55%,#BFB6A3 100%);box-shadow:0 8px 14px rgba(0,0,0,.35);opacity:0`;w.appendChild(d);pel5.push({d,r,ang:rnd()*6.28,sp:180+rnd()*260,dl:rnd()*0.12})}}
+
+function crCurve(pts){const out=[];const P=pts.map(([h,l])=>[110+h*105,600-l*460]);
+ for(let i=0;i<P.length-1;i++){const p0=P[Math.max(0,i-1)],p1=P[i],p2=P[i+1],p3=P[Math.min(P.length-1,i+2)];
+  for(let k=0;k<24;k++){const u=k/24,u2=u*u,u3=u2*u;out.push([0,1].map(j=>0.5*((2*p1[j])+(-p0[j]+p2[j])*u+(2*p0[j]-5*p1[j]+4*p2[j]-p3[j])*u2+(-p0[j]+3*p1[j]-3*p2[j]+p3[j])*u3)))}}
+ out.push(P[P.length-1]);
+ const lut=[];let j=0;for(let x=110;x<=950;x+=2){while(j<out.length-2&&out[j+1][0]<x)j++;const a=out[j],b=out[j+1];const f=b[0]>a[0]?cl((x-a[0])/(b[0]-a[0])):0;lut.push([x,a[1]+(b[1]-a[1])*f])}
+ return lut}
+const CO=crCurve([[0,0.02],[0.5,0.8],[1,0.93],[1.5,0.95],[2,0.95],[2.6,0.86],[3.2,0.7],[4,0.5],[5,0.32],[6,0.2],[7,0.13],[8,0.09]]);
+const CN=crCurve([[0,0.02],[0.5,0.78],[1,0.92],[2,0.94],[4,0.94],[6,0.93],[7,0.68],[8,0.42]]);
+if(document.getElementById('lOld')){const d=a=>'M'+a.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join('L');
+ document.getElementById('lOld').setAttribute('d',d(CO));document.getElementById('aOld').setAttribute('d',d(CO)+'L950 600L110 600Z');
+ document.getElementById('lNew').setAttribute('d',d(CN));document.getElementById('aNew').setAttribute('d',d(CN)+'L950 600L110 600Z');}
+
+function camAt(keys,t){if(!keys.length)return[1,720,540];if(t<=keys[0][0])return keys[0].slice(1);
+ for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t<=b[0]){const p=eIO(cl((t-a[0])/(b[0]-a[0])));return[1,2,3].map(j=>a[j]+(b[j]-a[j])*p)}}return keys[keys.length-1].slice(1)}
+const conf=[];const cw=document.getElementById('confetti');const cc=['#F3D9A4','#D9B98A','#fff','#C0C4CC','#8A6731'];
+for(let i=0;i<70;i++){const d=document.createElement('div');d.className='conf';d.style.background=cc[i%5];cw.appendChild(d);conf.push({d,x:200+rnd()*1040,vy:250+rnd()*300,vx:(rnd()-.5)*160,r:rnd()*360,vr:(rnd()-.5)*720,dl:rnd()*0.5,sw:rnd()*6})}
+const ringDefs=[[0.1,720,790],[14.0,720,740],[24.8,720,740],[33.2,720,740],[39.05,720,730]];
+const rw=document.getElementById('rings');const rings=ringDefs.map(([t,x,y])=>{const d=document.createElement('div');d.className='ring';d.style.left=x+'px';d.style.top=y+'px';rw.appendChild(d);return{d,t}});
+function animT(an,p){switch(an){
+ case 'fade':return[eOC(p),''];
+ case 'pop':return[cl(p*4),`scale(${p<=0?0:eOB(p)})`];
+ case 'slam':{const e=eOC(p);return[cl(p*5),`scale(${1+1.2*(1-e)})`]}
+ case 'stamp':{const e=eOB(p);return[cl(p*5),`scale(${1.6-0.6*e}) rotate(${-6*(1-e)}deg)`]}
+ case 'up':{const e=eOB(p);return[cl(p*3),`translateY(${80*(1-e)}px)`]}
+ case 'left':{const e=eOB(p);return[cl(p*3),`translateX(${-320*(1-e)}px)`]}
+ case 'right':{const e=eOB(p);return[cl(p*3),`translateX(${320*(1-e)}px)`]}
+ case 'drop':{const e=eOB(p);return[cl(p*4),`translateY(${-700*(1-e)}px) rotate(${(1-e)*-20}deg)`]}}return[1,'']}
+const DUR={fade:.35,pop:.42,slam:.32,stamp:.35,up:.42,left:.45,right:.45,drop:.55};
+const $=id=>document.getElementById(id);
+window.render=function(t){
+ let flash=0;
+ scenes.forEach((sc,i)=>{
+  const nx=scenes[i+1];const tail=(nx&&(nx.tr==='iris'||nx.tr==='zoom'))?TR:0;
+  const on=t>=sc.s&&t<sc.e+tail;sc.el.style.display=on?'block':'none';if(!on)return;
+  const lt=t-sc.s,q=cl(lt/TR);let tf='',clip='none',op=1;
+  if(sc.tr==='iris')clip=`circle(${eIO(q)*110}% at 50% 50%)`;
+  else if(sc.tr==='zoom'){tf=`scale(${1.3-0.3*eOC(q)})`;op=q}
+  sc.el.style.transform=tf;sc.el.style.clipPath=q<1?clip:'none';sc.el.style.opacity=op;sc.el.style.zIndex=i;
+  const [s,fx,fy]=camAt(sc.cam,t);if(sc.camEl)sc.camEl.style.transform=`translate(720px,540px) scale(${s}) translate(${-fx}px,${-fy}px)`;
+  for(const p of sc.parts){const y=((p.y-p.v*t)%(H+100)+H+100)%(H+100)-50;p.d.style.transform=`translate(${p.x+Math.sin(t*.7+p.ph)*20}px,${y}px)`;p.d.style.opacity=(.25+.5*Math.abs(Math.sin(t*1.5+p.tw)))*cl((y-140)/80)*cl((940-y)/80)}
+  for(const el of sc.items){
+   const at=+el.dataset.at,an=el.dataset.an,p=cl((t-at)/DUR[an]);
+   let[o,tr]=t<at?[0,'']:animT(an,p);const live=t-at;
+   if(el.dataset.out){const k=cl((t-+el.dataset.out)/0.28);if(k>0){o*=1-k;tr+=` translateY(${-eIO(k)*50}px)`}}
+   if(el.dataset.dim){const k=cl((t-+el.dataset.dim)/0.4);o*=1-0.6*k;el.style.filter=k>0?`grayscale(${k}) brightness(${1-0.35*k})`:''}
+   if(el.dataset.float){const ph=+el.dataset.float;tr+=` translateY(${Math.sin(t*2.1+ph)*10}px) perspective(1400px) rotateY(${Math.sin(t*1.3+ph)*9}deg)`}
+   if(el.dataset.bob){const ph=+el.dataset.bob;tr+=` translateY(${Math.sin(t*3+ph)*8}px)`}
+   if(el.dataset.swing&&live>0.35)tr+=` rotate(${Math.sin((live-0.35)*9)*6*Math.exp(-(live-0.35)*1.5)}deg)`;
+   if(el.dataset.spin)tr+=` rotate(${t*el.dataset.spin}deg)`;
+   el.style.opacity=o;el.style.transform=tr}
+ });
+ let wx=-3200;for(const sc of scenes){if(sc.tr==='wipe'){const d=t-sc.s;if(d>-0.22&&d<0.22)wx=-3000+eIO((d+0.22)/0.44)*4700}
+  if(sc.tr==='flash'){const d=t-sc.s;if(d>=0&&d<0.3)flash=Math.max(flash,0.85*(1-d/0.3))}}
+ $('wipe').style.transform=`translateX(${wx}px) skewX(-16deg)`;$('flash').style.opacity=flash;
+ document.querySelectorAll('[data-kbi]').forEach(g=>{const d=Math.max(0,t-+g.dataset.kbi);g.style.transform=`scale(${1.02+0.03*d})`});
+ document.querySelectorAll('[data-hl]').forEach(h=>{h.style.backgroundSize=`${eIO(cl((t-+h.dataset.hl)/0.35))*100}% 100%`});
+
+ window.extra&&extra(t);
+};
+window.render(0);
+</script><script>
+const INK='#1B2A4A';
+document.querySelectorAll('.capbig').forEach(e=>e.innerHTML=CAPSVG);
+const CAPSM=(x,y,r,s)=>{let p='';let k=3;const rr=()=>{k=(k*16807)%2147483647;return (k-1)/2147483646};for(let yy=-17;yy<=17;yy+=8)for(let xx=-60;xx<-2;xx+=8){p+=`<circle cx="${xx+(rr()-.5)*3}" cy="${yy+(rr()-.5)*3}" r="${3.4+rr()*1.4}" fill="#F7F3EA" stroke="#BFB6A3" stroke-width=".8"/>`}
+ return `<g transform="translate(${x} ${y}) rotate(${r}) scale(${s})"><clipPath id="cl${x|0}${y|0}${r|0}"><path d="M0 -26H-40A26 26 0 0 0 -40 26H0Z"/></clipPath><path d="M0 -26H-40A26 26 0 0 0 -40 26H0Z" fill="rgba(255,255,255,.12)"/><g clip-path="url(#cl${x|0}${y|0}${r|0})">${p}</g><path d="M0 -26H-40A26 26 0 0 0 -40 26H0" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="2.5"/><path d="M-2 -28H40A28 28 0 0 1 40 28H-2Z" fill="#F4EFE4" stroke="#B9AF9B" stroke-width="2.5"/><path d="M6 -16H40" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".7"/><text x="24" y="8" text-anchor="middle" font-family="Arial" font-weight="700" font-size="18" fill="#4A4A4A">Zn</text></g>`};
+function cardSvg(ok,n){const caps=n===1?CAPSM(250,150,-15,1.6):CAPSM(170,140,-20,1.2)+CAPSM(270,170,10,1.2)+CAPSM(360,130,25,1.2);
+ return caps+`<text x="250" y="320" text-anchor="middle" font-family="K" font-weight="900" font-size="80" fill="${ok?'#F3D9A4':'#fff'}">${n===1?'1 เม็ด':'2–3 เม็ด'}</text><g transform="translate(190 350)"><svg width="120" height="120" viewBox="0 0 100 100">${ok?'<circle cx="50" cy="50" r="44" fill="#2EC4B6" stroke="#0B2240" stroke-width="6"/><path d="M28 52l15 15l30-32" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>':'<path d="M50 6L96 90H4Z" fill="#E5484D" stroke="#fff" stroke-width="5" stroke-linejoin="round"/><text x="50" y="80" text-anchor="middle" font-family="K" font-weight="900" font-size="60" fill="#fff">!</text>'}</svg></g>`}
+
+function calSvg(m,d){return `<rect x="10" y="40" width="340" height="330" rx="34" fill="#16171B" stroke="#D9B98A" stroke-width="8"/><rect x="10" y="40" width="340" height="90" rx="34" fill="#D9B98A"/><rect x="80" y="12" width="24" height="60" rx="10" fill="#F3D9A4"/><rect x="256" y="12" width="24" height="60" rx="10" fill="#F3D9A4"/><text x="180" y="105" text-anchor="middle" font-family="K" font-weight="900" font-size="48" fill="#16171B">เดือนที่ ${m}</text><text x="180" y="290" text-anchor="middle" font-family="K" font-weight="900" font-size="150" fill="#fff">${d}</text>`}
+const lerp=(a,b,p)=>a+(b-a)*p;
+</script><script>
+
+const RED='#E8231F';
+const ZB=(x,y,r=26,t='B')=>`<g transform="translate(${x} ${y})"><circle r="${r}" fill="#FFD23F" stroke="${INK}" stroke-width="5"/><ellipse cx="${-r*.3}" cy="${-r*.35}" rx="${r*.38}" ry="${r*.22}" fill="#fff" opacity=".9"/><text y="${r*.36}" text-anchor="middle" font-family="K" font-weight="900" font-size="${r*1.0}" fill="${INK}">${t}</text></g>`;
+// comic burst
+document.querySelectorAll('svg.burst').forEach(sv=>{const pts=[...Array(28)].map((_,i)=>{const a=i/28*2*Math.PI,r=i%2?0.8:1;return `${(570+Math.cos(a)*560*r).toFixed(0)},${(135+Math.sin(a)*150*r).toFixed(0)}`}).join(' ');
+ sv.innerHTML=`<polygon points="${pts}" fill="${INK}" transform="translate(0 14)"/><polygon points="${pts}" fill="#FFD23F" stroke="${INK}" stroke-width="10" stroke-linejoin="round"/>`});
+// batteries
+document.querySelectorAll('svg.batt').forEach(sv=>{const id=sv.dataset.id;sv.innerHTML=`<rect x="10" y="20" width="300" height="160" rx="30" fill="#fff" stroke="${INK}" stroke-width="12"/><rect x="314" y="70" width="34" height="60" rx="10" fill="${INK}"/><rect id="${id}f" x="30" y="40" width="0" height="120" rx="16" fill="#3DDC97"/><text id="${id}t" x="160" y="122" text-anchor="middle" font-family="K" font-weight="900" font-size="64" fill="${INK}" stroke="#fff" stroke-width="10" paint-order="stroke fill"></text>`});
+function batt(id,p){const f=$(id+'f');if(!f)return;f.setAttribute('width',Math.max(0,260*p));f.setAttribute('fill',p<0.25?'#FF4D4D':p<0.6?'#FFD23F':'#3DDC97');$(id+'t').textContent=Math.round(p*100)+'%'}
+// red annotation marks (draw-on)
+document.querySelectorAll('.mk').forEach(e=>{const w=parseFloat(e.style.width),h=parseFloat(e.style.height),k=e.dataset.mk;let d='';
+ if(k==='ellipse'){const rx=w/2-12,ry=h/2-12;d=`M${w/2+rx} ${h/2}`;for(let i=1;i<=46;i++){const a=i/40*2*Math.PI;d+=`L${w/2+Math.cos(a)*rx*(1+0.03*Math.sin(i))} ${h/2+Math.sin(a)*ry*(1+0.03*Math.cos(i*1.3))}`}}
+ else if(k==='box'){d=`M20 14H${w-14}V${h-18}H16V22`}
+ else if(k==='arrow'){d=`M${w*0.2} 10L${w*0.5} ${h-20}M${w*0.5} ${h-20}L${w*0.25} ${h-50}M${w*0.5} ${h-20}L${w*0.78} ${h-48}`}
+ e.innerHTML=`<svg width="${w}" height="${h}" style="overflow:visible"><path d="${d}" fill="none" stroke="#fff" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/><path class="mkp" d="${d}" fill="none" stroke="${RED}" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+ e._p=[...e.querySelectorAll('path')];e._p.forEach(p=>{const L=p.getTotalLength();p.style.strokeDasharray=L;p._L=L})});
+
+document.querySelectorAll('svg.cart').forEach(s=>s.innerHTML=`<path d="M110 140Q120 40 200 40Q280 40 290 140" fill="none" stroke="${INK}" stroke-width="30" stroke-linecap="round"/><path d="M110 140Q120 40 200 40Q280 40 290 140" fill="none" stroke="#FFD23F" stroke-width="16" stroke-linecap="round"/><path d="M40 130H360L330 320Q326 340 306 340H94Q74 340 70 320Z" fill="#FFD23F" stroke="${INK}" stroke-width="10" stroke-linejoin="round"/><path d="M120 180V300M200 180V300M280 180V300" stroke="#fff" stroke-width="14" stroke-linecap="round" opacity=".8"/><path d="M40 130H360" stroke="${INK}" stroke-width="10"/>`);
+document.querySelectorAll('svg.hand').forEach(s=>s.innerHTML=`<path d="M60 20q16-8 24 8v80q14-10 26 0q12-8 24 4q12-6 22 6v60q0 50-50 56h-30q-40-4-56-50l-16-46q-4-16 10-20q12-2 20 12l14 30V28q0-6 12-8z" fill="#FFD7B5" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`);
+const BUG=(x,y,s,r,o=1)=>`<g transform="translate(${x} ${y}) rotate(${r}) scale(${s})" opacity="${o}"><path d="M-30 0Q-30 -14 -10 -14H14Q30 -14 30 0Q30 14 14 14H-10Q-30 14 -30 0Z" fill="#8FCB4A" stroke="${INK}" stroke-width="4"/><path d="M30 0q14 -8 22 4q8 10 18 2M-30 0q-12 6 -20 -2" fill="none" stroke="${INK}" stroke-width="3" stroke-linecap="round"/><circle cx="-6" cy="-3" r="3" fill="${INK}"/><circle cx="8" cy="-3" r="3" fill="${INK}"/><path d="M-6 6q7 -5 14 0" stroke="${INK}" stroke-width="3" fill="none"/></g>`;
+$('stom4').innerHTML=`<path d="M190 30v70c0 30-14 44-44 58-60 30-90 90-75 165 18 90 120 120 210 90 90-30 120-120 90-210-21-60-60-90-105-90-15 0-30-9-30-30V30" fill="#C98676" stroke="#F3D9A4" stroke-width="10" stroke-linejoin="round"/><path d="M325 390q45 15 60 60" fill="none" stroke="#F3D9A4" stroke-width="30" stroke-linecap="round"/><path d="M325 390q45 15 60 60" fill="none" stroke="#C98676" stroke-width="16" stroke-linecap="round"/><circle cx="170" cy="300" r="13" fill="${INK}"/><circle cx="260" cy="292" r="13" fill="${INK}"/><path id="mouth4" d="M180 340q35 24 70 0" stroke="${INK}" stroke-width="9" fill="none" stroke-linecap="round"/>`;
+const BUGS=[...Array(7)].map((_,i)=>({x:560+(i%4)*90+(i>3?40:0),y:300+Math.floor(i/4)*120+(i%2)*20,r:i*40}));
+const CAPS2=(x,y,r,s)=>`<g transform="translate(${x} ${y}) rotate(${r}) scale(${s})"><rect x="-56" y="-24" width="112" height="48" rx="24" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="-56" y="-24" width="56" height="48" rx="24" fill="#3DDC97" stroke="${INK}" stroke-width="6"/><path d="M-36 -10h20" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".7"/></g>`;
+
+window.extra=function(t){
+ document.querySelectorAll('.mk').forEach(e=>{const d=cl((t-+e.dataset.at)/0.3);e._p.forEach(p=>p.style.strokeDashoffset=p._L*(1-eOC(d)));if(d>=1)e.style.transform+=` rotate(${Math.sin(t*9)*1.2}deg) scale(${1+0.02*Math.sin(t*12)})`});
+ if(t>=11.5&&t<16.2){let s='';const gone=eIO(cl((t-13.2)/1.2));for(const [i,b] of BUGS.entries()){const wob=Math.sin(t*6+i)*6;const dx=(b.x-720)*gone*1.6,dy=(b.y-380)*gone*1.6;s+=BUG(b.x+dx,b.y+dy+wob,0.9,b.r+Math.sin(t*3+i)*12,1-gone)}
+  for(let i=0;i<5;i++){const d=t-13.0-i*0.12;if(d<0||d>0.8)continue;s+=CAPS2(720+(i-2)*60,lerp(60,330,eIO(d/0.8)),i*30,0.8)}
+  $('bugs4').innerHTML=s;$('mouth4').setAttribute('d',t>14?'M180 330q35 30 70 0':'M180 345q35 -16 70 0')}
+ if(t>=21&&t<25.2){let s='';const n=Math.floor(200*eOC(cl((t-21.2)/1.4)));for(let i=0;i<200;i++){const c=i%20,r=Math.floor(i/20);const x=270+c*45,y=150+r*42;s+=i<n?`<g transform="translate(${x} ${y})"><circle r="11" fill="#FFD7B5" stroke="${INK}" stroke-width="3"/><path d="M-14 26a14 14 0 0 1 28 0z" fill="${['#FF8FB1','#7FD3FF','#3DDC97','#FFD23F'][i%4]}" stroke="${INK}" stroke-width="3"/></g>`:''}
+  s+=`<g transform="translate(720 600)"><rect x="-90" y="-30" width="180" height="60" rx="30" fill="#16171B" stroke="#D9B98A" stroke-width="6"/><text y="14" text-anchor="middle" font-family="K" font-weight="900" font-size="40" fill="#F3D9A4">${n} คน</text></g>`;
+  if(t>23.0){const k=eOB(cl((t-23.1)/0.4));s=`<g opacity="${1-k*0.7}">${s}</g><g transform="translate(720 360) scale(${k})"><rect x="-150" y="-140" width="300" height="280" rx="30" fill="#16171B" stroke="#D9B98A" stroke-width="8"/><rect x="-150" y="-140" width="300" height="80" rx="30" fill="#D9B98A"/><text y="80" text-anchor="middle" font-family="K" font-weight="900" font-size="120" fill="#fff">${t>23.9?2:1}</text><text y="-82" text-anchor="middle" font-family="K" font-weight="900" font-size="40" fill="#16171B">เดือน</text></g>`}
+  $('crowd6').innerHTML=s}
+ if(t>=30.9&&t<37){let s='';const sunY=lerp(560,250,eOC(cl((t-31.0)/1.5)));s+=`<g transform="translate(1080 ${sunY}) rotate(${t*20})">${[...Array(12)].map((_,i)=>`<rect x="-8" y="-96" width="16" height="32" rx="8" fill="#FFB300" stroke="${INK}" stroke-width="4" transform="rotate(${i*30})"/>`).join('')}<circle r="56" fill="#FFD23F" stroke="${INK}" stroke-width="7"/></g><text x="1080" y="${sunY+130}" text-anchor="middle" font-family="K" font-weight="900" font-size="40" fill="#F3D9A4">ช่วงเช้า</text>`;
+  const k1=eOB(cl((t-33.3)/0.4)),k2=eOB(cl((t-33.6)/0.4));s+=CAPS2(560,330,-20,1.8*k1)+CAPS2(790,330,15,1.8*k2);
+  s+=`<g transform="translate(360 330)"><path d="M-70 -60Q-80 60 0 70Q80 60 70 -60Z" fill="#16171B" stroke="#D9B98A" stroke-width="7"/><text y="20" text-anchor="middle" font-family="K" font-weight="900" font-size="34" fill="#F3D9A4">ท้องว่าง</text></g>`;
+  if(t>35){const k=eOB(cl((t-35.1)/0.4));s+=`<g transform="translate(720 540) scale(${k})"><rect x="-170" y="-40" width="340" height="80" rx="40" fill="#16171B" stroke="#D9B98A" stroke-width="6"/><text y="16" text-anchor="middle" font-family="K" font-weight="900" font-size="44" fill="#F3D9A4">ติดต่อกัน 2 เดือน</text></g>`}
+  $('dose9').innerHTML=s}
+ if(t>=40.6){const tap=Math.max(0,Math.sin((t-41.0)*8));$('hand10').style.transform+=` translate(${-tap*20}px,${-tap*16}px)`}
+};
+
+</script>
+</body></html>

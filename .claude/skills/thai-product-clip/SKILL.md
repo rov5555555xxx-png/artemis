@@ -63,6 +63,8 @@ From their re-edit of the 11/12 zinc clip — they layered these on top of our c
 
 - Zinc iCAP boxes (black/silver box, 30 and 60 capsules; 60 launched 15/11/26): `assets/products/inzent_zinc_icap_box30.png`, `..._box60.png`. The boxes look identical apart from the small count — always pair them with a '30 เม็ด/60 เม็ด' pill.
 
+- **Probio-H (CEO Factory) probiotic for H.pylori, green/white bottle** — photo `assets/products/ceo_probio_h_photo.jpg` (from footage; no clean cutout). Whisper hears it as 'ไบโอเฮส/โปรเบลติ'. User wanted it in the dark/gold zinc style too (16/11/26); source `output/src/1611-probio`. Footage has a burned-in title around y 640–720 of the 1080×1918 frame — crop photo panels above it.
+
 ## User feedback log (apply by default)
 
 - "ตากาสายล้าง" in Whisper = **ตะกร้าสีเหลือง** (yellow basket), not orange. Yellow basket on a non-yellow background.
