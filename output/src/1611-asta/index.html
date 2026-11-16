@@ -10,14 +10,14 @@
 .cap b{color:var(--k)}
 </style></head><body>
 <svg id="sv" viewBox="0 0 1440 1080" width="1440" height="1080"></svg>
-<div class="cap" id="c1" style="top:760px;font-size:78px"></div>
-<div class="cap" id="c0" style="top:640px;font-size:62px"></div>
+<div class="cap" id="c1" style="top:820px;font-size:74px"></div>
+<div class="cap" id="c0" style="top:730px;font-size:62px"></div>
 <script>
 const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),eOC=p=>1-Math.pow(1-p,3),eIO=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2,eOB=p=>{const c1=1.9,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)},lerp=(a,b,p)=>a+(b-a)*p;
 const mix=(c1,c2,p)=>{const h=c=>[1,3,5].map(i=>parseInt(c.slice(i,i+2),16));const a=h(c1),b=h(c2);return '#'+a.map((v,i)=>Math.round(lerp(v,b[i],p)).toString(16).padStart(2,'0')).join('')};
 const INK='#3A2E39';
 // captions: [start,end,small,big(with <b>)]
-const CAPS=[[-1,2.35,'สาระ 8 วิ','ทำไม<b style="--k:#D7263D">แอสตาแซนธิน</b>ถึงสีแดง?'],[2.4,3.8,'','ทีแรกมันเป็น<b style="--k:#2E9E4F">สีเขียว</b>'],[3.85,5.95,'','เจอ<b style="--k:#F08A00">แดด</b> เกิด<b style="--k:#E4572E">ความร้อน</b>'],[6.0,7.25,'','สร้าง<b style="--k:#D7263D">สารกันแดด</b>ขึ้นมา'],[7.3,99,'','กลายเป็น<b style="--k:#D7263D">สีแดง</b>เฉยเลย!']];
+const CAPS=[[-1,2.35,'สาระ 8 วิ','ทำไม<b style="--k:#D7263D">แอสตาแซนธิน</b>ถึงสีแดง?'],[2.4,3.8,'','ทีแรกมันเป็น<b style="--k:#2E9E4F">สีเขียว</b>'],[3.85,5.95,'','เจอ<b style="--k:#F08A00">แดดแรง</b> ร้อนจน<b style="--k:#E4572E">ทนไม่ไหว</b>'],[6.0,7.25,'','สร้าง<b style="--k:#D7263D">สารกันแดด</b>ขึ้นมา'],[7.3,99,'','กลายเป็น<b style="--k:#D7263D">สีแดง</b>เฉยเลย!']];
 function capRender(t){const c=CAPS.find(c=>t>=c[0]&&t<c[1])||CAPS[0];const k=c[0]<0?1:eOB(cl((t-c[0])/0.3));const o=c[1]<99?1-cl((t-(c[1]-0.15))/0.15):1;
  const el=document.getElementById('c1');if(el.dataset.k!==c[3]){el.innerHTML=c[2]||c[3]?`<span>${c[3]}</span>`:'';el.dataset.k=c[3]}el.style.transform=`translateY(${(1-k)*40}px) scale(${0.9+0.1*k})`;el.style.opacity=o*cl(k*2);
  const e0=document.getElementById('c0');e0.innerHTML=c[2]?`<span style="background:#D7263D;color:#fff;font-size:44px;padding:4px 30px 10px">${c[2]}</span>`:'';e0.style.opacity=o}
@@ -28,39 +28,54 @@ function cell(x,y,s,redP,face,sweat,shield,t){const body=mix('#5CC46A','#D7263D'
  g+=`<circle r="132" fill="${rim}"/><circle r="120" fill="${body}"/>`;
  for(let i=0;i<9;i++){const a=i*0.7+1,r=40+((i*37)%60);g+=`<circle cx="${Math.cos(a)*r}" cy="${Math.sin(a)*r}" r="${10+(i%3)*5}" fill="${dots}" opacity=".7"/>`}
  g+=`<ellipse cx="-50" cy="-60" rx="34" ry="20" fill="#fff" opacity=".45"/>`;
- const ey=face==='hot'?`<path d="M-50 -8q14 -10 28 0M22 -8q14 -10 28 0" stroke="${INK}" stroke-width="9" fill="none" stroke-linecap="round"/>`:`<ellipse cx="-36" cy="-6" rx="11" ry="14" fill="${INK}"/><ellipse cx="36" cy="-6" rx="11" ry="14" fill="${INK}"/><circle cx="-32" cy="-11" r="4" fill="#fff"/><circle cx="40" cy="-11" r="4" fill="#fff"/>`;
- const mo=face==='hot'?`<path d="M-20 38q20 -14 40 0" stroke="${INK}" stroke-width="9" fill="none" stroke-linecap="round"/>`:face==='proud'?`<path d="M-26 26q26 30 52 0z" fill="${INK}"/>`:face==='q'?`<ellipse cx="0" cy="34" rx="12" ry="14" fill="${INK}"/>`:`<path d="M-24 28q24 22 48 0" stroke="${INK}" stroke-width="9" fill="none" stroke-linecap="round"/>`;
+ const E={
+  happy:[`<ellipse cx="-36" cy="-6" rx="11" ry="14" fill="${INK}"/><ellipse cx="36" cy="-6" rx="11" ry="14" fill="${INK}"/><circle cx="-32" cy="-11" r="4" fill="#fff"/><circle cx="40" cy="-11" r="4" fill="#fff"/>`,`<path d="M-26 24q26 30 52 0z" fill="${INK}"/><path d="M-12 38q12 8 24 0" fill="#FF6B7A"/>`],
+  q:[`<ellipse cx="-36" cy="-6" rx="11" ry="14" fill="${INK}"/><ellipse cx="36" cy="-6" rx="11" ry="14" fill="${INK}"/><circle cx="-32" cy="-11" r="4" fill="#fff"/><circle cx="40" cy="-11" r="4" fill="#fff"/>`,`<ellipse cx="0" cy="34" rx="12" ry="14" fill="${INK}"/>`],
+  squint:[`<path d="M-52 -4q16 -12 32 0M20 -4q16 -12 32 0" stroke="${INK}" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M-56 -30l30 10M56 -30l-30 10" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>`,`<path d="M-24 40q8 -10 16 0t16 0t16 0" stroke="${INK}" stroke-width="8" fill="none" stroke-linecap="round"/>`],
+  hurt:[`<path d="M-54 -20l26 14l-26 14M54 -20l-26 14l26 14" stroke="${INK}" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,`<path d="M-30 26q30 -16 60 0q-4 34 -30 34q-26 0 -30 -34z" fill="${INK}"/><path d="M-16 46q16 -8 32 0" fill="#FF6B7A"/>`],
+  cry:[`<path d="M-52 -4q16 10 32 0M20 -4q16 10 32 0" stroke="${INK}" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M-58 -34q16 -10 30 4M58 -34q-16 -10 -30 4" stroke="${INK}" stroke-width="7" fill="none" stroke-linecap="round"/>`,`<path d="M-30 46q30 -36 60 0z" fill="${INK}"/>`],
+  fierce:[`<ellipse cx="-36" cy="-2" rx="12" ry="12" fill="${INK}"/><ellipse cx="36" cy="-2" rx="12" ry="12" fill="${INK}"/><circle cx="-32" cy="-6" r="4" fill="#fff"/><circle cx="40" cy="-6" r="4" fill="#fff"/><path d="M-60 -34l40 16M60 -34l-40 16" stroke="${INK}" stroke-width="10" stroke-linecap="round"/>`,`<path d="M-24 30h48" stroke="${INK}" stroke-width="10" stroke-linecap="round"/>`],
+  proud:[`<path d="M-52 -6q16 -16 32 0M20 -6q16 -16 32 0" stroke="${INK}" stroke-width="9" fill="none" stroke-linecap="round"/>`,`<path d="M-28 22q28 34 56 0z" fill="${INK}"/><path d="M-12 40q12 8 24 0" fill="#FF6B7A"/>`]};
+ const [ey,mo]=E[face]||E.happy;
  g+=ey+mo+`<ellipse cx="-62" cy="22" rx="16" ry="10" fill="#FF8FA3" opacity=".75"/><ellipse cx="62" cy="22" rx="16" ry="10" fill="#FF8FA3" opacity=".75"/>`;
  if(sweat>0)for(let i=0;i<3;i++){const d=((t*1.4+i/3)%1);g+=`<path transform="translate(${100+i*18} ${-90+d*60})" d="M0 -16q12 18 0 26q-12 -8 0 -26z" fill="#7FD3FF" stroke="${INK}" stroke-width="3" opacity="${sweat*(1-d)}"/>`}
+ if(face==='cry')for(let i=0;i<2;i++){const sd=i?1:-1;const d=((t*2.2+i*0.5)%1);g+=`<path d="M${sd*36} 10q${sd*8} ${30+d*40} ${sd*4} ${50+d*60}" stroke="#7FD3FF" stroke-width="12" fill="none" stroke-linecap="round" opacity=".9"/><circle cx="${sd*40}" cy="${70+d*70}" r="9" fill="#7FD3FF" opacity="${1-d}"/>`}
+ if(face==='hurt'||face==='cry'){for(const [bx,by] of [[-70,-60],[60,-80],[80,50],[-40,70]])g+=`<circle cx="${bx}" cy="${by}" r="14" fill="#B5171F" opacity=".55"/>`;
+  for(let i=0;i<4;i++){const d=((t*1.1+i/4)%1);g+=`<path transform="translate(${-60+i*40} ${-140-d*80})" d="M0 0q14 -14 0 -28t0 -28" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" opacity="${0.7*(1-d)}"/>`}}
  return g+'</g>'}
 function sun(x,y,s,t){return `<g transform="translate(${x} ${y}) scale(${s}) rotate(${t*25})">${[...Array(14)].map((_,i)=>`<path d="M0 -150L16 -110H-16Z" fill="#FFC23A" transform="rotate(${i*360/14})"/>`).join('')}<circle r="96" fill="#FFD84D" stroke="#FFB000" stroke-width="10"/></g>`}
-function bg(t){ // colour story: red title -> green pond -> orange heat -> red sunset
- const k1=cl((t-2.2)/0.4),k2=cl((t-3.8)/0.6),k3=cl((t-6.0)/1.0);
- let top='#5A1424',bot='#2A0A12';
- top=mix(top,'#BFEFD0',k1);bot=mix(bot,'#5CC4A0',k1);top=mix(top,'#FFB347',k2);bot=mix(bot,'#FF7B3A',k2);top=mix(top,'#FF7A6B',k3);bot=mix(bot,'#B3122E',k3);
- let s=`<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${top}"/><stop offset="1" stop-color="${bot}"/></linearGradient><radialGradient id="sp" cx=".5" cy=".42" r=".45"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><rect width="1440" height="1080" fill="url(#g)"/>`;
- // pond water band + tubes farm (green part)
- const w=k1*(1-k3*0.6);
- s+=`<g opacity="${w}">${[...Array(9)].map((_,i)=>`<rect x="${60+i*155}" y="160" width="46" height="560" rx="23" fill="${mix('#9FE3B0','#FFB07A',k2)}" opacity=".55"/>`).join('')}</g>`;
- s+=`<path d="M0 ${820+Math.sin(t*2)*6} Q360 ${790} 720 ${820} T1440 ${815} V1080H0Z" fill="${mix(mix(mix('#2A0A12','#3FA37A',k1),'#C9561E',k2),'#7A0E22',k3)}" opacity=".9"/>`;
- for(let i=0;i<10;i++){const d=((t*0.4+i/10)%1);s+=`<circle cx="${150+i*125}" cy="${950-d*700}" r="${6+(i%3)*4}" fill="#fff" opacity="${0.35*k1*(1-k2)*(1-d)}"/>`}
- // heat shimmer lines
- for(let i=0;i<6;i++){s+=`<path d="M${180+i*220} 900q20 -30 0 -60t0 -60" stroke="#fff" stroke-width="6" fill="none" opacity="${0.25*k2*(0.5+0.5*Math.sin(t*6+i))}" stroke-linecap="round"/>`}
+function bg(t){
+ const k1=cl((t-2.2)/0.4),k2=eIO(cl((t-3.8)/0.45)),k3=cl((t-6.0)/1.0);
+ let top=mix(mix(mix('#5A1424','#7FD3FF',k1),'#FF9A3C',k2),'#FF6F61',k3), mid=mix(mix(mix('#2A0A12','#DDF6FF',k1),'#FFD27A',k2),'#FFB48A',k3);
+ let s=`<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${top}"/><stop offset="1" stop-color="${mid}"/></linearGradient><radialGradient id="sp" cx=".5" cy=".42" r=".45"><stop offset="0" stop-color="#fff" stop-opacity=".4"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><rect width="1440" height="1080" fill="url(#g)"/>`;
+ // clouds (fade out as it gets hot)
+ for(let i=0;i<3;i++){const x=((i*520+t*30)%1840)-200;s+=`<g transform="translate(${x} ${120+i*40})" opacity="${k1*(1-k2*0.9)}"><ellipse rx="90" ry="38" fill="#fff"/><circle cx="-40" cy="-20" r="40" fill="#fff"/><circle cx="20" cy="-34" r="50" fill="#fff"/></g>`}
+ // sea layers
+ const sea1=mix(mix(mix('#2A0A12','#2E9BD6',k1),'#E07B39',k2),'#B3122E',k3),sea2=mix(mix(mix('#1A060B','#1D6FB0',k1),'#B8501E',k2),'#7A0E22',k3);
+ const wave=(y,amp,ph,col,op)=>{let d=`M0 ${y}`;for(let x=0;x<=1440;x+=40)d+=`L${x} ${y+Math.sin(x/90+t*2+ph)*amp}`;return `<path d="${d}V1080H0Z" fill="${col}" opacity="${op}"/>`};
+ s+=wave(560,14,0,sea1,1)+wave(640,18,1.7,sea2,0.85);
+ // sparkles on water (cool) / heat shimmer (hot)
+ for(let i=0;i<12;i++){const x=80+i*115,y=620+(i%4)*60;s+=`<path d="M${x} ${y}h${18+6*Math.sin(t*4+i)}" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity="${0.5*k1*(1-k2)*(0.5+0.5*Math.sin(t*5+i))}"/>`}
+ for(let i=0;i<7;i++){s+=`<path d="M${120+i*200} 560q22 -34 0 -68t0 -68" stroke="#fff" stroke-width="7" fill="none" opacity="${0.35*k2*(1-k3)*(0.5+0.5*Math.sin(t*7+i))}" stroke-linecap="round"/>`}
  return s+`<rect width="1440" height="1080" fill="url(#sp)"/>`}
 window.render=function(t){let s=bg(t);
  // title drop / question
  if(t<2.6){const p=1-cl((t-2.2)/0.4);s+=`<g opacity="${p}"><g transform="translate(470 370)"><path d="M0 -150C60 -60 110 0 110 60a110 110 0 0 1 -220 0C-110 0 -60 -60 0 -150z" fill="#C8102E" stroke="#5A0A16" stroke-width="10"/><ellipse cx="-40" cy="20" rx="26" ry="40" fill="#fff" opacity=".35"/></g><text x="470" y="430" text-anchor="middle" font-family="K" font-weight="900" font-size="54" fill="#fff">ASX</text></g>`;
   s+=`<g opacity="${p}">`+cell(940,370,0.95,0,'q',0,0,t)+`<g transform="translate(1080 210) rotate(${Math.sin(t*5)*10})"><circle r="52" fill="#fff" stroke="${INK}" stroke-width="6"/><text y="28" text-anchor="middle" font-family="K" font-weight="900" font-size="80" fill="#D7263D">?</text></g></g>`;}
- if(t>=2.2){const k=eOB(cl((t-2.3)/0.5));const heat=cl((t-3.9)/0.8);const red=eIO(cl((t-6.4)/1.6));const shield=cl((t-6.0)/0.5);
-  const sunP=eOC(cl((t-3.8)/0.8));if(t>3.6)s+=sun(lerp(1500,1120,sunP),lerp(-150,170,sunP),1.0+0.04*Math.sin(t*8),t);
-  if(t>3.9&&t<6.4)for(let i=0;i<5;i++){const d=((t*1.6+i/5)%1);s+=`<path d="M${1040-d*260+i*12} ${230+d*120+i*14}l-40 22" stroke="#FFE08A" stroke-width="10" stroke-linecap="round" opacity="${(1-d)*heat}"/>`}
-  // thermometer
-  if(t>4.2&&t<6.5){const q=cl((t-4.3)/1.3),o=1-cl((t-6.1)/0.3);s+=`<g transform="translate(300 380)" opacity="${o}"><rect x="-26" y="-180" width="52" height="260" rx="26" fill="#fff" stroke="${INK}" stroke-width="7"/><rect x="-12" y="${60-200*q}" width="24" height="${200*q+20}" rx="12" fill="#E4572E"/><circle cy="100" r="42" fill="#E4572E" stroke="${INK}" stroke-width="7"/></g>`}
-  const face=t<3.9?'happy':t<6.0?'hot':'proud';
-  s+=cell(720,400+Math.sin(t*2.5)*8,1.15*k,red,face,t>4.2&&t<6.2?1:0,shield,t);
-  // colour-stage dots (like the reference) under the cell at the end
-  if(t>7.3){const q=cl((t-7.4)/0.6);for(let i=0;i<4;i++){const kk=eOB(cl((q*4-i)));s+=`<g transform="translate(${510+i*140} 640) scale(${kk})"><circle r="42" fill="${mix('#5CC46A','#D7263D',i/3)}" stroke="${INK}" stroke-width="5"/></g>`+(i<3?`<path d="M${555+i*140} 640h50" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="${kk}"/>`:'')}}
-  if(t>6.0&&t<7.6){const q=cl((t-6.0)/0.4),o=1-cl((t-7.3)/0.3);s+=`<g transform="translate(1060 300) scale(${eOB(q)})" opacity="${o}"><path d="M0 -70L60 -46V6Q60 52 0 76Q-60 52 -60 6V-46Z" fill="#D7263D" stroke="#fff" stroke-width="7"/><text y="20" text-anchor="middle" font-family="K" font-weight="900" font-size="40" fill="#fff">UV</text><path d="M-40 -40L40 40" stroke="#fff" stroke-width="8"/></g>`}
+ if(t>=2.2){const k=eOB(cl((t-2.3)/0.5));const red=eIO(cl((t-6.25)/1.1));const shield=cl((t-6.6)/0.5);
+  const sunP=eOC(cl((t-3.8)/0.7));const sunS=1+0.25*cl((t-4.4)/1.2)+0.05*Math.sin(t*9);if(t>3.6)s+=sun(lerp(1500,1100,sunP),lerp(-150,150,sunP),sunS,t);
+  // harsh beams hitting the cell
+  const hit=t>4.5&&t<6.2;if(hit)for(let i=0;i<6;i++){const d=((t*2.4+i/6)%1);const x0=1060-d*300,y0=200+d*150;s+=`<path d="M${x0+i*10} ${y0+i*12}l-60 40" stroke="#FFF2A8" stroke-width="16" stroke-linecap="round" opacity="${(1-d)}"/>`}
+  if(t>4.5&&t<6.2)s+=`<g transform="translate(560 270) rotate(-12)" opacity="${0.6+0.4*Math.sin(t*12)}"><text font-family="K" font-weight="900" font-size="72" fill="#fff" stroke="#B3122E" stroke-width="8" paint-order="stroke fill">${t<5.3?'โอ๊ย!':'ร้อนนน!'}</text></g>`;
+  let face=t<3.9?'happy':t<4.5?'squint':t<5.3?'hurt':t<6.2?'cry':t<7.2?'fierce':'proud';
+  const shake=(t>4.5&&t<6.2)?Math.sin(t*55)*8:0;
+  // transformation flash
+  if(t>6.1&&t<6.9){const q=cl((t-6.15)/0.7);s+=`<circle cx="720" cy="430" r="${80+q*700}" fill="#fff" opacity="${0.85*(1-q)}"/>`+[...Array(12)].map((_,i)=>`<path transform="translate(720 430) rotate(${i*30+q*90})" d="M0 -${180+q*120}L12 -${220+q*160}L0 -${260+q*200}L-12 -${220+q*160}Z" fill="#FFD84D" opacity="${1-q}"/>`).join('')}
+  const bob=Math.sin(t*2.2)*10;const sc=1.1*k*(t>6.1&&t<6.6?1+0.12*Math.sin((t-6.1)*25):1);
+  s+=cell(720+shake,430+bob,sc,red,face,t>3.9&&t<6.2?1:0,shield,t);
+  // ripple ring where it floats
+  s+=`<ellipse cx="720" cy="${590+bob*0.3}" rx="${170+10*Math.sin(t*3)}" ry="22" fill="none" stroke="#fff" stroke-width="5" opacity=".45"/>`;
+  if(t>7.3){const q=cl((t-7.4)/0.6);for(let i=0;i<4;i++){const kk=eOB(cl((q*4-i)));s+=`<g transform="translate(${510+i*140} 680) scale(${kk})"><circle r="40" fill="${mix('#5CC46A','#D7263D',i/3)}" stroke="${INK}" stroke-width="5"/></g>`+(i<3?`<path d="M${553+i*140} 680h54" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="${kk}"/>`:'')}}
  }
  document.getElementById('sv').innerHTML=s;capRender(t)};
 render(0);
