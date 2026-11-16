@@ -82,6 +82,7 @@ From their re-edit of the 11/12 zinc clip — they layered these on top of our c
 - For 'how much vitamin you get' use a progress ring around a character's face filling up (sun fills part, capsule completes it) — the user rejected the body-shaped liquid tank.
 - CSS gotchas: class `.ring` is taken by the template (opacity 0) and `data-kid` is parsed as kid JSON — use other names.
 - Dark/gold premium style (`templates/dark_premium_4x3_template.html`) is also approved for the zinc iCAP: user liked it (06/11 clip) and asked for it again on 15/11. Use `new_bottle.png` = `assets/products/inzent_zinc_icap.png`; the split capsule with pellets is `CAPSVG` in the template; small matching capsules `CAPSM` in `output/src/1511`. For 'absorbed normally' use the gut-wall → blood diagram with separate Zn/Cu channels (1511 S4). Gradient ids inside a hidden scene don't render in other scenes — give each SVG its own ids.
+- 16/11/26 Probio-H was rejected ('ภาพกาก วงเล็บไม่ตรง'): footage crops were low-res/blurry and red circles missed their targets. Next time: only use footage frames that stay sharp at the panel size (upscale/sharpen or pick a sharper frame, never enlarge a 480p-looking crop to 860px), and verify every red mark at full resolution by cropping the rendered still around it before rendering the video.
 - Keep video files under ~45 MB (re-encode crf 21) so GitHub doesn't warn.
 
 ## Gotchas
