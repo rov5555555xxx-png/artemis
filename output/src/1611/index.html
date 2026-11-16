@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2)}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2)}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2)}
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1440px;height:1080px;overflow:hidden;background:#000}
+body{font-family:K,sans-serif;color:#fff}
+#stage{position:relative;width:1440px;height:1080px;overflow:hidden;background:#0E0F12}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.sbg{position:absolute;inset:-60px}
+.studio{background:radial-gradient(circle at 50% 42%,#4A4E57 0%,#22252B 45%,#0B0C0F 100%)}
+.split{background:linear-gradient(90deg,#0F2A63 0%,#163A7A 46%,#1B1D22 54%,#0B0C0F 100%)}
+.lab{background:radial-gradient(circle at 50% 42%,#FFFFFF 0%,#EEF1F6 50%,#C9D0DC 100%)}
+.champ{background:radial-gradient(circle at 50% 30%,#FFFDF7 0%,#F6EAD2 50%,#D8BE8E 100%)}
+.light{background:radial-gradient(circle at 50% 40%,#FFFFFF 0%,#E7E9EE 55%,#B9BEC8 100%)}
+.cam{position:absolute;inset:0;will-change:transform}
+.a{position:absolute;opacity:0;will-change:transform}
+.img{background-position:center;background-size:contain;background-repeat:no-repeat;filter:drop-shadow(0 28px 34px rgba(0,0,0,.55))}
+.nb{background-image:url(new_bottle.png)}.ob{background-image:url(old_bottle.png)}.bx{background-image:url(new_box.png)}
+.img.bx{filter:drop-shadow(0 0 1.5px rgba(255,255,255,.85)) drop-shadow(0 28px 34px rgba(0,0,0,.55))}.pel{background-image:url(pellet.png)}
+.shine{position:absolute;inset:0;background:linear-gradient(105deg,rgba(255,255,255,0) 0 42%,rgba(255,255,255,.5) 50%,rgba(255,255,255,0) 58% 100%) no-repeat;background-size:300% 100%}
+.nb .shine{-webkit-mask:url(new_bottle.png) center/contain no-repeat}.ob .shine{-webkit-mask:url(old_bottle.png) center/contain no-repeat}.bx .shine{-webkit-mask:url(new_box.png) center/contain no-repeat}
+.rays{position:absolute;border-radius:50%;background:repeating-conic-gradient(rgba(255,226,170,.28) 0 7deg,rgba(255,255,255,0) 7deg 18deg);-webkit-mask:radial-gradient(circle,#000 20%,transparent 68%)}
+.glow{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,236,200,.75),rgba(217,185,138,.35) 38%,rgba(217,185,138,0) 70%)}
+.glowB{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(120,170,255,.55),rgba(46,196,182,.2) 40%,rgba(0,0,0,0) 70%)}
+.card{position:absolute;border-radius:40px;overflow:hidden}
+.card.old{background:linear-gradient(160deg,#2A5BC0,#123478 70%);border:6px solid #4F86F0;box-shadow:0 24px 50px rgba(0,0,0,.45)}
+.card.new{background:linear-gradient(160deg,#3A3D44,#121317 70%);border:6px solid #D9B98A;box-shadow:0 24px 50px rgba(0,0,0,.55),0 0 60px rgba(217,185,138,.25)}
+.big{font-weight:900;white-space:nowrap;line-height:1.15;text-align:center}
+.cx{left:170px;width:1100px}
+.gold{color:#F3D9A4;text-shadow:0 6px 0 #7A5B2E,0 14px 30px rgba(0,0,0,.6)}
+.wht{color:#fff;text-shadow:0 6px 0 rgba(0,0,0,.55),0 14px 30px rgba(0,0,0,.5)}
+.pill{display:inline-block;padding:10px 40px 16px;border-radius:999px;font-weight:900;white-space:nowrap;line-height:1.2}
+.p-gold{background:linear-gradient(90deg,#F6E2B5,#D2A867);color:#16171B;box-shadow:0 9px 0 #8A6731,0 18px 30px rgba(0,0,0,.45)}
+.p-blue{background:#2EC4B6;color:#0B2240;box-shadow:0 9px 0 #12756C,0 18px 30px rgba(0,0,0,.4)}
+.p-dark{background:#16171B;color:#F3D9A4;border:4px solid #D9B98A;box-shadow:0 9px 0 #000,0 18px 30px rgba(0,0,0,.5)}
+.p-red{background:#E5484D;color:#fff;box-shadow:0 9px 0 #8E1A1D,0 18px 30px rgba(0,0,0,.4)}
+.p-white{background:#fff;color:#16171B;box-shadow:0 9px 0 #9AA0AC,0 18px 30px rgba(0,0,0,.4)}
+.hl{background:linear-gradient(transparent 60%,rgba(217,185,138,.75) 60%,rgba(217,185,138,.75) 92%,transparent 92%) no-repeat;background-size:0% 100%;padding:0 8px}
+.bar{position:absolute;height:84px;border-radius:42px;background:rgba(255,255,255,.12);border:4px solid rgba(255,255,255,.25);overflow:hidden}
+.bar .fl{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:42px}
+.tick{position:absolute;font-weight:800;font-size:32px;color:rgba(255,255,255,.7);transform:translateX(-50%)}
+.dust{position:absolute;border-radius:50%;background:#fff}
+.ring{position:absolute;width:420px;height:420px;margin:-210px 0 0 -210px;border-radius:50%;border:16px solid #F3D9A4;opacity:0}
+.conf{position:absolute;width:20px;height:32px;border-radius:5px}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+#wipe{position:absolute;top:-200px;width:2600px;height:1500px;transform:translateX(-3200px) skewX(-16deg)}
+#wipe div{position:absolute;top:0;bottom:0}
+.photo{position:absolute;border-radius:36px;overflow:hidden;border:8px solid #fff;box-shadow:0 26px 60px rgba(0,0,0,.55)}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.capsvg{position:absolute;width:260px;height:600px;transform-origin:50% 50%}
+.capsvg svg{width:100%;height:100%;display:block;overflow:visible}
+.chk{position:absolute;width:120px;height:120px}
+.cu{position:absolute}
+.cal{position:absolute}
+.capbig{position:absolute;width:260px;height:600px;transform-origin:50% 50%}
+.capbig svg{width:100%;height:100%;display:block;overflow:visible}
+.b30{background-image:url(box30.png)}.b60{background-image:url(box60.png)}
+</style></head><body>
+<div id="stage">
+
+
+<!-- S1 0-2.7 now there is a 60-capsule size -->
+<div class="scene" data-s="0" data-e="2.7" data-bg="studio" data-cam="0:1.04:720:480;2.7:1:720:540">
+ <div class="cam"><svg class="a" data-at="-1" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260"><defs><pattern id="hx1" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern></defs><rect x="-120" y="-90" width="1680" height="1260" fill="url(#hx1)"/></svg>
+  <div class="a rays" data-at="-1" data-an="fade" data-spin="10" style="left:320px;top:-60px;width:800px;height:800px"></div>
+  <div class="a glow" data-at="-1" data-an="fade" style="left:450px;top:110px;width:540px;height:540px"></div>
+  <div class="a img b60" data-at="-1" data-an="fade" data-float="0.3" style="left:575px;top:120px;width:290px;height:460px"></div>
+  <div class="a" data-at="-1" data-an="stamp" style="left:860px;top:150px;width:220px;height:150px"><svg viewBox="0 0 260 180" width="220" height="150" id="new1"></svg></div>
+ </div>
+ <div class="a big cx wht" data-at="-1" data-an="fade" style="top:650px;font-size:76px">ซิงค์ iCAP มีแบบ</div>
+ <div class="a cx" data-at="-1" data-an="slam" style="top:750px;text-align:center"><span class="pill p-gold" style="font-size:88px">60 เม็ดแล้ว!</span></div>
+</div>
+<!-- S2 2.7-6.3 just updated; bought 30? don't worry -->
+<div class="scene" data-s="2.7" data-e="6.3" data-bg="studio" data-tr="wipe" data-cam="2.7:1:720:540;6.3:1.04:720:500">
+ <div class="cam"><svg class="a" data-at="2.7" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260"><defs><pattern id="hx2" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern></defs><rect x="-120" y="-90" width="1680" height="1260" fill="url(#hx2)"/></svg>
+  <div class="a glow" data-at="2.75" data-an="pop" style="left:450px;top:110px;width:540px;height:540px"></div>
+  <div class="a img b30" data-at="2.75" data-an="left" data-float="0.8" style="left:585px;top:130px;width:270px;height:428px"></div>
+  <div class="a" data-at="4.2" data-an="pop" data-bob="0" style="left:880px;top:200px"><span class="pill p-dark" style="font-size:52px">30 เม็ด</span></div>
+  <div class="a" data-at="5.4" data-an="stamp" style="left:330px;top:220px;width:150px;height:150px"><svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="44" fill="#2EC4B6" stroke="#0B2240" stroke-width="6"/><path d="M28 52l15 15l30-32" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+ </div>
+ <div class="a big cx gold" data-at="2.8" data-an="up" data-out="4.1" style="top:700px;font-size:80px">เพิ่ง<span class="hl" data-hl="3.1">อัปเดต</span>สดๆ ร้อนๆ</div>
+ <div class="a big cx wht" data-at="4.2" data-an="up" style="top:700px;font-size:76px">กด 30 เม็ดไป <span class="hl" data-hl="5.3">ไม่ต้องตกใจ</span></div>
+</div>
+<!-- S3 6.3-11.2 two sizes, two prices -->
+<div class="scene" data-s="6.3" data-e="11.2" data-bg="split" data-tr="wipe" data-cam="6.3:1:720:540;11.2:1.03:720:510">
+ <div class="cam">
+  <div class="a card old" data-at="6.35" data-an="left" style="left:200px;top:120px;width:480px;height:520px"></div>
+  <div class="a card new" data-at="6.5" data-an="right" style="left:760px;top:120px;width:480px;height:520px"></div>
+  <div class="a img b30" data-at="6.45" data-an="left" data-float="0.5" style="left:325px;top:160px;width:230px;height:365px"></div>
+  <div class="a img b60" data-at="6.6" data-an="right" data-float="1.5" style="left:875px;top:150px;width:250px;height:396px"></div>
+  <div class="a cx" data-at="9.9" data-an="pop" style="left:200px;width:480px;top:550px;text-align:center"><span class="pill p-white" style="font-size:50px">30 เม็ด</span></div>
+  <div class="a cx" data-at="10.6" data-an="pop" style="left:760px;width:480px;top:550px;text-align:center"><span class="pill p-gold" style="font-size:50px">60 เม็ด</span></div>
+  <svg class="a" id="price3" data-at="7.6" data-an="fade" style="left:0;top:0;width:1440px;height:1080px;overflow:visible"></svg>
+ </div>
+ <div class="a big cx wht" data-at="6.4" data-an="up" data-out="9.8" style="top:720px;font-size:80px"><span class="hl" data-hl="6.8">2 ขนาด</span> คนละราคา</div>
+ <div class="a big cx gold" data-at="9.9" data-an="up" style="top:720px;font-size:80px">ขนาด 30 กับ 60</div>
+</div>
+<!-- S4 11.2-15.3 60 just launched, big size for 2 months -->
+<div class="scene" data-s="11.2" data-e="15.3" data-bg="studio" data-tr="zoom" data-cam="11.2:1:720:540;15.3:1.03:720:510">
+ <div class="cam"><svg class="a" data-at="11.2" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260"><defs><pattern id="hx4" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern></defs><rect x="-120" y="-90" width="1680" height="1260" fill="url(#hx4)"/></svg>
+  <div class="a glow" data-at="11.25" data-an="pop" style="left:150px;top:110px;width:520px;height:520px"></div>
+  <div class="a img b60" data-at="11.25" data-an="left" data-float="0.6" style="left:270px;top:130px;width:280px;height:444px"></div>
+  <svg class="a" id="grid4" data-at="13.5" data-an="fade" style="left:0;top:0;width:1440px;height:1080px;overflow:visible"></svg>
+ </div>
+ <div class="a big cx wht" data-at="11.3" data-an="up" data-out="13.45" style="top:720px;font-size:80px"><span class="hl" data-hl="11.7">เพิ่งวางขาย</span>เมื่อวันก่อน</div>
+ <div class="a big cx gold" data-at="13.55" data-an="up" style="top:720px;font-size:80px">ไซส์ใหญ่ กินได้ <span class="hl" data-hl="14.4">2 เดือน</span></div>
+</div>
+<!-- S5 15.3-20.6 I got the 30 because 60 just came out -->
+<div class="scene" data-s="15.3" data-e="20.6" data-bg="studio" data-tr="wipe" data-cam="15.3:1:720:540;20.6:1.03:720:510">
+ <div class="cam"><svg class="a" data-at="15.3" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260"><defs><pattern id="hx5" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern></defs><rect x="-120" y="-90" width="1680" height="1260" fill="url(#hx5)"/></svg>
+  <svg class="a" id="parcel5" data-at="15.35" data-an="fade" style="left:0;top:0;width:1440px;height:1080px;overflow:visible"></svg>
+  <div class="a img b30" id="b30_5" data-at="15.35" data-an="fade" style="left:585px;top:130px;width:270px;height:428px"></div>
+  <div class="a" data-at="16.7" data-an="pop" data-bob="0" style="left:880px;top:200px"><span class="pill p-dark" style="font-size:52px">30 เม็ด</span></div>
+  <div class="a" data-at="18.1" data-an="pop" style="left:200px;top:220px;width:280px;height:200px"><svg viewBox="0 0 280 200" width="280" height="200" id="late5"></svg></div>
+ </div>
+ <div class="a big cx wht" data-at="15.4" data-an="up" data-out="17.6" style="top:700px;font-size:76px">ผมเพิ่งกดมา ได้ <span class="hl" data-hl="16.7">30 เม็ด</span></div>
+ <div class="a big cx gold" data-at="17.7" data-an="up" style="top:700px;font-size:76px">60 เม็ดเพิ่งมา <span class="hl" data-hl="19.8">ไม่ทันแล้ว</span></div>
+</div>
+<!-- S6 20.6-end from now on: recommend 60, best value, just a little more -->
+<div class="scene" data-s="20.6" data-e="99" data-bg="studio" data-tr="flash" data-cam="20.6:1.05:720:480;22:1:720:540;26.6:1.03:720:520">
+ <div id="confetti"></div>
+ <div class="cam"><svg class="a" data-at="20.6" data-an="fade" style="left:-120px;top:-90px;width:1680px;height:1260px" viewBox="-120 -90 1680 1260"><defs><pattern id="hx6" width="84" height="146" patternUnits="userSpaceOnUse"><path d="M42 0l42 24v49L42 97 0 73V24zM42 97l42 24v49M42 97L0 121v49" fill="none" stroke="#9AA3B5" stroke-width="2" opacity=".14"/></pattern></defs><rect x="-120" y="-90" width="1680" height="1260" fill="url(#hx6)"/></svg>
+  <div class="a card old" data-at="20.65" data-an="left" data-dim="21.8" style="left:180px;top:170px;width:400px;height:440px"></div>
+  <div class="a img b30" data-at="20.7" data-an="left" data-dim="21.8" style="left:285px;top:210px;width:190px;height:301px"></div>
+  <div class="a rays" data-at="21.8" data-an="fade" data-spin="12" style="left:600px;top:-40px;width:760px;height:760px"></div>
+  <div class="a card new" data-at="20.7" data-an="right" style="left:740px;top:110px;width:520px;height:540px"></div>
+  <div class="a img b60" data-at="20.8" data-an="right" data-float="0.4" style="left:860px;top:140px;width:280px;height:444px"></div>
+  <div class="a" data-at="21.8" data-an="stamp" style="left:1150px;top:80px;width:150px;height:130px"><svg viewBox="0 0 150 130" width="150" height="130"><path d="M10 110L22 30L52 70L75 15L98 70L128 30L140 110Z" fill="#F3D9A4" stroke="#7A5B2E" stroke-width="6" stroke-linejoin="round"/></svg></div>
+  <div class="a cx" data-at="21.9" data-an="pop" style="left:740px;width:520px;top:580px;text-align:center"><span class="pill p-gold" style="font-size:52px">แนะนำ 60 เม็ด</span></div>
+ </div>
+ <div class="a big cx wht" data-at="20.7" data-an="up" data-out="23.2" style="top:740px;font-size:76px">กดหลังจากนี้ <span class="hl" data-hl="22">แนะนำ 60 เม็ด</span></div>
+ <div class="a cx" data-at="23.3" data-an="slam" style="top:730px;text-align:center"><span class="pill p-gold" style="font-size:78px">คุ้มสุด!</span></div>
+ <div class="a big cx wht" data-at="24.2" data-an="up" style="top:850px;font-size:60px">เพิ่มเงินอีกนิดเดียว</div>
+</div>
+<div id="rings"></div>
+<div id="wipe"><div style="left:-90px;width:90px;background:#2EC4B6"></div><div style="left:0;right:0;background:#16171B"></div><div style="right:-90px;width:90px;background:#D9B98A"></div></div>
+<div id="flash"></div>
+<div id="safe" style="display:none;position:absolute;left:130px;top:130px;width:1180px;height:820px;border:3px dashed #f0f"></div>
+</div>
+<script>
+const W=1440,H=1080,DUR_T=25.33;
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eOC=p=>1-Math.pow(1-p,3);
+const eOB=p=>{const c1=1.9,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+const eIO=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+let seed=9;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+if(location.hash==='#safe')document.getElementById('safe').style.display='block';
+document.querySelectorAll('.img.nb,.img.ob,.img.bx').forEach((b,i)=>{const s=document.createElement('div');s.className='shine';s.dataset.ph=i*0.37;b.appendChild(s)});
+const scenes=[...document.querySelectorAll('.scene')].map(el=>{
+ const bg=document.createElement('div');bg.className='sbg '+el.dataset.bg;el.insertBefore(bg,el.firstChild);
+ const pl=document.createElement('div');pl.style.cssText='position:absolute;inset:0;pointer-events:none';el.insertBefore(pl,bg.nextSibling);
+ const parts=[];if(el.dataset.bg!=='light'&&el.dataset.bg!=='split')for(let k=0;k<34;k++){const d=document.createElement('div');d.className='dust';const s=2+rnd()*5;d.style.width=d.style.height=s+'px';pl.appendChild(d);parts.push({d,x:170+rnd()*1100,y:rnd()*H,v:10+rnd()*25,ph:rnd()*6.28,tw:rnd()*6})}
+ const cam=(el.dataset.cam||'').split(';').filter(Boolean).map(k=>k.split(':').map(Number));
+ return{el,s:+el.dataset.s,e:+el.dataset.e,tr:el.dataset.tr||'',parts,cam,camEl:el.querySelector('.cam'),items:[...el.querySelectorAll('.a')]}});
+const TR=0.4;
+const CAPSVG=(()=>{let r=7,c=()=>{r=(r*16807)%2147483647;return (r-1)/2147483646};let p='';
+ for(let y=318;y>24;y-=17)for(let x=22;x<244;x+=19){const xx=x+(c()-.5)*8+((Math.round(y/17)%2)?9:0),yy=y+(c()-.5)*6,rr=8.5+c()*3.5;p+=`<circle cx="${xx.toFixed(1)}" cy="${yy.toFixed(1)}" r="${rr.toFixed(1)}" fill="url(#gPl)"/>`}
+ return `<svg viewBox="0 0 260 600"><defs>
+ <radialGradient id="gPl" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#F3EEE3"/><stop offset="1" stop-color="#BFB6A3"/></radialGradient>
+ <linearGradient id="gGl" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".25" stop-color="#fff" stop-opacity=".08"/><stop offset=".75" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#fff" stop-opacity=".3"/></linearGradient>
+ <linearGradient id="gCr" x1="0" x2="1"><stop offset="0" stop-color="#CFC7B6"/><stop offset=".3" stop-color="#FFFDF7"/><stop offset=".55" stop-color="#F7F2E7"/><stop offset="1" stop-color="#C4BBA8"/></linearGradient>
+ <clipPath id="cTop"><path d="M22 330V132a108 108 0 01216 0V330z"/></clipPath></defs>
+ <g class="cTopG"><g clip-path="url(#cTop)"><rect x="0" y="0" width="260" height="340" fill="rgba(255,255,255,.06)"/>${p}<rect x="0" y="0" width="260" height="340" fill="url(#gGl)"/></g>
+  <path d="M22 330V132a108 108 0 01216 0V330" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="4"/>
+  <path d="M46 300V140a84 84 0 0140-70" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".55"/></g>
+ <g class="cBotG"><path d="M16 296H244V470a114 114 0 01-228 0z" fill="url(#gCr)"/><path d="M16 296H244" stroke="#B9AF9B" stroke-width="4"/>
+  <path d="M40 320V470a90 90 0 0034 70" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" opacity=".6"/>
+  <g transform="translate(138 440) rotate(90)" font-family="Arial,Helvetica,sans-serif" font-weight="700" fill="#4A4A4A" text-anchor="middle"><text x="0" y="-8" font-size="74">Zn</text><text x="0" y="52" font-size="56">Zinc</text></g></g></svg>`})();
+document.querySelectorAll('.capsvg').forEach(e=>e.innerHTML=CAPSVG);
+const pel5=[];{const w=document.getElementById('pel5');if(w)for(let i=0;i<22;i++){const d=document.createElement('div');const r=12+rnd()*12;d.style.cssText=`position:absolute;width:${r*2}px;height:${r*2}px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 20%,#F3EEE3 55%,#BFB6A3 100%);box-shadow:0 8px 14px rgba(0,0,0,.35);opacity:0`;w.appendChild(d);pel5.push({d,r,ang:rnd()*6.28,sp:180+rnd()*260,dl:rnd()*0.12})}}
+
+function crCurve(pts){const out=[];const P=pts.map(([h,l])=>[110+h*105,600-l*460]);
+ for(let i=0;i<P.length-1;i++){const p0=P[Math.max(0,i-1)],p1=P[i],p2=P[i+1],p3=P[Math.min(P.length-1,i+2)];
+  for(let k=0;k<24;k++){const u=k/24,u2=u*u,u3=u2*u;out.push([0,1].map(j=>0.5*((2*p1[j])+(-p0[j]+p2[j])*u+(2*p0[j]-5*p1[j]+4*p2[j]-p3[j])*u2+(-p0[j]+3*p1[j]-3*p2[j]+p3[j])*u3)))}}
+ out.push(P[P.length-1]);
+ const lut=[];let j=0;for(let x=110;x<=950;x+=2){while(j<out.length-2&&out[j+1][0]<x)j++;const a=out[j],b=out[j+1];const f=b[0]>a[0]?cl((x-a[0])/(b[0]-a[0])):0;lut.push([x,a[1]+(b[1]-a[1])*f])}
+ return lut}
+const CO=crCurve([[0,0.02],[0.5,0.8],[1,0.93],[1.5,0.95],[2,0.95],[2.6,0.86],[3.2,0.7],[4,0.5],[5,0.32],[6,0.2],[7,0.13],[8,0.09]]);
+const CN=crCurve([[0,0.02],[0.5,0.78],[1,0.92],[2,0.94],[4,0.94],[6,0.93],[7,0.68],[8,0.42]]);
+if(document.getElementById('lOld')){const d=a=>'M'+a.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join('L');
+ document.getElementById('lOld').setAttribute('d',d(CO));document.getElementById('aOld').setAttribute('d',d(CO)+'L950 600L110 600Z');
+ document.getElementById('lNew').setAttribute('d',d(CN));document.getElementById('aNew').setAttribute('d',d(CN)+'L950 600L110 600Z');}
+
+function camAt(keys,t){if(!keys.length)return[1,720,540];if(t<=keys[0][0])return keys[0].slice(1);
+ for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t<=b[0]){const p=eIO(cl((t-a[0])/(b[0]-a[0])));return[1,2,3].map(j=>a[j]+(b[j]-a[j])*p)}}return keys[keys.length-1].slice(1)}
+const conf=[];const cw=document.getElementById('confetti');const cc=['#F3D9A4','#D9B98A','#fff','#C0C4CC','#8A6731'];
+for(let i=0;i<70;i++){const d=document.createElement('div');d.className='conf';d.style.background=cc[i%5];cw.appendChild(d);conf.push({d,x:200+rnd()*1040,vy:250+rnd()*300,vx:(rnd()-.5)*160,r:rnd()*360,vr:(rnd()-.5)*720,dl:rnd()*0.5,sw:rnd()*6})}
+const ringDefs=[[0.1,720,800],[23.3,720,780]];
+const rw=document.getElementById('rings');const rings=ringDefs.map(([t,x,y])=>{const d=document.createElement('div');d.className='ring';d.style.left=x+'px';d.style.top=y+'px';rw.appendChild(d);return{d,t}});
+function animT(an,p){switch(an){
+ case 'fade':return[eOC(p),''];
+ case 'pop':return[cl(p*4),`scale(${p<=0?0:eOB(p)})`];
+ case 'slam':{const e=eOC(p);return[cl(p*5),`scale(${1+1.2*(1-e)})`]}
+ case 'stamp':{const e=eOB(p);return[cl(p*5),`scale(${1.6-0.6*e}) rotate(${-6*(1-e)}deg)`]}
+ case 'up':{const e=eOB(p);return[cl(p*3),`translateY(${80*(1-e)}px)`]}
+ case 'left':{const e=eOB(p);return[cl(p*3),`translateX(${-320*(1-e)}px)`]}
+ case 'right':{const e=eOB(p);return[cl(p*3),`translateX(${320*(1-e)}px)`]}
+ case 'drop':{const e=eOB(p);return[cl(p*4),`translateY(${-700*(1-e)}px) rotate(${(1-e)*-20}deg)`]}}return[1,'']}
+const DUR={fade:.35,pop:.42,slam:.32,stamp:.35,up:.42,left:.45,right:.45,drop:.55};
+const $=id=>document.getElementById(id);
+window.render=function(t){
+ let flash=0;
+ scenes.forEach((sc,i)=>{
+  const nx=scenes[i+1];const tail=(nx&&(nx.tr==='iris'||nx.tr==='zoom'))?TR:0;
+  const on=t>=sc.s&&t<sc.e+tail;sc.el.style.display=on?'block':'none';if(!on)return;
+  const lt=t-sc.s,q=cl(lt/TR);let tf='',clip='none',op=1;
+  if(sc.tr==='iris')clip=`circle(${eIO(q)*110}% at 50% 50%)`;
+  else if(sc.tr==='zoom'){tf=`scale(${1.3-0.3*eOC(q)})`;op=q}
+  sc.el.style.transform=tf;sc.el.style.clipPath=q<1?clip:'none';sc.el.style.opacity=op;sc.el.style.zIndex=i;
+  const [s,fx,fy]=camAt(sc.cam,t);if(sc.camEl)sc.camEl.style.transform=`translate(720px,540px) scale(${s}) translate(${-fx}px,${-fy}px)`;
+  for(const p of sc.parts){const y=((p.y-p.v*t)%(H+100)+H+100)%(H+100)-50;p.d.style.transform=`translate(${p.x+Math.sin(t*.7+p.ph)*20}px,${y}px)`;p.d.style.opacity=(.25+.5*Math.abs(Math.sin(t*1.5+p.tw)))*cl((y-140)/80)*cl((940-y)/80)}
+  for(const el of sc.items){
+   const at=+el.dataset.at,an=el.dataset.an,p=cl((t-at)/DUR[an]);
+   let[o,tr]=t<at?[0,'']:animT(an,p);const live=t-at;
+   if(el.dataset.out){const k=cl((t-+el.dataset.out)/0.28);if(k>0){o*=1-k;tr+=` translateY(${-eIO(k)*50}px)`}}
+   if(el.dataset.dim){const k=cl((t-+el.dataset.dim)/0.4);o*=1-0.6*k;el.style.filter=k>0?`grayscale(${k}) brightness(${1-0.35*k})`:''}
+   if(el.dataset.float){const ph=+el.dataset.float;tr+=` translateY(${Math.sin(t*2.1+ph)*10}px) perspective(1400px) rotateY(${Math.sin(t*1.3+ph)*9}deg)`}
+   if(el.dataset.bob){const ph=+el.dataset.bob;tr+=` translateY(${Math.sin(t*3+ph)*8}px)`}
+   if(el.dataset.swing&&live>0.35)tr+=` rotate(${Math.sin((live-0.35)*9)*6*Math.exp(-(live-0.35)*1.5)}deg)`;
+   if(el.dataset.spin)tr+=` rotate(${t*el.dataset.spin}deg)`;
+   el.style.opacity=o;el.style.transform=tr}
+ });
+ let wx=-3200;for(const sc of scenes){if(sc.tr==='wipe'){const d=t-sc.s;if(d>-0.22&&d<0.22)wx=-3000+eIO((d+0.22)/0.44)*4700}
+  if(sc.tr==='flash'){const d=t-sc.s;if(d>=0&&d<0.3)flash=Math.max(flash,0.85*(1-d/0.3))}}
+ $('wipe').style.transform=`translateX(${wx}px) skewX(-16deg)`;$('flash').style.opacity=flash;
+ document.querySelectorAll('[data-kbi]').forEach(g=>{const d=Math.max(0,t-+g.dataset.kbi);g.style.transform=`scale(${1.02+0.03*d})`});
+ document.querySelectorAll('[data-hl]').forEach(h=>{h.style.backgroundSize=`${eIO(cl((t-+h.dataset.hl)/0.35))*100}% 100%`});
+
+ window.extra&&extra(t);
+};
+window.render(0);
+</script><script>
+document.querySelectorAll('.capbig').forEach(e=>e.innerHTML=CAPSVG);
+const CAPSM=(x,y,r,s)=>{let p='';let k=3;const rr=()=>{k=(k*16807)%2147483647;return (k-1)/2147483646};for(let yy=-17;yy<=17;yy+=8)for(let xx=-60;xx<-2;xx+=8){p+=`<circle cx="${xx+(rr()-.5)*3}" cy="${yy+(rr()-.5)*3}" r="${3.4+rr()*1.4}" fill="#F7F3EA" stroke="#BFB6A3" stroke-width=".8"/>`}
+ return `<g transform="translate(${x} ${y}) rotate(${r}) scale(${s})"><clipPath id="cl${x|0}${y|0}${r|0}"><path d="M0 -26H-40A26 26 0 0 0 -40 26H0Z"/></clipPath><path d="M0 -26H-40A26 26 0 0 0 -40 26H0Z" fill="rgba(255,255,255,.12)"/><g clip-path="url(#cl${x|0}${y|0}${r|0})">${p}</g><path d="M0 -26H-40A26 26 0 0 0 -40 26H0" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="2.5"/><path d="M-2 -28H40A28 28 0 0 1 40 28H-2Z" fill="#F4EFE4" stroke="#B9AF9B" stroke-width="2.5"/><path d="M6 -16H40" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".7"/><text x="24" y="8" text-anchor="middle" font-family="Arial" font-weight="700" font-size="18" fill="#4A4A4A">Zn</text></g>`};
+function cardSvg(ok,n){const caps=n===1?CAPSM(250,150,-15,1.6):CAPSM(170,140,-20,1.2)+CAPSM(270,170,10,1.2)+CAPSM(360,130,25,1.2);
+ return caps+`<text x="250" y="320" text-anchor="middle" font-family="K" font-weight="900" font-size="80" fill="${ok?'#F3D9A4':'#fff'}">${n===1?'1 เม็ด':'2–3 เม็ด'}</text><g transform="translate(190 350)"><svg width="120" height="120" viewBox="0 0 100 100">${ok?'<circle cx="50" cy="50" r="44" fill="#2EC4B6" stroke="#0B2240" stroke-width="6"/><path d="M28 52l15 15l30-32" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>':'<path d="M50 6L96 90H4Z" fill="#E5484D" stroke="#fff" stroke-width="5" stroke-linejoin="round"/><text x="50" y="80" text-anchor="middle" font-family="K" font-weight="900" font-size="60" fill="#fff">!</text>'}</svg></g>`}
+
+function calSvg(m,d){return `<rect x="10" y="40" width="340" height="330" rx="34" fill="#16171B" stroke="#D9B98A" stroke-width="8"/><rect x="10" y="40" width="340" height="90" rx="34" fill="#D9B98A"/><rect x="80" y="12" width="24" height="60" rx="10" fill="#F3D9A4"/><rect x="256" y="12" width="24" height="60" rx="10" fill="#F3D9A4"/><text x="180" y="105" text-anchor="middle" font-family="K" font-weight="900" font-size="48" fill="#16171B">เดือนที่ ${m}</text><text x="180" y="290" text-anchor="middle" font-family="K" font-weight="900" font-size="150" fill="#fff">${d}</text>`}
+const lerp=(a,b,p)=>a+(b-a)*p;
+window.extra=function(t){
+ if(t<3){$('new1').innerHTML=(()=>{const pts=[...Array(24)].map((_,i)=>{const a=i/24*2*Math.PI,r=i%2?0.78:1;return `${(130+Math.cos(a)*125*r).toFixed(0)},${(90+Math.sin(a)*85*r).toFixed(0)}`}).join(' ');return `<g transform="rotate(${Math.sin(t*4)*6} 130 90)"><polygon points="${pts}" fill="#E5484D" stroke="#fff" stroke-width="6" stroke-linejoin="round"/><text x="130" y="112" text-anchor="middle" font-family="K" font-weight="900" font-size="64" fill="#fff">NEW!</text></g>`})()}
+ if(t>=6.3&&t<11.6){let s='';const k=eOB(cl((t-7.6)/0.4)),k2=eOB(cl((t-8.2)/0.4));s+=`<g transform="translate(560 170) scale(${k})"><circle r="52" fill="#16171B" stroke="#4F86F0" stroke-width="6"/><text y="20" text-anchor="middle" font-family="K" font-weight="900" font-size="56" fill="#9CC0FF">฿</text></g><g transform="translate(1130 170) scale(${k2})"><circle r="60" fill="#16171B" stroke="#D9B98A" stroke-width="6"/><text y="10" text-anchor="middle" font-family="K" font-weight="900" font-size="40" fill="#F3D9A4">฿฿</text></g>`;$('price3').innerHTML=s}
+ if(t>=13.4&&t<15.8){let s='';const n=Math.floor(60*eOC(cl((t-13.6)/1.2)));s+=`<rect x="640" y="140" width="560" height="430" rx="30" fill="rgba(22,23,27,.85)" stroke="#D9B98A" stroke-width="5"/><text x="920" y="200" text-anchor="middle" font-family="K" font-weight="900" font-size="40" fill="#F3D9A4">วันละ 1 เม็ด</text>`;
+  for(let i=0;i<60;i++){const c=i%10,r=Math.floor(i/10);const x=690+c*50+(r>=3?0:0),y=240+r*48+(r>=3?20:0);s+=i<n?CAPSM(x+20,y,-20,0.5):`<circle cx="${x+20}" cy="${y}" r="6" fill="rgba(255,255,255,.12)"/>`}
+  const m1=cl((t-14.2)/0.3),m2=cl((t-14.6)/0.3);s+=`<text x="1215" y="320" font-family="K" font-weight="900" font-size="34" fill="#F3D9A4" opacity="${m1}">เดือน 1</text><text x="1215" y="490" font-family="K" font-weight="900" font-size="34" fill="#F3D9A4" opacity="${m2}">เดือน 2</text><path d="M660 382H1180" stroke="#D9B98A" stroke-width="3" stroke-dasharray="10 8" opacity="${m1}"/>`;$('grid4').innerHTML=s}
+ if(t>=15.3&&t<21){const p=eOB(cl((t-15.4)/0.6));let s=`<g transform="translate(720 ${560-0}) scale(${p})" opacity="${1-cl((t-16.2)/0.3)}"><rect x="-170" y="-200" width="340" height="200" rx="16" fill="#C69C6D" stroke="#7A5B2E" stroke-width="6"/><path d="M-170 -150H170M0 -200V0" stroke="#E7C79A" stroke-width="18"/></g>`;$('parcel5').innerHTML=s;
+  const lk=cl((t-18.1)/0.3);$('late5').innerHTML=`<rect x="10" y="10" width="260" height="180" rx="24" fill="#16171B" stroke="#E5484D" stroke-width="6"/><text x="140" y="80" text-anchor="middle" font-family="K" font-weight="900" font-size="54" fill="#fff">60 เม็ด</text><text x="140" y="150" text-anchor="middle" font-family="K" font-weight="900" font-size="40" fill="#FF7B7F">มาทีหลัง</text>`}
+};
+</script>
+</body></html>

@@ -61,6 +61,8 @@ From their re-edit of the 11/12 zinc clip — they layered these on top of our c
 
 - **INZENT Vitamin D3+K2 (orange/yellow label, brown jar, 30 capsules)** — cutout `assets/products/inzent_d3k2.png`; 1 capsule = 15 mcg = 600 IU (from the user's footage).
 
+- Zinc iCAP boxes (black/silver box, 30 and 60 capsules; 60 launched 15/11/26): `assets/products/inzent_zinc_icap_box30.png`, `..._box60.png`. The boxes look identical apart from the small count — always pair them with a '30 เม็ด/60 เม็ด' pill.
+
 ## User feedback log (apply by default)
 
 - "ตากาสายล้าง" in Whisper = **ตะกร้าสีเหลือง** (yellow basket), not orange. Yellow basket on a non-yellow background.
