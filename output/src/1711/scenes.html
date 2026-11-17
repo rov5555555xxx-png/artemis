@@ -1,0 +1,140 @@
+.jar{background-image:url(jar.png)}
+.cmt{position:absolute;background:#fff;border-radius:34px;padding:26px 34px 30px 120px;box-shadow:0 22px 50px rgba(0,0,0,.5);color:#16171B;white-space:nowrap}
+.cmt .av{position:absolute;left:26px;top:26px;width:72px;height:72px;border-radius:50%;background:linear-gradient(160deg,#C9CED8,#8E95A3)}
+.cmt .nm{font-size:26px;font-weight:600;color:#8E95A3}
+.cmt .tx{font-size:50px;font-weight:900;line-height:1.25}
+.red{color:#FF6B6E;text-shadow:0 6px 0 #6E1416,0 14px 30px rgba(0,0,0,.6)}
+.lbl{position:absolute;font-weight:900;white-space:nowrap;text-align:center}
+#confetti{display:none}
+.vsvg{position:absolute;overflow:visible}
+</style></head><body>
+<div id="stage">
+
+<!-- S1 0-3.76 question: what does zinc help with? -> male hormone -->
+<div class="scene" data-s="0" data-e="3.76" data-bg="studio" data-cam="0:1.03:720:500;3.76:1:720:540">
+ <div class="cam">
+  <div class="a rays" data-at="-1" data-an="fade" data-spin="10" style="left:700px;top:-60px;width:720px;height:720px"></div>
+  <div class="a glow" data-at="-1" data-an="fade" style="left:790px;top:60px;width:540px;height:540px"></div>
+  <div class="a img jar" data-at="-1" data-an="fade" data-float="0.4" style="left:860px;top:110px;width:400px;height:467px"></div>
+  <svg class="a vsvg" id="male1" data-at="2.0" data-an="stamp" style="left:300px;top:380px;width:240px;height:240px" viewBox="-120 -120 240 240"></svg>
+ </div>
+ <div class="a big cx wht" data-at="-1" data-an="fade" data-out="1.95" style="top:770px;font-size:84px">ซิงค์ตัวนี้ <span class="gold">ช่วยอะไร?</span></div>
+ <div class="a big cx wht" data-at="2.0" data-an="up" style="top:770px;font-size:80px">เกี่ยวกับ<span class="hl" data-hl="2.3">ฮอร์โมนเพศชาย</span></div>
+</div>
+
+<!-- S2 3.76-6.84 women have less male hormone -->
+<div class="scene" data-s="3.76" data-e="6.84" data-bg="studio" data-tr="wipe" data-cam="3.76:1:720:540;6.84:1.03:720:510">
+ <div class="cam">
+  <svg class="a vsvg" id="fig2" data-at="3.8" data-an="up" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="3.85" data-an="up" style="top:770px;font-size:78px">ผู้หญิง มีฮอร์โมนเพศชาย<span class="hl" data-hl="5.9">น้อยกว่า</span></div>
+</div>
+
+<!-- S3 6.84-10.76 harder to build muscle, stores fat easier -->
+<div class="scene" data-s="6.84" data-e="10.76" data-bg="studio" data-tr="wipe" data-cam="6.84:1:720:540;10.76:1.03:720:510">
+ <div class="cam">
+  <svg class="a vsvg" id="fig3" data-at="6.9" data-an="left" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="6.9" data-an="up" data-out="8.55" style="top:770px;font-size:80px">กล้ามเนื้อ<span class="hl" data-hl="7.6">สร้างยากกว่า</span></div>
+ <div class="a big cx wht" data-at="8.6" data-an="up" style="top:770px;font-size:80px">และ<span class="hl" data-hl="9.4">สะสมไขมันง่ายกว่า</span></div>
+</div>
+
+<!-- S4 10.76-13.40 with age muscle breaks down fast -->
+<div class="scene" data-s="10.76" data-e="13.4" data-bg="studio" data-tr="wipe" data-cam="10.76:1:720:540;13.4:1.03:720:510">
+ <div class="cam">
+  <svg class="a vsvg" id="fig4" data-at="10.8" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="10.85" data-an="up" style="top:770px;font-size:80px">อายุมากขึ้น กล้าม<span class="red">สลายเร็วมาก</span></div>
+</div>
+
+<!-- S5 13.40-16.56 men too: severe zinc deficiency -> male hormone drops -->
+<div class="scene" data-s="13.4" data-e="16.56" data-bg="studio" data-tr="wipe" data-cam="13.4:1:720:540;16.56:1.03:720:510">
+ <div class="cam">
+  <svg class="a vsvg" id="fig5" data-at="13.45" data-an="up" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="13.45" data-an="up" data-out="14.95" style="top:770px;font-size:80px">ผู้ชายก็เหมือนกัน ถ้า<span class="red">ขาดซิงค์</span></div>
+ <div class="a big cx wht" data-at="15.0" data-an="up" style="top:770px;font-size:80px">ฮอร์โมนเพศชาย <span class="red">ตก!</span></div>
+</div>
+
+<!-- S6a 16.56-18.2 muscle building slows -->
+<div class="scene" data-s="16.56" data-e="18.2" data-bg="studio" data-tr="wipe" data-cam="16.56:1:720:540;18.2:1.02:720:520">
+ <div class="cam">
+  <svg class="a vsvg" id="fig6a" data-at="16.6" data-an="pop" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="16.6" data-an="up" style="top:770px;font-size:80px">สร้างกล้ามเนื้อ<span class="hl" data-hl="17.2">ช้าลง</span></div>
+</div>
+
+<!-- S6b 18.2-20.48 body stores fat in specific spots -->
+<div class="scene" data-s="18.2" data-e="20.48" data-bg="studio" data-tr="zoom" data-cam="18.2:1:720:540;20.48:1.05:720:470">
+ <div class="cam">
+  <svg class="a vsvg" id="fig6b" data-at="18.22" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="18.25" data-an="up" style="top:800px;font-size:80px">เก็บ<span class="hl" data-hl="18.9">ไขมันเฉพาะจุด</span>มากขึ้น</div>
+</div>
+
+<!-- S7 20.48-24.08 bedroom matters -->
+<div class="scene" data-s="20.48" data-e="24.08" data-bg="studio" data-tr="wipe" data-cam="20.48:1:720:540;24.08:1.04:720:500">
+ <div class="cam">
+  <svg class="a vsvg" id="fig7" data-at="20.5" data-an="up" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="20.55" data-an="up" data-out="22.35" style="top:770px;font-size:80px">ที่สำคัญ <span class="hl" data-hl="21.4">เรื่องบนเตียง</span></div>
+ <div class="a big cx gold" data-at="22.4" data-an="up" style="top:770px;font-size:80px">สำคัญกับผู้ชายมาก!</div>
+</div>
+
+<!-- S8 24.08-26.80 zinc is essential -->
+<div class="scene" data-s="24.08" data-e="26.8" data-bg="studio" data-tr="flash" data-cam="24.08:1.06:720:480;26.8:1:720:540">
+ <div class="cam">
+  <div class="a rays" data-at="24.0" data-an="fade" data-spin="12" style="left:340px;top:-60px;width:760px;height:760px"></div>
+  <div class="a glow" data-at="24.1" data-an="fade" style="left:450px;top:60px;width:540px;height:540px"></div>
+  <div class="a img jar" data-at="24.1" data-an="drop" data-float="0.2" style="left:530px;top:100px;width:380px;height:444px"></div>
+  <div class="a" data-at="24.9" data-an="stamp" style="left:960px;top:200px"><span class="pill p-gold" style="font-size:54px">จำเป็น!</span></div>
+ </div>
+ <div class="a big cx wht" data-at="24.15" data-an="up" style="top:770px;font-size:80px">ซิงค์ = สิ่งที่ผู้ชาย<span class="hl" data-hl="25.4">ขาดไม่ได้</span></div>
+</div>
+
+<!-- S9 26.80-31.12 does NOT push hormone above normal -->
+<div class="scene" data-s="26.8" data-e="31.12" data-bg="studio" data-tr="wipe" data-cam="26.8:1:720:540;31.12:1.03:720:510">
+ <div class="cam">
+  <svg class="a vsvg" id="g9" data-at="26.85" data-an="pop" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="26.9" data-an="up" style="top:770px;font-size:78px">ซิงค์<span class="red">ไม่ได้</span>ดันฮอร์โมน<span class="hl" data-hl="29.6">สูงเกินปกติ</span></div>
+</div>
+
+<!-- S10 31.12-37.76 in deficient people, brings level back to where it should be -->
+<div class="scene" data-s="31.12" data-e="37.76" data-bg="studio" data-tr="iris" data-cam="31.12:1:720:540;34:1.02:720:520;37.76:1.04:720:500">
+ <div class="cam">
+  <svg class="a vsvg" id="g10" data-at="31.14" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="31.2" data-an="up" data-out="33.8" style="top:770px;font-size:80px">แต่ใน<span class="red">คนที่ขาด</span></div>
+ <div class="a big cx wht" data-at="33.85" data-an="up" style="top:770px;font-size:78px">ดึงกลับมา<span class="hl" data-hl="34.6">จุดที่ควรเป็น</span></div>
+</div>
+
+<!-- S11a 37.76-43.6 whoever is deficient: this boosts it back -->
+<div class="scene" data-s="37.76" data-e="43.6" data-bg="studio" data-tr="wipe" data-cam="37.76:1:720:540;43.6:1.04:720:500">
+ <div class="cam">
+  <div class="a glow" data-at="37.8" data-an="fade" style="left:120px;top:90px;width:520px;height:520px"></div>
+  <div class="a img jar" data-at="37.8" data-an="left" data-float="0.6" style="left:200px;top:130px;width:360px;height:420px"></div>
+  <svg class="a vsvg" id="g11" data-at="37.85" data-an="right" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="37.85" data-an="up" data-out="40.45" style="top:770px;font-size:78px">ใครขาดซิงค์ จน<span class="red">ฮอร์โมนต่ำ</span></div>
+ <div class="a big cx gold" data-at="40.5" data-an="up" style="top:770px;font-size:80px">ตัวนี้ช่วย<span class="hl" data-hl="41.0">บูสกลับขึ้นมา!</span></div>
+</div>
+
+<!-- S11b 43.6-45.95 helps bed, fat storage, muscle -->
+<div class="scene" data-s="43.6" data-e="45.95" data-bg="studio" data-tr="wipe" data-cam="43.6:1:720:540;45.95:1.03:720:510">
+ <div class="cam">
+  <svg class="a vsvg" id="g11b" data-at="43.62" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="43.65" data-an="up" style="top:800px;font-size:76px">ช่วยได้ทั้ง <span class="gold">3 เรื่อง</span></div>
+</div>
+
+<!-- S12 45.95-end hormone balance + sperm, skin, hair, nails, immunity, mood -->
+<div class="scene" data-s="45.95" data-e="99" data-bg="studio" data-tr="iris" data-cam="45.95:1.04:720:500;49.2:1:720:540;53.08:1.03:720:520">
+ <div id="confetti"></div>
+ <div class="cam">
+  <div class="a rays" data-at="49.2" data-an="fade" data-spin="10" style="left:380px;top:20px;width:680px;height:680px"></div>
+  <svg class="a vsvg" id="g12" data-at="45.97" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx gold" data-at="46.0" data-an="up" data-out="49.15" style="top:800px;font-size:84px">สมดุลฮอร์โมน</div>
+ <div class="a big cx wht" data-at="49.25" data-an="up" style="top:800px;font-size:72px">แร่ธาตุคุม<span class="hl" data-hl="50.2">สมดุลฮอร์โมน</span>ในร่างกาย</div>
+</div>
