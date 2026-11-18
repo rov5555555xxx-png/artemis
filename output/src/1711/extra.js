@@ -71,8 +71,8 @@ function gauge(cx,cy,R,val,t,lowLab,id){id=id||'h'; // semicircle: red low 0-.33
  const arc=(a0,a1,col,w)=>{const p0=[cx-R*Math.cos(Math.PI*a0),cy-R*Math.sin(Math.PI*a0)],p1=[cx-R*Math.cos(Math.PI*a1),cy-R*Math.sin(Math.PI*a1)];return `<path d="M${p0[0]} ${p0[1]} A${R} ${R} 0 0 1 ${p1[0]} ${p1[1]}" stroke="${col}" stroke-width="${w}" fill="none"/>`};
  let s=`<defs><pattern id="hatch${id}" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="18" height="18" fill="#3A3D44"/><rect width="8" height="18" fill="#5A5E68"/></pattern></defs>`;
  s+=arc(0,0.33,'#E5484D',70)+arc(0.33,0.72,'#D9B98A',70)+arc(0.72,1,`url(#hatch${id})`,70);
- const lab=(a,txt,col)=>{const r=R+86;return `<text x="${cx-r*Math.cos(Math.PI*a)}" y="${cy-r*Math.sin(Math.PI*a)+14}" text-anchor="middle" font-family="K" font-weight="900" font-size="38" fill="${col}">${txt}</text>`};
- s+=lab(0.13,lowLab||'ต่ำ','#FF7B7F')+lab(0.525,'ปกติ','#F3D9A4')+lab(0.88,'สูงเกิน','#9AA0AC');
+ const lab=(a,txt,col)=>{const r=R+(a>0.9?120:86);return `<text x="${cx-r*Math.cos(Math.PI*a)}" y="${cy-r*Math.sin(Math.PI*a)+14}" text-anchor="middle" font-family="K" font-weight="900" font-size="38" fill="${col}">${txt}</text>`};
+ s+=lab(0.13,lowLab||'ต่ำ','#FF7B7F')+lab(0.525,'ปกติ','#F3D9A4')+lab(0.93,'สูงเกิน','#9AA0AC');
  const a=Math.PI*val,nx=cx-(R-20)*Math.cos(a),ny=cy-(R-20)*Math.sin(a);
  s+=`<path d="M${cx} ${cy} L${nx} ${ny}" stroke="#fff" stroke-width="16" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="30" fill="#16171B" stroke="#fff" stroke-width="8"/>`;
  return s};
@@ -89,7 +89,7 @@ const IC={
  nail:`<g><rect x="-26" y="-50" width="52" height="96" rx="26" fill="${SK}"/><rect x="-18" y="-46" width="36" height="40" rx="16" fill="#FFE3E0" stroke="#fff" stroke-width="3"/><path d="M-8 -40 Q0 -44 8 -40" stroke="#fff" stroke-width="4"/></g>`,
  shield:`<g><path d="M0 -54 L44 -36 V4 Q44 40 0 58 Q-44 40 -44 4 V-36Z" fill="#2EC4B6" stroke="#fff" stroke-width="5"/><path d="M-18 2 l12 12 24 -26" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`,
  mood:`<g><circle r="48" fill="#FFD36E"/><circle cx="-16" cy="-12" r="6" fill="#16171B"/><circle cx="16" cy="-12" r="6" fill="#16171B"/><path d="M-22 10 Q0 34 22 10" stroke="#16171B" stroke-width="6" fill="none" stroke-linecap="round"/></g>`,
- bed:`<g transform="scale(.22)">${'' }</g>`,
+ acne:`<g><circle cx="0" cy="0" r="46" fill="${SK}"/><circle cx="-16" cy="-12" r="5" fill="${HAIR}"/><circle cx="16" cy="-12" r="5" fill="${HAIR}"/><path d="M-12 18 Q0 12 12 18" stroke="#8A3B2E" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="-26" cy="8" r="7" fill="#E5484D"/><circle cx="24" cy="4" r="6" fill="#E5484D"/><circle cx="-6" cy="-32" r="5" fill="#E5484D"/><circle cx="30" cy="22" r="5" fill="#E5484D"/></g>`,
 };
 const SCALE=(x,y,t)=>{ // balance scale icon, gentle tilt
  const a=Math.sin(t*2)*4;return `<g transform="translate(${x} ${y})"><rect x="-8" y="-120" width="16" height="190" fill="#D9B98A"/><rect x="-80" y="64" width="160" height="22" rx="10" fill="#D9B98A"/><g transform="rotate(${a} 0 -110)"><rect x="-150" y="-118" width="300" height="14" rx="7" fill="#F3D9A4"/><path d="M-130 -104 L-170 -20 H-90Z M130 -104 L90 -20 H170Z" fill="none" stroke="#F3D9A4" stroke-width="4"/><path d="M-176 -20 H-84 Q-90 10 -130 10 Q-170 10 -176 -20Z M84 -20 H176 Q170 10 130 10 Q90 10 84 -20Z" fill="#D9B98A"/>${sym(-130,-46,24,'m')}${sym(130,-46,24,'f')}</g><circle cy="-120" r="16" fill="#F3D9A4"/></g>`};
@@ -143,10 +143,15 @@ window.extra=function(t){
    if(lt>2.6)s+=tag(1100,580,'ไม่ไหว!',cl((lt-2.6)/0.3),'#E5484D')}
   $('fig7').innerHTML=s}
  if(on(26.8,31.12)){const lt=t-26.8;
-  // needle: rise to top of normal, try to go over, bounce back
-  let v=0.62*eOC(cl((lt-0.2)/0.9));if(lt>1.4){const w=lt-1.4;v=0.62+0.1*Math.sin(Math.min(w,2.2)*5)*Math.exp(-w*0.8)}
-  let s=gauge(720,560,330,v,t,'','9');s+=`<path d="M${720-330*Math.cos(Math.PI*0.72)} ${560-330*Math.sin(Math.PI*0.72)} L${720-430*Math.cos(Math.PI*0.72)} ${560-430*Math.sin(Math.PI*0.72)}" stroke="#fff" stroke-width="6" stroke-dasharray="12 10"/>`;
-  s+=cross(1130,250,70,cl((lt-2.7)/0.35));
+  // rise to normal -> push into the over-normal zone (needle turns red) -> big X on that zone -> snap back to normal
+  let v=0.6*eOC(cl((lt-0.2)/0.8)),over=0;
+  if(lt>1.2&&lt<3.0){const k=eIO(cl((lt-1.2)/0.7));v=lerp(0.6,0.87,k)+0.012*Math.sin(t*30)*k;over=k}
+  if(lt>=3.0){const w=lt-3.0;const k=eOB(cl(w/0.5));v=lerp(0.87,0.6,k);over=1-cl(w/0.25)}
+  let s=gauge(720,560,330,v,t,'','9');
+  if(over>0.05){const a=Math.PI*v,nx=720-310*Math.cos(a),ny=560-310*Math.sin(a);s+=`<path d="M720 560 L${nx} ${ny}" stroke="#FF3B3F" stroke-width="16" stroke-linecap="round" opacity="${over}"/>`}
+  const xa=Math.PI*0.86,xx=720-330*Math.cos(xa),xy=560-330*Math.sin(xa);
+  s+=cross(xx,xy,62,cl((lt-2.7)/0.3));
+  s+=tag(720,690,'ไม่เกินปกติ',cl((lt-3.4)/0.35),'#D9B98A','#16171B');
   $('g9').innerHTML=s}
  if(on(31.12,37.76)){const lt=t-31.12;let v=0.12+0.02*Math.sin(t*6);
   if(lt>2.0)v=0.12+0.42*eOC(cl((lt-2.0)/1.4));
@@ -170,7 +175,7 @@ window.extra=function(t){
   const cen=lt<3.3?SCALE(720,380,t):'';
   if(lt<3.3)s+=`<g opacity="${1-cl((lt-3.0)/0.3)}">${cen}</g>`;
   if(lt>3.1){const k=eOB(cl((lt-3.2)/0.5));s+=`<g transform="translate(720 390) scale(${k})"><image href="jar.png" x="-150" y="-175" width="300" height="350"/></g>`}
-  const ic=[['sperm','อสุจิ',0.93],['skin','ผิว',1.35],['hair','ผม',1.67],['nail','เล็บ',1.97],['shield','ภูมิคุ้มกัน',2.2],['mood','อารมณ์',2.95]];
+  const ic=[['acne','สิว',0.93],['skin','ผิว',1.35],['hair','ผม',1.67],['nail','เล็บ',1.97],['shield','ภูมิคุ้มกัน',2.2],['mood','อารมณ์',2.95]];
   const pos=[[260,200],[1180,200],[200,470],[1240,470],[480,600],[960,600]];
   const sx=lt>3.2?eIO(cl((lt-3.2)/0.6)):0;
   ic.forEach(([k,l,d],i)=>{let [x,y]=pos[i];const tx=[[350,180],[1090,180],[230,430],[1210,430],[400,610],[1040,610]][i];x=lerp(x,tx[0],sx);y=lerp(y,tx[1],sx);s+=icoTile(x,y,cl((lt-d)/0.35),l,IC[k])});
