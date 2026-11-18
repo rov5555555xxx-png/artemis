@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2)}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2)}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2)}
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1440px;height:1080px;overflow:hidden;background:#fff}
+body{font-family:K,sans-serif;color:#1B2A4A}
+#stage{position:relative;width:1440px;height:1080px;overflow:hidden;background:#FFF6E9}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.sbg{position:absolute;inset:-60px}
+.sun{background:radial-gradient(circle at 50% 45%,#FFFCEB 0%,#FFEFA8 50%,#FFC94A 100%)}
+.sky{background:linear-gradient(180deg,#9EDBFF 0%,#D8F2FF 60%,#FFF6DA 100%)}
+.vessel{background:radial-gradient(circle at 50% 46%,#FFE3E3 0%,#FFAFB5 30%,#F27A88 65%,#C9455A 100%)}
+.retina{background:radial-gradient(circle at 50% 30%,#FFF0DE 0%,#FFD0A8 50%,#F7A57C 100%)}
+.split{background:linear-gradient(90deg,#C8E2FF 0%,#DCE9FF 44%,#FFE2E6 56%,#FFC9D3 100%)}
+.garden{background:linear-gradient(180deg,#8FD8FF 0%,#D9F3FF 55%,#FFF4C9 100%)}
+.night{background:linear-gradient(180deg,#5E56B8 0%,#8C84DA 60%,#B7AEF0 100%)}
+.morning{background:linear-gradient(180deg,#FFE6C7 0%,#FFF4E2 60%,#FFE9D2 100%)}
+.desk{background:linear-gradient(180deg,#CFF5E6 0%,#E9FBF4 70%,#D9F2E8 100%)}
+.ocean{background:radial-gradient(circle at 50% 45%,#C9EEFF 0%,#8AD3FA 60%,#5BB6EE 100%)}
+.oil{background:radial-gradient(circle at 50% 40%,#FFFBEA 0%,#FFEBB0 55%,#FFCF6A 100%)}
+.cam{position:absolute;inset:0;will-change:transform}
+.a{position:absolute;opacity:0;will-change:transform}
+.img{background-position:center;background-size:contain;background-repeat:no-repeat}
+.pouch{background-image:url(pouch.png);filter:drop-shadow(0 0 2px rgba(255,255,255,.95)) drop-shadow(0 22px 26px rgba(40,50,90,.35))}
+.kt{position:absolute;left:130px;width:1180px;text-align:center;font-weight:900;white-space:nowrap;line-height:1.25;color:#FFD23F;-webkit-text-stroke:14px #1B2A4A;paint-order:stroke fill;text-shadow:0 12px 0 #1B2A4A}
+.kt .g{display:inline-block;transform-origin:50% 80%;opacity:0}
+.stk{display:inline-block;padding:8px 34px 14px;border-radius:999px;font-weight:900;white-space:nowrap;line-height:1.2;border:7px solid #1B2A4A;box-shadow:0 10px 0 #1B2A4A}
+.dot{position:absolute;border-radius:50%}
+.ring{position:absolute;width:360px;height:360px;margin:-180px 0 0 -180px;border-radius:50%;border:16px solid #fff;opacity:0}
+.conf{position:absolute;width:20px;height:30px;border-radius:6px}
+.rays{position:absolute;border-radius:50%;background:repeating-conic-gradient(rgba(255,255,255,.75) 0 9deg,rgba(255,255,255,0) 9deg 22deg);-webkit-mask:radial-gradient(circle,#000 25%,transparent 68%)}
+#stripe{position:absolute;top:-200px;width:3000px;height:1500px;transform:translateX(-3600px) skewX(-14deg);z-index:80}
+#stripe div{position:absolute;top:0;bottom:0;width:160px}
+svg{overflow:visible}
+.photo{position:absolute;border-radius:26px;overflow:hidden;border:9px solid #fff;box-shadow:0 0 0 7px #1B2A4A,0 22px 40px rgba(27,42,74,.35)}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ann path{fill:none;stroke:#E8231F;stroke-width:11;stroke-linecap:round;stroke-linejoin:round}
+</style></head><body>
+<div id="stage">
+
+<!-- S1 0-1.98 TITLE on frame 0: how does this vitamin know? -->
+<div class="scene" data-s="0" data-e="1.98" data-bg="sun" data-cam="0:1:720:540;1.98:1.05:720:520">
+ <div class="cam">
+  <div class="a rays" data-at="-1" data-an="pop" data-spin="14" style="left:370px;top:230px;width:700px;height:700px"></div>
+  <div class="a img pouch" data-at="-1" data-an="pop" data-float="0" style="left:580px;top:410px;width:280px;height:441px"></div>
+  <div class="a" data-at="0.5" data-an="pop" data-bob="0" style="left:330px;top:500px"><svg width="120" height="150" viewBox="0 0 110 140"><text x="55" y="120" text-anchor="middle" font-family="K" font-weight="900" font-size="150" fill="#7FD3FF" stroke="#1B2A4A" stroke-width="10" paint-order="stroke fill">?</text></svg></div>
+  <div class="a" data-at="0.9" data-an="pop" data-bob="1.4" style="left:1000px;top:470px"><svg width="120" height="150" viewBox="0 0 110 140"><text x="55" y="120" text-anchor="middle" font-family="K" font-weight="900" font-size="150" fill="#FF8FB1" stroke="#1B2A4A" stroke-width="10" paint-order="stroke fill">?</text></svg></div>
+ </div>
+ <div class="a" data-at="-1" data-an="pop" id="burst1" style="left:250px;top:110px;width:940px;height:300px"><svg width="940" height="300" viewBox="0 0 940 300"><path id="burstP" fill="#FFE14D" stroke="#1B2A4A" stroke-width="9" stroke-linejoin="round"/></svg></div>
+ <div class="kt" data-at="-1" data-st="0.03" data-fx="bounce" data-pulse="1" style="top:150px;font-size:78px;color:#fff">วิตามินตัวนี้</div>
+ <div class="kt" data-at="-1" data-st="0.04" data-fx="bounce" data-pulse="1" style="top:235px;font-size:130px;color:#E8231F">รู้ได้ไง?</div>
+ <div class="a ann" data-at="0.25" data-an="fade" data-out="1.95" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="0.25" d=""/></svg></div>
+</div>
+
+<!-- S2 1.98-4.24 runs along the road to the eye / retina -->
+<div class="scene" data-s="1.98" data-e="4.24" data-bg="sky" data-tr="stripe" data-cam="1.98:1:720:540;4.24:1.05:820:500">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080">
+   <ellipse cx="360" cy="1080" rx="760" ry="420" fill="#8EE6A6" stroke="#1B2A4A" stroke-width="7"/>
+   <ellipse cx="1180" cy="1000" rx="620" ry="470" fill="#6FD68F" stroke="#1B2A4A" stroke-width="7"/>
+   <path id="road2" d="M120 1120 C 360 900 720 980 820 780 C 900 620 980 640 1070 600" fill="none" stroke="#1B2A4A" stroke-width="96" stroke-linecap="round"/>
+   <path d="M120 1120 C 360 900 720 980 820 780 C 900 620 980 640 1070 600" fill="none" stroke="#FFE7B8" stroke-width="80" stroke-linecap="round"/>
+   <path d="M120 1120 C 360 900 720 980 820 780 C 900 620 980 640 1070 600" fill="none" stroke="#fff" stroke-width="7" stroke-dasharray="26 26"/>
+   <g id="cloud2"><path d="M190 230a50 50 0 0190-28 60 60 0 01108 18 42 42 0 01-6 84H210a46 46 0 01-20-74z" fill="#fff" stroke="#1B2A4A" stroke-width="6"/></g>
+  </svg>
+  <div class="a" data-at="1.98" data-an="pop" style="left:1080px;top:420px"><svg width="1" height="1"><g id="eye2" transform="scale(1.25)"></g></svg></div>
+  <div class="a" data-at="2.96" data-an="pop" data-bob="0" style="left:930px;top:200px"><span class="stk" style="font-size:46px;background:#FF8FB1">จอประสาทตา</span></div>
+  <div class="a" data-at="1.98" data-an="fade" style="left:0;top:0"><svg width="1" height="1"><g id="run2"></g></svg></div>
+ </div>
+ <div class="kt" data-at="1.98" data-st="0.045" data-fx="bounce" data-out="2.9" style="top:130px;left:130px;width:760px;font-size:100px;color:#fff">วิ่งไปที่ตา</div>
+ <div class="kt" data-at="2.96" data-st="0.045" data-fx="drop" style="top:130px;left:130px;width:760px;font-size:96px;color:#FFD23F">ไปดูแลตา</div>
+ <div class="a ann" data-at="3.46" data-an="fade" data-out="5.16" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="3.46" d=""/></svg></div>
+</div>
+
+<!-- S3 4.24-7.08 inside a blood vessel: it goes everywhere -->
+<div class="scene" data-s="4.24" data-e="7.08" data-bg="vessel" data-tr="iris" data-cam="4.24:1:720:540;7.08:1.06:720:520">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="tun3"></g><g id="rbc3"></g><g id="drops3"></g></svg>
+  <div class="a" data-at="4.4" data-an="pop" data-bob="0" style="left:170px;top:150px"><span class="stk" style="font-size:44px;background:#fff">🧠</span></div>
+  <div class="a" id="sgBrain" data-at="4.4" data-an="pop" data-bob="0" style="left:160px;top:150px"></div>
+  <div class="a" id="sgHeart" data-at="4.55" data-an="pop" data-bob="1" style="left:1080px;top:150px"></div>
+  <div class="a" id="sgSkin" data-at="4.7" data-an="pop" data-bob="2" style="left:160px;top:520px"></div>
+  <div class="a" id="sgEye" data-at="4.85" data-an="pop" data-bob="3" style="left:1080px;top:520px"></div>
+ </div>
+ <div class="kt" data-at="4.74" data-st="0.05" data-fx="bounce" data-out="5.64" style="top:720px;font-size:120px;color:#fff">วิ่งไปทุกที่!</div>
+ <div class="kt" data-at="5.72" data-st="0.045" data-fx="drop" style="top:720px;font-size:104px;color:#FFD23F">แต่จอประสาทตา...</div>
+ <div class="a ann" data-at="5.9" data-an="fade" data-out="7.60" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="5.9" d=""/></svg></div>
+</div>
+
+<!-- S4 7.08-12.44 retina: special proteins grab it and store it -->
+<div class="scene" data-s="7.08" data-e="12.44" data-bg="retina" data-tr="stripe" data-cam="7.08:1:720:540;9.9:1:720:540;10.6:1.04:720:500;12.44:1.02:720:520">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="cells4"></g>
+   <rect x="120" y="640" width="1200" height="420" rx="60" fill="#FF9F7A" stroke="#1B2A4A" stroke-width="7"/>
+   <rect id="layer4" x="150" y="640" width="1140" height="0" rx="18" fill="#FFC21F" stroke="#1B2A4A" stroke-width="6"/>
+   <path d="M60 380 H1380" stroke="#fff" stroke-width="90" stroke-linecap="round" opacity=".35"/>
+   <g id="prot4"></g><g id="drops4"></g></svg>
+  <div class="a" data-at="7.56" data-an="stamp" style="left:860px;top:150px"><span class="stk" style="font-size:46px;background:#C7A8FF">โปรตีนจับเฉพาะ</span></div>
+  <div class="a" data-at="10.56" data-an="stamp" style="left:170px;top:150px"><span class="stk" style="font-size:40px;background:#FFD23F">สะสม!</span></div>
+ </div>
+ <div class="kt" data-at="7.08" data-st="0.045" data-fx="bounce" data-out="9.9" style="top:770px;font-size:100px;color:#fff">มีโปรตีนจับสารนี้</div>
+ <div class="kt" data-at="9.96" data-st="0.045" data-fx="jelly" style="top:770px;font-size:100px;color:#FFD23F">สะสมในจอประสาทตา</div>
+ <div class="a ann" data-at="7.8" data-an="fade" data-out="9.50" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="7.8" d=""/></svg></div>
+</div>
+
+<!-- S5 12.44-17.32 works like a barrier: absorbs blue light -->
+<div class="scene" data-s="12.44" data-e="17.32" data-bg="split" data-tr="iris" data-cam="12.44:1:720:540;14.0:1:720:540;15.4:1.04:900:520;17.32:1.02:820:530">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="ret5"></g><g id="bolts5"></g><g id="shield5"></g><g id="spark5"></g></svg>
+  <div class="a" data-at="12.5" data-an="left" style="left:150px;top:260px"><svg width="200" height="340" viewBox="0 0 200 340"><rect x="10" y="10" width="180" height="320" rx="34" fill="#1B2A4A"/><rect x="26" y="40" width="148" height="250" rx="12" fill="#5CB8FF"/><circle cx="100" cy="310" r="10" fill="#fff"/><path d="M60 120h80M60 160h80M60 200h50" stroke="#fff" stroke-width="12" stroke-linecap="round" opacity=".8"/></svg></div>
+  <div class="a" data-at="12.6" data-an="pop" style="left:150px;top:620px;width:200px;text-align:center"><span class="stk" style="font-size:36px;background:#7FD3FF">แสงสีฟ้า</span></div>
+  <div class="a" data-at="15.4" data-an="stamp" style="left:1120px;top:150px"><svg width="130" height="130" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#3DDC97" stroke="#1B2A4A" stroke-width="6"/><path d="M28 52l15 15 30-32" stroke="#fff" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+ </div>
+ <div class="kt" data-at="12.94" data-st="0.05" data-fx="bounce" data-out="13.92" style="top:770px;font-size:110px;color:#FFD23F">เหมือนบาเรีย!</div>
+ <div class="kt" data-at="14.02" data-st="0.045" data-fx="drop" data-out="15.32" style="top:770px;font-size:104px;color:#7FD3FF">ดูดซับแสงสีฟ้า</div>
+ <div class="kt" data-at="15.4" data-st="0.04" data-fx="jelly" style="top:770px;font-size:90px;color:#fff">ไม่ให้ทำลายจอประสาทตา</div>
+ <div class="a ann" data-at="13.1" data-an="fade" data-out="14.80" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="13.1" d=""/></svg></div>
+</div>
+
+<!-- S6 17.32-21.9 meet Lutein & Zeaxanthin (marigold garden) -->
+<div class="scene" data-s="17.32" data-e="21.9" data-bg="garden" data-tr="stripe" data-cam="17.32:1.04:720:500;18.8:1:720:540;21.9:1.03:720:520">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><path d="M-80 700 Q360 640 720 690 T1520 680 V1140 H-80Z" fill="#8EE6A6" stroke="#1B2A4A" stroke-width="7"/><g id="flow6"></g><g id="bolts6"></g><g id="spark6"></g></svg>
+  <div class="a" data-at="17.78" data-an="drop" style="left:500px;top:640px"><svg width="1" height="1"><g id="heroL"></g></svg></div>
+  <div class="a" data-at="18.24" data-an="drop" style="left:940px;top:640px"><svg width="1" height="1"><g id="heroZ"></g></svg></div>
+  <div class="a" data-at="17.78" data-an="stamp" style="left:385px;top:180px;width:230px;text-align:center"><span class="stk" style="font-size:50px;background:#FFB347">ลูทีน</span></div>
+  <div class="a" data-at="18.24" data-an="stamp" style="left:800px;top:180px;width:280px;text-align:center"><span class="stk" style="font-size:50px;background:#FFE14D">ซีแซนทีน</span></div>
+ </div>
+ <div class="kt" data-at="17.32" data-st="0.05" data-fx="bounce" data-out="18.7" style="top:760px;font-size:110px;color:#fff">มันคือ...</div>
+ <div class="kt" data-at="18.76" data-st="0.045" data-fx="jelly" style="top:760px;font-size:104px;color:#7FD3FF">ดูดซับแสงสีฟ้า</div>
+ <div class="a ann" data-at="18.5" data-an="fade" data-out="20.20" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="18.5" d=""/></svg></div>
+</div>
+
+<!-- S7 21.9-26.12 heavy phone users at night: fear of early eye ageing -->
+<div class="scene" data-s="21.9" data-e="26.12" data-bg="night" data-tr="iris" data-cam="21.9:1:720:540;24.2:1.03:720:520;24.7:1.07:760:480;26.12:1.07:760:480">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080">
+   <rect x="170" y="150" width="300" height="250" rx="20" fill="#2F2A6E" stroke="#1B2A4A" stroke-width="8"/><path d="M320 150V400M170 275H470" stroke="#1B2A4A" stroke-width="8"/>
+   <path d="M260 200a40 40 0 1 0 40 56 32 32 0 1 1-40-56z" fill="#FFE98A"/><g id="stars7"></g>
+   <circle cx="1170" cy="250" r="80" fill="#fff" stroke="#1B2A4A" stroke-width="8"/><path id="clk7" d="M1170 250V200M1170 250L1210 262" stroke="#1B2A4A" stroke-width="9" stroke-linecap="round"/>
+   <rect x="250" y="640" width="940" height="420" rx="40" fill="#FF8FB1" stroke="#1B2A4A" stroke-width="8"/>
+   <rect x="250" y="560" width="230" height="130" rx="40" fill="#fff" stroke="#1B2A4A" stroke-width="8"/>
+   <circle id="glow7" cx="760" cy="350" r="260" fill="url(#bl7)"/>
+   <defs><radialGradient id="bl7"><stop offset="0" stop-color="#7FC8FF" stop-opacity=".8"/><stop offset="1" stop-color="#7FC8FF" stop-opacity="0"/></radialGradient></defs>
+  </svg>
+  <div class="a" data-at="21.9" data-an="up" style="left:580px;top:220px;width:300px;height:433px"><svg width="300" height="433" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#7FD3FF","hair":"#2B1B12","faces":[{"e":"bored","vis":"0,24.7"},{"e":"sad","vis":"24.7,99"}],"armL":"down","armR":"hold"}'></g></svg></div>
+  <div class="a" data-at="21.95" data-an="pop" style="left:798px;top:330px"><svg width="56" height="90" viewBox="0 0 56 90"><rect x="3" y="3" width="50" height="84" rx="10" fill="#1B2A4A"/><rect x="9" y="12" width="38" height="62" rx="4" fill="#5CB8FF"/></svg></div>
+  <div class="a" data-at="22.88" data-an="right" style="left:900px;top:470px"><svg width="300" height="200" viewBox="0 0 300 200"><rect x="30" y="10" width="240" height="150" rx="14" fill="#1B2A4A"/><rect x="44" y="24" width="212" height="122" rx="6" fill="#5CB8FF"/><path d="M0 160h300l-20 30H20z" fill="#B8C2D9" stroke="#1B2A4A" stroke-width="7" stroke-linejoin="round"/></svg></div>
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="bolts7"></g></svg>
+  <div class="a" data-at="24.74" data-an="stamp" style="left:310px;top:340px"><svg width="1" height="1"><g id="eye7" transform="translate(110 110)"></g></svg></div>
+ </div>
+ <div class="kt" data-at="21.9" data-st="0.045" data-fx="bounce" data-out="22.8" style="top:770px;font-size:104px;color:#fff">เล่นมือถือหนัก</div>
+ <div class="kt" data-at="22.88" data-st="0.045" data-fx="drop" data-out="24.12" style="top:770px;font-size:104px;color:#7FD3FF">ใช้หน้าจอบ่อย</div>
+ <div class="kt" data-at="24.22" data-st="0.045" data-fx="shake" style="top:770px;font-size:104px;color:#FF6B6B">ตาเสื่อมก่อนวัย!</div>
+ <div class="a ann" data-at="24.9" data-an="fade" data-out="26.60" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="24.9" d=""/></svg></div>
+</div>
+
+<!-- S8 26.12-30.94 take this, 1 a day: absorbs blue light, eyes not overloaded -->
+<div class="scene" data-s="26.12" data-e="30.94" data-bg="morning" data-tr="slideup" data-cam="26.12:1.04:720:520;27.5:1:720:540;30.94:1.03:720:530">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><rect x="150" y="150" width="320" height="260" rx="20" fill="#BFE8FF" stroke="#1B2A4A" stroke-width="8"/><circle cx="380" cy="230" r="46" fill="#FFD23F" stroke="#1B2A4A" stroke-width="6"/><path d="M150 150 q60 130 0 260" fill="#FF8FB1" stroke="#1B2A4A" stroke-width="7"/><path d="M470 150 q-60 130 0 260" fill="#FF8FB1" stroke="#1B2A4A" stroke-width="7"/>
+   <rect x="-60" y="690" width="1560" height="440" fill="#FFD9B0" stroke="#1B2A4A" stroke-width="7"/></svg>
+  <div class="a rays" data-at="26.12" data-an="pop" data-spin="16" data-out="27.45" style="left:420px;top:120px;width:600px;height:600px"></div>
+  <div class="a img pouch" id="pouch8" data-at="26.12" data-an="drop" data-float="0" data-out="28.95" style="left:590px;top:200px;width:260px;height:410px"></div>
+  <div class="a" data-at="27.54" data-an="up" style="left:610px;top:270px;width:300px;height:433px"><svg width="300" height="433" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#FFD23F","hair":"#2B1B12","faces":[{"e":"happy"}],"armL":"down","armR":"hold"}'></g></svg></div>
+  <div class="a" data-at="27.6" data-an="pop" style="left:828px;top:378px"><svg width="56" height="90" viewBox="0 0 56 90"><rect x="3" y="3" width="50" height="84" rx="10" fill="#1B2A4A"/><rect x="9" y="12" width="38" height="62" rx="4" fill="#5CB8FF"/></svg></div>
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="dome8"></g><g id="bolts8"></g><g id="spark8"></g></svg>
+  <div class="a" data-at="27.6" data-an="right" style="left:1060px;top:300px"><svg width="240" height="200" viewBox="0 0 240 200"><rect x="10" y="10" width="220" height="150" rx="16" fill="#1B2A4A"/><rect x="24" y="24" width="192" height="122" rx="6" fill="#5CB8FF"/><path d="M100 160h40l10 30h-60z" fill="#1B2A4A"/></svg></div>
+  <div class="a" data-at="29.06" data-an="pop" style="left:200px;top:580px"><svg width="1" height="1"><g id="eyeW8"></g></svg></div>
+ </div>
+ <div class="kt" data-at="26.12" data-st="0.05" data-fx="bounce" data-out="27.0" style="top:740px;font-size:110px;color:#fff">กินตัวนี้เลย</div>
+ <div class="kt" data-at="27.08" data-st="0.05" data-fx="jelly" data-out="28.9" style="top:720px;font-size:150px;color:#FFD23F">วันละ 1 เม็ด</div>
+ <div class="kt" data-at="29.06" data-st="0.045" data-fx="drop" style="top:740px;font-size:96px;color:#3DDC97">ตาไม่ต้องทำงานหนัก</div>
+ <div class="a ann" data-at="27.3" data-an="fade" data-out="29.00" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="27.3" d=""/></svg></div>
+</div>
+
+<!-- S9 30.94-38.6 search "eye-care vitamin": both show up on the first page -->
+<div class="scene" data-s="30.94" data-e="38.6" data-bg="desk" data-tr="stripe" data-cam="30.94:1:720:540;32.7:1:720:540;33.4:1.05:720:420;34.8:1.05:720:420;35.4:1:720:520;38.6:1.03:720:500">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080">
+   <rect x="-60" y="700" width="1560" height="420" fill="#E0A96D" stroke="#1B2A4A" stroke-width="7"/>
+   <path d="M1260 700 v-110 h80 v110z" fill="#FF8FB1" stroke="#1B2A4A" stroke-width="7"/><path d="M1300 590c-40-60-10-110 0-150 10 40 40 90 0 150zM1300 590c30-50 80-60 100-70-10 40-50 80-100 70zM1300 590c-30-50-80-60-100-70 10 40 50 80 100 70z" fill="#3DDC97" stroke="#1B2A4A" stroke-width="6"/>
+   <rect x="220" y="130" width="1000" height="560" rx="30" fill="#1B2A4A"/><rect x="246" y="156" width="948" height="508" rx="14" fill="#fff"/>
+   <circle cx="282" cy="186" r="9" fill="#FF6B6B"/><circle cx="310" cy="186" r="9" fill="#FFD23F"/><circle cx="338" cy="186" r="9" fill="#3DDC97"/>
+   <rect x="330" y="240" width="780" height="92" rx="46" fill="#F3F6FB" stroke="#1B2A4A" stroke-width="6"/>
+   <circle cx="384" cy="282" r="20" fill="none" stroke="#1B2A4A" stroke-width="7"/><path d="M398 296l18 18" stroke="#1B2A4A" stroke-width="8" stroke-linecap="round"/>
+   <text id="type9" x="440" y="304" font-family="K" font-weight="800" font-size="50" fill="#1B2A4A"></text><rect id="cur9" x="440" y="258" width="5" height="54" fill="#1B2A4A"/>
+   <g id="res9"></g>
+  </svg>
+  <div class="a" data-at="31.2" data-an="pop" data-bob="0" data-out="32.7" style="left:640px;top:380px"><svg width="160" height="200" viewBox="0 0 110 140"><text x="55" y="120" text-anchor="middle" font-family="K" font-weight="900" font-size="150" fill="#FFD23F" stroke="#1B2A4A" stroke-width="10" paint-order="stroke fill">?</text></svg></div>
+  <div class="a" data-at="34.5" data-an="pop" data-out="35.0" style="left:1060px;top:300px"><svg width="70" height="90" viewBox="0 0 90 110"><path d="M30 8a10 10 0 0120 0v40l22 6c8 2 12 8 10 16l-6 28H34L12 64c-4-6 2-14 10-10l8 6z" fill="#fff" stroke="#1B2A4A" stroke-width="6" stroke-linejoin="round"/></svg></div>
+  <div class="a" data-at="35.38" data-an="stamp" style="left:1000px;top:360px"><span class="stk" style="font-size:40px;background:#FFD23F">หน้าแรก!</span></div>
+ </div>
+ <div class="kt" data-at="31.42" data-st="0.045" data-fx="bounce" data-out="32.78" style="top:760px;font-size:100px;color:#fff">ยังไม่รู้จักสารนี้?</div>
+ <div class="kt" data-at="32.86" data-st="0.045" data-fx="drop" data-out="34.8" style="top:760px;font-size:96px;color:#7FD3FF">ลองค้นหาดู!</div>
+ <div class="kt" data-at="34.9" data-st="0.045" data-fx="jelly" data-out="36.8" style="top:760px;font-size:104px;color:#FFD23F">เจอ 2 สารนี้!</div>
+ <div class="kt" data-at="36.9" data-st="0.04" data-fx="bounce" style="top:760px;font-size:96px;color:#3DDC97">วิตามินบำรุงสายตา</div>
+ <div class="a ann" data-at="35.5" data-an="fade" data-out="37.20" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="35.5" d=""/></svg></div>
+</div>
+
+<!-- S10 38.6-41.68 widely used abroad; this one is Dr.Aum -->
+<div class="scene" data-s="38.6" data-e="41.68" data-bg="ocean" data-tr="iris" data-cam="38.6:1.05:720:480;40.0:1:720:540;41.68:1.03:720:520">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="map10"></g><g id="pins10"></g></svg>
+  <div class="a rays" data-at="40.02" data-an="pop" data-spin="16" style="left:420px;top:110px;width:600px;height:600px"></div>
+  <div class="a img pouch" data-at="40.02" data-an="drop" data-float="0.4" style="left:595px;top:180px;width:250px;height:394px"></div>
+  <div class="a" data-at="40.54" data-an="stamp" style="left:860px;top:220px"><span class="stk" style="font-size:52px;background:#fff">Dr.Aum</span></div>
+ </div>
+ <div class="kt" data-at="38.6" data-st="0.04" data-fx="bounce" data-out="39.95" style="top:740px;font-size:96px;color:#fff">ต่างประเทศใช้กันเยอะ</div>
+ <div class="kt" data-at="40.02" data-st="0.05" data-fx="jelly" style="top:740px;font-size:110px;color:#FFD23F">ตัวนี้ของ Dr.Aum</div>
+</div>
+
+<!-- S11 41.68-end with MCT oil for absorption -->
+<div class="scene" data-s="41.68" data-e="99" data-bg="oil" data-tr="stripe" data-cam="41.68:1:720:540;42.0:1.12:470:320;42.9:1.12:470:320;43.6:1:720:540;45.8:1.03:720:520">
+ <div id="confetti"></div>
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="bub11"></g></svg>
+  <div class="a photo" data-at="41.7" data-an="left" style="left:140px;top:160px;width:660px;height:225px"><img src="ing.jpg" style="object-fit:contain;background:#fff"></div>
+  <div class="a img pouch" data-at="41.75" data-an="right" data-float="0.2" style="left:950px;top:200px;width:300px;height:473px"></div>
+  <div class="a" data-at="42.74" data-an="pop" style="left:0;top:0"><svg width="1440" height="1080"><g id="abs11"></g></svg></div>
+  <div class="a ann" data-at="41.95" data-an="fade" data-out="43.65" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="41.95" d=""/></svg></div>
+ </div>
+ <div class="kt" data-at="41.68" data-st="0.05" data-fx="bounce" data-out="42.66" style="top:760px;font-size:110px;color:#fff">ใส่ MCT Oil</div>
+ <div class="kt" data-at="42.74" data-st="0.05" data-fx="drop" data-out="43.7" style="top:760px;font-size:110px;color:#FFD23F">ช่วยดูดซึม</div>
+ <div class="kt" data-at="43.78" data-st="0.06" data-fx="jelly" style="top:760px;font-size:140px;color:#3DDC97">ดูดซึมดี!</div>
+</div>
+
+<div id="rings"></div>
+<div id="stripe"><div style="left:0;background:#FFD23F"></div><div style="left:160px;background:#FF8FB1"></div><div style="left:320px;background:#7FD3FF"></div><div style="left:480px;width:2520px;background:#3DDC97"></div></div>
+<div id="safe" style="display:none;position:absolute;left:130px;top:130px;width:1180px;height:820px;border:3px dashed #f0f;z-index:99"></div>
+</div>
+<script>
+const W=1440,H=1080,INK='#1B2A4A',NS='http://www.w3.org/2000/svg';
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eOC=p=>1-Math.pow(1-p,3);
+const eOB=p=>{const c1=2.2,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+const eIO=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+const eBn=p=>{const n=7.5625,d=2.75;if(p<1/d)return n*p*p;if(p<2/d)return n*(p-=1.5/d)*p+.75;if(p<2.5/d)return n*(p-=2.25/d)*p+.9375;return n*(p-=2.625/d)*p+.984375};
+let seed=29;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+const $=id=>document.getElementById(id);
+if(location.hash==='#safe')$('safe').style.display='block';
+const mk=(tag,at,par)=>{const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);if(par)par.appendChild(e);return e};
+const H$=(par,html)=>{const g=mk('g',{},par);g.innerHTML=html;return g};
+
+// ---- kid (from template)
+function face(e){const k=`stroke="${INK}" stroke-width="7" fill="none" stroke-linecap="round"`;let s='';
+ if(e==='happy')s=`<path d="M-48 -8q16-18 32 0M16 -8q16-18 32 0" ${k}/><path d="M-30 22Q0 62 30 22z" fill="${INK}"/><path d="M-16 40q16 12 32 0" fill="#FF6B6B"/>`;
+ else if(e==='wow')s=`<ellipse cx="-30" cy="-6" rx="15" ry="19" fill="${INK}"/><ellipse cx="30" cy="-6" rx="15" ry="19" fill="${INK}"/><circle cx="-25" cy="-13" r="6" fill="#fff"/><circle cx="35" cy="-13" r="6" fill="#fff"/><ellipse cx="0" cy="38" rx="13" ry="17" fill="${INK}"/>`;
+ else if(e==='bored')s=`<path d="M-48 -4h30M18 -4h30" ${k}/><path d="M-48 8q15 8 30 0M18 8q15 8 30 0" stroke="#8C6BC9" stroke-width="5" fill="none"/><path d="M-18 36q9-7 18 0t18 0" ${k}/>`;
+ else s=`<circle cx="-30" cy="-6" r="9" fill="${INK}"/><circle cx="30" cy="-6" r="9" fill="${INK}"/><path d="M-18 40q18-14 36 0" ${k}/><path d="M38 6q8 14 0 22q-8-8 0-22z" fill="#7FD3FF"/>`;
+ return s+`<ellipse cx="-58" cy="20" rx="16" ry="10" fill="#FF8FA3" opacity=".7"/><ellipse cx="58" cy="20" rx="16" ry="10" fill="#FF8FA3" opacity=".7"/>`}
+function hair(c){return `<path d="M-104 4C-114 -150 114 -150 104 4C96 -40 50 -64 6 -50C-20 -70 -70 -58 -104 4z" fill="${c}" stroke="${INK}" stroke-width="6"/>`}
+function kid(o){const sk='#FFD7B5',sh=o.shirt||'#FF8FB1',hr=o.hair||'#2B1B12';let s='';
+ const arm=(sd,k)=>{const sx=sd*70,sy=-170;let ex,ey;if(k==='up'){ex=sd*130;ey=-330}else if(k==='hold'){ex=sd*120;ey=-200}else if(k==='thumb'){ex=sd*125;ey=-250}else{ex=sd*95;ey=-40}
+  let h=`<path d="M${sx} ${sy}L${ex} ${ey}" stroke="${INK}" stroke-width="44" stroke-linecap="round"/><path d="M${sx} ${sy}L${ex} ${ey}" stroke="${sh}" stroke-width="32" stroke-linecap="round"/><circle cx="${ex}" cy="${ey}" r="24" fill="${sk}" stroke="${INK}" stroke-width="6"/>`;
+  if(k==='thumb')h+=`<rect x="${ex-10}" y="${ey-62}" width="20" height="46" rx="10" fill="${sk}" stroke="${INK}" stroke-width="6"/>`;return h};
+ s+=arm(-1,o.armL||'down')+arm(1,o.armR||'down');
+ s+=`<path d="M-100 20V-130a50 50 0 0150-50h100a50 50 0 0150 50V20z" fill="${sh}" stroke="${INK}" stroke-width="7"/><path d="M-34 -180q34 40 68 0" fill="#fff" stroke="${INK}" stroke-width="6"/>`;
+ s+=`<g transform="translate(0 -290)"><circle cx="-104" cy="6" r="22" fill="${sk}" stroke="${INK}" stroke-width="6"/><circle cx="104" cy="6" r="22" fill="${sk}" stroke="${INK}" stroke-width="6"/><circle r="104" fill="${sk}" stroke="${INK}" stroke-width="7"/>${hair(hr)}`;
+ (o.faces||[{e:'happy'}]).forEach(f=>{s+=`<g ${f.vis?`data-vis="${f.vis}"`:''}>${face(f.e)}</g>`});s+='</g>';return s}
+document.querySelectorAll('[data-kid]').forEach(g=>g.innerHTML=kid(JSON.parse(g.dataset.kid)));
+
+// ---- droplet character (lutein molecule mascot), origin at bottom centre
+function dropSvg(c,h=120,o={}){const k=h/120;const sad=o.sad;
+ return `<g transform="scale(${k})">${o.arms?`<path d="M-40 -46 L-70 -${o.armsUp?96:30}M40 -46 L70 -${o.armsUp?96:30}" stroke="${INK}" stroke-width="12" stroke-linecap="round"/>`:''}
+ <path d="M0 -120 C 18 -86 52 -64 52 -34 A52 52 0 0 1 -52 -34 C -52 -64 -18 -86 0 -120Z" fill="${c}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>
+ <ellipse cx="-20" cy="-70" rx="8" ry="14" fill="#fff" opacity=".7" transform="rotate(25 -20 -70)"/>
+ <circle cx="-15" cy="-40" r="6" fill="${INK}"/><circle cx="15" cy="-40" r="6" fill="${INK}"/>
+ ${sad?`<path d="M-10 -18q10-8 20 0" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/>`:`<path d="M-12 -26q12 12 24 0" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/>`}
+ <ellipse cx="-28" cy="-28" rx="7" ry="4" fill="#FF6B6B" opacity=".5"/><ellipse cx="28" cy="-28" rx="7" ry="4" fill="#FF6B6B" opacity=".5"/></g>`}
+const LUT='#FF9F1C',ZEA='#FFD23F';
+// ---- cartoon eye, centred
+function eyeSvg(w=220,o={}){const h=w*0.55;return `<g class="eyeg"><path d="M${-w/2} 0 Q0 ${-h} ${w/2} 0 Q0 ${h} ${-w/2} 0Z" fill="#fff" stroke="${INK}" stroke-width="8"/>
+ <g class="iris"><circle r="${h*0.48}" fill="${o.iris||'#4AA8FF'}" stroke="${INK}" stroke-width="6"/><circle r="${h*0.22}" fill="${INK}"/><circle cx="${h*0.14}" cy="${-h*0.16}" r="${h*0.1}" fill="#fff"/></g>
+ ${o.lash!==false?`<path d="M${-w*0.3} ${-h*0.36}l-14 -26M0 ${-h*0.5}v-30M${w*0.3} ${-h*0.36}l14 -26" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>`:''}
+ <path class="lid" d="M${-w/2} 0 Q0 ${-h} ${w/2} 0 Q0 ${-h} ${-w/2} 0Z" fill="#FFD7B5" stroke="${INK}" stroke-width="6"/></g>`}
+function blink(g,t,ph=0){const lid=g.querySelector('.lid');if(!lid)return;const c=((t+ph)%3.1);const k=c<0.16?Math.sin(c/0.16*Math.PI):0;lid.style.transform=`scaleY(${-1+2*k})`;lid.style.transformOrigin='0 0';lid.style.opacity=k>0.02?1:0}
+// ---- blue light bolt
+function boltD(len=150){return `M0 0 l${len*0.2} -18 l${len*0.2} 30 l${len*0.2} -30 l${len*0.2} 30 l${len*0.2} -12`}
+function mkBolt(par){const g=mk('g',{},par);mk('path',{d:boltD(),fill:'none',stroke:INK,'stroke-width':20,'stroke-linecap':'round','stroke-linejoin':'round'},g);mk('path',{d:boltD(),fill:'none',stroke:'#2F8BFF','stroke-width':11,'stroke-linecap':'round','stroke-linejoin':'round'},g);mk('path',{d:boltD(),fill:'none',stroke:'#CFE6FF','stroke-width':3,'stroke-linecap':'round','stroke-linejoin':'round'},g);return g}
+function mkSpark(par){const g=mk('g',{},par);for(let i=0;i<6;i++){const a=i*Math.PI/3;mk('line',{x1:Math.cos(a)*14,y1:Math.sin(a)*14,x2:Math.cos(a)*34,y2:Math.sin(a)*34,stroke:'#FFD23F','stroke-width':8,'stroke-linecap':'round'},g)}return g}
+
+// ---- S1 burst + annotation paths
+{let d='';const n=22;for(let i=0;i<=n*2;i++){const a=i/(n*2)*Math.PI*2;const r=i%2?1:0.86;d+=(i?'L':'M')+(470+Math.cos(a)*450*r).toFixed(1)+' '+(150+Math.sin(a)*150*r).toFixed(1)}$('burstP').setAttribute('d',d+'Z')}
+const ellD=(cx,cy,rx,ry)=>{let d='';for(let i=0;i<=44;i++){const a=-2.2+i/44*Math.PI*2.2;const w=1+0.05*Math.sin(i*0.9);d+=(i?'L':'M')+(cx+Math.cos(a)*rx*w).toFixed(1)+' '+(cy+Math.sin(a)*ry*w).toFixed(1)}return d};
+const arrD=(x,y,ang=90,len=90)=>{const a=ang*Math.PI/180,bx=x-Math.cos(a)*len,by=y-Math.sin(a)*len;const hx=x,hy=y;const l=28;return ` M${bx.toFixed(0)} ${by.toFixed(0)} Q${(bx+hx)/2+12} ${(by+hy)/2} ${hx} ${hy} M${(hx-Math.cos(a-0.5)*l).toFixed(0)} ${(hy-Math.sin(a-0.5)*l).toFixed(0)} L${hx} ${hy} L${(hx-Math.cos(a+0.5)*l).toFixed(0)} ${(hy-Math.sin(a+0.5)*l).toFixed(0)}`};
+const ANN={'0.25':ellD(720,312,270,92)+arrD(720,210,90,0),
+ '3.46':ellD(1080,232,200,62)+arrD(1080,150,90,70),
+ '5.9':ellD(1180,575,130,90)+arrD(1180,460,90,80),
+ '7.8':ellD(1100,560,110,120),
+ '13.1':ellD(760,420,110,270),
+ '18.5':ellD(720,215,370,72),
+ '24.9':ellD(905,840,210,80)+arrD(905,740,90,80),
+ '27.3':ellD(880,800,230,100),
+ '35.5':ellD(720,520,440,120),
+ '41.95':ellD(485,337,315,30)+arrD(810,337,180,80)};
+document.querySelectorAll('[data-draw]').forEach(p=>{p.setAttribute('d',ANN[p.dataset.draw]||'')});
+
+// ---- S2 eye + runner
+H$($('eye2'),eyeSvg(240));
+const run2=H$($('run2'),dropSvg(LUT,120,{arms:true}));const road2=$('road2');const roadL=road2.getTotalLength();
+// ---- S3 tunnel, blood cells, signs, droplets
+{const g=$('tun3');for(let i=0;i<7;i++)mk('ellipse',{class:'tr',cx:720,cy:500,rx:100,ry:70,fill:'none',stroke:'#C9455A','stroke-width':10,opacity:.5},g)}
+const RBC=[];for(let i=0;i<12;i++){const g=mk('g',{},$('rbc3'));g.innerHTML=`<ellipse rx="46" ry="30" fill="#E8394E" stroke="${INK}" stroke-width="5"/><ellipse rx="20" ry="11" fill="#B8243A"/>`;RBC.push({g,a:rnd()*6.28,ph:rnd()})}
+const SIGN=(id,label,col,icon)=>{$(id).innerHTML=`<div style="display:flex;align-items:center;gap:10px;background:#fff;border:7px solid ${INK};border-radius:30px;box-shadow:0 10px 0 ${INK};padding:10px 22px 14px"><svg width="64" height="64" viewBox="-50 -50 100 100">${icon}</svg><span style="font-weight:900;font-size:44px;color:${INK}">${label}</span></div>`};
+SIGN('sgBrain','สมอง','#FF8FB1',`<path d="M-30 20c-20-4-24-30-8-40-2-20 22-30 34-18 12-14 40-4 38 16 18 8 14 36-6 40-6 16-30 18-38 6-10 8-24 4-20-4z" fill="#FF8FB1" stroke="${INK}" stroke-width="6"/>`);
+SIGN('sgHeart','หัวใจ','#FF6B6B',`<path d="M0 34C-40 6-46-20-30-34-16-44 0-34 0-22 0-34 16-44 30-34 46-20 40 6 0 34z" fill="#FF6B6B" stroke="${INK}" stroke-width="6"/>`);
+SIGN('sgSkin','ผิว','#FFD7B5',`<path d="M-20 40V-10a8 8 0 0116 0v-24a8 8 0 0116 0v24a8 8 0 0116 0v6a8 8 0 0116 0v24c0 20-14 30-30 30h-6c-14 0-28-10-28-20z" fill="#FFD7B5" stroke="${INK}" stroke-width="6"/>`);
+SIGN('sgEye','ดวงตา','#4AA8FF',`<path d="M-44 0Q0-40 44 0Q0 40-44 0z" fill="#fff" stroke="${INK}" stroke-width="6"/><circle r="16" fill="#4AA8FF" stroke="${INK}" stroke-width="5"/><circle r="7" fill="${INK}"/>`);
+document.querySelectorAll('.stk').forEach(e=>{if(e.textContent==='🧠')e.parentElement.remove()});
+const D3=[];const tgts=[[300,200],[1200,200],[300,570],[1200,570]];for(let i=0;i<12;i++){const g=H$($('drops3'),dropSvg(i%2?ZEA:LUT,70));D3.push({g,tg:tgts[i%4],t0:4.3+i*0.22})}
+// ---- S4 retina cells, proteins, droplets
+{const g=$('cells4');for(let i=0;i<40;i++){const x=rnd()*1440,y=rnd()*640,r=30+rnd()*40;mk('circle',{cx:x,cy:y,r,fill:'#FFE2C4',stroke:'#F2A47E','stroke-width':5,opacity:.8},g)}}
+const PX=[300,510,720,930,1140];const PROT=PX.map((x,i)=>{const g=mk('g',{transform:`translate(${x} 640)`},$('prot4'));
+ g.innerHTML=`<path d="M-40 -60 L-78 -150 M40 -60 L78 -150" stroke="${INK}" stroke-width="18" stroke-linecap="round"/><path d="M-40 -60 L-78 -150 M40 -60 L78 -150" stroke="#B18CFF" stroke-width="8" stroke-linecap="round"/><circle cx="-80" cy="-156" r="14" fill="#B18CFF" stroke="${INK}" stroke-width="5"/><circle cx="80" cy="-156" r="14" fill="#B18CFF" stroke="${INK}" stroke-width="5"/>
+ <path d="M-60 0 C-66 -70 -30 -110 0 -110 C30 -110 66 -70 60 0Z" fill="#B18CFF" stroke="${INK}" stroke-width="6"/><circle cx="-16" cy="-62" r="7" fill="${INK}"/><circle cx="16" cy="-62" r="7" fill="${INK}"/><path d="M-12 -40q12 12 24 0" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/>`;return {g,x}});
+const D4=PX.map((x,k)=>{const tx=PX[4-k];const g=H$($('drops4'),dropSvg(k%2?ZEA:LUT,80));return{g,tx,x0:-120-k*150}});
+// ---- S5 retina cells (right), shield of droplets, bolts
+{const g=$('ret5');mk('path',{d:'M1000 120 C1120 160 1220 140 1340 120 V980 H1000 C1040 760 960 400 1000 120Z',fill:'#FF9FB2',stroke:INK,'stroke-width':7},g);
+ for(let i=0;i<9;i++){const x=1080+(i%3)*80,y=260+Math.floor(i/3)*130;g.insertAdjacentHTML('beforeend',`<g transform="translate(${x} ${y})"><circle r="32" fill="#FFD0DA" stroke="${INK}" stroke-width="5"/><circle cx="-10" cy="-4" r="4.5" fill="${INK}"/><circle cx="10" cy="-4" r="4.5" fill="${INK}"/><path d="M-8 8q8 8 16 0" stroke="${INK}" stroke-width="4" fill="none" stroke-linecap="round"/></g>`)}}
+const SH5=[];for(let i=0;i<5;i++){const g=H$($('shield5'),dropSvg(i%2?ZEA:LUT,96,{arms:true,armsUp:true}));SH5.push({g,y:250+i*110})}
+const B5=[];for(let i=0;i<12;i++){B5.push({g:mkBolt($('bolts5')),t0:13.9+i*0.3,y:300+((i*137)%340),s:mkSpark($('spark5'))})}
+// ---- S6 heroes, marigolds, bolts
+function marigold(x,y,s){return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 0 V90" stroke="#3B9A55" stroke-width="10"/>${[...Array(12)].map((_,i)=>`<ellipse rx="22" ry="34" fill="#FF9F1C" stroke="${INK}" stroke-width="4" transform="rotate(${i*30}) translate(0 -30)"/>`).join('')}${[...Array(8)].map((_,i)=>`<ellipse rx="14" ry="22" fill="#FFB938" stroke="${INK}" stroke-width="3" transform="rotate(${i*45+20}) translate(0 -16)"/>`).join('')}<circle r="14" fill="#E07B00" stroke="${INK}" stroke-width="4"/></g>`}
+H$($('flow6'),marigold(190,690,1.1)+marigold(330,760,0.8)+marigold(1250,690,1.1)+marigold(1110,770,0.8)+marigold(160,880,0.9)+marigold(1290,890,0.9));
+H$($('heroL'),dropSvg(LUT,260,{arms:true,armsUp:true}));H$($('heroZ'),dropSvg(ZEA,260,{arms:true,armsUp:true}));
+const B6=[];for(let i=0;i<8;i++){const g=mkBolt($('bolts6'));B6.push({g,t0:19.0+i*0.36,s:mkSpark($('spark6')),side:i%2})}
+// ---- S7 stars, bolts, aging eye
+const ST7=[];for(let i=0;i<8;i++){const c=mk('circle',{cx:190+rnd()*260,cy:170+rnd()*200,r:4+rnd()*4,fill:'#fff'},$('stars7'));ST7.push({c,ph:rnd()*6})}
+const B7=[];for(let i=0;i<6;i++)B7.push({g:mkBolt($('bolts7')),t0:23.7+i*0.4});
+H$($('eye7'),eyeSvg(200,{iris:'#9AA5B8'})+`<path d="M-30 -40 l18 26 l-14 14 l20 26" stroke="#E8231F" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M50 -10 q30 10 26 40" stroke="#7FD3FF" stroke-width="10" fill="none" stroke-linecap="round"/>`);
+// ---- S8 dome + bolts + weightless eye
+const dome8=mk('path',{d:'M640 330 A120 130 0 0 1 880 330',fill:'rgba(255,210,63,.3)',stroke:'#FFB800','stroke-width':10,'stroke-linecap':'round'},$('dome8'));
+const B8=[];for(let i=0;i<8;i++)B8.push({g:mkBolt($('bolts8')),t0:27.9+i*0.36,s:mkSpark($('spark8'))});
+const eyeW=H$($('eyeW8'),`<g id="wgt8"><path d="M60 -150 V-70" stroke="${INK}" stroke-width="6"/><g id="wgtB"><rect x="20" y="-210" width="80" height="62" rx="12" fill="#B8C2D9" stroke="${INK}" stroke-width="6"/><text x="60" y="-168" text-anchor="middle" font-family="K" font-weight="900" font-size="30" fill="${INK}">หนัก</text></g></g>`+`<g transform="translate(60 0)">${eyeSvg(170)}</g>`);
+// ---- S9 results
+const RES=[['ลูทีน (Lutein)','วิตามินบำรุงสายตา',LUT],['ซีแซนทีน (Zeaxanthin)','วิตามินบำรุงสายตา',ZEA]];
+const R9=RES.map(([a,b,c],i)=>{const g=mk('g',{},$('res9'));g.innerHTML=`<rect x="330" y="${380+i*125}" width="780" height="108" rx="20" fill="#fff" stroke="${INK}" stroke-width="6"/><circle cx="390" cy="${434+i*125}" r="30" fill="${c}" stroke="${INK}" stroke-width="5"/><text x="390" y="${446+i*125}" text-anchor="middle" font-family="K" font-weight="900" font-size="34" fill="${INK}">${i+1}</text><text x="440" y="${428+i*125}" font-family="K" font-weight="900" font-size="40" fill="#1A56C4">${a}</text><text x="440" y="${468+i*125}" font-family="K" font-weight="600" font-size="28" fill="#5A6680">${b}</text>`;return g});
+const TYPE='วิตามินดูแลดวงตา';const TG=[...new Intl.Segmenter('th',{granularity:'grapheme'}).segment(TYPE)].map(s=>s.segment);
+// ---- S10 map + pins
+{const g=$('map10');const land=[['M190 300c60-80 210-90 280-40 40 30 30 90-20 120-30 20-20 70-60 80-60 14-80 80-130 70-50-10-40-80-70-120-30-40-40-80 0-110z'],['M420 600c40-30 100-20 120 20 20 50-10 140-40 200-20 40-60 40-70-10-10-60-50-150-10-210z'],['M640 260c50-40 120-30 150 0 30 30 10 70-30 80-40 10-90 0-110-30-10-20-20-30-10-50z'],['M660 400c60-20 130 10 140 70 10 70-30 160-80 190-40 20-60-30-70-80-10-60-60-150 10-180z'],['M820 250c100-60 300-50 380 20 50 40 20 110-50 120-60 10-90 60-150 50-60-10-90-60-150-80-40-20-60-80-30-110z'],['M1120 620c50-20 120 0 130 40 10 40-40 70-90 70-50 0-80-20-80-50 0-20 20-50 40-60z']];
+ land.forEach(([d])=>mk('path',{d,fill:'#9BE58C',stroke:INK,'stroke-width':6},g))}
+const PINS=[[300,320],[260,420],[480,680],[700,300],[720,500],[900,300],[1050,320],[1150,400],[1180,660],[620,320],[980,420],[400,300]].map(([x,y],i)=>{const g=mk('g',{},$('pins10'));g.innerHTML=`<path d="M0 0 C-30 -40 -30 -76 0 -76 C30 -76 30 -40 0 0Z" fill="#FF6B6B" stroke="${INK}" stroke-width="5"/><circle cy="-50" r="10" fill="#fff"/>`;return{g,x,y,t:38.7+i*0.1}});
+// ---- S11 oil bubbles + absorption gauge
+const BUB=[];for(let i=0;i<16;i++){const g=mk('g',{},$('bub11'));const r=16+rnd()*34;g.innerHTML=`<circle r="${r}" fill="rgba(255,200,60,.45)" stroke="#E6A21A" stroke-width="4"/><circle cx="${-r*0.35}" cy="${-r*0.35}" r="${r*0.25}" fill="#fff" opacity=".8"/>`;BUB.push({g,x:150+rnd()*1140,y:rnd()*1080,v:40+rnd()*60,ph:rnd()*6})}
+const AB=$('abs11');AB.innerHTML=`<g transform="translate(160 430)"><rect x="0" y="0" width="640" height="230" rx="30" fill="#fff" stroke="${INK}" stroke-width="7"/>
+ <text x="30" y="62" font-family="K" font-weight="900" font-size="40" fill="${INK}">การดูดซึม</text>
+ <rect x="30" y="100" width="580" height="60" rx="30" fill="#EEF1F6" stroke="${INK}" stroke-width="5"/><rect id="gauge11" x="34" y="104" width="0" height="52" rx="26" fill="#3DDC97"/>
+ <g id="oilc11"><circle cx="0" cy="0" r="36" fill="#FFCB3D" stroke="${INK}" stroke-width="5"/><text x="0" y="10" text-anchor="middle" font-family="K" font-weight="900" font-size="26" fill="${INK}">MCT</text></g></g>`;
+const conf=[];{const cw=$('confetti');const cc=['#FFD23F','#FF8FB1','#7FD3FF','#3DDC97','#FF6B6B'];for(let i=0;i<70;i++){const d=document.createElement('div');d.className='conf';d.style.background=cc[i%5];cw.appendChild(d);conf.push({d,x:200+rnd()*1040,vy:240+rnd()*300,vx:(rnd()-.5)*180,r:rnd()*360,vr:(rnd()-.5)*720,dl:rnd()*0.5,sw:rnd()*6})}}
+
+// ---- kinetic text
+const seg=new Intl.Segmenter('th',{granularity:'grapheme'});
+const kts=[...document.querySelectorAll('.kt')].map(el=>{const txt=el.textContent;el.textContent='';const gs=[];for(const {segment} of seg.segment(txt)){const s=document.createElement('span');s.className='g';s.textContent=segment===' '?' ':segment;el.appendChild(s);gs.push(s)}
+ return{el,gs,at:+el.dataset.at,st:+el.dataset.st,fx:el.dataset.fx,out:el.dataset.out?+el.dataset.out:null,pulse:!!el.dataset.pulse}});
+function ktRender(t){for(const k of kts){const vis=t>=k.at-0.05;const outk=k.out!==null?cl((t-k.out)/0.25):0;k.el.style.opacity=vis?1-outk:0;if(!vis||outk>=1)continue;
+ k.el.style.transform=(outk>0?`translateY(${-60*eIO(outk)}px) scale(${1-.2*outk})`:'')+(k.pulse?` scale(${1+0.04*Math.sin(t*6)})`:'');
+ k.gs.forEach((g,i)=>{const lt=t-k.at-i*k.st;if(lt<0){g.style.opacity=0;return}g.style.opacity=1;let tr='';
+  if(k.fx==='bounce'){const p=cl(lt/0.38);tr=`translateY(${-90*(1-eOB(p))}px) scale(${p<=0?0:eOB(p)}) rotate(${(1-p)*-18}deg)`}
+  else if(k.fx==='drop'){const p=cl(lt/0.45);tr=`translateY(${-260*(1-eBn(p))}px)`;g.style.opacity=cl(p*4)}
+  else if(k.fx==='jelly'){const p=cl(lt/0.3);const w=lt>0.3?Math.sin((lt-.3)*20)*Math.exp(-(lt-.3)*5):0;tr=`scale(${(p<=0?0:eOB(p))*(1+0.22*w)},${(p<=0?0:eOB(p))*(1-0.22*w)})`}
+  else if(k.fx==='shake'){const p=cl(lt/0.3);tr=`scale(${p<=0?0:eOB(p)}) rotate(${Math.sin(lt*30)*8*Math.exp(-lt*2.5)}deg) translateX(${Math.sin(lt*45)*10*Math.exp(-lt*3)}px)`}
+  if(lt>0.6)tr+=` translateY(${Math.sin(t*5+i*.7)*5}px)`;g.style.transform=tr})}}
+// ---- scenes
+const scenes=[...document.querySelectorAll('.scene')].map(el=>{const bg=document.createElement('div');bg.className='sbg '+el.dataset.bg;el.insertBefore(bg,el.firstChild);
+ const pl=document.createElement('div');pl.style.cssText='position:absolute;inset:0;pointer-events:none';el.insertBefore(pl,bg.nextSibling);const parts=[];
+ const cols=['#FFD23F','#FF8FB1','#7FA2FF','#3DDC97','#fff'];for(let k=0;k<10;k++){const d=document.createElement('div');d.className='dot';const s=10+rnd()*18;d.style.width=d.style.height=s+'px';d.style.background=cols[k%5];pl.appendChild(d);parts.push({d,x:160+rnd()*1120,y:rnd()*H,v:14+rnd()*24,ph:rnd()*6.28})}
+ const cam=(el.dataset.cam||'').split(';').filter(Boolean).map(k=>k.split(':').map(Number));
+ return{el,s:+el.dataset.s,e:+el.dataset.e,tr:el.dataset.tr||'',parts,cam,camEl:el.querySelector('.cam'),items:[...el.querySelectorAll('.a')]}});
+function camAt(keys,t){if(!keys.length)return[1,720,540];if(t<=keys[0][0])return keys[0].slice(1);for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t<=b[0]){const p=eIO(cl((t-a[0])/(b[0]-a[0])));return[1,2,3].map(j=>a[j]+(b[j]-a[j])*p)}}return keys[keys.length-1].slice(1)}
+const ringDefs=[[1.98,1080,420],[4.74,720,790],[9.96,720,800],[12.94,760,420],[17.78,500,520],[18.24,940,520],[27.08,720,800],[35.38,720,520],[40.02,720,380],[43.78,720,820]];
+const rw=$('rings');const rings=ringDefs.map(([t,x,y])=>{const d=document.createElement('div');d.className='ring';d.style.left=x+'px';d.style.top=y+'px';rw.appendChild(d);return{d,t}});
+function animT(an,p){switch(an){case'fade':return[eOC(p),''];case'pop':return[cl(p*4),`scale(${p<=0?0:eOB(p)})`];
+ case'stamp':{const e=eOB(p);return[cl(p*5),`scale(${1.7-0.7*e}) rotate(${-8*(1-e)}deg)`]}
+ case'up':{const e=eOB(p);return[cl(p*3),`translateY(${120*(1-e)}px)`]}case'left':{const e=eOB(p);return[cl(p*3),`translateX(${-360*(1-e)}px)`]}
+ case'right':{const e=eOB(p);return[cl(p*3),`translateX(${360*(1-e)}px)`]}case'drop':return[cl(p*5),`translateY(${-700*(1-eBn(p))}px)`]}return[1,'']}
+const DUR={fade:.35,pop:.45,stamp:.38,up:.45,left:.5,right:.5,drop:.7};const TR=0.4;
+function drawAnn(t){document.querySelectorAll('[data-draw]').forEach(p=>{const at=+p.dataset.draw;const k=cl((t-at)/0.3);if(!p._L)p._L=p.getTotalLength()||1;p.style.strokeDasharray=p._L;p.style.strokeDashoffset=p._L*(1-eOC(k));p.parentNode.style.transform=`translate(${Math.sin(t*9+at)*1.5}px,0)`})}
+window.render=function(t){
+ scenes.forEach((sc,i)=>{const nx=scenes[i+1];const tail=(nx&&(nx.tr==='iris'||nx.tr==='zoom'||nx.tr==='slideup'))?TR:0;
+  const on=t>=sc.s&&t<sc.e+tail;sc.el.style.display=on?'block':'none';if(!on)return;
+  const lt=t-sc.s,q=cl(lt/TR);let tf='',clip='none',op=1;
+  if(sc.tr==='iris')clip=`circle(${eIO(q)*110}% at 50% 50%)`;else if(sc.tr==='zoom'){tf=`scale(${1.3-0.3*eOC(q)})`;op=q}else if(sc.tr==='slideup')tf=`translateY(${(1-eOC(q))*1080}px)`;
+  sc.el.style.transform=tf;sc.el.style.clipPath=q<1?clip:'none';sc.el.style.opacity=op;sc.el.style.zIndex=i;
+  const[s,fx,fy]=camAt(sc.cam,t);if(sc.camEl)sc.camEl.style.transform=`translate(720px,540px) scale(${s}) translate(${-fx}px,${-fy}px)`;
+  for(const p of sc.parts){const y=((p.y-p.v*t)%(H+100)+H+100)%(H+100)-50;p.d.style.transform=`translate(${p.x+Math.sin(t*.8+p.ph)*24}px,${y}px)`;p.d.style.opacity=.45*cl((y-140)/80)*cl((940-y)/80)}
+  for(const el of sc.items){const at=+el.dataset.at,an=el.dataset.an,p=at<0?1:cl((t-at)/DUR[an]);let[o,tr]=t<at?[0,'']:animT(an,p);
+   if(el.dataset.out){const k=cl((t-+el.dataset.out)/0.28);if(k>0){o*=1-k;tr+=` translateY(${-eIO(k)*50}px) scale(${1-.2*k})`}}
+   if(el.dataset.float){const ph=+el.dataset.float;tr+=` translateY(${Math.sin(t*2.4+ph)*12}px) rotate(${Math.sin(t*1.8+ph)*3}deg)`}
+   if(el.dataset.bob){const ph=+el.dataset.bob;tr+=` translateY(${Math.sin(t*3.4+ph)*9}px) rotate(${Math.sin(t*2.6+ph)*4}deg)`}
+   if(el.dataset.spin)tr+=` rotate(${t*el.dataset.spin}deg)`;
+   el.style.opacity=o;el.style.transform=tr}});
+ ktRender(t);drawAnn(t);
+ let sx=-3200;for(const sc of scenes){if(sc.tr==='stripe'){const d=t-sc.s;if(d>-0.25&&d<0.25)sx=-3000+eIO((d+0.25)/0.5)*4600}}$('stripe').style.transform=`translateX(${sx}px) skewX(-14deg)`;
+ document.querySelectorAll('[data-vis]').forEach(g=>{const[a,b]=g.dataset.vis.split(',').map(Number);g.style.opacity=(t>=a&&t<b)?1:0});
+ document.querySelectorAll('.eyeg').forEach((g,i)=>blink(g,t,i*0.7));
+ // S1 burst wobble
+ if(t<2.4)$('burst1').style.transform=`scale(${1+0.03*Math.sin(t*6)}) rotate(${Math.sin(t*3)*1.5}deg)`;
+ // S2 runner along road (constant speed)
+ if(t>1.9&&t<4.7){const p=cl((t-2.0)/2.1);const pt=road2.getPointAtLength(p*roadL*0.93);const sc=1-0.45*p;run2.setAttribute('transform',`translate(${pt.x} ${pt.y-Math.abs(Math.sin(t*14))*16}) scale(${sc}) rotate(${Math.sin(t*14)*8})`);$('cloud2').setAttribute('transform',`translate(${(t-2)*30} 0)`)}
+ // S3 tunnel flythrough, cells, droplets spreading to signs
+ if(t>4.1&&t<7.6){document.querySelectorAll('#tun3 .tr').forEach((e,i)=>{const f=((t*0.5+i/7)%1);e.setAttribute('rx',60+f*f*1100);e.setAttribute('ry',42+f*f*780);e.setAttribute('opacity',(1-f)*0.6)});
+  RBC.forEach(r=>{const f=((t*0.35+r.ph)%1);const d=40+f*f*800;r.g.setAttribute('transform',`translate(${720+Math.cos(r.a)*d} ${500+Math.sin(r.a)*d*0.7}) scale(${0.3+f*1.4}) rotate(${t*40+r.a*50})`);r.g.setAttribute('opacity',cl(f*5))});
+  D3.forEach((d,i)=>{const p=cl((t-d.t0)/1.1);const x=720+(d.tg[0]-720)*p,y=480+(d.tg[1]-480)*p-Math.sin(p*Math.PI)*60;d.g.setAttribute('transform',`translate(${x} ${y+40}) scale(${0.5+0.6*p}) rotate(${Math.sin(t*12+i)*10})`);d.g.setAttribute('opacity',t<d.t0?0:p<0.9?1:1-(p-0.9)*10)});
+  const ey=$('sgEye');if(t>5.72){ey.style.filter=`drop-shadow(0 0 ${14+8*Math.sin(t*10)}px #FFD23F)`}else ey.style.filter=''}
+ // S4 droplets flow at constant speed, proteins grab them, layer builds up
+ if(t>7.0&&t<12.9){const V=430;D4.forEach((d,k)=>{const t0=8.9;const tReach=t0+(d.tx-d.x0)/V;let x,y;
+   if(t<tReach){x=d.x0+(t-t0)*V;y=380+Math.sin(t*8+k)*10}else{const q=eOC(cl((t-tReach)/0.3));x=d.tx;y=380+(490-380)*q}
+   d.g.setAttribute('transform',`translate(${x} ${y+40}) rotate(${t<tReach?Math.sin(t*14+k)*10:0})`);d.g.setAttribute('opacity',t<t0?0:1)});
+  PROT.forEach((p,i)=>{const k=D4.find(d=>d.tx===p.x);const tReach=8.9+(k.tx-k.x0)/430;const hold=t>tReach+0.25;p.g.setAttribute('transform',`translate(${p.x} ${640-(hold?Math.abs(Math.sin((t-tReach)*7))*10*Math.exp(-(t-tReach)*2):Math.abs(Math.sin(t*5+i))*6)})`)});
+  const L=cl((t-10.4)/1.8);$('layer4').setAttribute('height',L*60);$('layer4').setAttribute('y',640-L*12)}
+ // S5 shield + bolts absorbed
+ if(t>12.3&&t<17.8){SH5.forEach((s,i)=>{const k=eOB(cl((t-12.94-i*0.08)/0.4));s.g.setAttribute('transform',`translate(760 ${s.y+48+Math.sin(t*5+i)*5}) scale(${k?k:0})`)});
+  B5.forEach(b=>{const p=(t-b.t0);const x=330+p*620;const hit=x>=650;b.g.setAttribute('transform',`translate(${Math.min(x,650)} ${b.y})`);b.g.setAttribute('opacity',p<0?0:hit?0:1);
+   const sp=(t-(b.t0+(650-330)/620));b.s.setAttribute('transform',`translate(${700} ${b.y}) scale(${sp>0?0.5+sp*3:0}) rotate(${sp*90})`);b.s.setAttribute('opacity',sp>0&&sp<0.3?1-sp/0.3:0)})}
+ // S6 bolts at heroes
+ if(t>17.2&&t<22.3){B6.forEach(b=>{const p=t-b.t0;const sx=b.side?1300:140,sy=150,ex=b.side?990:450,ey=430;const k=cl(p/0.45);const x=sx+(ex-sx)*k,y=sy+(ey-sy)*k;const ang=Math.atan2(ey-sy,ex-sx)*57.3;
+   b.g.setAttribute('transform',`translate(${x} ${y}) rotate(${ang})`);b.g.setAttribute('opacity',p<0||k>=1?0:1);const sp=p-0.45;b.s.setAttribute('transform',`translate(${ex} ${ey}) scale(${sp>0?0.5+sp*3:0})`);b.s.setAttribute('opacity',sp>0&&sp<0.3?1-sp/0.3:0)})}
+ // S7 stars twinkle, clock, phone bolts into eyes
+ if(t>21.8&&t<26.6){ST7.forEach(s=>s.c.setAttribute('opacity',0.4+0.6*Math.abs(Math.sin(t*3+s.ph))));$('clk7').setAttribute('transform',`rotate(${(t-21.9)*40} 1170 250)`);
+  $('glow7').setAttribute('r',240+20*Math.sin(t*6));B7.forEach(b=>{const p=cl((t-b.t0)/0.5);b.g.setAttribute('transform',`translate(${820-p*60} ${380-p*40}) rotate(200) scale(0.6)`);b.g.setAttribute('opacity',t<b.t0||p>=1?0:1)})}
+ // S8 shield dome bounces bolts from the monitor; weight floats away
+ if(t>26&&t<31.4){const pk=$('pouch8');const m=eIO(cl((t-27.4)/0.5));pk.style.transform+=` translate(${-400*m}px,${120*m}px) scale(${1-0.25*m})`;
+  dome8.setAttribute('opacity',cl((t-27.7)/0.3));dome8.setAttribute('stroke-width',10+3*Math.sin(t*8));
+  B8.forEach(b=>{const p=t-b.t0;const k=cl(p/0.4);const x=1080-(1080-890)*k,y=370;b.g.setAttribute('transform',`translate(${x} ${y}) rotate(180) scale(0.7)`);b.g.setAttribute('opacity',p<0||k>=1?0:1);const sp=p-0.4;b.s.setAttribute('transform',`translate(885 ${y}) scale(${sp>0?0.4+sp*3:0})`);b.s.setAttribute('opacity',sp>0&&sp<0.3?1-sp/0.3:0)});
+  const f=cl((t-29.6)/1.2);$('wgtB').setAttribute('transform',`translate(${f*40} ${-f*260}) rotate(${f*20})`);$('wgt8').setAttribute('opacity',1-cl((t-30.4)/0.4))}
+ // S9 typing + results
+ if(t>30.8&&t<39){const n=Math.floor(cl((t-32.86)/1.5)*TG.length);$('type9').textContent=TG.slice(0,n).join('');const bb=$('type9').getBBox();$('cur9').setAttribute('x',440+(n?bb.width+6:0));$('cur9').setAttribute('opacity',(Math.floor(t*3)%2||t<34.4&&t>32.8)?1:0);
+  R9.forEach((g,i)=>{const k=cl((t-34.95-i*0.25)/0.45);g.setAttribute('opacity',cl(k*3));g.setAttribute('transform',`translate(0 ${(1-eOB(k))*60})`)})}
+ // S10 pins pop
+ if(t>38.5&&t<42.2)PINS.forEach(p=>{const k=cl((t-p.t)/0.35);p.g.setAttribute('transform',`translate(${p.x} ${p.y-Math.abs(Math.sin(t*4+p.x))*6}) scale(${k?eOB(k):0})`)});
+ // S11 bubbles, gauge filling with oil carrier
+ if(t>41.6){BUB.forEach(b=>{const y=((b.y-b.v*t)%1180+1180)%1180-50;b.g.setAttribute('transform',`translate(${b.x+Math.sin(t+b.ph)*20} ${y})`)});
+  const g=cl((t-42.9)/1.4);$('gauge11').setAttribute('width',g*560+0.01);$('oilc11').setAttribute('transform',`translate(${64+g*560} 130) scale(${t>42.8?1:0})`)}
+ for(const r of rings){const d=t-r.t;if(d<0||d>0.6){r.d.style.opacity=0;continue}const p=d/0.6;r.d.style.opacity=.9*(1-p);r.d.style.transform=`scale(${0.2+eOC(p)*1.4})`;r.d.style.borderWidth=(16*(1-p)+2)+'px'}
+ for(const c of conf){const d=t-43.9-c.dl;if(d<0){c.d.style.opacity=0;continue}const cy=140+c.vy*d;c.d.style.opacity=cl((cy-140)/60)*cl((940-cy)/120);c.d.style.transform=`translate(${c.x+c.vx*d*.5+Math.sin(d*4+c.sw)*20}px,${cy}px) rotate(${c.r+c.vr*d}deg) rotateX(${d*400+c.sw*50}deg)`}
+};
+window.render(0);
+</script>
+</body></html>
