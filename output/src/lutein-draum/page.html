@@ -40,42 +40,35 @@ body{font-family:K,sans-serif;color:#1B2A4A}
 svg{overflow:visible}
 .photo{position:absolute;border-radius:26px;overflow:hidden;border:9px solid #fff;box-shadow:0 0 0 7px #1B2A4A,0 22px 40px rgba(27,42,74,.35)}
 .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.ann path{fill:none;stroke:#E8231F;stroke-width:11;stroke-linecap:round;stroke-linejoin:round}
+.eyebg{background:radial-gradient(circle at 55% 45%,#FFF7FA 0%,#FFE3EC 55%,#FFC6D6 100%)}
+#annL{position:absolute;left:0;top:0;z-index:70;pointer-events:none}
 </style></head><body>
 <div id="stage">
 
-<!-- S1 0-1.98 TITLE on frame 0: how does this vitamin know? -->
-<div class="scene" data-s="0" data-e="1.98" data-bg="sun" data-cam="0:1:720:540;1.98:1.05:720:520">
+<!-- S1 0-2.96 TITLE on frame 0, full question + picture: pouch -> two molecules run -> eye -->
+<div class="scene" data-s="0" data-e="2.96" data-bg="sun" data-cam="0:1:720:540;2.96:1.03:760:540">
  <div class="cam">
-  <div class="a rays" data-at="-1" data-an="pop" data-spin="14" style="left:370px;top:230px;width:700px;height:700px"></div>
-  <div class="a img pouch" data-at="-1" data-an="pop" data-float="0" style="left:580px;top:410px;width:280px;height:441px"></div>
-  <div class="a" data-at="0.5" data-an="pop" data-bob="0" style="left:330px;top:500px"><svg width="120" height="150" viewBox="0 0 110 140"><text x="55" y="120" text-anchor="middle" font-family="K" font-weight="900" font-size="150" fill="#7FD3FF" stroke="#1B2A4A" stroke-width="10" paint-order="stroke fill">?</text></svg></div>
-  <div class="a" data-at="0.9" data-an="pop" data-bob="1.4" style="left:1000px;top:470px"><svg width="120" height="150" viewBox="0 0 110 140"><text x="55" y="120" text-anchor="middle" font-family="K" font-weight="900" font-size="150" fill="#FF8FB1" stroke="#1B2A4A" stroke-width="10" paint-order="stroke fill">?</text></svg></div>
+  <div class="a rays" data-at="-1" data-an="pop" data-spin="14" style="left:930px;top:420px;width:380px;height:380px"></div>
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080">
+   <path id="path1" d="M420 700 C 560 560 760 800 950 640" fill="none" stroke="#1B2A4A" stroke-width="11" stroke-dasharray="2 26" stroke-linecap="round"/>
+   <path d="M918 628 L958 636 L944 676" fill="none" stroke="#1B2A4A" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+   <g id="run1"></g></svg>
+  <div class="a" data-at="-1" data-an="pop" style="left:1120px;top:610px"><svg width="1" height="1"><g id="eye1" transform="scale(1.3)"></g></svg></div>
+  <div class="a img pouch" data-at="-1" data-an="pop" data-float="0" style="left:170px;top:480px;width:220px;height:347px"></div>
+  <div class="a" data-at="-1" data-an="pop" data-bob="0" data-out="1.95" style="left:560px;top:450px"><svg width="90" height="110" viewBox="0 0 110 140"><text x="55" y="120" text-anchor="middle" font-family="K" font-weight="900" font-size="150" fill="#7FD3FF" stroke="#1B2A4A" stroke-width="10" paint-order="stroke fill">?</text></svg></div>
  </div>
- <div class="a" data-at="-1" data-an="pop" id="burst1" style="left:250px;top:110px;width:940px;height:300px"><svg width="940" height="300" viewBox="0 0 940 300"><path id="burstP" fill="#FFE14D" stroke="#1B2A4A" stroke-width="9" stroke-linejoin="round"/></svg></div>
- <div class="kt" data-at="-1" data-st="0.03" data-fx="bounce" data-pulse="1" style="top:150px;font-size:78px;color:#fff">วิตามินตัวนี้</div>
- <div class="kt" data-at="-1" data-st="0.04" data-fx="bounce" data-pulse="1" style="top:235px;font-size:130px;color:#E8231F">รู้ได้ไง?</div>
- <div class="a ann" data-at="0.25" data-an="fade" data-out="1.95" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="0.25" d=""/></svg></div>
+ <div class="a" data-at="-1" data-an="pop" id="burst1" style="left:100px;top:115px;width:1240px;height:320px"><svg width="1240" height="320" viewBox="0 0 1240 320"><path id="burstP" fill="#FFE14D" stroke="#1B2A4A" stroke-width="9" stroke-linejoin="round"/></svg></div>
+ <div class="kt" data-at="-1" data-st="0.03" data-fx="bounce" data-pulse="1" style="top:150px;font-size:86px;color:#fff">วิตามินตัวนี้ รู้ได้ยังไง</div>
+ <div class="kt" data-at="-1" data-st="0.03" data-fx="bounce" data-pulse="1" style="top:258px;font-size:100px;color:#E8231F">ว่าต้องวิ่งไปที่ดวงตา?</div>
 </div>
 
-<!-- S2 1.98-4.24 runs along the road to the eye / retina -->
-<div class="scene" data-s="1.98" data-e="4.24" data-bg="sky" data-tr="stripe" data-cam="1.98:1:720:540;4.24:1.05:820:500">
+<!-- S2 2.96-4.24 inside the eye: both molecules go to the retina -->
+<div class="scene" data-s="2.96" data-e="4.24" data-bg="eyebg" data-tr="zoom" data-cam="2.96:1:720:540;4.24:1.04:820:500">
  <div class="cam">
-  <svg style="position:absolute;left:0;top:0" width="1440" height="1080">
-   <ellipse cx="360" cy="1080" rx="760" ry="420" fill="#8EE6A6" stroke="#1B2A4A" stroke-width="7"/>
-   <ellipse cx="1180" cy="1000" rx="620" ry="470" fill="#6FD68F" stroke="#1B2A4A" stroke-width="7"/>
-   <path id="road2" d="M120 1120 C 360 900 720 980 820 780 C 900 620 980 640 1070 600" fill="none" stroke="#1B2A4A" stroke-width="96" stroke-linecap="round"/>
-   <path d="M120 1120 C 360 900 720 980 820 780 C 900 620 980 640 1070 600" fill="none" stroke="#FFE7B8" stroke-width="80" stroke-linecap="round"/>
-   <path d="M120 1120 C 360 900 720 980 820 780 C 900 620 980 640 1070 600" fill="none" stroke="#fff" stroke-width="7" stroke-dasharray="26 26"/>
-   <g id="cloud2"><path d="M190 230a50 50 0 0190-28 60 60 0 01108 18 42 42 0 01-6 84H210a46 46 0 01-20-74z" fill="#fff" stroke="#1B2A4A" stroke-width="6"/></g>
-  </svg>
-  <div class="a" data-at="1.98" data-an="pop" style="left:1080px;top:420px"><svg width="1" height="1"><g id="eye2" transform="scale(1.25)"></g></svg></div>
-  <div class="a" data-at="2.96" data-an="pop" data-bob="0" style="left:930px;top:200px"><span class="stk" style="font-size:46px;background:#FF8FB1">จอประสาทตา</span></div>
-  <div class="a" data-at="1.98" data-an="fade" style="left:0;top:0"><svg width="1" height="1"><g id="run2"></g></svg></div>
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="eyeX2"></g><g id="run2"></g></svg>
+  <div class="a" data-at="3.0" data-an="pop" style="left:990px;top:140px"><span class="stk" id="stkRet2" style="font-size:46px;background:#FF8FB1">จอประสาทตา</span></div>
  </div>
- <div class="kt" data-at="1.98" data-st="0.045" data-fx="bounce" data-out="2.9" style="top:130px;left:130px;width:760px;font-size:100px;color:#fff">วิ่งไปที่ตา</div>
- <div class="kt" data-at="2.96" data-st="0.045" data-fx="drop" style="top:130px;left:130px;width:760px;font-size:96px;color:#FFD23F">ไปดูแลตา</div>
- <div class="a ann" data-at="3.46" data-an="fade" data-out="5.16" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="3.46" d=""/></svg></div>
+ <div class="kt" data-at="2.96" data-st="0.045" data-fx="bounce" style="top:770px;font-size:104px;color:#fff">ไปดูแลจอประสาทตา</div>
 </div>
 
 <!-- S3 4.24-7.08 inside a blood vessel: it goes everywhere -->
@@ -90,7 +83,6 @@ svg{overflow:visible}
  </div>
  <div class="kt" data-at="4.74" data-st="0.05" data-fx="bounce" data-out="5.64" style="top:720px;font-size:120px;color:#fff">วิ่งไปทุกที่!</div>
  <div class="kt" data-at="5.72" data-st="0.045" data-fx="drop" style="top:720px;font-size:104px;color:#FFD23F">แต่จอประสาทตา...</div>
- <div class="a ann" data-at="5.9" data-an="fade" data-out="7.60" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="5.9" d=""/></svg></div>
 </div>
 
 <!-- S4 7.08-12.44 retina: special proteins grab it and store it -->
@@ -101,40 +93,41 @@ svg{overflow:visible}
    <rect id="layer4" x="150" y="640" width="1140" height="0" rx="18" fill="#FFC21F" stroke="#1B2A4A" stroke-width="6"/>
    <path d="M60 380 H1380" stroke="#fff" stroke-width="90" stroke-linecap="round" opacity=".35"/>
    <g id="prot4"></g><g id="drops4"></g></svg>
-  <div class="a" data-at="7.56" data-an="stamp" style="left:860px;top:150px"><span class="stk" style="font-size:46px;background:#C7A8FF">โปรตีนจับเฉพาะ</span></div>
+  <div class="a" data-at="7.56" data-an="stamp" style="left:860px;top:150px"><span class="stk" id="stkProt" style="font-size:46px;background:#C7A8FF">โปรตีนจับเฉพาะ</span></div>
   <div class="a" data-at="10.56" data-an="stamp" style="left:170px;top:150px"><span class="stk" style="font-size:40px;background:#FFD23F">สะสม!</span></div>
  </div>
  <div class="kt" data-at="7.08" data-st="0.045" data-fx="bounce" data-out="9.9" style="top:770px;font-size:100px;color:#fff">มีโปรตีนจับสารนี้</div>
  <div class="kt" data-at="9.96" data-st="0.045" data-fx="jelly" style="top:770px;font-size:100px;color:#FFD23F">สะสมในจอประสาทตา</div>
- <div class="a ann" data-at="7.8" data-an="fade" data-out="9.50" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="7.8" d=""/></svg></div>
 </div>
 
-<!-- S5 12.44-17.32 works like a barrier: absorbs blue light -->
-<div class="scene" data-s="12.44" data-e="17.32" data-bg="split" data-tr="iris" data-cam="12.44:1:720:540;14.0:1:720:540;15.4:1.04:900:520;17.32:1.02:820:530">
+<!-- S5 12.44-17.32 INSIDE THE EYE: pigment layer in front of the retina absorbs blue light -->
+<div class="scene" data-s="12.44" data-e="17.32" data-bg="eyebg" data-tr="iris" data-cam="12.44:1:720:540;15.3:1:720:540;15.9:1.06:900:470;17.32:1.06:900:470">
  <div class="cam">
-  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="ret5"></g><g id="bolts5"></g><g id="shield5"></g><g id="spark5"></g></svg>
-  <div class="a" data-at="12.5" data-an="left" style="left:150px;top:260px"><svg width="200" height="340" viewBox="0 0 200 340"><rect x="10" y="10" width="180" height="320" rx="34" fill="#1B2A4A"/><rect x="26" y="40" width="148" height="250" rx="12" fill="#5CB8FF"/><circle cx="100" cy="310" r="10" fill="#fff"/><path d="M60 120h80M60 160h80M60 200h50" stroke="#fff" stroke-width="12" stroke-linecap="round" opacity=".8"/></svg></div>
-  <div class="a" data-at="12.6" data-an="pop" style="left:150px;top:620px;width:200px;text-align:center"><span class="stk" style="font-size:36px;background:#7FD3FF">แสงสีฟ้า</span></div>
-  <div class="a" data-at="15.4" data-an="stamp" style="left:1120px;top:150px"><svg width="130" height="130" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#3DDC97" stroke="#1B2A4A" stroke-width="6"/><path d="M28 52l15 15 30-32" stroke="#fff" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="eyeX5"></g><g id="bolts5"></g><g id="shield5"></g><g id="spark5"></g></svg>
+  <div class="a" data-at="12.5" data-an="left" style="left:130px;top:290px"><svg width="150" height="255" viewBox="0 0 200 340"><rect x="10" y="10" width="180" height="320" rx="34" fill="#1B2A4A"/><rect x="26" y="40" width="148" height="250" rx="12" fill="#5CB8FF"/><circle cx="100" cy="310" r="10" fill="#fff"/><path d="M60 120h80M60 160h80M60 200h50" stroke="#fff" stroke-width="12" stroke-linecap="round" opacity=".8"/></svg></div>
+  <div class="a" data-at="12.6" data-an="pop" style="left:105px;top:570px;width:200px;text-align:center"><span class="stk" style="font-size:34px;background:#7FD3FF">แสงสีฟ้า</span></div>
+  <div class="a" data-at="12.6" data-an="pop" style="left:990px;top:140px"><span class="stk" style="font-size:40px;background:#FF8FB1">จอประสาทตา</span></div>
+  <div class="a" data-at="15.4" data-an="stamp" style="left:1150px;top:540px"><svg width="120" height="120" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#3DDC97" stroke="#1B2A4A" stroke-width="6"/><path d="M28 52l15 15 30-32" stroke="#fff" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
  </div>
  <div class="kt" data-at="12.94" data-st="0.05" data-fx="bounce" data-out="13.92" style="top:770px;font-size:110px;color:#FFD23F">เหมือนบาเรีย!</div>
- <div class="kt" data-at="14.02" data-st="0.045" data-fx="drop" data-out="15.32" style="top:770px;font-size:104px;color:#7FD3FF">ดูดซับแสงสีฟ้า</div>
+ <div class="kt" data-at="14.02" data-st="0.045" data-fx="drop" data-out="15.32" style="top:770px;font-size:104px;color:#2F8BFF">ดูดซับแสงสีฟ้า</div>
  <div class="kt" data-at="15.4" data-st="0.04" data-fx="jelly" style="top:770px;font-size:90px;color:#fff">ไม่ให้ทำลายจอประสาทตา</div>
- <div class="a ann" data-at="13.1" data-an="fade" data-out="14.80" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="13.1" d=""/></svg></div>
 </div>
 
 <!-- S6 17.32-21.9 meet Lutein & Zeaxanthin (marigold garden) -->
 <div class="scene" data-s="17.32" data-e="21.9" data-bg="garden" data-tr="stripe" data-cam="17.32:1.04:720:500;18.8:1:720:540;21.9:1.03:720:520">
  <div class="cam">
-  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><path d="M-80 700 Q360 640 720 690 T1520 680 V1140 H-80Z" fill="#8EE6A6" stroke="#1B2A4A" stroke-width="7"/><g id="flow6"></g><g id="bolts6"></g><g id="spark6"></g></svg>
-  <div class="a" data-at="17.78" data-an="drop" style="left:500px;top:640px"><svg width="1" height="1"><g id="heroL"></g></svg></div>
-  <div class="a" data-at="18.24" data-an="drop" style="left:940px;top:640px"><svg width="1" height="1"><g id="heroZ"></g></svg></div>
-  <div class="a" data-at="17.78" data-an="stamp" style="left:385px;top:180px;width:230px;text-align:center"><span class="stk" style="font-size:50px;background:#FFB347">ลูทีน</span></div>
-  <div class="a" data-at="18.24" data-an="stamp" style="left:800px;top:180px;width:280px;text-align:center"><span class="stk" style="font-size:50px;background:#FFE14D">ซีแซนทีน</span></div>
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><path d="M-80 700 Q360 640 720 690 T1520 680 V1140 H-80Z" fill="#8EE6A6" stroke="#1B2A4A" stroke-width="7"/><g id="flow6"></g><ellipse id="ring6" cx="720" cy="340" rx="300" ry="185" fill="rgba(255,210,63,.18)" stroke="#FFC21F" stroke-width="14" stroke-dasharray="34 18" opacity="0"/><g id="bolts6"></g><g id="spark6"></g></svg>
+  <div class="a" data-at="18.76" data-an="pop" style="left:720px;top:340px"><svg width="1" height="1"><g id="eye6" transform="scale(1.8)"></g></svg></div>
+  <div class="a" id="hLw" data-at="17.78" data-an="drop" style="left:500px;top:640px"><svg width="1" height="1"><g id="heroL"></g></svg></div>
+  <div class="a" id="hZw" data-at="18.24" data-an="drop" style="left:940px;top:640px"><svg width="1" height="1"><g id="heroZ"></g></svg></div>
+  <div class="a" data-at="17.78" data-an="stamp" data-out="18.66" style="left:385px;top:180px;width:230px;text-align:center"><span class="stk" style="font-size:50px;background:#FFB347">ลูทีน</span></div>
+  <div class="a" data-at="18.24" data-an="stamp" data-out="18.66" style="left:800px;top:180px;width:280px;text-align:center"><span class="stk" style="font-size:50px;background:#FFE14D">ซีแซนทีน</span></div>
+  <div class="a" data-at="18.9" data-an="pop" style="left:250px;top:420px;width:220px;text-align:center"><span class="stk" id="lab6L" style="font-size:38px;background:#FFB347">ลูทีน</span></div>
+  <div class="a" data-at="19.05" data-an="pop" style="left:970px;top:420px;width:240px;text-align:center"><span class="stk" id="lab6Z" style="font-size:38px;background:#FFE14D">ซีแซนทีน</span></div>
  </div>
  <div class="kt" data-at="17.32" data-st="0.05" data-fx="bounce" data-out="18.7" style="top:760px;font-size:110px;color:#fff">มันคือ...</div>
  <div class="kt" data-at="18.76" data-st="0.045" data-fx="jelly" style="top:760px;font-size:104px;color:#7FD3FF">ดูดซับแสงสีฟ้า</div>
- <div class="a ann" data-at="18.5" data-an="fade" data-out="20.20" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="18.5" d=""/></svg></div>
 </div>
 
 <!-- S7 21.9-26.12 heavy phone users at night: fear of early eye ageing -->
@@ -158,7 +151,6 @@ svg{overflow:visible}
  <div class="kt" data-at="21.9" data-st="0.045" data-fx="bounce" data-out="22.8" style="top:770px;font-size:104px;color:#fff">เล่นมือถือหนัก</div>
  <div class="kt" data-at="22.88" data-st="0.045" data-fx="drop" data-out="24.12" style="top:770px;font-size:104px;color:#7FD3FF">ใช้หน้าจอบ่อย</div>
  <div class="kt" data-at="24.22" data-st="0.045" data-fx="shake" style="top:770px;font-size:104px;color:#FF6B6B">ตาเสื่อมก่อนวัย!</div>
- <div class="a ann" data-at="24.9" data-an="fade" data-out="26.60" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="24.9" d=""/></svg></div>
 </div>
 
 <!-- S8 26.12-30.94 take this, 1 a day: absorbs blue light, eyes not overloaded -->
@@ -175,9 +167,8 @@ svg{overflow:visible}
   <div class="a" data-at="29.06" data-an="pop" style="left:200px;top:580px"><svg width="1" height="1"><g id="eyeW8"></g></svg></div>
  </div>
  <div class="kt" data-at="26.12" data-st="0.05" data-fx="bounce" data-out="27.0" style="top:740px;font-size:110px;color:#fff">กินตัวนี้เลย</div>
- <div class="kt" data-at="27.08" data-st="0.05" data-fx="jelly" data-out="28.9" style="top:720px;font-size:150px;color:#FFD23F">วันละ 1 เม็ด</div>
+ <div class="kt" id="kt8" data-at="27.08" data-st="0.05" data-fx="jelly" data-out="28.9" style="top:720px;font-size:150px;color:#FFD23F">วันละ 1 เม็ด</div>
  <div class="kt" data-at="29.06" data-st="0.045" data-fx="drop" style="top:740px;font-size:96px;color:#3DDC97">ตาไม่ต้องทำงานหนัก</div>
- <div class="a ann" data-at="27.3" data-an="fade" data-out="29.00" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="27.3" d=""/></svg></div>
 </div>
 
 <!-- S9 30.94-38.6 search "eye-care vitamin": both show up on the first page -->
@@ -195,13 +186,12 @@ svg{overflow:visible}
   </svg>
   <div class="a" data-at="31.2" data-an="pop" data-bob="0" data-out="32.7" style="left:640px;top:380px"><svg width="160" height="200" viewBox="0 0 110 140"><text x="55" y="120" text-anchor="middle" font-family="K" font-weight="900" font-size="150" fill="#FFD23F" stroke="#1B2A4A" stroke-width="10" paint-order="stroke fill">?</text></svg></div>
   <div class="a" data-at="34.5" data-an="pop" data-out="35.0" style="left:1060px;top:300px"><svg width="70" height="90" viewBox="0 0 90 110"><path d="M30 8a10 10 0 0120 0v40l22 6c8 2 12 8 10 16l-6 28H34L12 64c-4-6 2-14 10-10l8 6z" fill="#fff" stroke="#1B2A4A" stroke-width="6" stroke-linejoin="round"/></svg></div>
-  <div class="a" data-at="35.38" data-an="stamp" style="left:1000px;top:360px"><span class="stk" style="font-size:40px;background:#FFD23F">หน้าแรก!</span></div>
+  <div class="a" data-at="35.38" data-an="stamp" style="left:960px;top:150px"><span class="stk" style="font-size:40px;background:#FFD23F">หน้าแรก!</span></div>
  </div>
  <div class="kt" data-at="31.42" data-st="0.045" data-fx="bounce" data-out="32.78" style="top:760px;font-size:100px;color:#fff">ยังไม่รู้จักสารนี้?</div>
  <div class="kt" data-at="32.86" data-st="0.045" data-fx="drop" data-out="34.8" style="top:760px;font-size:96px;color:#7FD3FF">ลองค้นหาดู!</div>
  <div class="kt" data-at="34.9" data-st="0.045" data-fx="jelly" data-out="36.8" style="top:760px;font-size:104px;color:#FFD23F">เจอ 2 สารนี้!</div>
  <div class="kt" data-at="36.9" data-st="0.04" data-fx="bounce" style="top:760px;font-size:96px;color:#3DDC97">วิตามินบำรุงสายตา</div>
- <div class="a ann" data-at="35.5" data-an="fade" data-out="37.20" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="35.5" d=""/></svg></div>
 </div>
 
 <!-- S10 38.6-41.68 widely used abroad; this one is Dr.Aum -->
@@ -221,10 +211,9 @@ svg{overflow:visible}
  <div id="confetti"></div>
  <div class="cam">
   <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="bub11"></g></svg>
-  <div class="a photo" data-at="41.7" data-an="left" style="left:140px;top:160px;width:660px;height:225px"><img src="ing.jpg" style="object-fit:contain;background:#fff"></div>
+  <div class="a photo" data-at="41.7" data-an="left" style="left:140px;top:160px;width:660px;height:225px"><img src="ing.jpg" style="object-fit:contain;background:#fff"><div id="mct11" style="position:absolute;left:60px;top:150px;width:560px;height:28px"></div></div>
   <div class="a img pouch" data-at="41.75" data-an="right" data-float="0.2" style="left:950px;top:200px;width:300px;height:473px"></div>
   <div class="a" data-at="42.74" data-an="pop" style="left:0;top:0"><svg width="1440" height="1080"><g id="abs11"></g></svg></div>
-  <div class="a ann" data-at="41.95" data-an="fade" data-out="43.65" style="left:0;top:0"><svg width="1440" height="1080"><path data-draw="41.95" d=""/></svg></div>
  </div>
  <div class="kt" data-at="41.68" data-st="0.05" data-fx="bounce" data-out="42.66" style="top:760px;font-size:110px;color:#fff">ใส่ MCT Oil</div>
  <div class="kt" data-at="42.74" data-st="0.05" data-fx="drop" data-out="43.7" style="top:760px;font-size:110px;color:#FFD23F">ช่วยดูดซึม</div>
@@ -232,6 +221,7 @@ svg{overflow:visible}
 </div>
 
 <div id="rings"></div>
+<svg id="annL" width="1440" height="1080"></svg>
 <div id="stripe"><div style="left:0;background:#FFD23F"></div><div style="left:160px;background:#FF8FB1"></div><div style="left:320px;background:#7FD3FF"></div><div style="left:480px;width:2520px;background:#3DDC97"></div></div>
 <div id="safe" style="display:none;position:absolute;left:130px;top:130px;width:1180px;height:820px;border:3px dashed #f0f;z-index:99"></div>
 </div>
@@ -286,25 +276,25 @@ function boltD(len=150){return `M0 0 l${len*0.2} -18 l${len*0.2} 30 l${len*0.2} 
 function mkBolt(par){const g=mk('g',{},par);mk('path',{d:boltD(),fill:'none',stroke:INK,'stroke-width':20,'stroke-linecap':'round','stroke-linejoin':'round'},g);mk('path',{d:boltD(),fill:'none',stroke:'#2F8BFF','stroke-width':11,'stroke-linecap':'round','stroke-linejoin':'round'},g);mk('path',{d:boltD(),fill:'none',stroke:'#CFE6FF','stroke-width':3,'stroke-linecap':'round','stroke-linejoin':'round'},g);return g}
 function mkSpark(par){const g=mk('g',{},par);for(let i=0;i<6;i++){const a=i*Math.PI/3;mk('line',{x1:Math.cos(a)*14,y1:Math.sin(a)*14,x2:Math.cos(a)*34,y2:Math.sin(a)*34,stroke:'#FFD23F','stroke-width':8,'stroke-linecap':'round'},g)}return g}
 
-// ---- S1 burst + annotation paths
-{let d='';const n=22;for(let i=0;i<=n*2;i++){const a=i/(n*2)*Math.PI*2;const r=i%2?1:0.86;d+=(i?'L':'M')+(470+Math.cos(a)*450*r).toFixed(1)+' '+(150+Math.sin(a)*150*r).toFixed(1)}$('burstP').setAttribute('d',d+'Z')}
-const ellD=(cx,cy,rx,ry)=>{let d='';for(let i=0;i<=44;i++){const a=-2.2+i/44*Math.PI*2.2;const w=1+0.05*Math.sin(i*0.9);d+=(i?'L':'M')+(cx+Math.cos(a)*rx*w).toFixed(1)+' '+(cy+Math.sin(a)*ry*w).toFixed(1)}return d};
-const arrD=(x,y,ang=90,len=90)=>{const a=ang*Math.PI/180,bx=x-Math.cos(a)*len,by=y-Math.sin(a)*len;const hx=x,hy=y;const l=28;return ` M${bx.toFixed(0)} ${by.toFixed(0)} Q${(bx+hx)/2+12} ${(by+hy)/2} ${hx} ${hy} M${(hx-Math.cos(a-0.5)*l).toFixed(0)} ${(hy-Math.sin(a-0.5)*l).toFixed(0)} L${hx} ${hy} L${(hx-Math.cos(a+0.5)*l).toFixed(0)} ${(hy-Math.sin(a+0.5)*l).toFixed(0)}`};
-const ANN={'0.25':ellD(720,312,270,92)+arrD(720,210,90,0),
- '3.46':ellD(1080,232,200,62)+arrD(1080,150,90,70),
- '5.9':ellD(1180,575,130,90)+arrD(1180,460,90,80),
- '7.8':ellD(1100,560,110,120),
- '13.1':ellD(760,420,110,270),
- '18.5':ellD(720,215,370,72),
- '24.9':ellD(905,840,210,80)+arrD(905,740,90,80),
- '27.3':ellD(880,800,230,100),
- '35.5':ellD(720,520,440,120),
- '41.95':ellD(485,337,315,30)+arrD(810,337,180,80)};
-document.querySelectorAll('[data-draw]').forEach(p=>{p.setAttribute('d',ANN[p.dataset.draw]||'')});
-
-// ---- S2 eye + runner
-H$($('eye2'),eyeSvg(240));
-const run2=H$($('run2'),dropSvg(LUT,120,{arms:true}));const road2=$('road2');const roadL=road2.getTotalLength();
+// ---- S1 burst
+{let d='';const n=26;for(let i=0;i<=n*2;i++){const a=i/(n*2)*Math.PI*2;const r=i%2?1:0.88;d+=(i?'L':'M')+(620+Math.cos(a)*612*r).toFixed(1)+' '+(160+Math.sin(a)*156*r).toFixed(1)}$('burstP').setAttribute('d',d+'Z')}
+// ---- S1 eye + two runners along the dotted path
+H$($('eye1'),eyeSvg(240));const path1=$('path1'),p1L=path1.getTotalLength();
+const RUN1=[H$($('run1'),dropSvg(LUT,100,{arms:true})),H$($('run1'),dropSvg(ZEA,100,{arms:true}))];
+// ---- eye cross-section (side view): cornea/lens left, retina at the back (right)
+const EX={cx:780,cy:440,R:290};
+function eyeX(g){const {cx,cy,R}=EX;let h='';
+ h+=`<path d="M${cx+R-20} ${cy+40} L${cx+R+190} ${cy+80}" stroke="${INK}" stroke-width="74" stroke-linecap="round"/><path d="M${cx+R-20} ${cy+40} L${cx+R+190} ${cy+80}" stroke="#FFE0A8" stroke-width="58" stroke-linecap="round"/>`;
+ h+=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="#fff" stroke="${INK}" stroke-width="8"/><circle cx="${cx}" cy="${cy}" r="${R-22}" fill="#EAF6FF"/>`;
+ const a0=-78*Math.PI/180,a1=78*Math.PI/180,rr=R-30;const arc=`M${cx+rr*Math.cos(a0)} ${cy+rr*Math.sin(a0)} A${rr} ${rr} 0 0 1 ${cx+rr*Math.cos(a1)} ${cy+rr*Math.sin(a1)}`;
+ h+=`<path d="${arc}" fill="none" stroke="${INK}" stroke-width="44" stroke-linecap="round"/><path d="${arc}" fill="none" stroke="#FF8FA3" stroke-width="30" stroke-linecap="round"/>`;
+ const ca=36*Math.PI/180;h+=`<path d="M${cx-R*Math.cos(ca)} ${cy-R*Math.sin(ca)} Q${cx-R-90} ${cy} ${cx-R*Math.cos(ca)} ${cy+R*Math.sin(ca)}" fill="#DDF3FF" stroke="${INK}" stroke-width="7"/>`;
+ h+=`<rect x="${cx-R+14}" y="${cy-150}" width="28" height="100" rx="12" fill="#4AA8FF" stroke="${INK}" stroke-width="5"/><rect x="${cx-R+14}" y="${cy+50}" width="28" height="100" rx="12" fill="#4AA8FF" stroke="${INK}" stroke-width="5"/>`;
+ h+=`<ellipse cx="${cx-R+80}" cy="${cy}" rx="34" ry="88" fill="#FFF6D6" stroke="${INK}" stroke-width="6"/>`;
+ H$(g,h)}
+const exPt=(deg,r)=>[EX.cx+r*Math.cos(deg*Math.PI/180),EX.cy+r*Math.sin(deg*Math.PI/180)];
+eyeX($('eyeX2'));eyeX($('eyeX5'));
+const RUN2=[[LUT,-22],[ZEA,22]].map(([c,a])=>({g:H$($('run2'),dropSvg(c,80,{arms:true})),a}));
 // ---- S3 tunnel, blood cells, signs, droplets
 {const g=$('tun3');for(let i=0;i<7;i++)mk('ellipse',{class:'tr',cx:720,cy:500,rx:100,ry:70,fill:'none',stroke:'#C9455A','stroke-width':10,opacity:.5},g)}
 const RBC=[];for(let i=0;i<12;i++){const g=mk('g',{},$('rbc3'));g.innerHTML=`<ellipse rx="46" ry="30" fill="#E8394E" stroke="${INK}" stroke-width="5"/><ellipse rx="20" ry="11" fill="#B8243A"/>`;RBC.push({g,a:rnd()*6.28,ph:rnd()})}
@@ -322,15 +312,15 @@ const PX=[300,510,720,930,1140];const PROT=PX.map((x,i)=>{const g=mk('g',{transf
  <path d="M-60 0 C-66 -70 -30 -110 0 -110 C30 -110 66 -70 60 0Z" fill="#B18CFF" stroke="${INK}" stroke-width="6"/><circle cx="-16" cy="-62" r="7" fill="${INK}"/><circle cx="16" cy="-62" r="7" fill="${INK}"/><path d="M-12 -40q12 12 24 0" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/>`;return {g,x}});
 const D4=PX.map((x,k)=>{const tx=PX[4-k];const g=H$($('drops4'),dropSvg(k%2?ZEA:LUT,80));return{g,tx,x0:-120-k*150}});
 // ---- S5 retina cells (right), shield of droplets, bolts
-{const g=$('ret5');mk('path',{d:'M1000 120 C1120 160 1220 140 1340 120 V980 H1000 C1040 760 960 400 1000 120Z',fill:'#FF9FB2',stroke:INK,'stroke-width':7},g);
- for(let i=0;i<9;i++){const x=1080+(i%3)*80,y=260+Math.floor(i/3)*130;g.insertAdjacentHTML('beforeend',`<g transform="translate(${x} ${y})"><circle r="32" fill="#FFD0DA" stroke="${INK}" stroke-width="5"/><circle cx="-10" cy="-4" r="4.5" fill="${INK}"/><circle cx="10" cy="-4" r="4.5" fill="${INK}"/><path d="M-8 8q8 8 16 0" stroke="${INK}" stroke-width="4" fill="none" stroke-linecap="round"/></g>`)}}
-const SH5=[];for(let i=0;i<5;i++){const g=H$($('shield5'),dropSvg(i%2?ZEA:LUT,96,{arms:true,armsUp:true}));SH5.push({g,y:250+i*110})}
-const B5=[];for(let i=0;i<12;i++){B5.push({g:mkBolt($('bolts5')),t0:13.9+i*0.3,y:300+((i*137)%340),s:mkSpark($('spark5'))})}
+const SHA=[-52,-26,0,26,52];const SH5=SHA.map((a,i)=>({g:H$($('shield5'),dropSvg(i%2?ZEA:LUT,70)),p:exPt(a,EX.R-82),a}));
+const B5=[];for(let i=0;i<12;i++){const k=i%5;B5.push({g:mkBolt($('bolts5')),t0:13.9+i*0.3,k:[2,0,4,1,3][k],s:mkSpark($('spark5'))})}
+const PUP=[EX.cx-EX.R-20,EX.cy],PH5=[300,420];
 // ---- S6 heroes, marigolds, bolts
 function marigold(x,y,s){return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 0 V90" stroke="#3B9A55" stroke-width="10"/>${[...Array(12)].map((_,i)=>`<ellipse rx="22" ry="34" fill="#FF9F1C" stroke="${INK}" stroke-width="4" transform="rotate(${i*30}) translate(0 -30)"/>`).join('')}${[...Array(8)].map((_,i)=>`<ellipse rx="14" ry="22" fill="#FFB938" stroke="${INK}" stroke-width="3" transform="rotate(${i*45+20}) translate(0 -16)"/>`).join('')}<circle r="14" fill="#E07B00" stroke="${INK}" stroke-width="4"/></g>`}
 H$($('flow6'),marigold(190,690,1.1)+marigold(330,760,0.8)+marigold(1250,690,1.1)+marigold(1110,770,0.8)+marigold(160,880,0.9)+marigold(1290,890,0.9));
 H$($('heroL'),dropSvg(LUT,260,{arms:true,armsUp:true}));H$($('heroZ'),dropSvg(ZEA,260,{arms:true,armsUp:true}));
-const B6=[];for(let i=0;i<8;i++){const g=mkBolt($('bolts6'));B6.push({g,t0:19.0+i*0.36,s:mkSpark($('spark6')),side:i%2})}
+const B6=[];for(let i=0;i<8;i++){const g=mkBolt($('bolts6'));B6.push({g,t0:19.3+i*0.32,s:mkSpark($('spark6')),side:i%2})}
+H$($('eye6'),eyeSvg(260));
 // ---- S7 stars, bolts, aging eye
 const ST7=[];for(let i=0;i<8;i++){const c=mk('circle',{cx:190+rnd()*260,cy:170+rnd()*200,r:4+rnd()*4,fill:'#fff'},$('stars7'));ST7.push({c,ph:rnd()*6})}
 const B7=[];for(let i=0;i<6;i++)B7.push({g:mkBolt($('bolts7')),t0:23.7+i*0.4});
@@ -374,14 +364,30 @@ const scenes=[...document.querySelectorAll('.scene')].map(el=>{const bg=document
  const cam=(el.dataset.cam||'').split(';').filter(Boolean).map(k=>k.split(':').map(Number));
  return{el,s:+el.dataset.s,e:+el.dataset.e,tr:el.dataset.tr||'',parts,cam,camEl:el.querySelector('.cam'),items:[...el.querySelectorAll('.a')]}});
 function camAt(keys,t){if(!keys.length)return[1,720,540];if(t<=keys[0][0])return keys[0].slice(1);for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t<=b[0]){const p=eIO(cl((t-a[0])/(b[0]-a[0])));return[1,2,3].map(j=>a[j]+(b[j]-a[j])*p)}}return keys[keys.length-1].slice(1)}
-const ringDefs=[[1.98,1080,420],[4.74,720,790],[9.96,720,800],[12.94,760,420],[17.78,500,520],[18.24,940,520],[27.08,720,800],[35.38,720,520],[40.02,720,380],[43.78,720,820]];
+const ringDefs=[[2.96,1100,190],[4.74,720,790],[9.96,720,800],[12.94,1000,440],[17.78,500,520],[18.24,940,520],[27.08,720,800],[35.38,720,520],[40.02,720,380],[43.78,720,820]];
 const rw=$('rings');const rings=ringDefs.map(([t,x,y])=>{const d=document.createElement('div');d.className='ring';d.style.left=x+'px';d.style.top=y+'px';rw.appendChild(d);return{d,t}});
 function animT(an,p){switch(an){case'fade':return[eOC(p),''];case'pop':return[cl(p*4),`scale(${p<=0?0:eOB(p)})`];
  case'stamp':{const e=eOB(p);return[cl(p*5),`scale(${1.7-0.7*e}) rotate(${-8*(1-e)}deg)`]}
  case'up':{const e=eOB(p);return[cl(p*3),`translateY(${120*(1-e)}px)`]}case'left':{const e=eOB(p);return[cl(p*3),`translateX(${-360*(1-e)}px)`]}
  case'right':{const e=eOB(p);return[cl(p*3),`translateX(${360*(1-e)}px)`]}case'drop':return[cl(p*5),`translateY(${-700*(1-eBn(p))}px)`]}return[1,'']}
 const DUR={fade:.35,pop:.45,stamp:.38,up:.45,left:.5,right:.5,drop:.7};const TR=0.4;
-function drawAnn(t){document.querySelectorAll('[data-draw]').forEach(p=>{const at=+p.dataset.draw;const k=cl((t-at)/0.3);if(!p._L)p._L=p.getTotalLength()||1;p.style.strokeDasharray=p._L;p.style.strokeDashoffset=p._L*(1-eOC(k));p.parentNode.style.transform=`translate(${Math.sin(t*9+at)*1.5}px,0)`})}
+const ANNS=[{at:3.46,el:'stkRet2',ang:-140},{at:5.9,el:'sgEye',ang:-140},{at:7.85,el:'stkProt',ang:-150},{at:13.1,el:'shield5',pad:8,kx:1.35,ky:1.12,ang:175},
+ {at:19.2,el:'lab6L',ang:-130},{at:19.35,el:'lab6Z',ang:-50},{at:24.95,el:'eye7',pad:6,ang:-140},{at:27.35,el:'kt8',sub:'1 เม็ด',kx:1.12,ky:0.95,pad:4,ang:-40},{at:35.5,el:'res9',kx:1.04,ky:1.22,pad:0,ang:150},{at:42.0,el:'mct11',kx:1.1,ky:1.5,pad:6,ang:-30}];
+ANNS.forEach(a=>{const g=mk('g',{opacity:0},$('annL'));a.g=g;const st=(w,c)=>({fill:'none',stroke:c,'stroke-width':w,'stroke-linecap':'round','stroke-linejoin':'round'});
+ a.ew=mk('path',st(17,'#fff'),g);a.er=mk('path',st(10,'#E8231F'),g);a.aw=mk('path',st(17,'#fff'),g);a.ar=mk('path',st(10,'#E8231F'),g)});
+function tRect(a){const el=$(a.el);if(!el)return null;const sc=el.closest('.scene');if(sc&&sc.style.display==='none')return null;const sr=$('stage').getBoundingClientRect();let r;
+ if(a.sub){const k=kts.find(k=>k.el===el);const txt=k.gs.map(g=>g.textContent.replace('\u00a0',' '));let acc='',st=-1;for(let i=0;i<txt.length;i++){if(txt.slice(i).join('').startsWith(a.sub)){st=i;break}}
+  let n=0,cnt=0;for(let i=st;i<txt.length&&n<a.sub.length;i++){n+=txt[i].length;cnt++}const rs=k.gs.slice(st,st+cnt).map(g=>g.getBoundingClientRect());r={left:Math.min(...rs.map(x=>x.left)),right:Math.max(...rs.map(x=>x.right)),top:Math.min(...rs.map(x=>x.top)),bottom:Math.max(...rs.map(x=>x.bottom))}}
+ else r=el.getBoundingClientRect();if(r.right-r.left<2)return null;return{x:(r.left+r.right)/2-sr.left,y:(r.top+r.bottom)/2-sr.top,w:r.right-r.left,h:r.bottom-r.top}}
+function drawAnn(t){for(const a of ANNS){const d=t-a.at;if(d<0||d>1.9){a.g.setAttribute('opacity',0);continue}const r=tRect(a);if(!r){a.g.setAttribute('opacity',0);continue}
+  const pad=a.pad??12,rx=r.w/2*(a.kx||1.22)+pad,ry=r.h/2*(a.ky||1.6)+pad;let e='';const N=60,sw=2*Math.PI*1.04,a0=-2.5;
+  for(let i=0;i<=N;i++){const th=a0+sw*i/N;const w=1+0.012*Math.sin(i*0.5);e+=(i?'L':'M')+(r.x+Math.cos(th)*rx*w).toFixed(1)+' '+(r.y+Math.sin(th)*ry*w).toFixed(1)}
+  const ang=(a.ang??-40)*Math.PI/180,ex=r.x+Math.cos(ang)*(rx+16),ey=r.y+Math.sin(ang)*(ry+16),sx=r.x+Math.cos(ang)*(rx+105),sy=r.y+Math.sin(ang)*(ry+105);
+  const dx=ex-sx,dy=ey-sy,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L,hl=26;const ar=`M${sx.toFixed(1)} ${sy.toFixed(1)} Q${((sx+ex)/2-uy*14).toFixed(1)} ${((sy+ey)/2+ux*14).toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)} M${(ex-ux*hl-uy*hl*0.6).toFixed(1)} ${(ey-uy*hl+ux*hl*0.6).toFixed(1)} L${ex.toFixed(1)} ${ey.toFixed(1)} L${(ex-ux*hl+uy*hl*0.6).toFixed(1)} ${(ey-uy*hl-ux*hl*0.6).toFixed(1)}`;
+  const k1=eOC(cl(d/0.35)),k2=eOC(cl((d-0.25)/0.2)),fo=1-cl((d-1.6)/0.3);
+  [a.ew,a.er].forEach(p=>{p.setAttribute('d',e);const Lp=p.getTotalLength();p.style.strokeDasharray=Lp;p.style.strokeDashoffset=Lp*(1-k1)});
+  [a.aw,a.ar].forEach(p=>{p.setAttribute('d',ar);p.setAttribute('opacity',k2>0?1:0)});a.g.setAttribute('opacity',fo)}}
+
 window.render=function(t){
  scenes.forEach((sc,i)=>{const nx=scenes[i+1];const tail=(nx&&(nx.tr==='iris'||nx.tr==='zoom'||nx.tr==='slideup'))?TR:0;
   const on=t>=sc.s&&t<sc.e+tail;sc.el.style.display=on?'block':'none';if(!on)return;
@@ -402,8 +408,13 @@ window.render=function(t){
  document.querySelectorAll('.eyeg').forEach((g,i)=>blink(g,t,i*0.7));
  // S1 burst wobble
  if(t<2.4)$('burst1').style.transform=`scale(${1+0.03*Math.sin(t*6)}) rotate(${Math.sin(t*3)*1.5}deg)`;
- // S2 runner along road (constant speed)
- if(t>1.9&&t<4.7){const p=cl((t-2.0)/2.1);const pt=road2.getPointAtLength(p*roadL*0.93);const sc=1-0.45*p;run2.setAttribute('transform',`translate(${pt.x} ${pt.y-Math.abs(Math.sin(t*14))*16}) scale(${sc}) rotate(${Math.sin(t*14)*8})`);$('cloud2').setAttribute('transform',`translate(${(t-2)*30} 0)`)}
+ // S1 two molecules wait with "?" then run along the dotted path to the eye (constant speed)
+ if(t<3.4){RUN1.forEach((g,i)=>{const p=cl((t-1.98-i*0.12)/0.85);const pt=path1.getPointAtLength(p*p1L*0.92);const bob=t<1.98?Math.abs(Math.sin(t*5+i))*8:Math.abs(Math.sin(t*16+i))*14;
+   g.setAttribute('transform',`translate(${pt.x+(t<1.98?(i?70:-10):0)} ${pt.y+30-bob}) rotate(${t<1.98?0:Math.sin(t*16+i)*8})`);g.setAttribute('opacity',p>=1?0:1)})}
+ // S2 both molecules enter through the pupil and settle on the retina
+ if(t>2.9&&t<4.7){RUN2.forEach((r,i)=>{const p=cl((t-3.05-i*0.15)/0.8);const [tx,ty]=exPt(r.a,EX.R-80);const sx=300,sy=EX.cy+(i?40:-40);let x,y;
+   if(p<0.45){const q=p/0.45;x=sx+(PUP[0]-sx)*q;y=sy+(EX.cy-sy)*q}else{const q=(p-0.45)/0.55;x=PUP[0]+(tx-PUP[0])*q;y=EX.cy+(ty-EX.cy)*q}
+   r.g.setAttribute('transform',`translate(${x} ${y+40-(p<1?Math.abs(Math.sin(t*16+i))*10:0)}) rotate(${p<1?Math.sin(t*16+i)*8:0})`)})}
  // S3 tunnel flythrough, cells, droplets spreading to signs
  if(t>4.1&&t<7.6){document.querySelectorAll('#tun3 .tr').forEach((e,i)=>{const f=((t*0.5+i/7)%1);e.setAttribute('rx',60+f*f*1100);e.setAttribute('ry',42+f*f*780);e.setAttribute('opacity',(1-f)*0.6)});
   RBC.forEach(r=>{const f=((t*0.35+r.ph)%1);const d=40+f*f*800;r.g.setAttribute('transform',`translate(${720+Math.cos(r.a)*d} ${500+Math.sin(r.a)*d*0.7}) scale(${0.3+f*1.4}) rotate(${t*40+r.a*50})`);r.g.setAttribute('opacity',cl(f*5))});
@@ -415,13 +426,17 @@ window.render=function(t){
    d.g.setAttribute('transform',`translate(${x} ${y+40}) rotate(${t<tReach?Math.sin(t*14+k)*10:0})`);d.g.setAttribute('opacity',t<t0?0:1)});
   PROT.forEach((p,i)=>{const k=D4.find(d=>d.tx===p.x);const tReach=8.9+(k.tx-k.x0)/430;const hold=t>tReach+0.25;p.g.setAttribute('transform',`translate(${p.x} ${640-(hold?Math.abs(Math.sin((t-tReach)*7))*10*Math.exp(-(t-tReach)*2):Math.abs(Math.sin(t*5+i))*6)})`)});
   const L=cl((t-10.4)/1.8);$('layer4').setAttribute('height',L*60);$('layer4').setAttribute('y',640-L*12)}
- // S5 shield + bolts absorbed
- if(t>12.3&&t<17.8){SH5.forEach((s,i)=>{const k=eOB(cl((t-12.94-i*0.08)/0.4));s.g.setAttribute('transform',`translate(760 ${s.y+48+Math.sin(t*5+i)*5}) scale(${k?k:0})`)});
-  B5.forEach(b=>{const p=(t-b.t0);const x=330+p*620;const hit=x>=650;b.g.setAttribute('transform',`translate(${Math.min(x,650)} ${b.y})`);b.g.setAttribute('opacity',p<0?0:hit?0:1);
-   const sp=(t-(b.t0+(650-330)/620));b.s.setAttribute('transform',`translate(${700} ${b.y}) scale(${sp>0?0.5+sp*3:0}) rotate(${sp*90})`);b.s.setAttribute('opacity',sp>0&&sp<0.3?1-sp/0.3:0)})}
- // S6 bolts at heroes
- if(t>17.2&&t<22.3){B6.forEach(b=>{const p=t-b.t0;const sx=b.side?1300:140,sy=150,ex=b.side?990:450,ey=430;const k=cl(p/0.45);const x=sx+(ex-sx)*k,y=sy+(ey-sy)*k;const ang=Math.atan2(ey-sy,ex-sx)*57.3;
-   b.g.setAttribute('transform',`translate(${x} ${y}) rotate(${ang})`);b.g.setAttribute('opacity',p<0||k>=1?0:1);const sp=p-0.45;b.s.setAttribute('transform',`translate(${ex} ${ey}) scale(${sp>0?0.5+sp*3:0})`);b.s.setAttribute('opacity',sp>0&&sp<0.3?1-sp/0.3:0)})}
+ // S5 pigment layer appears in front of the retina; blue light enters through the pupil and gets absorbed there
+ if(t>12.3&&t<17.8){SH5.forEach((s,i)=>{const k=eOB(cl((t-12.94-i*0.08)/0.4));s.g.setAttribute('transform',`translate(${s.p[0]} ${s.p[1]+35+Math.sin(t*5+i)*3}) scale(${k?k:0})`)});
+  B5.forEach(b=>{const tg=exPt(SHA[b.k],EX.R-130);const L1=Math.hypot(PUP[0]-PH5[0],PUP[1]-PH5[1]),L2=Math.hypot(tg[0]-PUP[0],tg[1]-PUP[1]);const V=700;const d=(t-b.t0)*V;
+   let x,y,ang;if(d<L1){const q=d/L1;x=PH5[0]+(PUP[0]-PH5[0])*q;y=PH5[1]+(PUP[1]-PH5[1])*q;ang=Math.atan2(PUP[1]-PH5[1],PUP[0]-PH5[0])}else{const q=Math.min(1,(d-L1)/L2);x=PUP[0]+(tg[0]-PUP[0])*q;y=PUP[1]+(tg[1]-PUP[1])*q;ang=Math.atan2(tg[1]-PUP[1],tg[0]-PUP[0])}
+   const done=d>=L1+L2;b.g.setAttribute('transform',`translate(${x} ${y}) rotate(${ang*57.3}) scale(0.7) translate(-105 0)`);b.g.setAttribute('opacity',d<0||done?0:1);
+   const sp=(d-L1-L2)/V;b.s.setAttribute('transform',`translate(${tg[0]+20} ${tg[1]}) scale(${sp>0?0.5+sp*3:0})`);b.s.setAttribute('opacity',sp>0&&sp<0.3?1-sp/0.3:0)})}
+ // S6 heroes step aside to guard the eye; blue light from the corners is absorbed at the glowing ring
+ if(t>17.2&&t<22.3){const m=eIO(cl((t-18.76)/0.45));$('hLw').style.left=(500-140*m)+'px';$('hLw').style.top=(640+60*m)+'px';$('hZw').style.left=(940+140*m)+'px';$('hZw').style.top=(640+60*m)+'px';
+  $('heroL').setAttribute('transform',`scale(${1-0.28*m})`);$('heroZ').setAttribute('transform',`scale(${1-0.28*m})`);$('ring6').setAttribute('opacity',cl((t-19.0)/0.3));$('ring6').setAttribute('stroke-dashoffset',-t*60);
+  B6.forEach(b=>{const p=t-b.t0;const sx=b.side?1300:140,sy=140;const vx=720-sx,vy=340-sy;const s2=1/Math.sqrt((vx/300)**2+(vy/185)**2);const ex=720-vx*s2,ey=340-vy*s2;const k=cl(p/0.45);const x=sx+(ex-sx)*k,y=sy+(ey-sy)*k;const ang=Math.atan2(ey-sy,ex-sx)*57.3;
+   b.g.setAttribute('transform',`translate(${x} ${y}) rotate(${ang}) scale(0.8) translate(-150 0)`);b.g.setAttribute('opacity',p<0||k>=1?0:1);const sp=p-0.45;b.s.setAttribute('transform',`translate(${ex} ${ey}) scale(${sp>0?0.5+sp*3:0})`);b.s.setAttribute('opacity',sp>0&&sp<0.3?1-sp/0.3:0)})}
  // S7 stars twinkle, clock, phone bolts into eyes
  if(t>21.8&&t<26.6){ST7.forEach(s=>s.c.setAttribute('opacity',0.4+0.6*Math.abs(Math.sin(t*3+s.ph))));$('clk7').setAttribute('transform',`rotate(${(t-21.9)*40} 1170 250)`);
   $('glow7').setAttribute('r',240+20*Math.sin(t*6));B7.forEach(b=>{const p=cl((t-b.t0)/0.5);b.g.setAttribute('transform',`translate(${820-p*60} ${380-p*40}) rotate(200) scale(0.6)`);b.g.setAttribute('opacity',t<b.t0||p>=1?0:1)})}
