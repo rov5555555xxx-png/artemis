@@ -94,7 +94,7 @@ body{font-family:K,sans-serif;color:#fff}
 </div>
 
 <!-- S3 6.84-10.76 harder to build muscle, stores fat easier -->
-<div class="scene" data-s="6.84" data-e="10.76" data-bg="studio" data-tr="wipe" data-cam="6.84:1:720:540;10.76:1.03:720:510">
+<div class="scene" data-s="6.84" data-e="9.88" data-bg="studio" data-tr="wipe" data-cam="6.84:1:720:540;9.88:1.03:720:510">
  <div class="cam">
   <svg class="a vsvg" id="fig3" data-at="6.9" data-an="left" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
  </div>
@@ -102,12 +102,20 @@ body{font-family:K,sans-serif;color:#fff}
  <div class="a big cx wht" data-at="8.6" data-an="up" style="top:770px;font-size:80px">และ<span class="hl" data-hl="9.4">สะสมไขมันง่ายกว่า</span></div>
 </div>
 
-<!-- S4 10.76-13.40 with age muscle breaks down fast -->
-<div class="scene" data-s="10.76" data-e="13.4" data-bg="studio" data-tr="wipe" data-cam="10.76:1:720:540;13.4:1.03:720:510">
+<!-- S3b 9.88-11.3 "easier than men": magnifier on typical female fat spots -->
+<div class="scene" data-s="9.88" data-e="11.3" data-bg="studio" data-tr="wipe" data-cam="9.88:1:720:540;11.3:1.03:720:520">
  <div class="cam">
-  <svg class="a vsvg" id="fig4" data-at="10.8" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+  <svg class="a vsvg" id="fig3b" data-at="9.9" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
  </div>
- <div class="a big cx wht" data-at="10.85" data-an="up" style="top:770px;font-size:80px">อายุมากขึ้น กล้าม<span class="red">สลายเร็วมาก</span></div>
+ <div class="a big cx wht" data-at="9.9" data-an="up" style="top:800px;font-size:76px">สะสมไขมัน<span class="hl" data-hl="10.2">ง่ายกว่าผู้ชาย</span></div>
+</div>
+
+<!-- S4 11.3-13.40 with age muscle breaks down fast -->
+<div class="scene" data-s="11.3" data-e="13.4" data-bg="studio" data-tr="wipe" data-cam="11.3:1:720:540;13.4:1.03:720:510">
+ <div class="cam">
+  <svg class="a vsvg" id="fig4" data-at="11.32" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="11.35" data-an="up" style="top:770px;font-size:80px">อายุมากขึ้น กล้าม<span class="red">สลายเร็วมาก</span></div>
 </div>
 
 <!-- S5 13.40-16.56 men too: severe zinc deficiency -> male hormone drops -->
@@ -404,7 +412,7 @@ window.extra=function(t){
   s+=sym(260,120,44,'m')+sym(1210,120,44,'f');
   s+=tag(1210,660,'น้อยกว่า',cl((lt-2.1)/0.35),'#E5484D');
   $('fig2').innerHTML=s}
- if(on(6.84,10.76)){const lt=t-6.84;let s=person({x:420,y:650,s:1.0,g:'f',mood:lt<1.8?'tired':'sad'});
+ if(on(6.84,9.88)){const lt=t-6.84;let s=person({x:420,y:650,s:1.0,g:'f',mood:lt<1.8?'tired':'sad'});
   // panel: muscle slow
   const pA=1-cl((lt-1.65)/0.3);
   if(pA>0){s+=`<g opacity="${pA}"><rect x="700" y="150" width="600" height="440" rx="34" fill="rgba(22,23,27,.85)" stroke="#D9B98A" stroke-width="5"/>`+bicep(900,390,1.0,0.15+0.1*cl((lt-0.3)/1.4),SK);
@@ -414,7 +422,32 @@ window.extra=function(t){
   s+=fatBlob(420-66,650-262,30,f(0))+fatBlob(420+66,650-262,30,f(0.15))+fatBlob(420-60,650-200,34,f(0.3))+fatBlob(420+60,650-200,34,f(0.45))+fatBlob(420,650-280,26,f(0.6));
   if(lt>1.9){s+=`<g opacity="${cl((lt-1.9)/0.3)}"><rect x="700" y="200" width="600" height="300" rx="34" fill="rgba(22,23,27,.85)" stroke="#FFD36E" stroke-width="5"/>`+fatBlob(820,350,60,1)+`<text x="1060" y="330" text-anchor="middle" font-family="K" font-weight="900" font-size="52" fill="#FFD36E">ไขมัน</text><text x="1060" y="400" text-anchor="middle" font-family="K" font-weight="900" font-size="44" fill="#fff">สะสมง่าย</text></g>`+arrowV(1240,420,90,true,'#FFD36E',cl((lt-2.3)/0.4))}
   $('fig3').innerHTML=s}
- if(on(10.76,13.4)){const lt=t-10.76;let s='';
+ if(on(9.88,11.3)){const lt=t-9.88;const X=600,Y=740,S=1.18;
+  const fig=person({x:0,y:0,s:1,g:'f',mood:'neutral'});
+  const body=`<g transform="translate(${X} ${Y}) scale(${S})">${fig}</g>`;
+  let s=body;
+  // fat cells for the zoomed view (local person coords)
+  const cells=(cx,cy,n,sp)=>{let r='';let k=11+cx;const rr=()=>{k=(k*16807)%2147483647;return (k-1)/2147483646};for(let i=0;i<n;i++){const a=rr()*6.28,d=rr()*sp;r+=`<ellipse cx="${(cx+Math.cos(a)*d).toFixed(1)}" cy="${(cy+Math.sin(a)*d*0.8).toFixed(1)}" rx="${(7+rr()*5).toFixed(1)}" ry="${(6+rr()*4).toFixed(1)}" fill="#FFD36E" stroke="#C99A2E" stroke-width="1.5"/>`}return r};
+  const spots=[ // [local x,y, lens x,y, label, delay, cells]
+   [0,-352,  1010,170, 'หน้าอก', 0.08, cells(-20,-352,8,13)+cells(20,-352,8,13)],
+   [-92,-318, 250,300, 'ต้นแขน', 0.33, cells(-92,-318,10,16)],
+   [44,-150, 1030,540, 'สะโพก-ต้นขา', 0.58, cells(44,-160,12,20)+cells(-44,-160,6,16)],
+  ];
+  spots.forEach(([lx,ly,mx,my,lab,d,cl_],i)=>{const p=cl((lt-d)/0.32);if(p<=0)return;const k=eOB(p);
+   const sx=X+lx*S,sy=Y+ly*S,R=130,Z=2.6;
+   // target ring on body + leader line
+   s+=`<circle cx="${sx}" cy="${sy}" r="${34*k}" fill="none" stroke="#FFD36E" stroke-width="5"/>`;
+   const ang=Math.atan2(sy-my,sx-mx),ex=mx+Math.cos(ang)*R*k,ey=my+Math.sin(ang)*R*k;
+   s+=`<path d="M${sx-Math.cos(ang)*34} ${sy-Math.sin(ang)*34} L${ex} ${ey}" stroke="#FFD36E" stroke-width="4" stroke-dasharray="10 8" opacity="${p}"/>`;
+   const fc=cl((lt-d-0.15)/0.3);
+   s+=`<defs><clipPath id="lens${i}"><circle cx="${mx}" cy="${my}" r="${R*k}"/></clipPath></defs>`;
+   s+=`<g clip-path="url(#lens${i})"><rect x="${mx-R}" y="${my-R}" width="${2*R}" height="${2*R}" fill="#2A2D35"/><g transform="translate(${mx} ${my}) scale(${Z*S}) translate(${-lx} ${-ly})">${fig}<g opacity="${fc}">${cl_}</g></g></g>`;
+   // glass rim + handle + glare
+   s+=`<g transform="translate(${mx} ${my}) scale(${k})"><circle r="${R}" fill="none" stroke="#D9B98A" stroke-width="16"/><circle r="${R-8}" fill="none" stroke="#fff" stroke-width="3" opacity=".5"/><path d="M${-R*0.55} ${-R*0.35} A${R*0.7} ${R*0.7} 0 0 1 ${-R*0.2} ${-R*0.62}" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".45" fill="none"/><path d="M${R*0.72} ${R*0.72} L${R*1.15} ${R*1.15}" stroke="#7A5B2E" stroke-width="30" stroke-linecap="round"/></g>`;
+   s+=tag(mx,my+R+50,lab,cl((lt-d-0.1)/0.3),'#FFD36E','#16171B');
+  });
+  $('fig3b').innerHTML=s}
+ if(on(11.3,13.4)){const lt=t-11.3;let s='';
   const ages=[[300,'อายุ 25',0.95],[720,'อายุ 45',0.55],[1140,'อายุ 65',0.08]];
   ages.forEach(([x,l,m],i)=>{const p=cl((lt-0.15-i*0.55)/0.35);if(p<=0)return;const k=eOB(p);
    s+=`<g transform="translate(${x} 380) scale(${k})"><circle r="190" fill="rgba(22,23,27,.85)" stroke="${i==2?'#E5484D':'#D9B98A'}" stroke-width="6"/>${bicep(30,50,1.05,m,i==2?'#E8C3A6':SK)}</g><text x="${x}" y="640" text-anchor="middle" font-family="K" font-weight="900" font-size="46" fill="${i==2?'#FF7B7F':'#F3D9A4'}" opacity="${p}">${l}</text>`});
