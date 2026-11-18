@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="th"><head><meta charset="utf-8"><style>
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2)}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2)}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1440px;height:1080px;overflow:hidden;background:#0B1736}
+body{font-family:K,sans-serif}
+#stage{position:relative;width:1440px;height:1080px;overflow:hidden;background:radial-gradient(ellipse 70% 65% at 50% 58%,#2C56B8 0%,#173275 45%,#0B1736 100%)}
+.t{position:absolute;left:330px;width:780px;text-align:center;font-weight:900;white-space:nowrap;line-height:1.15}
+.glow{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,214,90,.55) 0%,rgba(255,190,60,.22) 40%,rgba(255,190,60,0) 70%)}
+.pouch{position:absolute;background:url(pouch.png) center/contain no-repeat;filter:drop-shadow(0 0 3px rgba(255,255,255,.9)) drop-shadow(0 30px 40px rgba(0,0,0,.55))}
+.pill{position:absolute;left:330px;width:780px;text-align:center}
+.pill span{display:inline-flex;align-items:center;gap:16px;padding:10px 40px 16px;border-radius:999px;background:#FFD23F;color:#0B1736;font-weight:900;font-size:56px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+#box{position:absolute;left:330px;top:150px;width:780px;height:780px;border:4px dashed #f0f;display:none}
+</style></head><body><div id="stage">
+<div class="glow" style="left:400px;top:330px;width:640px;height:640px"></div>
+<div class="t" style="top:150px;font-size:70px;color:#BFD6FF">ติดจอทั้งวัน?</div>
+<div class="t" style="top:226px;font-size:156px;color:#FFD23F;text-shadow:0 8px 0 #0B1736,0 14px 36px rgba(0,0,0,.45)">ดูแลดวงตา</div>
+<svg style="position:absolute;left:0;top:0" width="1440" height="1080">
+ <g transform="translate(890 492)">
+  <circle r="92" fill="#fff" stroke="#FFD23F" stroke-width="12"/>
+  <path d="M-62 0Q0-52 62 0Q0 52-62 0Z" fill="#fff" stroke="#0B1736" stroke-width="8" stroke-linejoin="round"/>
+  <circle r="25" fill="#3D8BFF" stroke="#0B1736" stroke-width="6"/><circle r="11" fill="#0B1736"/><circle cx="8" cy="-8" r="5" fill="#fff"/>
+ </g>
+</svg>
+<div class="pouch" style="left:596px;top:412px;width:248px;height:391px"></div>
+<div class="pill" style="top:818px"><span><svg width="52" height="58" viewBox="0 0 52 58"><path d="M26 3 L48 11 V28 C48 42 38 51 26 55 C14 51 4 42 4 28 V11 Z" fill="#0B1736"/><path d="M15 29 l8 8 l15 -16" stroke="#FFD23F" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>ดูดซับแสงสีฟ้า</span></div>
+<div id="box"></div>
+</div><script>if(location.hash==='#box')document.getElementById('box').style.display='block';document.getElementById('stage').scrollTop=0;</script></body></html>
