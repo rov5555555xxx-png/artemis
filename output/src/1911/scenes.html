@@ -1,0 +1,109 @@
+.jar{background-image:url(jar.png)}.bio{background-image:url(biotin.png)}.bis{background-image:url(bisplus.png)}
+.b30{background-image:url(box30.png)}.b60{background-image:url(box60.png)}
+.red{color:#FF6B6E;text-shadow:0 6px 0 #6E1416,0 14px 30px rgba(0,0,0,.6)}
+.vsvg{position:absolute;overflow:visible}
+#confetti{display:none}
+</style></head><body>
+<div id="stage">
+
+<!-- S1 0-1.55 absorbs better: race -->
+<div class="scene" data-s="0" data-e="1.55" data-bg="studio" data-cam="0:1.04:720:500;1.55:1:720:540">
+ <div class="cam"><svg class="a vsvg" id="v1" data-at="-1" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="-1" data-an="fade" style="top:790px;font-size:84px">ซิงค์ที่<span class="hl" data-hl="0.6">ดูดซึมดีกว่า</span></div>
+</div>
+
+<!-- S2 1.55-3.72 stays longer: blood-level chart -->
+<div class="scene" data-s="1.55" data-e="3.72" data-bg="studio" data-tr="wipe" data-cam="1.55:1:720:540;3.72:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v2" data-at="1.58" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="1.62" data-an="up" style="top:790px;font-size:80px">อยู่ในร่างกาย<span class="hl" data-hl="2.6">นานกว่าสูตรอื่น</span></div>
+</div>
+
+<!-- S3 3.72-5.36 price a bit higher: seesaw -->
+<div class="scene" data-s="3.72" data-e="5.36" data-bg="studio" data-tr="wipe" data-cam="3.72:1:720:540;5.36:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v3" data-at="3.74" data-an="up" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="3.78" data-an="up" style="top:790px;font-size:80px">ราคาอาจสูงกว่า<span class="hl" data-hl="4.6">นิดหน่อย</span></div>
+</div>
+
+<!-- S4 5.36-7.32 because it focuses on zinc quality: magnifier over pellets -->
+<div class="scene" data-s="5.36" data-e="7.32" data-bg="studio" data-tr="iris" data-cam="5.36:1.08:720:470;7.32:1:720:540">
+ <div class="cam">
+  <div class="a glow" data-at="5.38" data-an="fade" style="left:460px;top:40px;width:520px;height:520px"></div>
+  <div class="a capsvg" data-at="5.4" data-an="pop" style="left:600px;top:40px;width:240px;height:554px"></div>
+  <svg class="a vsvg" id="v4" data-at="5.42" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="5.42" data-an="up" style="top:790px;font-size:80px">เพราะเน้น<span class="hl" data-hl="6.2">คุณภาพของซิงค์</span></div>
+</div>
+
+<!-- S5 7.32-9.45 different formula, different price: coffee analogy -->
+<div class="scene" data-s="7.32" data-e="9.45" data-bg="studio" data-tr="wipe" data-cam="7.32:1:720:540;9.45:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v5" data-at="7.34" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="7.38" data-an="up" style="top:790px;font-size:78px">สูตรต่าง ราคาต่าง <span class="gold">เรื่องปกติ</span></div>
+</div>
+
+<!-- S6 9.45-10.98 innovative iCAP: exploded capsule -->
+<div class="scene" data-s="9.45" data-e="10.98" data-bg="studio" data-tr="iris" data-cam="9.45:1.05:720:500;10.98:1:720:540">
+ <div class="cam">
+  <div class="a rays" data-at="9.4" data-an="fade" data-spin="12" style="left:60px;top:-40px;width:640px;height:640px"></div>
+  <div class="a img jar" data-at="9.5" data-an="left" data-float="0.2" style="left:250px;top:90px;width:270px;height:504px"></div>
+  <svg class="a vsvg" id="v6" data-at="9.55" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="9.5" data-an="up" style="top:790px;font-size:80px">ซิงค์<span class="hl" data-hl="10.2">นวัตกรรม iCAP</span></div>
+</div>
+
+<!-- S7 10.98-13.14 who it suits: quality -->
+<div class="scene" data-s="10.98" data-e="13.14" data-bg="studio" data-tr="wipe" data-cam="10.98:1:720:540;13.14:1.02:720:520">
+ <div class="cam"><svg class="a vsvg" id="v7" data-at="11.0" data-an="up" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="11.05" data-an="up" style="top:800px;font-size:78px">เหมาะกับคนที่<span class="hl" data-hl="12.2">เน้นซิงค์คุณภาพ</span></div>
+</div>
+
+<!-- S8 13.14-15.66 absorbs better: inside the gut -->
+<div class="scene" data-s="13.14" data-e="15.66" data-bg="studio" data-tr="iris" data-cam="13.14:1.04:720:500;15.66:1:720:540">
+ <div class="cam"><svg class="a vsvg" id="v8g" data-at="13.16" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="13.2" data-an="up" style="top:800px;font-size:78px">อยากได้ตัว<span class="hl" data-hl="15.0">ดูดซึมดีกว่า</span></div>
+</div>
+
+<!-- S9 15.66-17.55 stays longer: chart -->
+<div class="scene" data-s="15.66" data-e="17.55" data-bg="studio" data-tr="wipe" data-cam="15.66:1:720:540;17.55:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v9c" data-at="15.68" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="15.7" data-an="up" style="top:790px;font-size:80px">อยู่ในร่างกาย<span class="hl" data-hl="16.6">ได้นานกว่า</span></div>
+</div>
+
+<!-- S7 17.56-18.65 this zinc is the answer -->
+<div class="scene" data-s="17.55" data-e="18.66" data-bg="studio" data-tr="flash" data-cam="17.55:1.07:720:470;18.66:1:720:540">
+ <div class="cam">
+  <div class="a rays" data-at="17.5" data-an="fade" data-spin="14" style="left:360px;top:-60px;width:720px;height:720px"></div>
+  <div class="a glow" data-at="17.56" data-an="fade" style="left:460px;top:50px;width:520px;height:520px"></div>
+  <div class="a img jar" data-at="17.56" data-an="drop" data-float="0.1" style="left:575px;top:80px;width:290px;height:541px"></div>
+  <div class="a" data-at="17.85" data-an="stamp" style="left:900px;top:180px"><span class="pill p-gold" style="font-size:60px">ตอบโจทย์!</span></div>
+ </div>
+ <div class="a big cx wht" data-at="17.6" data-an="up" style="top:790px;font-size:84px">ซิงค์ตัวนี้ <span class="gold">ตอบโจทย์!</span></div>
+</div>
+
+<!-- S8 18.68-22.3 two sizes 30/60, price not much different -->
+<div class="scene" data-s="18.66" data-e="22.3" data-bg="studio" data-tr="wipe" data-cam="18.66:1:720:540;22.3:1.03:720:510">
+ <div class="cam">
+  <div class="a card new" data-at="18.7" data-an="left" style="left:200px;top:110px;width:480px;height:540px"></div>
+  <div class="a card new" data-at="18.8" data-an="right" style="left:760px;top:110px;width:480px;height:540px"></div>
+  <div class="a img b30" data-at="18.75" data-an="left" data-float="0.5" style="left:330px;top:140px;width:220px;height:349px"></div>
+  <div class="a img b60" data-at="18.85" data-an="right" data-float="1.5" style="left:870px;top:130px;width:260px;height:413px"></div>
+  <div class="a cx" data-at="19.9" data-an="pop" style="left:200px;width:480px;top:540px;text-align:center"><span class="pill p-white" style="font-size:50px">30 เม็ด</span></div>
+  <div class="a cx" data-at="20.7" data-an="pop" style="left:760px;width:480px;top:540px;text-align:center"><span class="pill p-gold" style="font-size:50px">60 เม็ด</span></div>
+  <svg class="a vsvg" id="p8" data-at="21.1" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="18.72" data-an="up" data-out="21.05" style="top:790px;font-size:80px">มี <span class="hl" data-hl="19.0">2 ขนาด</span> 30 กับ 60 เม็ด</div>
+ <div class="a big cx wht" data-at="21.15" data-an="up" style="top:790px;font-size:80px">ราคา<span class="hl" data-hl="21.6">ไม่ต่างกันมาก</span></div>
+</div>
+
+<!-- S9 22.32-end pick 60, best value -->
+<div class="scene" data-s="22.3" data-e="99" data-bg="studio" data-tr="flash" data-cam="22.3:1.06:720:480;24.64:1:720:540">
+ <div id="confetti"></div>
+ <div class="cam">
+  <div class="a rays" data-at="22.2" data-an="fade" data-spin="14" style="left:600px;top:-60px;width:760px;height:760px"></div>
+  <div class="a img b30" data-at="22.34" data-an="left" data-dim="22.9" style="left:250px;top:250px;width:200px;height:318px"></div>
+  <div class="a card new" data-at="22.34" data-an="right" style="left:740px;top:90px;width:520px;height:560px"></div>
+  <div class="a img b60" data-at="22.4" data-an="right" data-float="0.4" style="left:855px;top:120px;width:290px;height:460px"></div>
+  <div class="a" data-at="23.1" data-an="stamp" style="left:1150px;top:50px;width:150px;height:130px"><svg viewBox="0 0 150 130" width="150" height="130"><path d="M10 110L22 30L52 70L75 15L98 70L128 30L140 110Z" fill="#F3D9A4" stroke="#7A5B2E" stroke-width="6" stroke-linejoin="round"/></svg></div>
+  <div class="a cx" data-at="23.7" data-an="pop" style="left:740px;width:520px;top:585px;text-align:center"><span class="pill p-gold" style="font-size:54px">คุ้มสุด!</span></div>
+ </div>
+ <div class="a big cx wht" data-at="22.38" data-an="up" style="top:790px;font-size:80px">เลือก <span class="gold">60 เม็ด</span> ไปเลย คุ้มสุด!</div>
+</div>
