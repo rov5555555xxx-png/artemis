@@ -52,6 +52,9 @@ function chart(lt,sp){
  if(k>0)s+=pill(X0+W*2.0/HM,Y0-H*0.72-60,'สูตรทั่วไป: พุ่งแล้วหมดไว',k,'#16171B','#9CC0FF',30)+pill(X0+W*9.2/HM,Y0-H*0.66-60,'iCAP: ค่อยๆ ปล่อย อยู่นาน',k,'#F3D9A4','#16171B',30);
  return s}
 function silverCoin(x,y,r){return `<defs><radialGradient id="sg7" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#C9CED8"/><stop offset="1" stop-color="#7C838F"/></radialGradient></defs><g transform="translate(${x} ${y})"><circle r="${r}" fill="url(#sg7)" stroke="#5B616B" stroke-width="5"/><circle r="${r*0.82}" fill="none" stroke="#fff" stroke-width="3" opacity=".6"/><text y="${r*0.33}" text-anchor="middle" font-family="Arial" font-weight="700" font-size="${r*0.9}" fill="#3A3F47">Zn</text></g>`};
+function focus(id,cx,cy,rx,ry,p){if(p<=0)return '';const k=eOC(cl(p)),L=Math.PI*(rx+ry)*1.12;
+ return `<defs><mask id="fm${id}"><rect x="-200" y="-200" width="1840" height="1480" fill="#fff"/><ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="#000"/></mask></defs><rect x="-200" y="-200" width="1840" height="1480" fill="#0B0C0F" opacity="${0.62*k}" mask="url(#fm${id})"/>`+
+ `<ellipse cx="${cx}" cy="${cy}" rx="${rx+14}" ry="${ry+14}" fill="none" stroke="#FF3B3F" stroke-width="9" stroke-linecap="round" stroke-dasharray="${L}" stroke-dashoffset="${L*(1-k)}" transform="rotate(-6 ${cx} ${cy})"/>`};
 window.extra=function(t){
  const on=(a,b)=>t>=a-0.05&&t<b+0.45;
  // S1 race
@@ -65,9 +68,10 @@ window.extra=function(t){
    s+=`<path d="M230 ${y+30} H${x-40}" stroke="${c}" stroke-width="10" stroke-linecap="round" opacity=".55"/>`;
    const b=Math.abs(Math.sin(t*14+i))*10;s+=jarAt(f,x,y+90-b,i==2?190:160);
    if(i==2&&lt>1.15)s+=pill(x-150,y+10,'ชนะ!',cl((lt-1.15)/0.25),'#F3D9A4','#16171B',38)});
+  s+=focus(1,1080,560,190,125,(lt-0.95)/0.35);
   $('v1').innerHTML=s}
  // S2 chart
- if(on(1.55,3.72)){$('v2').innerHTML=chart(t-1.55,1.5)}
+ if(on(1.55,3.72)){$('v2').innerHTML=chart(t-1.55,1.5)+focus(2,1000,400,270,120,(t-1.55-1.35)/0.35)}
  // S3 seesaw
  if(on(3.72,5.36)){const lt=t-3.72;let s='';
   const ncoin=Math.floor(cl((lt-0.3)/0.6)*3);const tilt=-(2+ncoin*1.6)+Math.sin(t*5)*0.6*Math.exp(-lt);
@@ -76,7 +80,8 @@ window.extra=function(t){
   s+=jarAt('biotin.png',420,404,190)+jarAt('bisplus.png',560,404,190)+jarAt('jar.png',1000,404,230);
   for(let i=0;i<ncoin+1&&i<4;i++){const dp=cl((lt-0.3-i*0.2)/0.25);if(dp<=0)continue;const yy=lerp(60,392-i*16,eOC(dp));s+=coin(1110,yy,34)}
   s+=`</g>`;
-  s+=pill(1020,690,'แพงกว่านิดเดียว',cl((lt-0.9)/0.3),'#F3D9A4','#16171B',38);
+  s+=focus(3,1030,300,190,200,(lt-0.9)/0.35);
+  s+=pill(1030,580,'แพงกว่านิดเดียว',cl((lt-0.9)/0.3),'#F3D9A4','#16171B',38);
   $('v3').innerHTML=s}
  // S4 magnifier over capsule
  if(on(5.36,7.32)){const lt=t-5.36;let s='';const mx=720+Math.sin(lt*2.2)*60,my=230+Math.cos(lt*1.7)*40;
@@ -102,6 +107,7 @@ window.extra=function(t){
   s+=caps+pill(1050,580,'฿฿',cl((lt-0.7)/0.3),'#F3D9A4','#16171B',48);
   s+=pill(1050,350,'ผลิตซับซ้อนกว่า',cl((lt-0.9)/0.3),'#16171B','#F3D9A4',32);
   s+=check(1290,120,44,cl((lt-1.4)/0.3));
+  s+=focus(5,1050,380,290,300,(lt-1.0)/0.35);
   $('v5').innerHTML=s}
  // S6 exploded capsule
  if(on(9.45,10.98)){const lt=t-9.45;let s='';const e=eOC(cl((lt-0.3)/0.6));
@@ -136,10 +142,11 @@ window.extra=function(t){
     g+=`<circle cx="${x}" cy="${y}" r="13" fill="${col}" stroke="#fff" stroke-width="2" opacity="${ok||p<0.9?1:1-(p-0.9)*10}"/>`}
    g+=icon+`</g>`;return g};
   s+=panel(110,'สูตรทั่วไป',false,'#7FA8E0','')+panel(770,'iCAP',true,'#F3D9A4','');
-  s+=pill(1050,700,'ซึมเข้าเลือดได้ดีกว่า',cl((lt-1.6)/0.3),'#F3D9A4','#16171B',34);
+  s+=focus(8,1050,560,300,120,(lt-1.35)/0.35);
+  s+=pill(1050,720,'ซึมเข้าเลือดได้ดีกว่า',cl((lt-1.6)/0.3),'#F3D9A4','#16171B',34);
   $('v8g').innerHTML=s}
  // S9 chart again
- if(on(15.66,17.55)){$('v9c').innerHTML=chart(t-15.66,1.2)}
+ if(on(15.66,17.55)){$('v9c').innerHTML=chart(t-15.66,1.2)+focus(9,1000,400,270,120,(t-15.66-1.15)/0.35)}
  if(on(18.66,22.3)){const lt=t-18.66;const p=cl((lt-2.5)/0.35);let s='';
   if(p>0){const k=eOB(p);s+=`<g transform="translate(720 360) scale(${k})"><circle r="56" fill="#16171B" stroke="#D9B98A" stroke-width="6"/><text y="22" text-anchor="middle" font-family="K" font-weight="900" font-size="64" fill="#F3D9A4">≈</text></g>`}
   $('p8').innerHTML=s}
