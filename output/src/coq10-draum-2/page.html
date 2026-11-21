@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2)}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2)}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2)}
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1440px;height:1080px;overflow:hidden;background:#fff}
+body{font-family:K,sans-serif;color:#1B2A4A}
+#stage{position:relative;width:1440px;height:1080px;overflow:hidden;background:#FFF6E9}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.sbg{position:absolute;inset:-200px}
+.beach{background:linear-gradient(180deg,#7FD0FF 0%,#C6ECFF 55%,#FFF2C2 100%)}
+.lab{background:radial-gradient(circle at 50% 45%,#F4FFFB 0%,#D3F7EA 60%,#A9EBD3 100%)}
+.park{background:linear-gradient(180deg,#9EDCFF 0%,#DDF4FF 60%,#FFF6DA 100%)}
+.table{background:linear-gradient(180deg,#FFE7CF 0%,#FFF3E4 55%,#FFE2C4 100%)}
+.nightroom{background:linear-gradient(180deg,#4E4AA8 0%,#7C74CF 60%,#A79EEA 100%)}
+.clinic{background:linear-gradient(180deg,#D8EEFF 0%,#EEF7FF 60%,#DDEBFA 100%)}
+.city{background:linear-gradient(180deg,#1E2259 0%,#3A3C8C 55%,#6E63B8 100%)}
+.morning{background:linear-gradient(180deg,#FFE3B8 0%,#FFF3DE 60%,#FFE6C6 100%)}
+.stage2{background:radial-gradient(circle at 50% 40%,#FBF6FF 0%,#E3D6FF 55%,#C3A9FF 100%)}
+.cell{background:radial-gradient(circle at 50% 45%,#FFF0F4 0%,#FFD0DC 55%,#FFA9BF 100%)}
+.organ{background:radial-gradient(circle at 50% 45%,#FFF5F8 0%,#FFE0E8 55%,#FFC4D3 100%)}
+.body{background:radial-gradient(circle at 50% 45%,#EDE6FF 0%,#C9B8F5 55%,#9C86E0 100%)}
+.hero{background:radial-gradient(circle at 50% 45%,#FFFCEB 0%,#FFE7A0 50%,#FFC94A 100%)}
+.lab{background:radial-gradient(circle at 50% 45%,#F4FFFB 0%,#D3F7EA 60%,#A9EBD3 100%)}
+.track{background:linear-gradient(180deg,#9EDCFF 0%,#DDF4FF 60%,#FFF6DA 100%)}
+.cart{background:radial-gradient(circle at 50% 45%,#FFF5F8 0%,#FFD9E4 55%,#FFADC4 100%)}
+.box{position:absolute;background:url(box.png) center/contain no-repeat;filter:drop-shadow(0 0 2px rgba(255,255,255,.95)) drop-shadow(0 24px 28px rgba(40,50,90,.35))}
+.cam{position:absolute;inset:0;will-change:transform;transform-origin:0 0}
+.a{position:absolute;opacity:0;will-change:transform}
+.btl{position:absolute;background:url(bottle.png) center/contain no-repeat;filter:drop-shadow(0 0 2px rgba(255,255,255,.95)) drop-shadow(0 22px 26px rgba(40,50,90,.35))}
+.kt{position:absolute;left:130px;width:1180px;text-align:center;font-weight:900;white-space:nowrap;line-height:1.25;color:#FFD23F;-webkit-text-stroke:14px #1B2A4A;paint-order:stroke fill;text-shadow:0 12px 0 #1B2A4A;z-index:20}
+.kt .g{display:inline-block;transform-origin:50% 80%;opacity:0}
+.big{position:absolute;font-weight:900;white-space:nowrap;line-height:1.1;-webkit-text-stroke:13px #1B2A4A;paint-order:stroke fill;text-shadow:0 10px 0 #1B2A4A}
+.stk{display:inline-block;padding:8px 34px 14px;border-radius:999px;font-weight:900;white-space:nowrap;line-height:1.2;border:7px solid #1B2A4A;box-shadow:0 10px 0 #1B2A4A}
+.dot{position:absolute;border-radius:50%}
+.ring{position:absolute;width:360px;height:360px;margin:-180px 0 0 -180px;border-radius:50%;border:16px solid #fff;opacity:0;z-index:30}
+.conf{position:absolute;width:20px;height:30px;border-radius:6px}
+.rays{position:absolute;border-radius:50%;background:repeating-conic-gradient(rgba(255,255,255,.75) 0 9deg,rgba(255,255,255,0) 9deg 22deg);-webkit-mask:radial-gradient(circle,#000 25%,transparent 68%)}
+#stripe{position:absolute;top:-200px;width:3000px;height:1500px;transform:translateX(-3600px) skewX(-14deg);z-index:80}
+#stripe div{position:absolute;top:0;bottom:0;width:160px}
+#annL{position:absolute;left:0;top:0;z-index:70;pointer-events:none}
+svg{overflow:visible}
+</style></head><body>
+<div id="stage">
+<!-- S1 0-3.0 the CoQ10 form many people want: Ubiquinol (stage, crowd reaching for the box) -->
+<div class="scene" data-s="0" data-e="3.0" data-bg="stage2" data-cam="0:1.04:720:470;1.9:1:720:540;3.0:1.1:720:470">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><path d="M560 -100 L420 700 L1020 700 L880 -100Z" fill="#fff" opacity=".35"/><ellipse cx="720" cy="690" rx="250" ry="46" fill="#B08CF0" stroke="#1B2A4A" stroke-width="7"/></svg>
+  <div class="a box" data-at="-1" data-an="pop" data-float="0" style="left:555px;top:250px;width:330px;height:419px"></div>
+  <div class="a" data-at="-1" data-an="up" data-bob="0" style="left:150px;top:380px;width:230px;height:332px"><svg width="230" height="332" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#FF8FB1","hair":"#3A2A1E","faces":[{"e":"wow"}],"armL":"up","armR":"up"}'></g></svg></div>
+  <div class="a" data-at="-1" data-an="up" data-bob="1.5" style="left:1060px;top:380px;width:230px;height:332px"><svg width="230" height="332" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#7FD3FF","hair":"#2B1B12","faces":[{"e":"wow"}],"armL":"up","armR":"up"}'></g></svg></div>
+  <div class="a" data-at="0.5" data-an="up" data-bob="2.5" style="left:330px;top:470px;width:190px;height:274px"><svg width="190" height="274" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#FFD23F","hair":"#5A3A22","faces":[{"e":"happy"}],"armL":"up","armR":"down"}'></g></svg></div>
+  <div class="a" data-at="0.7" data-an="up" data-bob="3.5" style="left:920px;top:470px;width:190px;height:274px"><svg width="190" height="274" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#3DDC97","hair":"#2B1B12","faces":[{"e":"happy"}],"armL":"down","armR":"up"}'></g></svg></div>
+  <div class="a" data-at="1.98" data-an="stamp" style="left:880px;top:180px"><span class="stk" id="ubq1" style="font-size:46px;background:#FFE7A0">ยูบิควินอล</span></div>
+ </div>
+ <div class="kt" data-at="-1" data-st="0.03" data-fx="bounce" data-pulse="1" data-out="1.92" style="top:790px;font-size:96px;color:#fff">CoQ10 ที่หลายคนต้องการ</div>
+ <div class="kt" data-at="1.98" data-st="0.045" data-fx="jelly" style="top:790px;font-size:104px;color:#FFE7A0">ฟอร์มยูบิควินอล</div>
+</div>
+
+<!-- S1b 3.0-4.40 enters cells better (inside a cell: the ball goes through the door) -->
+<div class="scene" data-s="3.0" data-e="4.40" data-bg="cell" data-tr="zoom" data-cam="3.0:0.95:720:500;4.40:1.15:780:470">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="org1b"></g>
+   <circle cx="820" cy="450" r="300" fill="#FFE3EA" stroke="#1B2A4A" stroke-width="10"/><circle cx="900" cy="400" r="80" fill="#FFB3C6" stroke="#1B2A4A" stroke-width="7"/>
+   <g id="door1b" transform="translate(522 450)"><rect x="-26" y="-80" width="52" height="160" rx="14" fill="#FFD0DC" stroke="#1B2A4A" stroke-width="7"/><rect id="doorL" x="-22" y="-76" width="44" height="152" rx="10" fill="#B18CFF" stroke="#1B2A4A" stroke-width="5"/></g>
+   <g id="qb1b"></g></svg>
+ </div>
+ <div class="kt" data-at="3.02" data-st="0.045" data-fx="bounce" style="top:800px;font-size:100px;color:#FFD23F">เข้าสู่เซลล์ได้ดีกว่า</div>
+</div>
+
+<!-- S2 4.40-6.24 better for the brain and the heart (organ characters; pan brain -> heart) -->
+<div class="scene" data-s="4.40" data-e="6.24" data-bg="organ" data-tr="iris" data-cam="4.40:1.25:470:450;5.2:1.25:470:450;5.6:1.25:970:450;6.24:1.25:970:450">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="brain2" transform="translate(470 450)"></g><g id="heart2" transform="translate(970 450)"></g><g id="love2"></g><g id="qb2"></g></svg>
+ </div>
+ <div class="kt" data-at="4.40" data-st="0.05" data-fx="bounce" data-out="5.32" style="top:800px;font-size:110px;color:#FF8FB1">ดีต่อสมอง</div>
+ <div class="kt" data-at="5.40" data-st="0.05" data-fx="jelly" style="top:800px;font-size:110px;color:#FF6B6B">ดีต่อหัวใจ</div>
+</div>
+
+<!-- S3 6.24-10.46 handles free radicals better than the ordinary form (inside the body: hero ball pops the villains) -->
+<div class="scene" data-s="6.24" data-e="10.46" data-bg="body" data-tr="stripe" data-cam="6.24:1:720:520;7.6:1.15:720:450:-3;9.0:1.15:720:450:3;9.6:1:720:520">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="cells3"></g><g id="rad3"></g><g id="hero3" transform="translate(720 440)"></g><g id="zap3"></g></svg>
+  <div class="a" data-at="6.74" data-an="stamp" style="left:150px;top:150px"><span class="stk" style="font-size:40px;background:#C7A8FF">อนุมูลอิสระ</span></div>
+  <div class="a" data-at="9.16" data-an="stamp" style="left:880px;top:150px"><span class="stk" style="font-size:40px;background:#3DDC97">ดีกว่าฟอร์มทั่วไป</span></div>
+ </div>
+ <div class="kt" data-at="6.3" data-st="0.045" data-fx="shake" data-out="8.1" style="top:800px;font-size:100px;color:#fff">ช่วยเรื่องอนุมูลอิสระ</div>
+ <div class="kt" data-at="8.18" data-st="0.045" data-fx="jelly" style="top:800px;font-size:100px;color:#FFD23F">จัดการได้ดีกว่า</div>
+</div>
+
+<!-- S4 10.46-13.14 want this form? Dr.Aum has it ready (gift box opens, product rises; low angle) -->
+<div class="scene" data-s="10.46" data-e="13.14" data-bg="hero" data-tr="zoom" data-cam="10.46:1.1:720:620:0:12;11.6:1:720:540;13.14:1.04:720:520">
+ <div class="cam">
+  <div class="a rays" data-at="11.4" data-an="pop" data-spin="16" style="left:390px;top:90px;width:660px;height:660px"></div>
+  <div class="a box" id="box4" data-at="11.3" data-an="fade" style="left:560px;top:200px;width:320px;height:406px"></div>
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="gift4"></g></svg>
+  <div class="a" data-at="12.1" data-an="stamp" style="left:930px;top:180px"><span class="stk" style="font-size:48px;background:#fff">Dr.Aum</span></div>
+ </div>
+ <div class="kt" data-at="10.5" data-st="0.04" data-fx="bounce" data-out="12.0" style="top:790px;font-size:100px;color:#fff">อยากกินฟอร์มนี้?</div>
+ <div class="kt" data-at="12.06" data-st="0.045" data-fx="jelly" style="top:790px;font-size:100px;color:#FFD23F">Dr.Aum จัดให้แล้ว!</div>
+</div>
+
+<!-- S5 13.14-17.08 Ubiquinol form, no ubiquinone mixed in, works fast (lab magnifier sorting balls; stopwatch) -->
+<div class="scene" data-s="13.14" data-e="17.08" data-bg="lab" data-tr="iris" data-cam="13.14:1:720:540;14.0:1.15:700:470;15.6:1.15:700:470;16.3:1.2:1050:430;17.08:1.2:1050:430">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="grid5"></g><g id="jar5" transform="translate(620 470)"></g><g id="balls5"></g><g id="out5"></g><g id="watch5" transform="translate(1080 430)"></g></svg>
+  <div class="a box" data-at="13.2" data-an="left" data-float="0.3" style="left:150px;top:300px;width:200px;height:254px"></div>
+  <div class="a" data-at="15.2" data-an="stamp" style="left:820px;top:150px"><span class="stk" style="font-size:38px;background:#FFB36B">ไม่มียูบิควิโนนปน</span></div>
+ </div>
+ <div class="kt" data-at="13.14" data-st="0.045" data-fx="bounce" data-out="15.0" style="top:800px;font-size:100px;color:#FFE7A0">ฟอร์มยูบิควินอล</div>
+ <div class="kt" data-at="15.08" data-st="0.04" data-fx="shake" data-out="16.32" style="top:800px;font-size:96px;color:#FF9B4A">ไม่มียูบิควิโนนปน</div>
+ <div class="kt" data-at="16.4" data-st="0.05" data-fx="jelly" style="top:800px;font-size:104px;color:#3DDC97">กินแป๊บเดียว</div>
+</div>
+
+<!-- S6 17.08-20.16 goes straight into cells: repairs, gives energy (inside cell; door -> repair -> battery) -->
+<div class="scene" data-s="17.08" data-e="20.16" data-bg="cell" data-tr="stripe" data-cam="17.08:1.15:520:450;17.9:1:720:520;19.0:1.2:1000:430;20.16:1.2:1000:430">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="org6"></g><g id="cellM6" transform="translate(620 470)"></g><g id="qb6"></g><g id="fix6"></g><g id="bat6" transform="translate(1040 440)"></g></svg>
+ </div>
+ <div class="kt" data-at="17.1" data-st="0.045" data-fx="bounce" data-out="18.36" style="top:800px;font-size:100px;color:#fff">เข้าสู่เซลล์ได้เลย</div>
+ <div class="kt" data-at="18.42" data-st="0.05" data-fx="drop" data-out="19.12" style="top:800px;font-size:110px;color:#3DDC97">ฟื้นฟู</div>
+ <div class="kt" data-at="19.18" data-st="0.05" data-fx="jelly" style="top:800px;font-size:104px;color:#FFD23F">ให้พลังงาน</div>
+</div>
+
+<!-- S7 20.16-23.96 active form: the body can use it more easily than the ordinary form (race track) -->
+<div class="scene" data-s="20.16" data-e="23.96" data-bg="track" data-tr="iris" data-cam="20.16:0.95:720:500;21.0:1:720:520;22.6:1.15:1000:420;23.96:1.15:1000:420">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="track7"></g><g id="run7"></g></svg>
+  <div class="a" data-at="20.68" data-an="stamp" style="left:160px;top:150px"><span class="stk" id="act7" style="font-size:42px;background:#3DDC97">ฟอร์มแอคทีฟ</span></div>
+ </div>
+ <div class="kt" data-at="20.2" data-st="0.045" data-fx="bounce" data-out="21.5" style="top:810px;font-size:100px;color:#3DDC97">ฟอร์มแอคทีฟ</div>
+ <div class="kt" data-at="21.58" data-st="0.04" data-fx="jelly" style="top:810px;font-size:92px;color:#FFD23F">ร่างกายใช้ได้ง่ายกว่า</div>
+</div>
+
+<!-- S8 23.96-end want to see the price? tap the basket -->
+<div class="scene" data-s="23.96" data-e="99" data-bg="cart" data-tr="stripe" data-cam="23.96:1.1:600:500;24.7:1:720:540;25.3:1.15:940:500;27.1:1.15:940:500">
+ <div id="confetti"></div>
+ <div class="cam">
+  <div class="a rays" data-at="23.96" data-an="pop" data-spin="14" style="left:150px;top:140px;width:580px;height:580px"></div>
+  <div class="a box" data-at="23.96" data-an="drop" data-float="0" style="left:270px;top:220px;width:330px;height:419px"></div>
+  <div class="a" data-at="24.46" data-an="stamp" style="left:740px;top:180px"><svg width="1" height="1"><g id="tag8"></g></svg></div>
+  <div class="a" data-at="25.5" data-an="pop" style="left:940px;top:520px"><svg width="1" height="1"><g id="bsk8"></g><g id="hand8"></g></svg></div>
+ </div>
+ <div class="kt" data-at="23.96" data-st="0.045" data-fx="bounce" data-out="25.4" style="top:800px;font-size:104px;color:#fff">อยากดูราคา?</div>
+ <div class="kt" data-at="25.5" data-st="0.045" data-fx="jelly" style="top:800px;font-size:100px;color:#FFD23F">กดดูที่ตะกร้าเลย!</div>
+</div>
+
+<div id="rings"></div>
+<svg id="annL" width="1440" height="1080"></svg>
+<div id="stripe"><div style="left:0;background:#FFD23F"></div><div style="left:160px;background:#FF8FB1"></div><div style="left:320px;background:#7FD3FF"></div><div style="left:480px;width:2520px;background:#3DDC97"></div></div>
+<div id="safe" style="display:none;position:absolute;left:130px;top:130px;width:1180px;height:820px;border:3px dashed #f0f;z-index:99"></div>
+</div>
+<script>
+const W=1440,H=1080,INK='#1B2A4A',NS='http://www.w3.org/2000/svg';
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eOC=p=>1-Math.pow(1-p,3);
+const eOB=p=>{const c1=2.2,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+const eIO=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+const eBn=p=>{const n=7.5625,d=2.75;if(p<1/d)return n*p*p;if(p<2/d)return n*(p-=1.5/d)*p+.75;if(p<2.5/d)return n*(p-=2.25/d)*p+.9375;return n*(p-=2.625/d)*p+.984375};
+let seed=41;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+const $=id=>document.getElementById(id);
+if(location.hash==='#safe')$('safe').style.display='block';
+const mk=(tag,at,par)=>{const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);if(par)par.appendChild(e);return e};
+const H$=(par,html)=>{const g=mk('g',{},par);g.innerHTML=html;return g};
+// ---- kid
+function face(e){const k=`stroke="${INK}" stroke-width="7" fill="none" stroke-linecap="round"`;let s='';
+ if(e==='happy')s=`<path d="M-48 -8q16-18 32 0M16 -8q16-18 32 0" ${k}/><path d="M-30 22Q0 62 30 22z" fill="${INK}"/><path d="M-16 40q16 12 32 0" fill="#FF6B6B"/>`;
+ else if(e==='wow')s=`<ellipse cx="-30" cy="-6" rx="15" ry="19" fill="${INK}"/><ellipse cx="30" cy="-6" rx="15" ry="19" fill="${INK}"/><circle cx="-25" cy="-13" r="6" fill="#fff"/><circle cx="35" cy="-13" r="6" fill="#fff"/><ellipse cx="0" cy="38" rx="13" ry="17" fill="${INK}"/>`;
+ else if(e==='bored')s=`<path d="M-48 -4h30M18 -4h30" ${k}/><path d="M-48 8q15 8 30 0M18 8q15 8 30 0" stroke="#8C6BC9" stroke-width="5" fill="none"/><path d="M-18 36q9-7 18 0t18 0" ${k}/>`;
+ else s=`<circle cx="-30" cy="-6" r="9" fill="${INK}"/><circle cx="30" cy="-6" r="9" fill="${INK}"/><path d="M-18 40q18-14 36 0" ${k}/>`;
+ return s+`<ellipse cx="-58" cy="20" rx="16" ry="10" fill="#FF8FA3" opacity=".7"/><ellipse cx="58" cy="20" rx="16" ry="10" fill="#FF8FA3" opacity=".7"/>`}
+function kid(o){const sk='#FFD7B5',sh=o.shirt||'#FF8FB1',hr=o.hair||'#2B1B12';let s='';
+ const arm=(sd,k)=>{const sx=sd*70,sy=-170;let ex,ey;if(k==='up'){ex=sd*130;ey=-330}else if(k==='hold'){ex=sd*120;ey=-200}else if(k==='thumb'){ex=sd*125;ey=-250}else{ex=sd*95;ey=-40}
+  let h=`<path d="M${sx} ${sy}L${ex} ${ey}" stroke="${INK}" stroke-width="44" stroke-linecap="round"/><path d="M${sx} ${sy}L${ex} ${ey}" stroke="${sh}" stroke-width="32" stroke-linecap="round"/><circle cx="${ex}" cy="${ey}" r="24" fill="${sk}" stroke="${INK}" stroke-width="6"/>`;
+  if(k==='thumb')h+=`<rect x="${ex-10}" y="${ey-62}" width="20" height="46" rx="10" fill="${sk}" stroke="${INK}" stroke-width="6"/>`;return h};
+ s+=arm(-1,o.armL||'down')+arm(1,o.armR||'down');
+ s+=`<path d="M-100 20V-130a50 50 0 0150-50h100a50 50 0 0150 50V20z" fill="${sh}" stroke="${INK}" stroke-width="7"/><path d="M-34 -180q34 40 68 0" fill="#fff" stroke="${INK}" stroke-width="6"/>`;
+ s+=`<g transform="translate(0 -290)"><circle cx="-104" cy="6" r="22" fill="${sk}" stroke="${INK}" stroke-width="6"/><circle cx="104" cy="6" r="22" fill="${sk}" stroke="${INK}" stroke-width="6"/><circle r="104" fill="${sk}" stroke="${INK}" stroke-width="7"/><path d="M-104 4C-114 -150 114 -150 104 4C96 -40 50 -64 6 -50C-20 -70 -70 -58 -104 4z" fill="${hr}" stroke="${INK}" stroke-width="6"/>`;
+ (o.faces||[{e:'happy'}]).forEach(f=>{s+=`<g ${f.vis?`data-vis="${f.vis}"`:''}>${face(f.e)}</g>`});s+='</g>';return s}
+document.querySelectorAll('[data-kid]').forEach(g=>g.innerHTML=kid(JSON.parse(g.dataset.kid)));
+// ---- helpers
+function qball(c1,c2,t,r=130){return `<defs><radialGradient id="q${t}" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#FFFBEA"/><stop offset=".45" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></radialGradient></defs><circle r="${r}" fill="url(#q${t})" stroke="${INK}" stroke-width="${Math.max(4,r*0.05)}"/><ellipse cx="${-r*0.34}" cy="${-r*0.5}" rx="${r*0.34}" ry="${r*0.17}" fill="#fff" opacity=".75"/><text x="0" y="${r*0.23}" text-anchor="middle" font-family="K" font-weight="900" font-size="${r*0.66}" fill="#fff" stroke="${INK}" stroke-width="${r*0.08}" paint-order="stroke fill">Q10</text>`}
+const GOLD=['#FFE7A0','#E9B949'],ORNG=['#FFB36B','#D9640A'];let qid=0;const QB=(c,r)=>qball(c[0],c[1],'z'+(qid++),r);
+function faceSm(r,mood='happy'){const k=`stroke="${INK}" stroke-width="${r*0.09}" fill="none" stroke-linecap="round"`;return `<circle cx="${-r*0.32}" cy="${-r*0.05}" r="${r*0.09}" fill="${INK}"/><circle cx="${r*0.32}" cy="${-r*0.05}" r="${r*0.09}" fill="${INK}"/>`+(mood==='happy'?`<path d="M${-r*0.25} ${r*0.22} q${r*0.25} ${r*0.24} ${r*0.5} 0" ${k}/>`:mood==='angry'?`<path d="M${-r*0.5} ${-r*0.35} l${r*0.32} ${r*0.16} M${r*0.5} ${-r*0.35} l${-r*0.32} ${r*0.16}" ${k}/><path d="M${-r*0.22} ${r*0.32} q${r*0.22} ${-r*0.18} ${r*0.44} 0" ${k}/>`:`<path d="M${-r*0.22} ${r*0.3} q${r*0.22} ${-r*0.14} ${r*0.44} 0" ${k}/>`)}
+function organelles(g,n){for(let i=0;i<n;i++){const x=rnd()*1440,y=rnd()*1080;g.insertAdjacentHTML('beforeend',`<g transform="translate(${x} ${y}) rotate(${rnd()*180})"><ellipse rx="70" ry="34" fill="#FFB3C6" stroke="#E07A95" stroke-width="5"/><path d="M-50 0 q12 -18 25 0 t25 0 t25 0 t25 0" stroke="#E07A95" stroke-width="5" fill="none"/></g>`)}}
+// ---- S1b cell door + ball
+organelles($('org1b'),9);const QB1b=H$($('qb1b'),`<g transform="scale(.6)">${QB(GOLD)}</g>`);
+// ---- S2 brain + heart characters
+H$($('brain2'),`<path d="M-150 60c-70-10-80-110-20-140-10-80 80-120 130-70 40-60 150-30 150 50 70 20 70 120-10 150-20 60-120 70-150 20-40 30-100 20-100-10z" fill="#FF9FC0" stroke="${INK}" stroke-width="9"/><path d="M-80 -60q30 20 10 50M20 -90q-10 40 30 60M80 0q-40 10-40 50M-120 10q40-10 50 30" stroke="#E0709A" stroke-width="8" fill="none" stroke-linecap="round"/>`+`<g transform="translate(0 20)">${faceSm(110)}</g>`);
+H$($('heart2'),`<path d="M0 150C-170 40-190-60-120-120-70-160 0-120 0-70 0-120 70-160 120-120 190-60 170 40 0 150z" fill="#FF6B6B" stroke="${INK}" stroke-width="9"/><ellipse cx="-70" cy="-70" rx="30" ry="18" fill="#fff" opacity=".6" transform="rotate(-30 -70 -70)"/>`+`<g transform="translate(0 10)">${faceSm(110)}</g>`);
+const LOVE2=[];for(let i=0;i<8;i++)LOVE2.push({g:H$($('love2'),`<path d="M0 22C-26 6-30-8-18-18-10-24 0-18 0-10 0-18 10-24 18-18 30-8 26 6 0 22z" fill="#FF8FB1" stroke="${INK}" stroke-width="4"/>`),i});
+const QB2=[0,1].map(i=>H$($('qb2'),`<g transform="scale(.32)">${QB(GOLD)}</g>`));
+// ---- S3 villains + hero
+{const g=$('cells3');for(let i=0;i<20;i++){const x=rnd()*1440,y=rnd()*1080,r=30+rnd()*50;mk('circle',{cx:x,cy:y,r,fill:'#E4DAFF',stroke:'#A893E8','stroke-width':5,opacity:.6},g)}}
+function radSvg(){let s='';for(let i=0;i<10;i++){const a=i*Math.PI/5;s+=`<path d="M${Math.cos(a-0.25)*42} ${Math.sin(a-0.25)*42} L${Math.cos(a)*70} ${Math.sin(a)*70} L${Math.cos(a+0.25)*42} ${Math.sin(a+0.25)*42}Z" fill="#6E3CC9" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>`}return s+`<circle r="46" fill="#8E5BE8" stroke="${INK}" stroke-width="5"/>`+faceSm(40,'angry')}
+const RAD=[[300,300],[1150,280],[260,640],[1180,640],[520,200],[930,200]].map(([x,y],i)=>({g:H$($('rad3'),radSvg()),x,y,t:7.2+i*0.42}));
+H$($('hero3'),`<g transform="scale(1)">${QB(GOLD,120)}</g><g transform="translate(0 64)"></g>`);
+const ZAP=RAD.map(()=>mk('path',{fill:'none',stroke:'#FFD23F','stroke-width':14,'stroke-linecap':'round',opacity:0},$('zap3')));
+const POOF=RAD.map(()=>H$($('zap3'),[...Array(8)].map((_,k)=>`<circle cx="${Math.cos(k*Math.PI/4)*50}" cy="${Math.sin(k*Math.PI/4)*50}" r="14" fill="#fff" stroke="${INK}" stroke-width="3"/>`).join('')));
+// ---- S4 gift box
+const GIFT=H$($('gift4'),`<g transform="translate(720 690)"><rect x="-230" y="-250" width="460" height="250" rx="16" fill="#FF6B6B" stroke="${INK}" stroke-width="8"/><rect x="-30" y="-250" width="60" height="250" fill="#FFD23F" stroke="${INK}" stroke-width="6"/>
+ <g id="lid4"><rect x="-250" y="-310" width="500" height="70" rx="16" fill="#FF8F8F" stroke="${INK}" stroke-width="8"/><rect x="-30" y="-310" width="60" height="70" fill="#FFD23F" stroke="${INK}" stroke-width="6"/><path d="M0 -310 C-60 -400 -140 -360 -90 -320 C-60 -300 -20 -305 0 -310 C20 -305 60 -300 90 -320 C140 -360 60 -400 0 -310Z" fill="#FFD23F" stroke="${INK}" stroke-width="6"/></g></g>`);
+// ---- S5 lab: magnifier jar sorting gold vs orange balls; stopwatch
+{const g=$('grid5');for(let x=-200;x<1640;x+=60)mk('line',{x1:x,y1:-200,x2:x,y2:1300,stroke:'#BDEBD9','stroke-width':3},g);for(let y=-200;y<1300;y+=60)mk('line',{x1:-200,y1:y,x2:1640,y2:y,stroke:'#BDEBD9','stroke-width':3},g)}
+H$($('jar5'),`<circle r="230" fill="rgba(255,255,255,.75)" stroke="${INK}" stroke-width="14"/><circle r="230" fill="none" stroke="#fff" stroke-width="5" opacity=".7"/><path d="M165 165 L270 270" stroke="${INK}" stroke-width="40" stroke-linecap="round"/><path d="M170 170 L265 265" stroke="#B18CFF" stroke-width="22" stroke-linecap="round"/>`);
+const B5=[];for(let i=0;i<9;i++){const a=i/9*Math.PI*2,r=i%3?120:40;B5.push({g:H$($('balls5'),`<g transform="scale(.36)">${QB(GOLD)}</g>`),x:620+Math.cos(a)*r,y:470+Math.sin(a)*r,ph:rnd()*6})}
+const OUT5=[0,1].map(i=>H$($('out5'),`<g transform="scale(.36)">${QB(ORNG)}</g><path d="M-50 -50L50 50M50 -50L-50 50" stroke="#fff" stroke-width="22" stroke-linecap="round"/><path d="M-50 -50L50 50M50 -50L-50 50" stroke="#E8231F" stroke-width="13" stroke-linecap="round"/>`));
+H$($('watch5'),`<circle r="130" fill="#fff" stroke="${INK}" stroke-width="10"/><rect x="-26" y="-176" width="52" height="34" rx="8" fill="${INK}"/><circle r="8" fill="${INK}"/><path id="hand5" d="M0 0 V-100" stroke="#E8231F" stroke-width="10" stroke-linecap="round"/><path d="M-170 -40h-60M-170 0h-90M-170 40h-60" stroke="${INK}" stroke-width="10" stroke-linecap="round" opacity=".6"/>`);
+// ---- S6 cell: tired -> repaired -> charged
+organelles($('org6'),9);
+H$($('cellM6'),`<circle r="200" fill="#FFE3EA" stroke="${INK}" stroke-width="9"/><circle cx="50" cy="-50" r="56" fill="#FFB3C6" stroke="${INK}" stroke-width="6"/><g id="faceT6">${faceSm(150,'tired')}</g><g id="faceH6" opacity="0">${faceSm(150,'happy')}</g>`);
+const QB6=H$($('qb6'),`<g transform="scale(.35)">${QB(GOLD)}</g>`);
+const FIX6=[];for(let i=0;i<6;i++)FIX6.push(H$($('fix6'),`<path d="M0 -26 L7 -7 L26 0 L7 7 L0 26 L-7 7 L-26 0 L-7 -7Z" fill="#3DDC97" stroke="${INK}" stroke-width="4"/>`));
+H$($('bat6'),`<rect x="-80" y="-150" width="160" height="300" rx="28" fill="#fff" stroke="${INK}" stroke-width="9"/><rect x="-34" y="-178" width="68" height="30" rx="8" fill="${INK}"/><rect id="batF6" x="-60" y="130" width="120" height="0" rx="14" fill="#3DDC97"/><path d="M10 -80 L-26 10 H5 L-14 80 L32 -18 H0Z" fill="#FFD23F" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`);
+// ---- S7 race track: active form runs straight to "use"; ordinary form must stop at the convert station
+H$($('track7'),`<rect x="140" y="250" width="1160" height="150" rx="30" fill="#E9F7E0" stroke="${INK}" stroke-width="7"/><rect x="140" y="460" width="1160" height="150" rx="30" fill="#F3EEE6" stroke="${INK}" stroke-width="7"/>
+ <g transform="translate(1210 325)"><circle r="56" fill="#3DDC97" stroke="${INK}" stroke-width="6"/><path d="M-24 2l16 16 30-32" stroke="#fff" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+ <text x="1210" y="235" text-anchor="middle" font-family="K" font-weight="900" font-size="34" fill="${INK}">พร้อมใช้</text>
+ <g id="gear7" transform="translate(760 535)"><circle r="56" fill="#B8C2D9" stroke="${INK}" stroke-width="6"/>${[...Array(8)].map((_,k)=>`<rect x="-12" y="-74" width="24" height="26" fill="#B8C2D9" stroke="${INK}" stroke-width="5" transform="rotate(${k*45})"/>`).join('')}<circle r="20" fill="#fff" stroke="${INK}" stroke-width="5"/></g>
+ <text x="760" y="650" text-anchor="middle" font-family="K" font-weight="900" font-size="32" fill="${INK}">ต้องแปลงก่อน</text>
+ <text x="200" y="335" font-family="K" font-weight="900" font-size="30" fill="#1A8F55">ยูบิควินอล</text><text x="200" y="545" font-family="K" font-weight="900" font-size="30" fill="#9A6A40">ฟอร์มทั่วไป</text>`);
+const R7A=H$($('run7'),`<g transform="scale(.42)">${QB(GOLD)}</g>`),R7B=H$($('run7'),`<g transform="scale(.42)">${QB(ORNG)}</g>`);
+R7A.id='R7A';
+// ---- S8 price tag, basket, hand
+H$($('tag8'),`<g transform="rotate(-8)"><path d="M0 0 H240 L300 70 L240 140 H0Z" fill="#FFD23F" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/><circle cx="250" cy="70" r="14" fill="#fff" stroke="${INK}" stroke-width="5"/><text x="110" y="100" text-anchor="middle" font-family="K" font-weight="900" font-size="80" fill="${INK}">฿ ?</text></g>`);
+H$($('bsk8'),`<circle r="120" fill="#1B2A4A"/><path d="M-62 -14 L62 -14 L48 58 L-48 58 Z" fill="#FFD21F" stroke="#fff" stroke-width="7" stroke-linejoin="round"/><path d="M-38 -14 Q-30 -66 0 -66 Q30 -66 38 -14" fill="none" stroke="#FFD21F" stroke-width="12" stroke-linecap="round"/>`+[-26,0,26].map(x=>`<line x1="${x}" y1="4" x2="${x*0.85}" y2="44" stroke="#1B2A4A" stroke-width="6" stroke-linecap="round"/>`).join(''));
+const hand8=H$($('hand8'),`<g transform="translate(40 40) rotate(-30)"><path d="M0 0a14 14 0 0128 0v70l34 8c12 3 18 12 15 24l-9 44H22L-12 100c-6-9 3-20 15-15l-3 -5z" fill="#fff" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/></g>`);
+// ---- annotations (tracked from real element boxes, end with their scene)
+const ANNS=[{at:2.2,el:'ubq1',ang:-150},{at:9.3,el:'hero3',kx:1.0,ky:1.0,pad:14,ang:-140},{at:21.0,el:'act7',ang:-30},{at:22.5,el:'R7A',kx:1.1,ky:1.1,pad:12,ang:-140}];
+ANNS.forEach(a=>{const g=mk('g',{opacity:0},$('annL'));a.g=g;const st=(w,c)=>({fill:'none',stroke:c,'stroke-width':w,'stroke-linecap':'round','stroke-linejoin':'round'});a.ew=mk('path',st(17,'#fff'),g);a.er=mk('path',st(10,'#E8231F'),g);a.aw=mk('path',st(17,'#fff'),g);a.ar=mk('path',st(10,'#E8231F'),g)});
+let _T=0;
+function tRect(a){const el=$(a.el);if(!el)return null;const sc=el.closest('.scene');if(sc&&(sc.style.display==='none'||_T>=+sc.dataset.e))return null;const aa=el.closest('.a');if(aa&&+aa.style.opacity<0.5)return null;const sr=$('stage').getBoundingClientRect();const r=el.getBoundingClientRect();if(r.width<2)return null;return{x:(r.left+r.right)/2-sr.left,y:(r.top+r.bottom)/2-sr.top,w:r.width,h:r.height}}
+function drawAnn(t){_T=t;for(const a of ANNS){const d=t-a.at;if(d<0||d>1.9){a.g.setAttribute('opacity',0);continue}const r=tRect(a);if(!r){a.g.setAttribute('opacity',0);continue}
+  const pad=a.pad??12,rx=r.w/2*(a.kx||1.22)+pad,ry=r.h/2*(a.ky||1.6)+pad;let e='';const N=60,sw=2*Math.PI*1.04,a0=-2.5;
+  for(let i=0;i<=N;i++){const th=a0+sw*i/N;const w=1+0.012*Math.sin(i*0.5);e+=(i?'L':'M')+(r.x+Math.cos(th)*rx*w).toFixed(1)+' '+(r.y+Math.sin(th)*ry*w).toFixed(1)}
+  const ang=(a.ang??-40)*Math.PI/180,ex=r.x+Math.cos(ang)*(rx+16),ey=r.y+Math.sin(ang)*(ry+16),sx=r.x+Math.cos(ang)*(rx+105),sy=r.y+Math.sin(ang)*(ry+105);
+  const dx=ex-sx,dy=ey-sy,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L,hl=26;const ar=`M${sx.toFixed(1)} ${sy.toFixed(1)} Q${((sx+ex)/2-uy*14).toFixed(1)} ${((sy+ey)/2+ux*14).toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)} M${(ex-ux*hl-uy*hl*0.6).toFixed(1)} ${(ey-uy*hl+ux*hl*0.6).toFixed(1)} L${ex.toFixed(1)} ${ey.toFixed(1)} L${(ex-ux*hl+uy*hl*0.6).toFixed(1)} ${(ey-uy*hl-ux*hl*0.6).toFixed(1)}`;
+  const k1=eOC(cl(d/0.35)),k2=eOC(cl((d-0.25)/0.2)),fo=1-cl((d-1.6)/0.3);
+  [a.ew,a.er].forEach(p=>{p.setAttribute('d',e);const Lp=p.getTotalLength();p.style.strokeDasharray=Lp;p.style.strokeDashoffset=Lp*(1-k1)});
+  [a.aw,a.ar].forEach(p=>{p.setAttribute('d',ar);p.setAttribute('opacity',k2>0?1:0)});a.g.setAttribute('opacity',fo)}}
+// ---- kinetic text
+const seg=new Intl.Segmenter('th',{granularity:'grapheme'});
+const kts=[...document.querySelectorAll('.kt')].map(el=>{const txt=el.textContent;el.textContent='';const gs=[];for(const {segment} of seg.segment(txt)){const s=document.createElement('span');s.className='g';s.textContent=segment===' '?' ':segment;el.appendChild(s);gs.push(s)}
+ return{el,gs,at:+el.dataset.at,st:+el.dataset.st,fx:el.dataset.fx,out:el.dataset.out?+el.dataset.out:null,pulse:!!el.dataset.pulse}});
+function ktRender(t){for(const k of kts){const vis=t>=k.at-0.05;const outk=k.out!==null?cl((t-k.out)/0.25):0;k.el.style.opacity=vis?1-outk:0;if(!vis||outk>=1)continue;
+ k.el.style.transform=(outk>0?`translateY(${-60*eIO(outk)}px) scale(${1-.2*outk})`:'')+(k.pulse?` scale(${1+0.035*Math.sin(t*6)})`:'');
+ k.gs.forEach((g,i)=>{const lt=t-k.at-i*k.st;if(lt<0){g.style.opacity=0;return}g.style.opacity=1;let tr='';
+  if(k.fx==='bounce'){const p=cl(lt/0.38);tr=`translateY(${-90*(1-eOB(p))}px) scale(${p<=0?0:eOB(p)}) rotate(${(1-p)*-18}deg)`}
+  else if(k.fx==='drop'){const p=cl(lt/0.45);tr=`translateY(${-260*(1-eBn(p))}px)`;g.style.opacity=cl(p*4)}
+  else if(k.fx==='jelly'){const p=cl(lt/0.3);const w=lt>0.3?Math.sin((lt-.3)*20)*Math.exp(-(lt-.3)*5):0;tr=`scale(${(p<=0?0:eOB(p))*(1+0.22*w)},${(p<=0?0:eOB(p))*(1-0.22*w)})`}
+  else if(k.fx==='shake'){const p=cl(lt/0.3);tr=`scale(${p<=0?0:eOB(p)}) rotate(${Math.sin(lt*30)*8*Math.exp(-lt*2.5)}deg) translateX(${Math.sin(lt*45)*10*Math.exp(-lt*3)}px)`}
+  if(lt>0.6)tr+=` translateY(${Math.sin(t*5+i*.7)*5}px)`;g.style.transform=tr})}}
+// ---- scenes + camera (t:scale:x:y:rot:tiltX)
+const scenes=[...document.querySelectorAll('.scene')].map(el=>{const bg=document.createElement('div');bg.className='sbg '+el.dataset.bg;el.insertBefore(bg,el.firstChild);
+ const pl=document.createElement('div');pl.style.cssText='position:absolute;inset:0;pointer-events:none';el.insertBefore(pl,bg.nextSibling);const parts=[];
+ const cols=['#FFD23F','#FF8FB1','#7FA2FF','#3DDC97','#fff'];for(let k=0;k<10;k++){const d=document.createElement('div');d.className='dot';const s=10+rnd()*18;d.style.width=d.style.height=s+'px';d.style.background=cols[k%5];pl.appendChild(d);parts.push({d,x:160+rnd()*1120,y:rnd()*H,v:14+rnd()*24,ph:rnd()*6.28})}
+ const cam=(el.dataset.cam||'').split(';').filter(Boolean).map(k=>k.split(':').map(Number));
+ return{el,s:+el.dataset.s,e:+el.dataset.e,tr:el.dataset.tr||'',parts,cam,camEl:el.querySelector('.cam'),items:[...el.querySelectorAll('.a')]}});
+function camAt(keys,t){const g=(k,j)=>k[j]||0;const J=[1,2,3,4,5];if(!keys.length)return[1,720,540,0,0];if(t<=keys[0][0])return J.map(j=>g(keys[0],j));for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t<=b[0]){const p=eIO(cl((t-a[0])/(b[0]-a[0])));return J.map(j=>g(a,j)+(g(b,j)-g(a,j))*p)}}return J.map(j=>g(keys[keys.length-1],j))}
+const ringDefs=[[1.98,1020,215],[3.3,522,450],[5.05,470,450],[6.0,970,450],[11.0,720,560],[12.1,1020,215],[15.2,980,190],[16.4,1080,430],[19.2,1040,440],[22.4,1210,325],[24.46,880,250],[25.5,940,520]];
+const rw=$('rings');const rings=ringDefs.map(([t,x,y])=>{const d=document.createElement('div');d.className='ring';d.style.left=x+'px';d.style.top=y+'px';rw.appendChild(d);return{d,t}});
+const conf=[];{const cw=$('confetti');const cc=['#FFD23F','#FF8FB1','#7FD3FF','#3DDC97','#FF6B6B'];for(let i=0;i<70;i++){const d=document.createElement('div');d.className='conf';d.style.background=cc[i%5];cw.appendChild(d);conf.push({d,x:200+rnd()*1040,vy:240+rnd()*300,vx:(rnd()-.5)*180,r:rnd()*360,vr:(rnd()-.5)*720,dl:rnd()*0.5,sw:rnd()*6})}}
+function animT(an,p){switch(an){case'fade':return[eOC(p),''];case'pop':return[cl(p*4),`scale(${p<=0?0:eOB(p)})`];
+ case'stamp':{const e=eOB(p);return[cl(p*5),`scale(${1.7-0.7*e}) rotate(${-8*(1-e)}deg)`]}
+ case'up':{const e=eOB(p);return[cl(p*3),`translateY(${120*(1-e)}px)`]}case'left':{const e=eOB(p);return[cl(p*3),`translateX(${-360*(1-e)}px)`]}
+ case'right':{const e=eOB(p);return[cl(p*3),`translateX(${360*(1-e)}px)`]}case'drop':return[cl(p*5),`translateY(${-700*(1-eBn(p))}px)`]}return[1,'']}
+const DUR={fade:.35,pop:.45,stamp:.38,up:.45,left:.5,right:.5,drop:.7};const TR=0.4;
+const gv=(t,keys)=>{let v=keys[0][1];for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t>=a[0]&&t<b[0]){v=a[1]+(b[1]-a[1])*eOC(cl((t-a[0])/(b[0]-a[0])));break}if(t>=b[0])v=b[1]}return v};
+window.render=function(t){
+ scenes.forEach((sc,i)=>{const nx=scenes[i+1];const tail=(nx&&(nx.tr==='iris'||nx.tr==='zoom'||nx.tr==='slideup'))?TR:0;
+  const on=t>=sc.s&&t<sc.e+tail;sc.el.style.display=on?'block':'none';if(!on)return;
+  const lt=t-sc.s,q=cl(lt/TR);let tf='',clip='none',op=1;
+  if(sc.tr==='iris')clip=`circle(${eIO(q)*110}% at 50% 50%)`;else if(sc.tr==='zoom'){tf=`scale(${1.3-0.3*eOC(q)})`;op=q}else if(sc.tr==='slideup')tf=`translateY(${(1-eOC(q))*1080}px)`;
+  sc.el.style.transform=tf;sc.el.style.clipPath=q<1?clip:'none';sc.el.style.opacity=op;sc.el.style.zIndex=i;
+  const[s,fx,fy,rr,tx]=camAt(sc.cam,t);if(sc.camEl)sc.camEl.style.transform=`translate(720px,540px) perspective(1600px) rotateX(${tx}deg) scale(${s}) rotate(${rr}deg) translate(${-fx}px,${-fy}px)`;
+  for(const p of sc.parts){const y=((p.y-p.v*t)%(H+100)+H+100)%(H+100)-50;p.d.style.transform=`translate(${p.x+Math.sin(t*.8+p.ph)*24}px,${y}px)`;p.d.style.opacity=.45*cl((y-140)/80)*cl((940-y)/80)}
+  for(const el of sc.items){const at=+el.dataset.at,an=el.dataset.an,p=at<0?1:cl((t-at)/DUR[an]);let[o,tr]=t<at?[0,'']:animT(an,p);
+   if(el.dataset.out){const k=cl((t-+el.dataset.out)/0.28);if(k>0){o*=1-k;tr+=` translateY(${-eIO(k)*50}px) scale(${1-.2*k})`}}
+   if(el.dataset.float){const ph=+el.dataset.float;tr+=` translateY(${Math.sin(t*2.4+ph)*12}px) rotate(${Math.sin(t*1.8+ph)*3}deg)`}
+   if(el.dataset.bob){const ph=+el.dataset.bob;tr+=` translateY(${Math.sin(t*3.4+ph)*9}px) rotate(${Math.sin(t*2.6+ph)*4}deg)`}
+   if(el.dataset.spin)tr+=` rotate(${t*el.dataset.spin}deg)`;
+   el.style.opacity=o;el.style.transform=tr}});
+ ktRender(t);drawAnn(t);
+ let sx=-3200;for(const sc of scenes){if(sc.tr==='stripe'){const d=t-sc.s;if(d>-0.25&&d<0.25)sx=-3000+eIO((d+0.25)/0.5)*4600}}$('stripe').style.transform=`translateX(${sx}px) skewX(-14deg)`;
+ document.querySelectorAll('[data-vis]').forEach(g=>{const[a,b]=g.dataset.vis.split(',').map(Number);g.style.opacity=(t>=a&&t<b)?1:0});
+ document.querySelectorAll('.sunrays').forEach(g=>g.setAttribute('transform',`rotate(${t*20})`));
+
+ // S1b ball goes through the opening door into the cell (constant speed)
+ if(t>2.9&&t<4.9){const d=cl((t-3.3)/0.4);$('doorL').setAttribute('transform',`translate(0 ${-150*eIO(d)})`);const p=cl((t-3.3)/1.0);QB1b.setAttribute('transform',`translate(${200+p*600} ${450+Math.sin(t*10)*6})`)}
+ // S2 balls fly to brain then heart; little hearts pop
+ if(t>4.3&&t<6.7){QB2.forEach((g,i)=>{const t0=4.45+i*1.0;const p=cl((t-t0)/0.6);const tx=i?970:470;g.setAttribute('transform',`translate(${tx-260+260*p} ${200+250*p})`);g.setAttribute('opacity',p>=1?0:1)});
+  LOVE2.forEach(l=>{const t0=(l.i<4?5.05:6.0)+l.i%4*0.08;const d=t-t0;const cx=l.i<4?470:970;const a=-Math.PI/2+(l.i%4-1.5)*0.6;l.g.setAttribute('transform',`translate(${cx+Math.cos(a)*(150+d*160)} ${450+Math.sin(a)*(150+d*160)}) scale(${d>0?Math.min(1,d*4):0})`);l.g.setAttribute('opacity',d>0?1-cl((d-0.6)/0.4):0)});
+  $('brain2').setAttribute('transform',`translate(470 ${450+Math.sin(t*4)*8}) scale(${1+0.03*Math.sin(t*6)})`);$('heart2').setAttribute('transform',`translate(970 450) scale(${1+0.06*Math.max(0,Math.sin(t*9))})`)}
+ // S3 villains approach; hero zaps each one (lightning + poof)
+ if(t>6.1&&t<10.9){RAD.forEach((r,i)=>{const k=cl((t-6.4-i*0.08)/0.4);const hit=t-r.t;const x=r.x+(hit<0?Math.sin(t*3+i)*14:0),y=r.y+(hit<0?Math.cos(t*2.5+i)*12:0);
+   r.g.setAttribute('transform',`translate(${x} ${y}) scale(${hit>0?Math.max(0,1-hit*5):k?eOB(k):0}) rotate(${t*30})`);
+   ZAP[i].setAttribute('d',`M720 440 L${(720+x)/2+30} ${(440+y)/2-30} L${(720+x)/2-20} ${(440+y)/2+20} L${x} ${y}`);ZAP[i].setAttribute('opacity',hit>-0.15&&hit<0.12?1:0);
+   POOF[i].setAttribute('transform',`translate(${r.x} ${r.y}) scale(${hit>0?0.4+hit*2.5:0})`);POOF[i].setAttribute('opacity',hit>0&&hit<0.4?1-hit/0.4:0)});
+  $('hero3').setAttribute('transform',`translate(720 ${440+Math.sin(t*5)*8}) rotate(${Math.sin(t*3)*6})`)}
+ // S4 gift lid pops, product rises out
+ if(t>10.4&&t<13.6){const k=eOB(cl((t-11.0)/0.45));$('lid4').setAttribute('transform',`translate(${k*60} ${-k*260}) rotate(${k*28})`);$('lid4').setAttribute('opacity',1-cl((t-11.6)/0.3));
+  const r=eOC(cl((t-11.2)/0.6));$('box4').style.transform+=` translateY(${(1-r)*300}px)`;GIFT.setAttribute('opacity',1-cl((t-11.7)/0.35))}
+ // S5 gold balls jiggle under the magnifier; orange balls get kicked out; stopwatch spins fast
+ if(t>13.0&&t<17.5){B5.forEach((b,i)=>{const k=cl((t-13.3-i*0.06)/0.3);b.g.setAttribute('transform',`translate(${b.x+Math.sin(t*4+b.ph)*8} ${b.y+Math.cos(t*3+b.ph)*8}) scale(${k?eOB(k):0})`)});
+  OUT5.forEach((g,i)=>{const k=cl((t-13.6)/0.3);const f=cl((t-15.2-i*0.12)/0.6);g.setAttribute('transform',`translate(${620+(i?60:-60)+f*(i?420:300)} ${470+(i?-30:40)-f*(i?160:-60)}) scale(${k?eOB(k)*(1-0.2*f):0})`);g.setAttribute('opacity',f>=1?0:1)});
+  $('hand5').setAttribute('transform',`rotate(${t>16.3?(t-16.3)*720:0})`)}
+ // S6 ball enters, repair stars, battery charges
+ if(t>17.0&&t<20.6){const p=cl((t-17.2)/0.7);QB6.setAttribute('transform',`translate(${260+360*eIO(p)} ${470+Math.sin(t*9)*6})`);
+  const h=t>18.42?1:0;$('faceT6').setAttribute('opacity',1-h);$('faceH6').setAttribute('opacity',h);
+  FIX6.forEach((s,i)=>{const d=t-18.42-i*0.06;const a=i*Math.PI/3+t;s.setAttribute('transform',`translate(${620+Math.cos(a)*230} ${470+Math.sin(a)*230}) scale(${d>0&&d<1.2?eOB(cl(d/0.3)):0})`)});
+  const v=cl((t-19.2)/0.9);$('batF6').setAttribute('height',260*v);$('batF6').setAttribute('y',130-260*v);$('cellM6').setAttribute('transform',`translate(620 470) scale(${1+0.03*Math.sin(t*7)})`)}
+ // S7 race at constant speed; ordinary form waits at the gear
+ if(t>20.1&&t<24.4){const xa=230+cl((t-20.6)/1.8)*980;R7A.setAttribute('transform',`translate(${xa} 325) rotate(${(t-20.6)*200})`);
+  let xb;const v=980/1.8;const tStop=20.6+(760-230)/v;if(t<tStop)xb=230+Math.max(0,t-20.6)*v;else if(t<tStop+1.6)xb=760;else xb=Math.min(1210,760+(t-tStop-1.6)*v);
+  R7B.setAttribute('transform',`translate(${xb} 535) rotate(${(xb-230)*0.6})`);$('gear7').setAttribute('transform',`translate(760 535) rotate(${t*120})`)}
+ // S8 hand taps the basket
+ if(t>25.5){const tp=Math.abs(Math.sin((t-25.5)*4));hand8.setAttribute('transform',`translate(${14*(1-tp)} ${14*(1-tp)})`)}
+ for(const r of rings){const d=t-r.t;if(d<0||d>0.6){r.d.style.opacity=0;continue}const p=d/0.6;r.d.style.opacity=.9*(1-p);r.d.style.transform=`scale(${0.2+eOC(p)*1.4})`;r.d.style.borderWidth=(16*(1-p)+2)+'px'}
+ for(const c of conf){const d=t-25.6-c.dl;if(d<0){c.d.style.opacity=0;continue}const cy=140+c.vy*d;c.d.style.opacity=cl((cy-140)/60)*cl((940-cy)/120);c.d.style.transform=`translate(${c.x+c.vx*d*.5+Math.sin(d*4+c.sw)*20}px,${cy}px) rotate(${c.r+c.vr*d}deg) rotateX(${d*400+c.sw*50}deg)`}
+};
+window.render(0);
+</script>
+</body></html>
