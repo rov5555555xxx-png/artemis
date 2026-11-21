@@ -1,0 +1,2 @@
+const {chromium}=require('playwright');(async()=>{const [,,html,out,...ts]=process.argv;const b=await chromium.launch();const p=await b.newPage({viewport:{width:1440,height:1080}});await p.goto('file://'+html);await p.evaluate(()=>document.fonts.ready);await p.waitForTimeout(300);
+let i=0;const want=ts.map(Number);for(let f=0;f<=Math.max(...want)*30+1;f++){const t=f/30;await p.evaluate(t=>render(t),t);const k=want.findIndex(w=>Math.abs(w-t)<1/60);if(k>=0)await p.screenshot({path:`${out}/q${String(k).padStart(2,'0')}.jpg`,type:'jpeg',quality:80})}await b.close()})();
