@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2)}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2)}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2)}
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1440px;height:1080px;overflow:hidden;background:#fff}
+body{font-family:K,sans-serif;color:#1B2A4A}
+#stage{position:relative;width:1440px;height:1080px;overflow:hidden;background:#FFF6E9}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.sbg{position:absolute;inset:-200px}
+.beach{background:linear-gradient(180deg,#7FD0FF 0%,#C6ECFF 55%,#FFF2C2 100%)}
+.lab{background:radial-gradient(circle at 50% 45%,#F4FFFB 0%,#D3F7EA 60%,#A9EBD3 100%)}
+.park{background:linear-gradient(180deg,#9EDCFF 0%,#DDF4FF 60%,#FFF6DA 100%)}
+.table{background:linear-gradient(180deg,#FFE7CF 0%,#FFF3E4 55%,#FFE2C4 100%)}
+.nightroom{background:linear-gradient(180deg,#4E4AA8 0%,#7C74CF 60%,#A79EEA 100%)}
+.clinic{background:linear-gradient(180deg,#D8EEFF 0%,#EEF7FF 60%,#DDEBFA 100%)}
+.city{background:linear-gradient(180deg,#1E2259 0%,#3A3C8C 55%,#6E63B8 100%)}
+.morning{background:linear-gradient(180deg,#FFE3B8 0%,#FFF3DE 60%,#FFE6C6 100%)}
+.veg{background:linear-gradient(180deg,#DFF7D2 0%,#F4FFEE 60%,#E4F6D8 100%)}
+.rainbow{background:radial-gradient(circle at 50% 45%,#FFFFFF 0%,#E6F4FF 45%,#CBE6FF 100%)}
+.kitchen{background:linear-gradient(180deg,#FFE9D6 0%,#FFF5EA 60%,#FFE4CC 100%)}
+.stall{background:linear-gradient(180deg,#FFF1CF 0%,#FFF8E8 60%,#FFEAC0 100%)}
+.park{background:linear-gradient(180deg,#9EDCFF 0%,#DDF4FF 60%,#FFF6DA 100%)}
+.hero{background:radial-gradient(circle at 50% 45%,#FFFCEB 0%,#FFE7A0 50%,#FFC94A 100%)}
+.factory{background:#DDE6F2}
+.tub{position:absolute;background:url(tub.png) center/contain no-repeat;filter:drop-shadow(0 0 2px rgba(255,255,255,.95)) drop-shadow(0 22px 26px rgba(40,50,90,.35))}
+.photo{position:absolute;border-radius:28px;overflow:hidden;border:10px solid #fff;box-shadow:0 0 0 7px #1B2A4A,0 22px 40px rgba(27,42,74,.35)}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cam{position:absolute;inset:0;will-change:transform;transform-origin:0 0}
+.a{position:absolute;opacity:0;will-change:transform}
+.btl{position:absolute;background:url(bottle.png) center/contain no-repeat;filter:drop-shadow(0 0 2px rgba(255,255,255,.95)) drop-shadow(0 22px 26px rgba(40,50,90,.35))}
+.kt{position:absolute;left:130px;width:1180px;text-align:center;font-weight:900;white-space:nowrap;line-height:1.25;color:#FFD23F;-webkit-text-stroke:14px #1B2A4A;paint-order:stroke fill;text-shadow:0 12px 0 #1B2A4A;z-index:20}
+.kt .g{display:inline-block;transform-origin:50% 80%;opacity:0}
+.big{position:absolute;font-weight:900;white-space:nowrap;line-height:1.1;-webkit-text-stroke:13px #1B2A4A;paint-order:stroke fill;text-shadow:0 10px 0 #1B2A4A}
+.stk{display:inline-block;padding:8px 34px 14px;border-radius:999px;font-weight:900;white-space:nowrap;line-height:1.2;border:7px solid #1B2A4A;box-shadow:0 10px 0 #1B2A4A}
+.dot{position:absolute;border-radius:50%}
+.ring{position:absolute;width:360px;height:360px;margin:-180px 0 0 -180px;border-radius:50%;border:16px solid #fff;opacity:0;z-index:30}
+.conf{position:absolute;width:20px;height:30px;border-radius:6px}
+.rays{position:absolute;border-radius:50%;background:repeating-conic-gradient(rgba(255,255,255,.75) 0 9deg,rgba(255,255,255,0) 9deg 22deg);-webkit-mask:radial-gradient(circle,#000 25%,transparent 68%)}
+#stripe{position:absolute;top:-200px;width:3000px;height:1500px;transform:translateX(-3600px) skewX(-14deg);z-index:80}
+#stripe div{position:absolute;top:0;bottom:0;width:160px}
+#annL{position:absolute;left:0;top:0;z-index:70;pointer-events:none}
+svg{overflow:visible}
+</style></head><body>
+<div id="stage">
+<!-- S1 0-4.08 not a vegetable powder - it's a vitamin powder with everything in it (garden kitchen; close on the crossed veg -> pan to the tub) -->
+<div class="scene" data-s="0" data-e="4.08" data-bg="veg" data-cam="0:1.05:620:500;1.0:1.05:620:500;1.6:1:720:540;3.2:1.12:900:470;4.08:1.12:900:470">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><rect x="-200" y="700" width="1840" height="600" fill="#C9A06F" stroke="#1B2A4A" stroke-width="7"/><g id="veg1" transform="translate(360 560)"></g>
+   <g id="x1" transform="translate(360 520)"><path d="M-120 -120L120 120M120 -120L-120 120" stroke="#fff" stroke-width="44" stroke-linecap="round"/><path d="M-120 -120L120 120M120 -120L-120 120" stroke="#E8231F" stroke-width="28" stroke-linecap="round"/></g>
+   <g id="orb1"></g></svg>
+  <div class="a rays" data-at="-1" data-an="pop" data-spin="14" style="left:640px;top:160px;width:560px;height:560px"></div>
+  <div class="a tub" data-at="-1" data-an="pop" data-float="0" data-out="1.05" style="left:775px;top:230px;width:290px;height:474px"></div>
+  <div class="a photo" data-at="1.16" data-an="pop" style="left:760px;top:150px;width:520px;height:520px"><img id="ftF"></div>
+  <div class="a" data-at="-1" data-an="pop" style="left:220px;top:250px"><span class="stk" style="font-size:44px;background:#9BE58C">ผงผัก?</span></div>
+ </div>
+ <div class="kt" data-at="-1" data-st="0.03" data-fx="shake" data-pulse="1" data-out="1.1" style="top:790px;font-size:110px;color:#FF6B6B">ไม่ใช่ผงผัก!</div>
+ <div class="kt" data-at="1.16" data-st="0.045" data-fx="bounce" data-out="2.1" style="top:790px;font-size:104px;color:#FFD23F">แต่คือผงวิตามิน</div>
+ <div class="kt" data-at="2.18" data-st="0.04" data-fx="jelly" style="top:790px;font-size:100px;color:#fff">รวมวิตามินไว้หมดแล้ว</div>
+</div>
+
+<!-- S2 4.08-7.42 vitamins A D E K C B, all in here (vitamin balls pop, then get sucked into the tub) -->
+<div class="scene" data-s="4.08" data-e="7.42" data-bg="rainbow" data-tr="iris" data-cam="4.08:1.15:720:380;5.9:1.15:720:380;6.5:1:720:540;7.42:1.04:720:520">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="arc2"></g></svg>
+  <div class="a photo" data-at="6.1" data-an="pop" style="left:440px;top:360px;width:560px;height:420px"><img id="ftC"></div>
+  <div class="a" data-at="5.74" data-an="stamp" style="left:1000px;top:150px"><span class="stk" id="all2" style="font-size:48px;background:#3DDC97">ครบ!</span></div>
+ </div>
+ <div class="kt" data-at="4.08" data-st="0.05" data-fx="bounce" data-out="6.18" style="top:800px;font-size:104px;color:#fff">วิตามิน A D E K C B</div>
+ <div class="kt" data-at="6.26" data-st="0.045" data-fx="jelly" style="top:800px;font-size:100px;color:#FFD23F">รวมอยู่ในนี้หมด</div>
+</div>
+
+<!-- S3 7.42-10.22 no thinking, one sachet and done, any meal (kitchen; pan kid -> glass macro -> meal icons) -->
+<div class="scene" data-s="7.42" data-e="10.22" data-bg="kitchen" data-tr="stripe" data-cam="7.42:1.2:330:450;8.2:1.2:330:450;8.6:1.3:740:430;9.2:1.3:740:430;9.6:1.15:1080:430;10.22:1.15:1080:430">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><rect x="-200" y="660" width="1840" height="600" fill="#F0C79A" stroke="#1B2A4A" stroke-width="7"/><g id="pills3"></g><g id="glass3" transform="translate(740 470)"></g><g id="sach3"></g><g id="meals3"></g></svg>
+  <div class="a" data-at="7.42" data-an="up" style="left:200px;top:260px;width:250px;height:361px"><svg width="250" height="361" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#FF8FB1","hair":"#3A2A1E","faces":[{"e":"wow","vis":"0,8.3"},{"e":"happy","vis":"8.3,99"}],"armL":"up","armR":"down"}'></g></svg></div>
+  <div class="a photo" data-at="8.38" data-an="pop" data-out="9.3" style="left:500px;top:250px;width:480px;height:360px"><img id="ftI"></div>
+  <div class="a" data-at="8.6" data-an="stamp" style="left:850px;top:200px"><span class="stk" id="one3" style="font-size:42px;background:#FFD23F">ซองเดียวจบ</span></div>
+ </div>
+ <div class="kt" data-at="7.42" data-st="0.045" data-fx="bounce" data-out="8.3" style="top:800px;font-size:100px;color:#fff">ไม่ต้องคิดเยอะ</div>
+ <div class="kt" data-at="8.38" data-st="0.05" data-fx="jelly" data-out="9.26" style="top:800px;font-size:104px;color:#FFD23F">ชงซองเดียวจบ</div>
+ <div class="kt" data-at="9.34" data-st="0.045" data-fx="drop" style="top:800px;font-size:100px;color:#3DDC97">มื้อไหนก็ได้</div>
+</div>
+
+<!-- S4 10.22-13.76 with chicken rice, krapao, meals short on vitamins (street stall, drone top-down over plates) -->
+<div class="scene" data-s="10.22" data-e="13.76" data-bg="stall" data-tr="zoom" data-cam="10.22:0.92:720:500:-6;11.6:1:720:520:0;12.2:1:720:520;12.7:1.3:1080:420;13.76:1.3:1080:420">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="aw4"></g><rect x="120" y="230" width="1200" height="560" rx="40" fill="#A8D8C0" stroke="#1B2A4A" stroke-width="8"/><g id="plateA" transform="translate(420 500)"></g><g id="plateB" transform="translate(760 520)"></g><g id="met4" transform="translate(1080 420)"></g></svg>
+  <div class="a" data-at="10.76" data-an="stamp" style="left:290px;top:260px"><span class="stk" style="font-size:38px;background:#fff">ข้าวมันไก่</span></div>
+  <div class="a" data-at="11.3" data-an="stamp" style="left:640px;top:270px"><span class="stk" style="font-size:38px;background:#fff">ข้าวกะเพรา</span></div>
+ </div>
+ <div class="kt" data-at="10.3" data-st="0.045" data-fx="bounce" data-out="12.16" style="top:800px;font-size:100px;color:#fff">กินกับมื้อไหนก็ได้</div>
+ <div class="kt" data-at="12.24" data-st="0.04" data-fx="shake" style="top:800px;font-size:92px;color:#FF6B6B">มื้อที่วิตามินน้อย</div>
+</div>
+
+<!-- S5 13.76-17.42 add one sachet: vitamins complete (same stall, low angle on the drink, meter fills) -->
+<div class="scene" data-s="13.76" data-e="17.42" data-bg="stall" data-tr="iris" data-cam="13.76:1.08:620:600:0:12;15.0:1:720:540;15.8:1.12:980:470;17.42:1.12:980:470">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="aw5"></g><rect x="120" y="230" width="1200" height="560" rx="40" fill="#A8D8C0" stroke="#1B2A4A" stroke-width="8"/><g id="plateC" transform="translate(360 540)"></g><g id="glass5" transform="translate(700 500)"></g><g id="sach5"></g><g id="met5" transform="translate(1060 420)"></g></svg>
+  <div class="a tub" data-at="13.8" data-an="right" data-float="0.5" style="left:812px;top:440px;width:150px;height:245px"></div>
+  <div class="a photo" data-at="13.76" data-an="left" data-out="14.95" style="left:170px;top:200px;width:420px;height:560px"><img id="ftB"></div>
+  <div class="a photo" data-at="16.18" data-an="pop" style="left:390px;top:230px;width:380px;height:507px"><img id="ftA"></div>
+ </div>
+ <div class="kt" data-at="13.76" data-st="0.045" data-fx="bounce" data-out="15.08" style="top:800px;font-size:100px;color:#fff">เสริมด้วยตัวนี้</div>
+ <div class="kt" data-at="15.16" data-st="0.05" data-fx="jelly" data-out="16.1" style="top:800px;font-size:104px;color:#FFD23F">ซองเดียวจบ!</div>
+ <div class="kt" data-at="16.18" data-st="0.05" data-fx="bounce" style="top:800px;font-size:104px;color:#3DDC97">วิตามินครบ</div>
+</div>
+
+<!-- S6 17.42-19.08 more energy, skin not dull (park; tracking the runner -> close-up face) -->
+<div class="scene" data-s="17.42" data-e="19.08" data-bg="park" data-tr="stripe" data-cam="17.42:1:620:520;18.1:1:820:520;18.3:1.45:900:330;19.08:1.45:900:330">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><path d="M-200 640 Q360 600 720 630 T1640 620 V1300 H-200Z" fill="#8EE6A6" stroke="#1B2A4A" stroke-width="7"/><g id="trees6"></g><g id="spk6"></g></svg>
+  <div class="a" id="run6" data-at="17.42" data-an="fade" style="left:400px;top:250px;width:290px;height:419px"><svg width="290" height="419" viewBox="-180 -500 360 520"><g data-kid='{"shirt":"#FFD23F","hair":"#2B1B12","faces":[{"e":"happy"}],"armL":"up","armR":"up"}'></g></svg></div>
+  <div class="a" id="bat6w" data-at="17.5" data-an="pop" style="left:0;top:0"><svg width="1" height="1"><g id="bat6"></g></svg></div>
+ </div>
+ <div class="kt" data-at="17.42" data-st="0.05" data-fx="bounce" data-out="18.2" style="top:800px;font-size:104px;color:#FFD23F">พลังงานเยอะขึ้น</div>
+ <div class="kt" data-at="18.28" data-st="0.05" data-fx="jelly" style="top:800px;font-size:104px;color:#FF8FB1">ผิวไม่โทรม</div>
+</div>
+
+<!-- S7 19.08-20.36 must get this one (hero, low angle) -->
+<div class="scene" data-s="19.08" data-e="20.36" data-bg="hero" data-tr="zoom" data-cam="19.08:1.12:720:640:0:12;20.36:1:720:540">
+ <div class="cam">
+  <div class="a rays" data-at="19.08" data-an="pop" data-spin="18" style="left:400px;top:100px;width:640px;height:640px"></div>
+  <div class="a photo" data-at="19.08" data-an="drop" style="left:520px;top:150px;width:400px;height:500px"><img id="ftJ"></div>
+ </div>
+ <div class="kt" data-at="19.1" data-st="0.05" data-fx="jelly" style="top:790px;font-size:120px;color:#FFD23F">ต้องจัดตัวนี้!</div>
+</div>
+
+<!-- S8 20.36-end made by CEO Factory, trust the quality (real-photo proof insert over its blurred copy) -->
+<div class="scene" data-s="20.36" data-e="99" data-bg="factory" data-tr="iris" data-cam="20.36:1:720:540;22.6:1.05:620:400;23.0:1:720:540;25.1:1.03:720:530">
+ <div id="confetti"></div>
+ <div class="cam">
+  <div style="position:absolute;left:-200px;top:-200px;width:1840px;height:1480px;background:url(factory.jpg) center/cover;filter:blur(26px) brightness(1.05);transform:scale(1.1)"></div>
+  <div style="position:absolute;inset:0;background:rgba(255,255,255,.25)"></div>
+  <div class="a photo" data-at="20.36" data-an="pop" style="left:240px;top:150px;width:760px;height:460px"><img src="factory.jpg" id="kb8"></div>
+  <div class="a" data-at="20.9" data-an="stamp" style="left:370px;top:560px;width:500px;text-align:center"><span class="stk" id="ceo8" style="font-size:60px;background:#FFD23F">CEO Factory</span></div>
+  <div class="a tub" data-at="22.74" data-an="right" data-float="0.3" style="left:1040px;top:300px;width:230px;height:376px"></div>
+  <div class="a" data-at="23.2" data-an="stamp" style="left:1160px;top:230px"><svg width="130" height="145" viewBox="0 0 52 58"><path d="M26 3 L48 11 V28 C48 42 38 51 26 55 C14 51 4 42 4 28 V11 Z" fill="#3DDC97" stroke="#1B2A4A" stroke-width="3"/><path d="M15 29 l8 8 l15 -16" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+ </div>
+ <div class="kt" data-at="20.36" data-st="0.045" data-fx="bounce" data-out="22.66" style="top:820px;font-size:96px;color:#fff">โรงงาน CEO Factory</div>
+ <div class="kt" data-at="22.74" data-st="0.05" data-fx="jelly" style="top:820px;font-size:100px;color:#3DDC97">ไว้ใจคุณภาพได้!</div>
+</div>
+
+<div id="rings"></div>
+<svg id="annL" width="1440" height="1080"></svg>
+<div id="stripe"><div style="left:0;background:#FFD23F"></div><div style="left:160px;background:#FF8FB1"></div><div style="left:320px;background:#7FD3FF"></div><div style="left:480px;width:2520px;background:#3DDC97"></div></div>
+<div id="safe" style="display:none;position:absolute;left:130px;top:130px;width:1180px;height:820px;border:3px dashed #f0f;z-index:99"></div>
+</div>
+<script>
+const W=1440,H=1080,INK='#1B2A4A',NS='http://www.w3.org/2000/svg';
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eOC=p=>1-Math.pow(1-p,3);
+const eOB=p=>{const c1=2.2,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+const eIO=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+const eBn=p=>{const n=7.5625,d=2.75;if(p<1/d)return n*p*p;if(p<2/d)return n*(p-=1.5/d)*p+.75;if(p<2.5/d)return n*(p-=2.25/d)*p+.9375;return n*(p-=2.625/d)*p+.984375};
+let seed=41;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+const $=id=>document.getElementById(id);
+if(location.hash==='#safe')$('safe').style.display='block';
+const mk=(tag,at,par)=>{const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);if(par)par.appendChild(e);return e};
+const H$=(par,html)=>{const g=mk('g',{},par);g.innerHTML=html;return g};
+// ---- kid
+function face(e){const k=`stroke="${INK}" stroke-width="7" fill="none" stroke-linecap="round"`;let s='';
+ if(e==='happy')s=`<path d="M-48 -8q16-18 32 0M16 -8q16-18 32 0" ${k}/><path d="M-30 22Q0 62 30 22z" fill="${INK}"/><path d="M-16 40q16 12 32 0" fill="#FF6B6B"/>`;
+ else if(e==='wow')s=`<ellipse cx="-30" cy="-6" rx="15" ry="19" fill="${INK}"/><ellipse cx="30" cy="-6" rx="15" ry="19" fill="${INK}"/><circle cx="-25" cy="-13" r="6" fill="#fff"/><circle cx="35" cy="-13" r="6" fill="#fff"/><ellipse cx="0" cy="38" rx="13" ry="17" fill="${INK}"/>`;
+ else if(e==='bored')s=`<path d="M-48 -4h30M18 -4h30" ${k}/><path d="M-48 8q15 8 30 0M18 8q15 8 30 0" stroke="#8C6BC9" stroke-width="5" fill="none"/><path d="M-18 36q9-7 18 0t18 0" ${k}/>`;
+ else s=`<circle cx="-30" cy="-6" r="9" fill="${INK}"/><circle cx="30" cy="-6" r="9" fill="${INK}"/><path d="M-18 40q18-14 36 0" ${k}/>`;
+ return s+`<ellipse cx="-58" cy="20" rx="16" ry="10" fill="#FF8FA3" opacity=".7"/><ellipse cx="58" cy="20" rx="16" ry="10" fill="#FF8FA3" opacity=".7"/>`}
+function kid(o){const sk='#FFD7B5',sh=o.shirt||'#FF8FB1',hr=o.hair||'#2B1B12';let s='';
+ const arm=(sd,k)=>{const sx=sd*70,sy=-170;let ex,ey;if(k==='up'){ex=sd*130;ey=-330}else if(k==='hold'){ex=sd*120;ey=-200}else if(k==='thumb'){ex=sd*125;ey=-250}else{ex=sd*95;ey=-40}
+  let h=`<path d="M${sx} ${sy}L${ex} ${ey}" stroke="${INK}" stroke-width="44" stroke-linecap="round"/><path d="M${sx} ${sy}L${ex} ${ey}" stroke="${sh}" stroke-width="32" stroke-linecap="round"/><circle cx="${ex}" cy="${ey}" r="24" fill="${sk}" stroke="${INK}" stroke-width="6"/>`;
+  if(k==='thumb')h+=`<rect x="${ex-10}" y="${ey-62}" width="20" height="46" rx="10" fill="${sk}" stroke="${INK}" stroke-width="6"/>`;return h};
+ s+=arm(-1,o.armL||'down')+arm(1,o.armR||'down');
+ s+=`<path d="M-100 20V-130a50 50 0 0150-50h100a50 50 0 0150 50V20z" fill="${sh}" stroke="${INK}" stroke-width="7"/><path d="M-34 -180q34 40 68 0" fill="#fff" stroke="${INK}" stroke-width="6"/>`;
+ s+=`<g transform="translate(0 -290)"><circle cx="-104" cy="6" r="22" fill="${sk}" stroke="${INK}" stroke-width="6"/><circle cx="104" cy="6" r="22" fill="${sk}" stroke="${INK}" stroke-width="6"/><circle r="104" fill="${sk}" stroke="${INK}" stroke-width="7"/><path d="M-104 4C-114 -150 114 -150 104 4C96 -40 50 -64 6 -50C-20 -70 -70 -58 -104 4z" fill="${hr}" stroke="${INK}" stroke-width="6"/>`;
+ (o.faces||[{e:'happy'}]).forEach(f=>{s+=`<g ${f.vis?`data-vis="${f.vis}"`:''}>${face(f.e)}</g>`});s+='</g>';return s}
+document.querySelectorAll('[data-kid]').forEach(g=>g.innerHTML=kid(JSON.parse(g.dataset.kid)));
+// ---- helpers
+function sunSvg(r=60){let s='<g class="sunrays">';for(let i=0;i<12;i++)s+=`<path d="M0 ${-r-14} l11 -30 l11 30z" transform="rotate(${i*30}) translate(-11 0)" fill="#FFB300" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>`;return s+`</g><circle r="${r}" fill="#FFD23F" stroke="${INK}" stroke-width="6"/>`}
+const VIT=[['A','#FF9F1C'],['D','#FFD23F'],['E','#3DDC97'],['K','#B18CFF'],['C','#FF6B6B'],['B','#4AA8FF']];
+function vball(l,c,r=70){return `<circle r="${r}" fill="${c}" stroke="${INK}" stroke-width="6"/><ellipse cx="${-r*0.32}" cy="${-r*0.42}" rx="${r*0.32}" ry="${r*0.18}" fill="#fff" opacity=".7"/><text y="${r*0.32}" text-anchor="middle" font-family="K" font-weight="900" font-size="${r*1.05}" fill="#fff" stroke="${INK}" stroke-width="${r*0.12}" paint-order="stroke fill">${l}</text>`}
+function sachet(){return `<g><path d="M-55 -150 h110 v300 h-110z" fill="#fff" stroke="${INK}" stroke-width="6"/><path d="M-55 -150 h110 v40 h-110z M-55 110 h110 v40 h-110z" fill="#E8394E"/><path d="M-55 -150 l10 -10 l10 10 l10 -10 l10 10 l10 -10 l10 10 l10 -10 l10 10 l10 -10 l10 10 l10 -10" fill="none" stroke="${INK}" stroke-width="4"/>
+ <rect x="-44" y="-90" width="88" height="34" rx="8" fill="#1F5FAF"/><text y="-65" text-anchor="middle" font-family="K" font-weight="900" font-size="24" fill="#fff">MULTI</text><text y="-30" text-anchor="middle" font-family="K" font-weight="800" font-size="16" fill="#3DA0FF">VITAMIN</text><text y="-10" text-anchor="middle" font-family="K" font-weight="800" font-size="16" fill="#E8394E">PLUS</text>
+ <circle cx="0" cy="45" r="30" fill="#FF6B6B" stroke="${INK}" stroke-width="4"/><path d="M0 18 q8 -14 18 -10" stroke="#3DBE6B" stroke-width="6" fill="none"/></g>`}
+function glass(){return `<path d="M-90 -170 L90 -170 L70 140 Q0 160 -70 140Z" fill="rgba(255,255,255,.6)" stroke="${INK}" stroke-width="7"/><clipPath id="GC__"><path d="M-86 -166 L86 -166 L66 136 Q0 156 -66 136Z"/></clipPath>`}
+function mkGlass(g,id){g.innerHTML=glass().replace('GC__','gc'+id)+`<g clip-path="url(#gc${id})"><rect class="liq" x="-100" y="160" width="200" height="0" fill="#7FD3FF"/></g><path d="M-60 -140 L-50 110" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".7"/>`;return g.querySelector('.liq')}
+function plate(type){let s=`<ellipse rx="190" ry="150" fill="#fff" stroke="${INK}" stroke-width="7"/><ellipse rx="150" ry="115" fill="none" stroke="#E3E8F0" stroke-width="6"/><ellipse cx="-30" cy="10" rx="95" ry="70" fill="#FFFDF5" stroke="${INK}" stroke-width="5"/>`;
+ if(type==='chicken')s+=[0,1,2,3].map(i=>`<rect x="${-10+i*24}" y="${-50+i*6}" width="22" height="90" rx="8" fill="#FFE9C9" stroke="${INK}" stroke-width="4" transform="rotate(-15)"/>`).join('')+`<circle cx="110" cy="-40" r="24" fill="#8BD27A" stroke="${INK}" stroke-width="4"/><circle cx="120" cy="10" r="24" fill="#8BD27A" stroke="${INK}" stroke-width="4"/>`;
+ else if(type==='krapao')s+=`<path d="M10 -50 q60 -10 90 30 q-10 50 -80 40 q-40 -30 -10 -70z" fill="#8A5A3C" stroke="${INK}" stroke-width="5"/>`+[[40,-30],[70,0],[30,10]].map(([x,y])=>`<ellipse cx="${x}" cy="${y}" rx="14" ry="8" fill="#3DBE6B" stroke="${INK}" stroke-width="3"/>`).join('')+`<ellipse cx="-80" cy="-40" rx="56" ry="44" fill="#fff" stroke="${INK}" stroke-width="5"/><circle cx="-76" cy="-40" r="22" fill="#FFB300" stroke="${INK}" stroke-width="4"/>`;
+ else s+=`<path d="M10 -40 q50 -10 70 20 q-10 40 -60 30z" fill="#C98B55" stroke="${INK}" stroke-width="5"/>`;
+ return s}
+function meter(g){setTimeout(()=>{},0);g.innerHTML=`<rect x="-70" y="-190" width="140" height="380" rx="30" fill="#fff" stroke="${INK}" stroke-width="8"/><rect class="mf" x="-50" y="170" width="100" height="0" rx="16" fill="#FF6B6B"/><text x="0" y="-238" text-anchor="middle" font-family="K" font-weight="900" font-size="40" fill="${INK}">วิตามิน</text><text class="mt" x="0" y="262" text-anchor="middle" font-family="K" font-weight="900" font-size="56" fill="${INK}">0%</text>`;
+ g.querySelector('rect').id=g.id+'r';return v=>{const h=340*v/100;const f=g.querySelector('.mf');f.setAttribute('height',h);f.setAttribute('y',170-h);f.setAttribute('fill',v<40?'#FF6B6B':v<80?'#FFD23F':'#3DDC97');g.querySelector('.mt').textContent=Math.round(v)+'%'}}
+function awning(g){let h='';for(let i=0;i<16;i++)h+=`<path d="M${-100+i*110} -40 h110 v120 q-27 30 -55 0 q-28 30 -55 0z" fill="${i%2?'#fff':'#FF6B6B'}" stroke="${INK}" stroke-width="5"/>`;g.innerHTML=h}
+// ---- builds
+H$($('veg1'),`<path d="M-170 0 h340 q-20 130 -170 130 q-150 0 -170 -130z" fill="#fff" stroke="${INK}" stroke-width="7"/><ellipse rx="170" ry="34" fill="#5FB84A" stroke="${INK}" stroke-width="7"/>`+[[-80,-60],[0,-90],[80,-55]].map(([x,y])=>`<g transform="translate(${x} ${y})"><rect x="-10" y="0" width="20" height="60" fill="#8FD07A" stroke="${INK}" stroke-width="4"/><circle cy="-10" r="38" fill="#3DA84A" stroke="${INK}" stroke-width="5"/><circle cx="-26" cy="4" r="24" fill="#3DA84A" stroke="${INK}" stroke-width="5"/><circle cx="26" cy="4" r="24" fill="#3DA84A" stroke="${INK}" stroke-width="5"/></g>`).join(''));
+const ORB1=VIT.map(([l,c],i)=>({g:H$($('orb1'),vball(l,c,44)),i}));
+const ARC2=VIT.map(([l,c],i)=>{const a=Math.PI*(1.1+i*0.16);return{g:H$($('arc2'),vball(l,c,82)),x:720+Math.cos(a)*420,y:520+Math.sin(a)*330,t:4.15+i*0.22}});
+{const g=$('pills3');[[150,520,'#FF8FB1'],[200,600,'#7FD3FF'],[460,560,'#FFD23F'],[520,620,'#B18CFF'],[110,640,'#3DDC97']].forEach(([x,y,c])=>g.insertAdjacentHTML('beforeend',`<g transform="translate(${x} ${y})" class="pb"><rect x="-26" y="-60" width="52" height="80" rx="10" fill="${c}" stroke="${INK}" stroke-width="5"/><rect x="-30" y="-78" width="60" height="22" rx="6" fill="#fff" stroke="${INK}" stroke-width="5"/></g>`));
+ g.insertAdjacentHTML('beforeend',`<path class="pbx" d="M60 460 L560 700 M560 460 L60 700" stroke="#E8231F" stroke-width="18" stroke-linecap="round" opacity="0"/>`)}
+const liq3=mkGlass($('glass3'),3),liq5=mkGlass($('glass5'),5);
+const S3=H$($('sach3'),sachet()),S5=H$($('sach5'),sachet());
+const MEALS=[[960,'เช้า',0],[1100,'กลางวัน',1],[1240,'เย็น',2]].map(([x,l,k])=>{const icon=k===2?`<path d="M-30 -40a46 46 0 1 0 40 70 38 38 0 1 1-40-70z" fill="#FFE98A" stroke="${INK}" stroke-width="5"/>`:`<g transform="scale(${k?0.8:0.65})">${sunSvg(44)}</g>`;return H$($('meals3'),`<g transform="translate(${x} 420)"><circle r="70" fill="#fff" stroke="${INK}" stroke-width="6"/>${icon}<text y="120" text-anchor="middle" font-family="K" font-weight="900" font-size="34" fill="${INK}">${l}</text></g>`)});
+awning($('aw4'));awning($('aw5'));
+H$($('plateA'),plate('chicken'));H$($('plateB'),plate('krapao'));H$($('plateC'),plate('chicken'));
+const M4=meter($('met4')),M5=meter($('met5'));
+{const g=$('trees6');for(const [x,s] of [[150,1],[1300,0.9],[1120,0.7]])g.insertAdjacentHTML('beforeend',`<g transform="translate(${x} 640) scale(${s})"><rect x="-16" y="-120" width="32" height="130" fill="#A86B3C" stroke="${INK}" stroke-width="6"/><circle cy="-170" r="90" fill="#3DBE6B" stroke="${INK}" stroke-width="7"/></g>`)}
+H$($('bat6'),`<rect x="-40" y="-70" width="80" height="140" rx="16" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="-18" y="-84" width="36" height="16" rx="5" fill="${INK}"/><rect x="-28" y="-56" width="56" height="112" rx="9" fill="#3DDC97"/><path d="M6 -40 L-14 6 H2 L-8 44 L18 -6 H0Z" fill="#FFD23F" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>`);
+const SPK6=[];for(let i=0;i<7;i++){const a=i/7*Math.PI*2;SPK6.push({g:H$($('spk6'),`<path d="M0 -26 L7 -7 L26 0 L7 7 L0 26 L-7 7 L-26 0 L-7 -7Z" fill="#FFD23F" stroke="${INK}" stroke-width="4"/>`),a})}
+// ---- annotations (tracked from real element boxes, end with their scene)
+const ANNS=[{at:6.0,el:'all2',ang:-140},{at:8.9,el:'one3',ang:-40},{at:16.7,el:'met5r',kx:1.5,ky:1.06,pad:6,ang:-150},{at:21.2,el:'ceo8',ang:-40}];
+ANNS.forEach(a=>{const g=mk('g',{opacity:0},$('annL'));a.g=g;const st=(w,c)=>({fill:'none',stroke:c,'stroke-width':w,'stroke-linecap':'round','stroke-linejoin':'round'});a.ew=mk('path',st(17,'#fff'),g);a.er=mk('path',st(10,'#E8231F'),g);a.aw=mk('path',st(17,'#fff'),g);a.ar=mk('path',st(10,'#E8231F'),g)});
+let _T=0;
+function tRect(a){const el=$(a.el);if(!el)return null;const sc=el.closest('.scene');if(sc&&(sc.style.display==='none'||_T>=+sc.dataset.e))return null;const aa=el.closest('.a');if(aa&&+aa.style.opacity<0.5)return null;const sr=$('stage').getBoundingClientRect();const r=el.getBoundingClientRect();if(r.width<2)return null;return{x:(r.left+r.right)/2-sr.left,y:(r.top+r.bottom)/2-sr.top,w:r.width,h:r.height}}
+function drawAnn(t){_T=t;for(const a of ANNS){const d=t-a.at;if(d<0||d>1.9){a.g.setAttribute('opacity',0);continue}const r=tRect(a);if(!r){a.g.setAttribute('opacity',0);continue}
+  const pad=a.pad??12,rx=r.w/2*(a.kx||1.22)+pad,ry=r.h/2*(a.ky||1.6)+pad;let e='';const N=60,sw=2*Math.PI*1.04,a0=-2.5;
+  for(let i=0;i<=N;i++){const th=a0+sw*i/N;const w=1+0.012*Math.sin(i*0.5);e+=(i?'L':'M')+(r.x+Math.cos(th)*rx*w).toFixed(1)+' '+(r.y+Math.sin(th)*ry*w).toFixed(1)}
+  const ang=(a.ang??-40)*Math.PI/180,ex=r.x+Math.cos(ang)*(rx+16),ey=r.y+Math.sin(ang)*(ry+16),sx=r.x+Math.cos(ang)*(rx+105),sy=r.y+Math.sin(ang)*(ry+105);
+  const dx=ex-sx,dy=ey-sy,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L,hl=26;const ar=`M${sx.toFixed(1)} ${sy.toFixed(1)} Q${((sx+ex)/2-uy*14).toFixed(1)} ${((sy+ey)/2+ux*14).toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)} M${(ex-ux*hl-uy*hl*0.6).toFixed(1)} ${(ey-uy*hl+ux*hl*0.6).toFixed(1)} L${ex.toFixed(1)} ${ey.toFixed(1)} L${(ex-ux*hl+uy*hl*0.6).toFixed(1)} ${(ey-uy*hl-ux*hl*0.6).toFixed(1)}`;
+  const k1=eOC(cl(d/0.35)),k2=eOC(cl((d-0.25)/0.2)),fo=1-cl((d-1.6)/0.3);
+  [a.ew,a.er].forEach(p=>{p.setAttribute('d',e);const Lp=p.getTotalLength();p.style.strokeDasharray=Lp;p.style.strokeDashoffset=Lp*(1-k1)});
+  [a.aw,a.ar].forEach(p=>{p.setAttribute('d',ar);p.setAttribute('opacity',k2>0?1:0)});a.g.setAttribute('opacity',fo)}}
+// ---- kinetic text
+const seg=new Intl.Segmenter('th',{granularity:'grapheme'});
+const kts=[...document.querySelectorAll('.kt')].map(el=>{const txt=el.textContent;el.textContent='';const gs=[];for(const {segment} of seg.segment(txt)){const s=document.createElement('span');s.className='g';s.textContent=segment===' '?' ':segment;el.appendChild(s);gs.push(s)}
+ return{el,gs,at:+el.dataset.at,st:+el.dataset.st,fx:el.dataset.fx,out:el.dataset.out?+el.dataset.out:null,pulse:!!el.dataset.pulse}});
+function ktRender(t){for(const k of kts){const vis=t>=k.at-0.05;const outk=k.out!==null?cl((t-k.out)/0.25):0;k.el.style.opacity=vis?1-outk:0;if(!vis||outk>=1)continue;
+ k.el.style.transform=(outk>0?`translateY(${-60*eIO(outk)}px) scale(${1-.2*outk})`:'')+(k.pulse?` scale(${1+0.035*Math.sin(t*6)})`:'');
+ k.gs.forEach((g,i)=>{const lt=t-k.at-i*k.st;if(lt<0){g.style.opacity=0;return}g.style.opacity=1;let tr='';
+  if(k.fx==='bounce'){const p=cl(lt/0.38);tr=`translateY(${-90*(1-eOB(p))}px) scale(${p<=0?0:eOB(p)}) rotate(${(1-p)*-18}deg)`}
+  else if(k.fx==='drop'){const p=cl(lt/0.45);tr=`translateY(${-260*(1-eBn(p))}px)`;g.style.opacity=cl(p*4)}
+  else if(k.fx==='jelly'){const p=cl(lt/0.3);const w=lt>0.3?Math.sin((lt-.3)*20)*Math.exp(-(lt-.3)*5):0;tr=`scale(${(p<=0?0:eOB(p))*(1+0.22*w)},${(p<=0?0:eOB(p))*(1-0.22*w)})`}
+  else if(k.fx==='shake'){const p=cl(lt/0.3);tr=`scale(${p<=0?0:eOB(p)}) rotate(${Math.sin(lt*30)*8*Math.exp(-lt*2.5)}deg) translateX(${Math.sin(lt*45)*10*Math.exp(-lt*3)}px)`}
+  if(lt>0.6)tr+=` translateY(${Math.sin(t*5+i*.7)*5}px)`;g.style.transform=tr})}}
+// ---- scenes + camera (t:scale:x:y:rot:tiltX)
+const scenes=[...document.querySelectorAll('.scene')].map(el=>{const bg=document.createElement('div');bg.className='sbg '+el.dataset.bg;el.insertBefore(bg,el.firstChild);
+ const pl=document.createElement('div');pl.style.cssText='position:absolute;inset:0;pointer-events:none';el.insertBefore(pl,bg.nextSibling);const parts=[];
+ const cols=['#FFD23F','#FF8FB1','#7FA2FF','#3DDC97','#fff'];for(let k=0;k<10;k++){const d=document.createElement('div');d.className='dot';const s=10+rnd()*18;d.style.width=d.style.height=s+'px';d.style.background=cols[k%5];pl.appendChild(d);parts.push({d,x:160+rnd()*1120,y:rnd()*H,v:14+rnd()*24,ph:rnd()*6.28})}
+ const cam=(el.dataset.cam||'').split(';').filter(Boolean).map(k=>k.split(':').map(Number));
+ return{el,s:+el.dataset.s,e:+el.dataset.e,tr:el.dataset.tr||'',parts,cam,camEl:el.querySelector('.cam'),items:[...el.querySelectorAll('.a')]}});
+function camAt(keys,t){const g=(k,j)=>k[j]||0;const J=[1,2,3,4,5];if(!keys.length)return[1,720,540,0,0];if(t<=keys[0][0])return J.map(j=>g(keys[0],j));for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t<=b[0]){const p=eIO(cl((t-a[0])/(b[0]-a[0])));return J.map(j=>g(a,j)+(g(b,j)-g(a,j))*p)}}return J.map(j=>g(keys[keys.length-1],j))}
+const ringDefs=[[1.16,920,470],[5.74,1070,190],[6.6,720,640],[8.6,740,470],[9.34,1100,420],[12.24,1080,420],[16.6,1060,420],[17.5,640,450],[19.08,720,430],[20.9,620,600],[23.2,1220,300]];
+const rw=$('rings');const rings=ringDefs.map(([t,x,y])=>{const d=document.createElement('div');d.className='ring';d.style.left=x+'px';d.style.top=y+'px';rw.appendChild(d);return{d,t}});
+const conf=[];{const cw=$('confetti');const cc=['#FFD23F','#FF8FB1','#7FD3FF','#3DDC97','#FF6B6B'];for(let i=0;i<70;i++){const d=document.createElement('div');d.className='conf';d.style.background=cc[i%5];cw.appendChild(d);conf.push({d,x:200+rnd()*1040,vy:240+rnd()*300,vx:(rnd()-.5)*180,r:rnd()*360,vr:(rnd()-.5)*720,dl:rnd()*0.5,sw:rnd()*6})}}
+function animT(an,p){switch(an){case'fade':return[eOC(p),''];case'pop':return[cl(p*4),`scale(${p<=0?0:eOB(p)})`];
+ case'stamp':{const e=eOB(p);return[cl(p*5),`scale(${1.7-0.7*e}) rotate(${-8*(1-e)}deg)`]}
+ case'up':{const e=eOB(p);return[cl(p*3),`translateY(${120*(1-e)}px)`]}case'left':{const e=eOB(p);return[cl(p*3),`translateX(${-360*(1-e)}px)`]}
+ case'right':{const e=eOB(p);return[cl(p*3),`translateX(${360*(1-e)}px)`]}case'drop':return[cl(p*5),`translateY(${-700*(1-eBn(p))}px)`]}return[1,'']}
+const DUR={fade:.35,pop:.45,stamp:.38,up:.45,left:.5,right:.5,drop:.7};const TR=0.4;
+const gv=(t,keys)=>{let v=keys[0][1];for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t>=a[0]&&t<b[0]){v=a[1]+(b[1]-a[1])*eOC(cl((t-a[0])/(b[0]-a[0])));break}if(t>=b[0])v=b[1]}return v};
+window.render=function(t){
+ scenes.forEach((sc,i)=>{const nx=scenes[i+1];const tail=(nx&&(nx.tr==='iris'||nx.tr==='zoom'||nx.tr==='slideup'))?TR:0;
+  const on=t>=sc.s&&t<sc.e+tail;sc.el.style.display=on?'block':'none';if(!on)return;
+  const lt=t-sc.s,q=cl(lt/TR);let tf='',clip='none',op=1;
+  if(sc.tr==='iris')clip=`circle(${eIO(q)*110}% at 50% 50%)`;else if(sc.tr==='zoom'){tf=`scale(${1.3-0.3*eOC(q)})`;op=q}else if(sc.tr==='slideup')tf=`translateY(${(1-eOC(q))*1080}px)`;
+  sc.el.style.transform=tf;sc.el.style.clipPath=q<1?clip:'none';sc.el.style.opacity=op;sc.el.style.zIndex=i;
+  const[s,fx,fy,rr,tx]=camAt(sc.cam,t);if(sc.camEl)sc.camEl.style.transform=`translate(720px,540px) perspective(1600px) rotateX(${tx}deg) scale(${s}) rotate(${rr}deg) translate(${-fx}px,${-fy}px)`;
+  for(const p of sc.parts){const y=((p.y-p.v*t)%(H+100)+H+100)%(H+100)-50;p.d.style.transform=`translate(${p.x+Math.sin(t*.8+p.ph)*24}px,${y}px)`;p.d.style.opacity=.45*cl((y-140)/80)*cl((940-y)/80)}
+  for(const el of sc.items){const at=+el.dataset.at,an=el.dataset.an,p=at<0?1:cl((t-at)/DUR[an]);let[o,tr]=t<at?[0,'']:animT(an,p);
+   if(el.dataset.out){const k=cl((t-+el.dataset.out)/0.28);if(k>0){o*=1-k;tr+=` translateY(${-eIO(k)*50}px) scale(${1-.2*k})`}}
+   if(el.dataset.float){const ph=+el.dataset.float;tr+=` translateY(${Math.sin(t*2.4+ph)*12}px) rotate(${Math.sin(t*1.8+ph)*3}deg)`}
+   if(el.dataset.bob){const ph=+el.dataset.bob;tr+=` translateY(${Math.sin(t*3.4+ph)*9}px) rotate(${Math.sin(t*2.6+ph)*4}deg)`}
+   if(el.dataset.spin)tr+=` rotate(${t*el.dataset.spin}deg)`;
+   el.style.opacity=o;el.style.transform=tr}});
+ ktRender(t);drawAnn(t);
+ let sx=-3200;for(const sc of scenes){if(sc.tr==='stripe'){const d=t-sc.s;if(d>-0.25&&d<0.25)sx=-3000+eIO((d+0.25)/0.5)*4600}}$('stripe').style.transform=`translateX(${sx}px) skewX(-14deg)`;
+ document.querySelectorAll('[data-vis]').forEach(g=>{const[a,b]=g.dataset.vis.split(',').map(Number);g.style.opacity=(t>=a&&t<b)?1:0});
+ document.querySelectorAll('.sunrays').forEach(g=>g.setAttribute('transform',`rotate(${t*20})`));
+
+ document.querySelectorAll('.sunrays').forEach(g=>g.setAttribute('transform',`rotate(${t*20})`));
+ // S1 veg bowl crossed; vitamin balls orbit the tub after the reveal
+ if(t<4.6){$('x1').setAttribute('transform',`translate(360 520) scale(${1+0.05*Math.sin(t*8)})`);ORB1.forEach(o=>{const k=cl((t-1.3-o.i*0.12)/0.4);const a=t*1.6+o.i*Math.PI/3;o.g.setAttribute('transform',`translate(${1020+Math.cos(a)*320} ${410+Math.sin(a)*300}) scale(${k?eOB(k):0})`)})}
+ // S2 vitamins pop on an arc, then fly into the tub at constant speed
+ if(t>4.0&&t<7.9){ARC2.forEach((b,i)=>{const k=cl((t-b.t)/0.35);const f=cl((t-6.26-i*0.06)/0.5);const x=b.x+(720-b.x)*f,y=b.y+(570-b.y)*f;b.g.setAttribute('transform',`translate(${x} ${y+Math.sin(t*4+i)*8*(1-f)}) scale(${(k?eOB(k):0)*(1-0.7*f)})`);b.g.setAttribute('opacity',f>=1?0:1)})}
+ // S3 pill bottles get crossed; sachet pours into the glass (orange); meal icons pop
+ if(t>7.3&&t<10.7){document.querySelector('#pills3 .pbx').setAttribute('opacity',t>7.9?1:0);const hid=(t>8.38&&t<9.4)?0:1;$('glass3').setAttribute('opacity',hid);
+  const sp=cl((t-8.5)/0.4);S3.setAttribute('transform',`translate(${820-60*sp} ${250-40*sp}) rotate(${-100*sp})`);S3.setAttribute('opacity',t>8.4&&t<9.6?1:0);
+  const lv=gv(t,[[7.4,90],[8.9,90],[9.4,220]]);liq3.setAttribute('y',160-lv);liq3.setAttribute('height',lv);liq3.setAttribute('fill',t<8.85?'#BFE6FF':'#FF8A3D');
+  MEALS.forEach((m,i)=>{const k=cl((t-9.34-i*0.18)/0.35);m.setAttribute('transform',`translate(0 ${k?(1-eOB(k))*80:0})`);m.setAttribute('opacity',k>0?1:0)})}
+ // S4 meter shows low vitamins
+ if(t>10.1&&t<14.2)M4(gv(t,[[12.2,0],[12.8,15]])+Math.sin(t*6)*1.5);
+ // S5 sachet pours into the drink, meter fills to 100%
+ if(t>13.6&&t<17.9){const sp=cl((t-14.3)/0.4);S5.setAttribute('transform',`translate(${780-50*sp} ${250-30*sp}) rotate(${-100*sp})`);S5.setAttribute('opacity',t>14.2&&t<15.3?1:0);
+  const lv=gv(t,[[13.7,120],[14.7,120],[15.2,250]]);liq5.setAttribute('y',160-lv);liq5.setAttribute('height',lv);liq5.setAttribute('fill',t<14.65?'#BFE6FF':'#FF8A3D');M5(gv(t,[[13.7,15],[15.2,15],[16.6,100]]))}
+ // S6 runner crosses the park at constant speed; sparkles round the face
+ if(t>17.3&&t<19.5){const x=400+cl((t-17.42)/0.9)*360;$('run6').style.left=x+'px';$('run6').style.transform+=` translateY(${-Math.abs(Math.sin(t*12))*20}px) rotate(${Math.sin(t*12)*4}deg)`;$('bat6').setAttribute('transform',`translate(${x+230} 250)`);
+  SPK6.forEach((s,i)=>{const k=cl((t-18.3-i*0.05)/0.3);const a=s.a+t*1.5;s.g.setAttribute('transform',`translate(${900+Math.cos(a)*170} ${330+Math.sin(a)*150}) scale(${k?eOB(k)*(0.8+0.3*Math.sin(t*10+i)):0})`)})}
+ // S8 slow push-in on the factory photo
+ if(t>20.3)$('kb8').style.transform=`scale(${1.02+0.025*(t-20.36)})`;
+ for(const r of rings){const d=t-r.t;if(d<0||d>0.6){r.d.style.opacity=0;continue}const p=d/0.6;r.d.style.opacity=.9*(1-p);r.d.style.transform=`scale(${0.2+eOC(p)*1.4})`;r.d.style.borderWidth=(16*(1-p)+2)+'px'}
+ for(const c of conf){const d=t-23.2-c.dl;if(d<0){c.d.style.opacity=0;continue}const cy=140+c.vy*d;c.d.style.opacity=cl((cy-140)/60)*cl((940-cy)/120);c.d.style.transform=`translate(${c.x+c.vx*d*.5+Math.sin(d*4+c.sw)*20}px,${cy}px) rotate(${c.r+c.vr*d}deg) rotateX(${d*400+c.sw*50}deg)`}
+};
+const FT={F:{n:15,t0:1.16,sp:10},C:{n:18,t0:6.1,sp:16},I:{n:21,t0:8.38,sp:23},B:{n:17,t0:13.76,sp:18},A:{n:18,t0:16.18,sp:16},J:{n:11,t0:19.08,sp:12}};
+const _rs=window.render;window.render=function(t){_rs(t);const ps=[];for(const k in FT){const f=FT[k];const img=$('ft'+k);if(!img)continue;const sc=img.closest('.scene');if(sc.style.display==='none')continue;
+ let u=Math.max(0,t-f.t0)*f.sp;const per=2*(f.n-1);u=u%per;const idx=Math.round(u<f.n-1?u:per-u);const src=`ft/${k}/${String(idx+1).padStart(3,'0')}.jpg`;
+ img.style.transform=`scale(${1.02+0.05*Math.min(1,Math.max(0,t-f.t0)/2.5)})`;if(img.getAttribute('src')!==src){img.setAttribute('src',src);ps.push(img.decode().catch(()=>{}))}}return Promise.all(ps)};
+window.render(0);
+</script>
+</body></html>
