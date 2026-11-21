@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2)}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2)}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2)}
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1440px;height:1080px;overflow:hidden;background:#000}
+body{font-family:K,sans-serif;color:#fff}
+#stage{position:relative;width:1440px;height:1080px;overflow:hidden;background:#0E0F12}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.sbg{position:absolute;inset:-60px}
+.studio{background:radial-gradient(circle at 50% 42%,#4A4E57 0%,#22252B 45%,#0B0C0F 100%)}
+.split{background:linear-gradient(90deg,#0F2A63 0%,#163A7A 46%,#1B1D22 54%,#0B0C0F 100%)}
+.lab{background:radial-gradient(circle at 50% 42%,#FFFFFF 0%,#EEF1F6 50%,#C9D0DC 100%)}
+.champ{background:radial-gradient(circle at 50% 30%,#FFFDF7 0%,#F6EAD2 50%,#D8BE8E 100%)}
+.light{background:radial-gradient(circle at 50% 40%,#FFFFFF 0%,#E7E9EE 55%,#B9BEC8 100%)}
+.cam{position:absolute;inset:0;will-change:transform}
+.a{position:absolute;opacity:0;will-change:transform}
+.img{background-position:center;background-size:contain;background-repeat:no-repeat;filter:drop-shadow(0 28px 34px rgba(0,0,0,.55))}
+.nb{background-image:url(new_bottle.png)}.ob{background-image:url(old_bottle.png)}.bx{background-image:url(new_box.png)}
+.img.bx{filter:drop-shadow(0 0 1.5px rgba(255,255,255,.85)) drop-shadow(0 28px 34px rgba(0,0,0,.55))}.pel{background-image:url(pellet.png)}
+.shine{position:absolute;inset:0;background:linear-gradient(105deg,rgba(255,255,255,0) 0 42%,rgba(255,255,255,.5) 50%,rgba(255,255,255,0) 58% 100%) no-repeat;background-size:300% 100%}
+.nb .shine{-webkit-mask:url(new_bottle.png) center/contain no-repeat}.ob .shine{-webkit-mask:url(old_bottle.png) center/contain no-repeat}.bx .shine{-webkit-mask:url(new_box.png) center/contain no-repeat}
+.rays{position:absolute;border-radius:50%;background:repeating-conic-gradient(rgba(255,226,170,.28) 0 7deg,rgba(255,255,255,0) 7deg 18deg);-webkit-mask:radial-gradient(circle,#000 20%,transparent 68%)}
+.glow{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,236,200,.75),rgba(217,185,138,.35) 38%,rgba(217,185,138,0) 70%)}
+.glowB{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(120,170,255,.55),rgba(46,196,182,.2) 40%,rgba(0,0,0,0) 70%)}
+.card{position:absolute;border-radius:40px;overflow:hidden}
+.card.old{background:linear-gradient(160deg,#2A5BC0,#123478 70%);border:6px solid #4F86F0;box-shadow:0 24px 50px rgba(0,0,0,.45)}
+.card.new{background:linear-gradient(160deg,#3A3D44,#121317 70%);border:6px solid #D9B98A;box-shadow:0 24px 50px rgba(0,0,0,.55),0 0 60px rgba(217,185,138,.25)}
+.big{font-weight:900;white-space:nowrap;line-height:1.15;text-align:center}
+.cx{left:170px;width:1100px}
+.gold{color:#F3D9A4;text-shadow:0 6px 0 #7A5B2E,0 14px 30px rgba(0,0,0,.6)}
+.wht{color:#fff;text-shadow:0 6px 0 rgba(0,0,0,.55),0 14px 30px rgba(0,0,0,.5)}
+.pill{display:inline-block;padding:10px 40px 16px;border-radius:999px;font-weight:900;white-space:nowrap;line-height:1.2}
+.p-gold{background:linear-gradient(90deg,#F6E2B5,#D2A867);color:#16171B;box-shadow:0 9px 0 #8A6731,0 18px 30px rgba(0,0,0,.45)}
+.p-blue{background:#2EC4B6;color:#0B2240;box-shadow:0 9px 0 #12756C,0 18px 30px rgba(0,0,0,.4)}
+.p-dark{background:#16171B;color:#F3D9A4;border:4px solid #D9B98A;box-shadow:0 9px 0 #000,0 18px 30px rgba(0,0,0,.5)}
+.p-red{background:#E5484D;color:#fff;box-shadow:0 9px 0 #8E1A1D,0 18px 30px rgba(0,0,0,.4)}
+.p-white{background:#fff;color:#16171B;box-shadow:0 9px 0 #9AA0AC,0 18px 30px rgba(0,0,0,.4)}
+.hl{background:linear-gradient(transparent 60%,rgba(217,185,138,.75) 60%,rgba(217,185,138,.75) 92%,transparent 92%) no-repeat;background-size:0% 100%;padding:0 8px}
+.bar{position:absolute;height:84px;border-radius:42px;background:rgba(255,255,255,.12);border:4px solid rgba(255,255,255,.25);overflow:hidden}
+.bar .fl{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:42px}
+.tick{position:absolute;font-weight:800;font-size:32px;color:rgba(255,255,255,.7);transform:translateX(-50%)}
+.dust{position:absolute;border-radius:50%;background:#fff}
+.ring{position:absolute;width:420px;height:420px;margin:-210px 0 0 -210px;border-radius:50%;border:16px solid #F3D9A4;opacity:0}
+.conf{position:absolute;width:20px;height:32px;border-radius:5px}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+#wipe{position:absolute;top:-200px;width:2600px;height:1500px;transform:translateX(-3200px) skewX(-16deg)}
+#wipe div{position:absolute;top:0;bottom:0}
+.photo{position:absolute;border-radius:36px;overflow:hidden;border:8px solid #fff;box-shadow:0 26px 60px rgba(0,0,0,.55)}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.capsvg{position:absolute;width:260px;height:600px;transform-origin:50% 50%}
+.capsvg svg{width:100%;height:100%;display:block;overflow:visible}
+.chk{position:absolute;width:120px;height:120px}
+.cu{position:absolute}
+.cal{position:absolute}
+.capbig{position:absolute;width:260px;height:600px;transform-origin:50% 50%}
+.capbig svg{width:100%;height:100%;display:block;overflow:visible}
+.b30{background-image:url(box30.png)}.b60{background-image:url(box60.png)}
+.jar{background-image:url(jar.png)}
+.red{color:#FF6B6E;text-shadow:0 6px 0 #6E1416,0 14px 30px rgba(0,0,0,.6)}
+.vsvg{position:absolute;overflow:visible}
+#confetti{display:none}
+</style></head><body>
+<div id="stage">
+
+<!-- S1 0-2.6 what zinc is this? -->
+<div class="scene" data-s="0" data-e="2.6" data-bg="studio" data-cam="0:1.04:720:500;2.6:1:720:540">
+ <div class="cam">
+  <div class="a rays" data-at="-1" data-an="fade" data-spin="10" style="left:400px;top:-30px;width:640px;height:640px"></div>
+  <div class="a glow" data-at="-1" data-an="fade" style="left:480px;top:60px;width:480px;height:480px"></div>
+  <div class="a img jar" data-at="-1" data-an="fade" data-float="0.3" style="left:585px;top:100px;width:270px;height:504px"></div>
+  <svg class="a vsvg" id="v1" data-at="-1" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="-1" data-an="fade" style="top:790px;font-size:84px">ตัวนี้คือ<span class="gold">ซิงค์อะไร?</span></div>
+</div>
+
+<!-- S2 2.6-7.0 zinc bisglycinate: absorbs well, popular abroad -->
+<div class="scene" data-s="2.6" data-e="7.0" data-bg="studio" data-tr="wipe" data-cam="2.6:1:720:540;7.0:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v2" data-at="2.62" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="2.65" data-an="up" data-out="5.45" style="top:790px;font-size:78px">ซิงค์<span class="hl" data-hl="3.4">บิสไกลซิเนต</span> ดูดซึมดีอยู่แล้ว</div>
+ <div class="a big cx wht" data-at="5.5" data-an="up" style="top:790px;font-size:80px">ฟอร์มที่<span class="hl" data-hl="5.9">นิยมในต่างประเทศ</span></div>
+</div>
+
+<!-- S3 7.0-9.2 coated in many layers to slow release -->
+<div class="scene" data-s="7.0" data-e="9.2" data-bg="studio" data-tr="iris" data-cam="7.0:1.05:720:500;9.2:1:720:540">
+ <div class="cam"><svg class="a vsvg" id="v3" data-at="7.02" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="7.05" data-an="up" style="top:790px;font-size:78px">เอาไป<span class="hl" data-hl="7.5">เคลือบหลายชั้น</span></div>
+</div>
+
+<!-- S4 9.2-10.6 why? -->
+<div class="scene" data-s="9.2" data-e="10.6" data-bg="studio" data-tr="flash" data-cam="9.2:1.06:720:480;10.6:1:720:540">
+ <div class="cam"><svg class="a vsvg" id="v4" data-at="9.22" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="9.25" data-an="up" style="top:790px;font-size:86px">ทำไมต้อง<span class="gold">เคลือบ?</span></div>
+</div>
+
+<!-- S5 10.6-16.1 plain bisglycinate absorbs too fast: peak at 2 h then falls -->
+<div class="scene" data-s="10.6" data-e="16.1" data-bg="studio" data-tr="wipe" data-cam="10.6:1:720:540;16.1:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v5" data-at="10.62" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="10.65" data-an="up" data-out="12.0" style="top:790px;font-size:80px">เพราะดูดซึม<span class="red">เร็วเกินไป</span></div>
+ <div class="a big cx wht" data-at="12.05" data-an="up" data-out="14.35" style="top:790px;font-size:78px"><span class="hl" data-hl="12.6">2 ชม.แรก</span> พุ่งขึ้นสูงสุด</div>
+ <div class="a big cx wht" data-at="14.4" data-an="up" style="top:790px;font-size:80px">แล้ว<span class="red">ค่อยๆ ลดลง</span></div>
+</div>
+
+<!-- S6 16.1-21.0 layers dissolve one by one: slow release -->
+<div class="scene" data-s="16.1" data-e="21.0" data-bg="studio" data-tr="iris" data-cam="16.1:1.04:720:500;21.0:1:720:540">
+ <div class="cam"><svg class="a vsvg" id="v6" data-at="16.12" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="16.15" data-an="up" data-out="18.6" style="top:790px;font-size:80px">พอเคลือบหลายชั้น</div>
+ <div class="a big cx wht" data-at="18.7" data-an="up" style="top:790px;font-size:80px">ซิงค์<span class="hl" data-hl="19.2">ค่อยๆ ปลดปล่อย</span></div>
+</div>
+
+<!-- S7 21.0-31.0 chart: steady for 6 h, barely drops -->
+<div class="scene" data-s="21.0" data-e="31.0" data-bg="studio" data-tr="wipe" data-cam="21.0:1:720:540;27.0:1.02:720:520;31.0:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v7" data-at="21.02" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="21.05" data-an="up" data-out="24.6" style="top:790px;font-size:78px">ได้รับซิงค์ยาวๆ <span class="hl" data-hl="22.8">อยู่ในร่างกายนาน</span></div>
+ <div class="a big cx wht" data-at="24.7" data-an="up" data-out="27.95" style="top:790px;font-size:80px">ซิงค์สูงได้ถึง <span class="gold">6 ชั่วโมง</span></div>
+ <div class="a big cx wht" data-at="28.0" data-an="up" style="top:790px;font-size:78px">6 ชม.แรก <span class="hl" data-hl="30.0">แทบไม่ลดลงเลย</span></div>
+</div>
+
+<!-- S8 31.0-34.0 made in Thailand -->
+<div class="scene" data-s="31.0" data-e="34.0" data-bg="studio" data-tr="flash" data-cam="31.0:1.05:720:490;34.0:1:720:540">
+ <div class="cam">
+  <div class="a glow" data-at="31.0" data-an="fade" style="left:140px;top:60px;width:480px;height:480px"></div>
+  <div class="a img jar" data-at="31.02" data-an="left" data-float="0.4" style="left:245px;top:100px;width:270px;height:504px"></div>
+  <svg class="a vsvg" id="v8" data-at="31.05" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="31.05" data-an="up" data-out="32.5" style="top:790px;font-size:80px">นี่แหละ <span class="gold">ข้อดี</span>ของตัวนี้</div>
+ <div class="a big cx wht" data-at="32.55" data-an="up" style="top:790px;font-size:80px"><span class="hl" data-hl="32.9">ผลิตในไทย</span> โรงงานไทย</div>
+</div>
+
+<!-- S9 34.0-37.85 iCAP innovation keeps zinc longer -->
+<div class="scene" data-s="34.0" data-e="37.85" data-bg="studio" data-tr="iris" data-cam="34.0:1.05:720:500;37.85:1:720:540">
+ <div class="cam">
+  <div class="a rays" data-at="33.95" data-an="fade" data-spin="12" style="left:60px;top:-40px;width:640px;height:640px"></div>
+  <div class="a img jar" data-at="34.05" data-an="left" data-float="0.2" style="left:250px;top:90px;width:270px;height:504px"></div>
+  <svg class="a vsvg" id="v9" data-at="34.1" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="34.05" data-an="up" data-out="35.95" style="top:790px;font-size:80px">นวัตกรรมใหม่ <span class="gold">iCAP</span></div>
+ <div class="a big cx wht" data-at="36.0" data-an="up" style="top:790px;font-size:78px">ซิงค์อยู่ในร่างกาย<span class="hl" data-hl="36.6">นานกว่าเดิม</span></div>
+</div>
+
+<!-- S10 37.9-42.9 already absorbs well -> upgraded to stay longer -->
+<div class="scene" data-s="37.85" data-e="42.95" data-bg="studio" data-tr="wipe" data-cam="37.85:1:720:540;42.95:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v10" data-at="37.87" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="37.9" data-an="up" data-out="39.8" style="top:800px;font-size:78px">บิสไกลซิเนต <span class="hl" data-hl="38.6">ดูดซึมดีอยู่แล้ว</span></div>
+ <div class="a big cx wht" data-at="39.9" data-an="up" style="top:800px;font-size:78px">พัฒนาให้<span class="gold">อยู่ได้นานขึ้นอีก</span></div>
+</div>
+
+<!-- S11 42.95-46.4 interested? tap the basket below -->
+<div class="scene" data-s="42.95" data-e="46.4" data-bg="studio" data-tr="wipe" data-cam="42.95:1.04:720:500;46.4:1:720:540">
+ <div class="cam">
+  <div class="a glow" data-at="43.0" data-an="fade" style="left:140px;top:60px;width:480px;height:480px"></div>
+  <div class="a img jar" data-at="43.0" data-an="left" data-float="0.4" style="left:245px;top:100px;width:270px;height:504px"></div>
+  <svg class="a vsvg" id="v11" data-at="43.05" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="43.05" data-an="up" data-out="44.85" style="top:790px;font-size:78px">สนใจซิงค์<span class="hl" data-hl="43.6">นวัตกรรมใหม่</span></div>
+ <div class="a big cx wht" data-at="44.9" data-an="up" style="top:790px;font-size:80px">กด<span class="gold">ตะกร้าด้านล่าง</span>ได้เลย!</div>
+</div>
+
+<!-- S12 46.4-end just launched -->
+<div class="scene" data-s="46.4" data-e="99" data-bg="studio" data-tr="flash" data-cam="46.4:1.06:720:480;48.6:1:720:540">
+ <div id="confetti"></div>
+ <div class="cam">
+  <div class="a rays" data-at="46.3" data-an="fade" data-spin="14" style="left:400px;top:-40px;width:640px;height:640px"></div>
+  <div class="a glow" data-at="46.4" data-an="fade" style="left:480px;top:60px;width:480px;height:480px"></div>
+  <div class="a img jar" data-at="46.42" data-an="drop" data-float="0.3" style="left:585px;top:100px;width:270px;height:504px"></div>
+  <svg class="a vsvg" id="v12" data-at="46.45" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="46.45" data-an="up" style="top:790px;font-size:84px">เพิ่ง<span class="gold">เปิดตัวใหม่!</span></div>
+</div>
+<div id="rings"></div>
+<div id="wipe"><div style="left:-90px;width:90px;background:#2EC4B6"></div><div style="left:0;right:0;background:#16171B"></div><div style="right:-90px;width:90px;background:#D9B98A"></div></div>
+<div id="flash"></div>
+<div id="safe" style="display:none;position:absolute;left:130px;top:130px;width:1180px;height:820px;border:3px dashed #f0f"></div>
+</div>
+<script>
+const W=1440,H=1080,DUR_T=25.33;
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eOC=p=>1-Math.pow(1-p,3);
+const eOB=p=>{const c1=1.9,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+const eIO=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+let seed=9;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+if(location.hash==='#safe')document.getElementById('safe').style.display='block';
+document.querySelectorAll('.img.nb,.img.ob,.img.bx').forEach((b,i)=>{const s=document.createElement('div');s.className='shine';s.dataset.ph=i*0.37;b.appendChild(s)});
+const scenes=[...document.querySelectorAll('.scene')].map(el=>{
+ const bg=document.createElement('div');bg.className='sbg '+el.dataset.bg;el.insertBefore(bg,el.firstChild);
+ const pl=document.createElement('div');pl.style.cssText='position:absolute;inset:0;pointer-events:none';el.insertBefore(pl,bg.nextSibling);
+ const parts=[];if(el.dataset.bg!=='light'&&el.dataset.bg!=='split')for(let k=0;k<34;k++){const d=document.createElement('div');d.className='dust';const s=2+rnd()*5;d.style.width=d.style.height=s+'px';pl.appendChild(d);parts.push({d,x:170+rnd()*1100,y:rnd()*H,v:10+rnd()*25,ph:rnd()*6.28,tw:rnd()*6})}
+ const cam=(el.dataset.cam||'').split(';').filter(Boolean).map(k=>k.split(':').map(Number));
+ return{el,s:+el.dataset.s,e:+el.dataset.e,tr:el.dataset.tr||'',parts,cam,camEl:el.querySelector('.cam'),items:[...el.querySelectorAll('.a')]}});
+const TR=0.4;
+const CAPSVG=(()=>{let r=7,c=()=>{r=(r*16807)%2147483647;return (r-1)/2147483646};let p='';
+ for(let y=318;y>24;y-=17)for(let x=22;x<244;x+=19){const xx=x+(c()-.5)*8+((Math.round(y/17)%2)?9:0),yy=y+(c()-.5)*6,rr=8.5+c()*3.5;p+=`<circle cx="${xx.toFixed(1)}" cy="${yy.toFixed(1)}" r="${rr.toFixed(1)}" fill="url(#gPl)"/>`}
+ return `<svg viewBox="0 0 260 600"><defs>
+ <radialGradient id="gPl" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#F3EEE3"/><stop offset="1" stop-color="#BFB6A3"/></radialGradient>
+ <linearGradient id="gGl" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".25" stop-color="#fff" stop-opacity=".08"/><stop offset=".75" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#fff" stop-opacity=".3"/></linearGradient>
+ <linearGradient id="gCr" x1="0" x2="1"><stop offset="0" stop-color="#CFC7B6"/><stop offset=".3" stop-color="#FFFDF7"/><stop offset=".55" stop-color="#F7F2E7"/><stop offset="1" stop-color="#C4BBA8"/></linearGradient>
+ <clipPath id="cTop"><path d="M22 330V132a108 108 0 01216 0V330z"/></clipPath></defs>
+ <g class="cTopG"><g clip-path="url(#cTop)"><rect x="0" y="0" width="260" height="340" fill="rgba(255,255,255,.06)"/>${p}<rect x="0" y="0" width="260" height="340" fill="url(#gGl)"/></g>
+  <path d="M22 330V132a108 108 0 01216 0V330" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="4"/>
+  <path d="M46 300V140a84 84 0 0140-70" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".55"/></g>
+ <g class="cBotG"><path d="M16 296H244V470a114 114 0 01-228 0z" fill="url(#gCr)"/><path d="M16 296H244" stroke="#B9AF9B" stroke-width="4"/>
+  <path d="M40 320V470a90 90 0 0034 70" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" opacity=".6"/>
+  <g transform="translate(138 440) rotate(90)" font-family="Arial,Helvetica,sans-serif" font-weight="700" fill="#4A4A4A" text-anchor="middle"><text x="0" y="-8" font-size="74">Zn</text><text x="0" y="52" font-size="56">Zinc</text></g></g></svg>`})();
+document.querySelectorAll('.capsvg').forEach(e=>e.innerHTML=CAPSVG);
+const pel5=[];{const w=document.getElementById('pel5');if(w)for(let i=0;i<22;i++){const d=document.createElement('div');const r=12+rnd()*12;d.style.cssText=`position:absolute;width:${r*2}px;height:${r*2}px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 20%,#F3EEE3 55%,#BFB6A3 100%);box-shadow:0 8px 14px rgba(0,0,0,.35);opacity:0`;w.appendChild(d);pel5.push({d,r,ang:rnd()*6.28,sp:180+rnd()*260,dl:rnd()*0.12})}}
+
+function crCurve(pts){const out=[];const P=pts.map(([h,l])=>[110+h*105,600-l*460]);
+ for(let i=0;i<P.length-1;i++){const p0=P[Math.max(0,i-1)],p1=P[i],p2=P[i+1],p3=P[Math.min(P.length-1,i+2)];
+  for(let k=0;k<24;k++){const u=k/24,u2=u*u,u3=u2*u;out.push([0,1].map(j=>0.5*((2*p1[j])+(-p0[j]+p2[j])*u+(2*p0[j]-5*p1[j]+4*p2[j]-p3[j])*u2+(-p0[j]+3*p1[j]-3*p2[j]+p3[j])*u3)))}}
+ out.push(P[P.length-1]);
+ const lut=[];let j=0;for(let x=110;x<=950;x+=2){while(j<out.length-2&&out[j+1][0]<x)j++;const a=out[j],b=out[j+1];const f=b[0]>a[0]?cl((x-a[0])/(b[0]-a[0])):0;lut.push([x,a[1]+(b[1]-a[1])*f])}
+ return lut}
+const CO=crCurve([[0,0.02],[0.5,0.8],[1,0.93],[1.5,0.95],[2,0.95],[2.6,0.86],[3.2,0.7],[4,0.5],[5,0.32],[6,0.2],[7,0.13],[8,0.09]]);
+const CN=crCurve([[0,0.02],[0.5,0.78],[1,0.92],[2,0.94],[4,0.94],[6,0.93],[7,0.68],[8,0.42]]);
+if(document.getElementById('lOld')){const d=a=>'M'+a.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join('L');
+ document.getElementById('lOld').setAttribute('d',d(CO));document.getElementById('aOld').setAttribute('d',d(CO)+'L950 600L110 600Z');
+ document.getElementById('lNew').setAttribute('d',d(CN));document.getElementById('aNew').setAttribute('d',d(CN)+'L950 600L110 600Z');}
+
+function camAt(keys,t){if(!keys.length)return[1,720,540];if(t<=keys[0][0])return keys[0].slice(1);
+ for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t<=b[0]){const p=eIO(cl((t-a[0])/(b[0]-a[0])));return[1,2,3].map(j=>a[j]+(b[j]-a[j])*p)}}return keys[keys.length-1].slice(1)}
+const conf=[];const cw=document.getElementById('confetti');const cc=['#F3D9A4','#D9B98A','#fff','#C0C4CC','#8A6731'];
+for(let i=0;i<70;i++){const d=document.createElement('div');d.className='conf';d.style.background=cc[i%5];cw.appendChild(d);conf.push({d,x:200+rnd()*1040,vy:250+rnd()*300,vx:(rnd()-.5)*160,r:rnd()*360,vr:(rnd()-.5)*720,dl:rnd()*0.5,sw:rnd()*6})}
+const ringDefs=[[9.25,720,330],[46.45,720,350]];
+const rw=document.getElementById('rings');const rings=ringDefs.map(([t,x,y])=>{const d=document.createElement('div');d.className='ring';d.style.left=x+'px';d.style.top=y+'px';rw.appendChild(d);return{d,t}});
+function animT(an,p){switch(an){
+ case 'fade':return[eOC(p),''];
+ case 'pop':return[cl(p*4),`scale(${p<=0?0:eOB(p)})`];
+ case 'slam':{const e=eOC(p);return[cl(p*5),`scale(${1+1.2*(1-e)})`]}
+ case 'stamp':{const e=eOB(p);return[cl(p*5),`scale(${1.6-0.6*e}) rotate(${-6*(1-e)}deg)`]}
+ case 'up':{const e=eOB(p);return[cl(p*3),`translateY(${80*(1-e)}px)`]}
+ case 'left':{const e=eOB(p);return[cl(p*3),`translateX(${-320*(1-e)}px)`]}
+ case 'right':{const e=eOB(p);return[cl(p*3),`translateX(${320*(1-e)}px)`]}
+ case 'drop':{const e=eOB(p);return[cl(p*4),`translateY(${-700*(1-e)}px) rotate(${(1-e)*-20}deg)`]}}return[1,'']}
+const DUR={fade:.35,pop:.42,slam:.32,stamp:.35,up:.42,left:.45,right:.45,drop:.55};
+const $=id=>document.getElementById(id);
+window.render=function(t){
+ let flash=0;
+ scenes.forEach((sc,i)=>{
+  const nx=scenes[i+1];const tail=(nx&&(nx.tr==='iris'||nx.tr==='zoom'))?TR:0;
+  const on=t>=sc.s&&t<sc.e+tail;sc.el.style.display=on?'block':'none';if(!on)return;
+  const lt=t-sc.s,q=cl(lt/TR);let tf='',clip='none',op=1;
+  if(sc.tr==='iris')clip=`circle(${eIO(q)*110}% at 50% 50%)`;
+  else if(sc.tr==='zoom'){tf=`scale(${1.3-0.3*eOC(q)})`;op=q}
+  sc.el.style.transform=tf;sc.el.style.clipPath=q<1?clip:'none';sc.el.style.opacity=op;sc.el.style.zIndex=i;
+  const [s,fx,fy]=camAt(sc.cam,t);if(sc.camEl)sc.camEl.style.transform=`translate(720px,540px) scale(${s}) translate(${-fx}px,${-fy}px)`;
+  for(const p of sc.parts){const y=((p.y-p.v*t)%(H+100)+H+100)%(H+100)-50;p.d.style.transform=`translate(${p.x+Math.sin(t*.7+p.ph)*20}px,${y}px)`;p.d.style.opacity=(.25+.5*Math.abs(Math.sin(t*1.5+p.tw)))*cl((y-140)/80)*cl((940-y)/80)}
+  for(const el of sc.items){
+   const at=+el.dataset.at,an=el.dataset.an,p=cl((t-at)/DUR[an]);
+   let[o,tr]=t<at?[0,'']:animT(an,p);const live=t-at;
+   if(el.dataset.out){const k=cl((t-+el.dataset.out)/0.28);if(k>0){o*=1-k;tr+=` translateY(${-eIO(k)*50}px)`}}
+   if(el.dataset.dim){const k=cl((t-+el.dataset.dim)/0.4);o*=1-0.6*k;el.style.filter=k>0?`grayscale(${k}) brightness(${1-0.35*k})`:''}
+   if(el.dataset.float){const ph=+el.dataset.float;tr+=` translateY(${Math.sin(t*2.1+ph)*10}px) perspective(1400px) rotateY(${Math.sin(t*1.3+ph)*9}deg)`}
+   if(el.dataset.bob){const ph=+el.dataset.bob;tr+=` translateY(${Math.sin(t*3+ph)*8}px)`}
+   if(el.dataset.swing&&live>0.35)tr+=` rotate(${Math.sin((live-0.35)*9)*6*Math.exp(-(live-0.35)*1.5)}deg)`;
+   if(el.dataset.spin)tr+=` rotate(${t*el.dataset.spin}deg)`;
+   el.style.opacity=o;el.style.transform=tr}
+ });
+ let wx=-3200;for(const sc of scenes){if(sc.tr==='wipe'){const d=t-sc.s;if(d>-0.22&&d<0.22)wx=-3000+eIO((d+0.22)/0.44)*4700}
+  if(sc.tr==='flash'){const d=t-sc.s;if(d>=0&&d<0.3)flash=Math.max(flash,0.85*(1-d/0.3))}}
+ $('wipe').style.transform=`translateX(${wx}px) skewX(-16deg)`;$('flash').style.opacity=flash;
+ document.querySelectorAll('[data-kbi]').forEach(g=>{const d=Math.max(0,t-+g.dataset.kbi);g.style.transform=`scale(${1.02+0.03*d})`});
+ document.querySelectorAll('[data-hl]').forEach(h=>{h.style.backgroundSize=`${eIO(cl((t-+h.dataset.hl)/0.35))*100}% 100%`});
+
+ window.extra&&extra(t);
+};
+window.render(0);
+</script><script>
+const lerp=(a,b,p)=>a+(b-a)*p;
+const SK='#F2C7A0',SKD='#D9A57C',HAIR='#1E1A17';
+// ---------- person (front view) : feet at (0,0), head top ~ -520 ----------
+function person(o){
+ const g=o.g||'m',fat=o.fat||0,mood=o.mood||'neutral',arm=o.arm||0;
+ const sw=g==='m'?84:68, ww=(g==='m'?58:44)+fat*(g==='m'?46:30), hw=g==='m'?66:(74+fat*20), bw=g==='m'?0:0;
+ const top=o.shirt||(g==='m'?'#3B4F7A':'#2A2D35'), pants=o.pants||(g==='m'?'#22252B':'#1B1D22');
+ let s='';
+ // legs
+ s+=`<path d="M${-hw+4} -230 L${-hw+14} -8 L-14 -8 L-6 -205 L6 -205 L14 -8 L${hw-14} -8 L${hw-4} -230Z" fill="${pants}"/>`;
+ s+=`<ellipse cx="${-hw/2-4}" cy="-4" rx="30" ry="12" fill="#111"/><ellipse cx="${hw/2+4}" cy="-4" rx="30" ry="12" fill="#111"/>`;
+ // arms (behind torso edges)
+ const aL=`M${-sw+8} -392 Q${-sw-24-fat*14} -300 ${-sw-14-fat*16} -${200+arm*150}`;
+ const aR=`M${sw-8} -392 Q${sw+24+fat*14} -300 ${sw+14+fat*16} -${200+arm*150}`;
+ s+=`<path d="${aL}" stroke="${SK}" stroke-width="${30+fat*8}" stroke-linecap="round" fill="none"/><path d="${aR}" stroke="${SK}" stroke-width="${30+fat*8}" stroke-linecap="round" fill="none"/>`;
+ // torso skin base + shirt
+ const belly=fat*26;
+ const torso=`M-22 -420 L${-sw} -400 Q${-sw-6} -330 ${-ww} -${300-belly*0.3} Q${-ww-belly} -262 ${-hw} -228 L${hw} -228 Q${ww+belly} -262 ${ww} -${300-belly*0.3} Q${sw+6} -330 ${sw} -400 L22 -420Z`;
+ if(o.shirtless){s+=`<path d="${torso}" fill="${SK}"/>`;
+  s+=`<path d="M-40 -345 Q0 ${-335+fat*14} 40 -345" stroke="${SKD}" stroke-width="4" fill="none" opacity=".7"/>`; // chest line
+  s+=`<ellipse cx="0" cy="${-268+fat*6}" rx="${8+fat*4}" ry="5" fill="${SKD}"/>`; // navel
+  if(fat>0.3)s+=`<path d="M${-ww+6} -250 Q0 ${-226+fat*12} ${ww-6} -250" stroke="${SKD}" stroke-width="5" fill="none" opacity=".8"/>`;
+  s+=`<path d="M${-hw} -236 L${hw} -236 L${hw} -222 L${-hw} -222Z" fill="${pants}"/>`;
+ } else {
+  s+=`<path d="${torso}" fill="${top}"/>`;
+  if(g==='f')s+=`<path d="M${-sw+10} -398 Q0 -360 ${sw-10} -398" stroke="rgba(255,255,255,.18)" stroke-width="6" fill="none"/>`;
+ }
+ // neck + head
+ s+=`<rect x="-18" y="-448" width="36" height="40" rx="10" fill="${SKD}"/>`;
+ s+=`<ellipse cx="0" cy="-492" rx="${54+fat*6}" ry="${60+fat*4}" fill="${SK}"/>`;
+ if(g==='m')s+=`<path d="M-56 -500 Q-58 -560 0 -562 Q58 -560 56 -500 Q40 -532 0 -530 Q-30 -530 -56 -500Z" fill="${HAIR}"/>`;
+ else s+=`<path d="M-60 -470 Q-70 -566 0 -568 Q70 -566 60 -470 Q58 -528 0 -530 Q-58 -528 -60 -470Z" fill="${HAIR}"/><path d="M40 -540 Q96 -520 84 -440 Q74 -470 52 -480Z" fill="${HAIR}"/>`;
+ // face
+ const ey=-494;
+ if(mood==='sad'||mood==='tired'){s+=`<path d="M-30 ${ey-16} L-12 ${ey-10}M30 ${ey-16} L12 ${ey-10}" stroke="${HAIR}" stroke-width="5" stroke-linecap="round"/>`;
+  s+=mood==='tired'?`<path d="M-30 ${ey} Q-20 ${ey+6} -10 ${ey}M10 ${ey} Q20 ${ey+6} 30 ${ey}" stroke="${HAIR}" stroke-width="5" fill="none" stroke-linecap="round"/>`:`<circle cx="-20" cy="${ey}" r="6" fill="${HAIR}"/><circle cx="20" cy="${ey}" r="6" fill="${HAIR}"/>`;
+  s+=`<path d="M-16 ${ey+40} Q0 ${ey+28} 16 ${ey+40}" stroke="#8A3B2E" stroke-width="5" fill="none" stroke-linecap="round"/>`}
+ else if(mood==='happy'){s+=`<path d="M-30 ${ey+2} Q-20 ${ey-10} -10 ${ey+2}M10 ${ey+2} Q20 ${ey-10} 30 ${ey+2}" stroke="${HAIR}" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M-20 ${ey+26} Q0 ${ey+46} 20 ${ey+26}Z" fill="#8A3B2E"/>`}
+ else {s+=`<circle cx="-20" cy="${ey}" r="6" fill="${HAIR}"/><circle cx="20" cy="${ey}" r="6" fill="${HAIR}"/><path d="M-12 ${ey+32} H12" stroke="#8A3B2E" stroke-width="5" stroke-linecap="round"/>`}
+ s+=`<ellipse cx="-34" cy="${ey+18}" rx="10" ry="6" fill="#F09A8A" opacity=".5"/><ellipse cx="34" cy="${ey+18}" rx="10" ry="6" fill="#F09A8A" opacity=".5"/>`;
+ return `<g transform="translate(${o.x} ${o.y}) scale(${o.s||1})">${s}</g>`;
+}
+// ---------- small helpers ----------
+const sym=(x,y,r,k,t)=>{ // gender symbol
+ const c=k==='m'?'#5B9BFF':'#FF7BB0';let s=`<g transform="translate(${x} ${y})"><circle r="${r}" fill="#16171B" stroke="${c}" stroke-width="${r*0.12}"/>`;
+ const q=r*0.32;
+ if(k==='m')s+=`<circle cx="${-q*0.4}" cy="${q*0.4}" r="${q}" fill="none" stroke="${c}" stroke-width="${r*0.12}"/><path d="M${q*0.3} ${-q*0.3}L${q*1.4} ${-q*1.4}M${q*0.5} ${-q*1.4}H${q*1.4}V${-q*0.5}" stroke="${c}" stroke-width="${r*0.12}" fill="none" stroke-linecap="round"/>`;
+ else s+=`<circle cy="${-q*0.4}" r="${q}" fill="none" stroke="${c}" stroke-width="${r*0.12}"/><path d="M0 ${q*0.6}V${q*1.8}M${-q*0.6} ${q*1.25}H${q*0.6}" stroke="${c}" stroke-width="${r*0.12}" stroke-linecap="round"/>`;
+ return s+'</g>'};
+function vmeter(x,y,h,lv,col,lab){ // vertical hormone tube, lv 0..1
+ let s=`<g transform="translate(${x} ${y})"><rect x="-34" y="0" width="68" height="${h}" rx="34" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.35)" stroke-width="4"/>`;
+ const fh=(h-12)*lv;s+=`<rect x="-28" y="${h-6-fh}" width="56" height="${fh}" rx="28" fill="${col}"/>`;
+ s+=`<rect x="-20" y="12" width="10" height="${h-24}" rx="5" fill="#fff" opacity=".18"/>`;
+ if(lab)s+=`<text x="0" y="${h+50}" text-anchor="middle" font-family="K" font-weight="900" font-size="34" fill="#F3D9A4">${lab}</text>`;
+ return s+'</g>'};
+function bicep(x,y,sc,size,col){ // flexed arm: upper arm horizontal, forearm up, fist on top
+ const b=18+size*62;
+ return `<g transform="translate(${x} ${y}) scale(${sc})"><path d="M-150 64 L40 64 Q84 64 84 22 L74 -78 Q94 -96 86 -128 Q68 -162 24 -154 Q-6 -146 -2 -114 Q6 -96 22 -90 L26 -22 Q-8 ${-22-b} -62 ${-22-b*0.85} Q-124 ${-22-b*0.55} -150 -24 Z" fill="${col||SK}" stroke="#7A4E2E" stroke-width="6" stroke-linejoin="round"/><path d="M-110 ${-14-b*0.45} Q-60 ${-14-b*0.85} -12 -26" stroke="#fff" stroke-width="6" fill="none" opacity=".35" stroke-linecap="round"/><path d="M12 -126 Q30 -134 50 -128" stroke="#7A4E2E" stroke-width="5" fill="none" opacity=".6"/></g>`};
+function fatBlob(x,y,r,p,ph){ if(p<=0)return '';const k=eOB(cl(p));
+ return `<g transform="translate(${x} ${y}) scale(${k})"><ellipse rx="${r}" ry="${r*0.8}" fill="#FFD36E" stroke="#C99A2E" stroke-width="4" opacity=".92"/><ellipse cx="${-r*0.3}" cy="${-r*0.3}" rx="${r*0.3}" ry="${r*0.2}" fill="#fff" opacity=".5"/></g>`};
+function ring(x,y,rx,ry,p,col){ if(p<=0)return '';const L=Math.PI*(rx+ry)*1.1;
+ return `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="none" stroke="${col||'#FF3B3F'}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${L}" stroke-dashoffset="${L*(1-eOC(cl(p)))}" transform="rotate(-8 ${x} ${y})"/>`};
+function tag(x,y,txt,p,bg,fg){ if(p<=0)return '';const k=eOB(cl(p)),w=txt.length*30+60;
+ return `<g transform="translate(${x} ${y}) scale(${k})"><rect x="${-w/2}" y="-36" width="${w}" height="72" rx="36" fill="${bg||'#FF3B3F'}" stroke="#fff" stroke-width="4"/><text y="16" text-anchor="middle" font-family="K" font-weight="900" font-size="42" fill="${fg||'#fff'}">${txt}</text></g>`};
+function arrowV(x,y,len,up,col,p){ if(p<=0)return '';const L=len*eOC(cl(p)),d=up?-1:1;
+ return `<g transform="translate(${x} ${y})"><path d="M0 0 V${d*L}" stroke="${col}" stroke-width="30" stroke-linecap="round"/><path d="M-44 ${d*(L-10)} L0 ${d*(L+44)} L44 ${d*(L-10)}Z" fill="${col}" stroke="${col}" stroke-width="8" stroke-linejoin="round"/></g>`};
+function check(x,y,r,p){if(p<=0)return '';const k=eOB(cl(p));return `<g transform="translate(${x} ${y}) scale(${k})"><circle r="${r}" fill="#2EC4B6" stroke="#fff" stroke-width="6"/><path d="M${-r*0.45} ${r*0.05}l${r*0.3} ${r*0.3}l${r*0.6} ${-r*0.62}" fill="none" stroke="#fff" stroke-width="${r*0.22}" stroke-linecap="round" stroke-linejoin="round"/></g>`};
+function cross(x,y,r,p){if(p<=0)return '';const k=eOB(cl(p));return `<g transform="translate(${x} ${y}) scale(${k}) rotate(${-8*(1-cl(p))})"><circle r="${r}" fill="#E5484D" stroke="#fff" stroke-width="6"/><path d="M${-r*0.4} ${-r*0.4}L${r*0.4} ${r*0.4}M${r*0.4} ${-r*0.4}L${-r*0.4} ${r*0.4}" stroke="#fff" stroke-width="${r*0.22}" stroke-linecap="round"/></g>`};
+function heart(x,y,sc,col){return `<g transform="translate(${x} ${y}) scale(${sc})"><path d="M0 40 C-70 -10 -60 -70 -20 -70 C0 -70 0 -50 0 -46 C0 -50 0 -70 20 -70 C60 -70 70 -10 0 40Z" fill="${col}" stroke="#fff" stroke-width="5"/></g>`};
+function gauge(cx,cy,R,val,t,lowLab,id){id=id||'h'; // semicircle: red low 0-.33, gold normal .33-.72, hatched over-normal .72-1
+ const arc=(a0,a1,col,w)=>{const p0=[cx-R*Math.cos(Math.PI*a0),cy-R*Math.sin(Math.PI*a0)],p1=[cx-R*Math.cos(Math.PI*a1),cy-R*Math.sin(Math.PI*a1)];return `<path d="M${p0[0]} ${p0[1]} A${R} ${R} 0 0 1 ${p1[0]} ${p1[1]}" stroke="${col}" stroke-width="${w}" fill="none"/>`};
+ let s=`<defs><pattern id="hatch${id}" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="18" height="18" fill="#3A3D44"/><rect width="8" height="18" fill="#5A5E68"/></pattern></defs>`;
+ s+=arc(0,0.33,'#E5484D',70)+arc(0.33,0.72,'#D9B98A',70)+arc(0.72,1,`url(#hatch${id})`,70);
+ const lab=(a,txt,col)=>{const r=R+(a>0.9?120:86);return `<text x="${cx-r*Math.cos(Math.PI*a)}" y="${cy-r*Math.sin(Math.PI*a)+14}" text-anchor="middle" font-family="K" font-weight="900" font-size="38" fill="${col}">${txt}</text>`};
+ s+=lab(0.13,lowLab||'ต่ำ','#FF7B7F')+lab(0.525,'ปกติ','#F3D9A4')+lab(0.93,'สูงเกิน','#9AA0AC');
+ const a=Math.PI*val,nx=cx-(R-20)*Math.cos(a),ny=cy-(R-20)*Math.sin(a);
+ s+=`<path d="M${cx} ${cy} L${nx} ${ny}" stroke="#fff" stroke-width="16" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="30" fill="#16171B" stroke="#fff" stroke-width="8"/>`;
+ return s};
+function znCoin(x,y,r){return `<g transform="translate(${x} ${y})"><circle r="${r}" fill="url(#zg)" stroke="#7A5B2E" stroke-width="5"/><text y="${r*0.33}" text-anchor="middle" font-family="Arial" font-weight="700" font-size="${r*0.9}" fill="#4A3A1E">Zn</text></g>`};
+const ZG=`<defs><radialGradient id="zg" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#FFF4D6"/><stop offset=".6" stop-color="#E6C68A"/><stop offset="1" stop-color="#B08A4C"/></radialGradient></defs>`;
+function battery(x,y,lv,col){return `<g transform="translate(${x} ${y})"><rect x="-80" y="-44" width="160" height="88" rx="16" fill="#16171B" stroke="#fff" stroke-width="6"/><rect x="82" y="-18" width="14" height="36" rx="4" fill="#fff"/><rect x="-70" y="-34" width="${140*lv}" height="68" rx="9" fill="${col}"/></g>`};
+function bed(x,y,sc){return `<g transform="translate(${x} ${y}) scale(${sc})"><rect x="-300" y="-170" width="40" height="230" rx="12" fill="#6B4A2E"/><rect x="-300" y="-30" width="600" height="70" rx="16" fill="#8A6240"/><rect x="-280" y="-80" width="580" height="60" rx="26" fill="#ECE6DA"/><rect x="-250" y="-120" width="150" height="56" rx="26" fill="#fff"/><path d="M-80 -86 Q120 -130 300 -84 L300 -30 L-80 -30Z" fill="#3B4F7A"/><rect x="-290" y="40" width="20" height="40" fill="#5A3E26"/><rect x="270" y="40" width="20" height="40" fill="#5A3E26"/></g>`};
+function icoTile(x,y,p,label,draw){ if(p<=0)return '';const k=eOB(cl(p));
+ return `<g transform="translate(${x} ${y}) scale(${k})"><circle r="88" fill="#16171B" stroke="#D9B98A" stroke-width="6"/>${draw}<text y="140" text-anchor="middle" font-family="K" font-weight="900" font-size="40" fill="#fff">${label}</text></g>`};
+const IC={
+ sperm:`<g fill="#F3D9A4" stroke="#F3D9A4"><ellipse cx="-14" cy="-6" rx="22" ry="16"/><path d="M6 -2 Q30 10 44 -10 Q56 -28 70 -14" stroke-width="7" fill="none" stroke-linecap="round"/><ellipse cx="-34" cy="30" rx="12" ry="9"/><path d="M-24 34 Q-10 40 0 30" stroke-width="4" fill="none"/></g>`,
+ skin:`<g><circle cx="0" cy="-6" r="44" fill="${SK}"/><circle cx="-16" cy="-12" r="5" fill="${HAIR}"/><circle cx="16" cy="-12" r="5" fill="${HAIR}"/><path d="M-14 12 Q0 22 14 12" stroke="#8A3B2E" stroke-width="5" fill="none"/><path d="M32 -46 l6 12 12 6 -12 6 -6 12 -6 -12 -12 -6 12 -6z" fill="#FFF3C4"/></g>`,
+ hair:`<g><circle cx="0" cy="10" r="40" fill="${SK}"/><path d="M-46 14 Q-56 -50 0 -52 Q56 -50 46 14 Q40 -20 0 -22 Q-36 -20 -46 14Z" fill="${HAIR}"/><path d="M-20 -40 Q-6 -46 10 -40" stroke="#fff" stroke-width="5" fill="none" opacity=".6"/></g>`,
+ nail:`<g><rect x="-26" y="-50" width="52" height="96" rx="26" fill="${SK}"/><rect x="-18" y="-46" width="36" height="40" rx="16" fill="#FFE3E0" stroke="#fff" stroke-width="3"/><path d="M-8 -40 Q0 -44 8 -40" stroke="#fff" stroke-width="4"/></g>`,
+ shield:`<g><path d="M0 -54 L44 -36 V4 Q44 40 0 58 Q-44 40 -44 4 V-36Z" fill="#2EC4B6" stroke="#fff" stroke-width="5"/><path d="M-18 2 l12 12 24 -26" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`,
+ mood:`<g><circle r="48" fill="#FFD36E"/><circle cx="-16" cy="-12" r="6" fill="#16171B"/><circle cx="16" cy="-12" r="6" fill="#16171B"/><path d="M-22 10 Q0 34 22 10" stroke="#16171B" stroke-width="6" fill="none" stroke-linecap="round"/></g>`,
+ acne:`<g><circle cx="0" cy="0" r="46" fill="${SK}"/><circle cx="-16" cy="-12" r="5" fill="${HAIR}"/><circle cx="16" cy="-12" r="5" fill="${HAIR}"/><path d="M-12 18 Q0 12 12 18" stroke="#8A3B2E" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="-26" cy="8" r="7" fill="#E5484D"/><circle cx="24" cy="4" r="6" fill="#E5484D"/><circle cx="-6" cy="-32" r="5" fill="#E5484D"/><circle cx="30" cy="22" r="5" fill="#E5484D"/></g>`,
+};
+const SCALE=(x,y,t)=>{ // balance scale icon, gentle tilt
+ const a=Math.sin(t*2)*4;return `<g transform="translate(${x} ${y})"><rect x="-8" y="-120" width="16" height="190" fill="#D9B98A"/><rect x="-80" y="64" width="160" height="22" rx="10" fill="#D9B98A"/><g transform="rotate(${a} 0 -110)"><rect x="-150" y="-118" width="300" height="14" rx="7" fill="#F3D9A4"/><path d="M-130 -104 L-170 -20 H-90Z M130 -104 L90 -20 H170Z" fill="none" stroke="#F3D9A4" stroke-width="4"/><path d="M-176 -20 H-84 Q-90 10 -130 10 Q-170 10 -176 -20Z M84 -20 H176 Q170 10 130 10 Q90 10 84 -20Z" fill="#D9B98A"/>${sym(-130,-46,24,'m')}${sym(130,-46,24,'f')}</g><circle cy="-120" r="16" fill="#F3D9A4"/></g>`};
+
+
+// ---- local helpers (lib1711.js is prepended: person, check, cross, tag, znCoin, ZG ...) ----
+const IMG=(f,x,y,w,h,extra)=>`<image href="${f}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet" ${extra||''}/>`;
+const JR={'biotin.png':0.537,'bisplus.png':0.533,'jar.png':0.536,'box30.png':0.63,'box60.png':0.63};
+const jarAt=(f,cx,by,h,extra)=>{const w=h*JR[f];return IMG(f,cx-w/2,by-h,w,h,extra)};
+function pill(x,y,txt,p,bg,fg,fs){if(p<=0)return '';const k=eOB(cl(p));fs=fs||44;const w=txt.length*fs*0.6+60;return `<g transform="translate(${x} ${y}) scale(${k})"><rect x="${-w/2}" y="${-fs*0.85}" width="${w}" height="${fs*1.7}" rx="${fs*0.85}" fill="${bg}" stroke="#fff" stroke-width="4"/><text y="${fs*0.36}" text-anchor="middle" font-family="K" font-weight="900" font-size="${fs}" fill="${fg}">${txt}</text></g>`};
+function coin(x,y,r){return `<g transform="translate(${x} ${y})"><ellipse rx="${r}" ry="${r*0.36}" cy="${r*0.14}" fill="#8A6731"/><ellipse rx="${r}" ry="${r*0.36}" fill="#F3D9A4" stroke="#B8862F" stroke-width="3"/><text y="${r*0.16}" text-anchor="middle" font-family="K" font-weight="900" font-size="${r*0.5}" fill="#7A5B2E">฿</text></g>`};
+function sparkle(x,y,s,p){if(p<=0)return '';const k=Math.sin(Math.PI*cl(p));return `<path transform="translate(${x} ${y}) scale(${s*k})" d="M0 -30 L7 -7 L30 0 L7 7 L0 30 L-7 7 L-30 0 L-7 -7Z" fill="#FFF3C4"/>`};
+function cup(x,y,s,prem){let g=`<g transform="translate(${x} ${y}) scale(${s})">`;
+ g+=`<ellipse cx="0" cy="96" rx="130" ry="20" fill="rgba(0,0,0,.35)"/><path d="M-100 -60 L-84 80 Q-80 96 -60 96 L60 96 Q80 96 84 80 L100 -60Z" fill="${prem?'#F3D9A4':'#E7E3DA'}" stroke="${prem?'#7A5B2E':'#9AA0AC'}" stroke-width="6"/>`;
+ g+=`<path d="M98 -30 Q150 -28 146 16 Q142 56 90 50" fill="none" stroke="${prem?'#7A5B2E':'#9AA0AC'}" stroke-width="12"/><ellipse cx="0" cy="-60" rx="100" ry="22" fill="#5A3A22" stroke="${prem?'#7A5B2E':'#9AA0AC'}" stroke-width="6"/>`;
+ if(prem)g+=`<path d="M0 -72 C-30 -86 -40 -56 0 -46 C40 -56 30 -86 0 -72Z" fill="#F7E7CF"/><path d="M-60 -120 Q-50 -150 -60 -170 M0 -125 Q10 -155 0 -180 M60 -120 Q70 -150 60 -170" stroke="#F3D9A4" stroke-width="6" fill="none" opacity=".6"/>`;
+ return g+'</g>'};
+function puzzle(x,y,s,col,stroke){return `<path transform="translate(${x} ${y}) scale(${s})" d="M-100 -100 H-30 A30 30 0 1 1 30 -100 H100 V-30 A30 30 0 1 1 100 30 V100 H30 A30 30 0 1 0 -30 100 H-100 V30 A30 30 0 1 0 -100 -30Z" fill="${col}" stroke="${stroke||'#16171B'}" stroke-width="6"/>`};
+
+var CHARTV=(typeof CHARTV!=='undefined')?CHARTV:2;
+function axes(X0,Y0,W,H,HM,yl,step){let s=`<path d="M${X0} ${Y0-H-20} V${Y0} H${X0+W+30}" stroke="#9AA0AC" stroke-width="5" fill="none"/>`;
+ for(let h=0;h<=HM;h+=step)s+=`<text x="${X0+W*h/HM}" y="${Y0+44}" text-anchor="middle" font-family="K" font-weight="800" font-size="30" fill="#9AA0AC">${h}</text>`;
+ return s+`<text x="${X0+W}" y="${Y0+90}" text-anchor="end" font-family="K" font-weight="800" font-size="28" fill="#9AA0AC">ชั่วโมง</text><text x="${X0-20}" y="${Y0-H-34}" font-family="K" font-weight="800" font-size="28" fill="#9AA0AC">${yl}</text>`}
+function legend(){return jarAt('jar.png',1300,300,140)+jarAt('biotin.png',1260,440,90)+jarAt('bisplus.png',1340,440,90)+`<rect x="1240" y="312" width="120" height="8" rx="4" fill="#F3D9A4"/><rect x="1225" y="452" width="70" height="6" rx="3" fill="#3A5FA0"/><rect x="1305" y="452" width="70" height="6" rx="3" fill="#2EC4B6"/>`}
+function lineChart(lt,sp,HM,fns,mark,yl){let s='';const X0=230,Y0=640,W=980,H=420;s+=axes(X0,Y0,W,H,HM,yl||'ซิงค์ในร่างกาย',2);
+ const pr=cl((lt-0.15)/sp),N=150;
+ fns.forEach(([fn,col,wid,area])=>{let d='';const n=Math.max(2,Math.floor(N*pr));for(let i=0;i<=n;i++){const h=HM*i/N,x=X0+W*h/HM,y=Y0-H*fn(h);d+=(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1)}
+  if(area){const xe=X0+W*n/N;s+=`<path d="${d} L${xe} ${Y0} L${X0} ${Y0}Z" fill="${col}" opacity=".18"/>`}
+  s+=`<path d="${d}" stroke="${col}" stroke-width="${wid}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`});
+ if(mark){const k=cl((lt-sp*0.8)/0.3);if(k>0){const [mh,mv,lab]=mark,x=X0+W*mh/HM,y=Y0-H*mv;s+=`<path d="M${x} ${y-30} V${Y0}" stroke="#F3D9A4" stroke-width="4" stroke-dasharray="10 8" opacity="${k}"/>`+pill(x,y-70,lab,k,'#F3D9A4','#16171B',40)}}
+ return s+legend()}
+function chart(lt,sp){
+ if(CHARTV==1){ // first version: others spike and drop fast, iCAP plateau to 6 h
+  return lineChart(lt,sp,8,[[h=>0.78*(h/0.9)*Math.exp(1-h/0.9),'#3A5FA0',8],[h=>0.7*(h/1.1)*Math.exp(1-h/1.1),'#2EC4B6',8],[h=>0.62*(1-Math.exp(-h*1.4))*(h<6?1:Math.exp(-(h-6)*1.2)),'#F3D9A4',12,true]],[6,0.62,'6 ชม.'])}
+ if(CHARTV==2){ // others peak 2-3 h then gradual; iCAP plateau then clear decline
+  return lineChart(lt,sp,8,[[h=>0.68*Math.pow(h/2.4,2)*Math.exp(2*(1-h/2.4)),'#3A5FA0',8],[h=>0.6*Math.pow(h/2.8,2)*Math.exp(2*(1-h/2.8)),'#2EC4B6',8],[h=>0.62*(1-Math.exp(-h*1.1))*(h<6?1:Math.exp(-(h-6)*0.3)),'#F3D9A4',12,true]],[6,0.62,'6 ชม.'])}
+ if(CHARTV==3){ // 12 h axis: iCAP plateau to 6 h, gentle tail to 12; others peak 2 h, gone by ~8 h
+  return lineChart(lt,sp,12,[[h=>0.66*Math.pow(h/2,2.2)*Math.exp(2.2*(1-h/2)),'#3A5FA0',8],[h=>0.58*Math.pow(h/2.3,2.2)*Math.exp(2.2*(1-h/2.3)),'#2EC4B6',8],[h=>0.64*(1-Math.exp(-h*1.0))*(h<6?1:Math.exp(-(h-6)*0.28)),'#F3D9A4',12,true]],[6,0.63,'6 ชม.'])}
+ if(CHARTV==4){ // timeline bars: how long zinc keeps working
+  let s='';const X0=330,W=880;s+=axes(X0,640,W,420,12,'',2).replace(/<path[^>]*\/>/,`<path d="M${X0} 640 H${X0+W+30}" stroke="#9AA0AC" stroke-width="5"/>`);
+  const rows=[['biotin.png',0.4,3.5,'#3A5FA0'],['bisplus.png',0.4,4,'#2EC4B6'],['jar.png',0.6,10,'#F3D9A4']];
+  rows.forEach(([f,a,b2,c],i)=>{const y=210+i*140,p=eOC(cl((lt-0.15-i*0.15)/(0.5+b2*0.08)));const x1=X0+W*a/12,x2=X0+W*lerp(a,b2,p)/12;
+   s+=jarAt(f,X0-90,y+60,i==2?140:110)+`<rect x="${X0}" y="${y-30}" width="${W}" height="60" rx="30" fill="rgba(255,255,255,.07)"/><rect x="${x1}" y="${y-26}" width="${Math.max(0,x2-x1)}" height="52" rx="26" fill="${c}"/>`;
+   if(i==2){let gl='';for(let j=0;j<6;j++){const xx=x1+((lt*120+j*90)%Math.max(1,x2-x1));gl+=`<circle cx="${xx}" cy="${y}" r="7" fill="#fff" opacity=".6"/>`}s+=gl}});
+  const k=cl((lt-sp*0.8)/0.3);if(k>0){const x=X0+W*6/12;s+=`<path d="M${x} 150 V640" stroke="#F3D9A4" stroke-width="4" stroke-dasharray="10 8" opacity="${k}"/>`+pill(x,130,'ปล่อยต่อเนื่อง 6 ชม.',k,'#F3D9A4','#16171B',36)}
+  return s}
+ // CHARTV==5: two smooth curves only, "ทั่วไป" vs iCAP, with glowing dots and labels
+ let s='';const X0=230,Y0=640,W=1000,H=430,HM=12;s+=axes(X0,Y0,W,H,HM,'ซิงค์ในร่างกาย',2);
+ const pr=cl((lt-0.15)/sp),N=150,n=Math.max(2,Math.floor(N*pr));
+ const gen=h=>0.72*Math.pow(h/2.2,2)*Math.exp(2*(1-h/2.2)),ic=h=>0.66*(1-Math.exp(-h*0.9))*(h<6.5?1:Math.exp(-(h-6.5)*0.3));
+ const path=fn=>{let d='';for(let i=0;i<=n;i++){const h=HM*i/N;d+=(i?'L':'M')+(X0+W*h/HM).toFixed(1)+' '+(Y0-H*fn(h)).toFixed(1)}return d};
+ const dg=path(gen),di=path(ic),xe=X0+W*n/N;
+ s+=`<path d="${dg} L${xe} ${Y0} L${X0} ${Y0}Z" fill="#7FA8E0" opacity=".12"/><path d="${di} L${xe} ${Y0} L${X0} ${Y0}Z" fill="#F3D9A4" opacity=".22"/>`;
+ s+=`<path d="${dg}" stroke="#7FA8E0" stroke-width="8" fill="none" stroke-dasharray="2 14" stroke-linecap="round"/><path d="${di}" stroke="#F3D9A4" stroke-width="12" fill="none" stroke-linecap="round"/>`;
+ const he=HM*n/N;s+=`<circle cx="${X0+W*he/HM}" cy="${Y0-H*ic(he)}" r="14" fill="#fff" stroke="#F3D9A4" stroke-width="6"/>`;
+ const k=cl((lt-sp*0.85)/0.3);
+ if(k>0)s+=pill(X0+W*2.0/HM,Y0-H*0.72-60,'สูตรทั่วไป: พุ่งแล้วหมดไว',k,'#16171B','#9CC0FF',30)+pill(X0+W*9.2/HM,Y0-H*0.66-60,'iCAP: ค่อยๆ ปล่อย อยู่นาน',k,'#F3D9A4','#16171B',30);
+ return s}
+function silverCoin(x,y,r){return `<defs><radialGradient id="sg7" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#C9CED8"/><stop offset="1" stop-color="#7C838F"/></radialGradient></defs><g transform="translate(${x} ${y})"><circle r="${r}" fill="url(#sg7)" stroke="#5B616B" stroke-width="5"/><circle r="${r*0.82}" fill="none" stroke="#fff" stroke-width="3" opacity=".6"/><text y="${r*0.33}" text-anchor="middle" font-family="Arial" font-weight="700" font-size="${r*0.9}" fill="#3A3F47">Zn</text></g>`};
+function focus(id,cx,cy,rx,ry,p){if(p<=0)return '';const k=eOC(cl(p)),L=Math.PI*(rx+ry)*1.12;
+ return `<defs><mask id="fm${id}"><rect x="-200" y="-200" width="1840" height="1480" fill="#fff"/><ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="#000"/></mask></defs><rect x="-200" y="-200" width="1840" height="1480" fill="#0B0C0F" opacity="${0.62*k}" mask="url(#fm${id})"/>`+
+ `<ellipse cx="${cx}" cy="${cy}" rx="${rx+14}" ry="${ry+14}" fill="none" stroke="#FF3B3F" stroke-width="9" stroke-linecap="round" stroke-dasharray="${L}" stroke-dashoffset="${L*(1-k)}" transform="rotate(-6 ${cx} ${cy})"/>`};
+
+
+function bigQ(x,y,s,t,p){if(p<=0)return '';return `<g transform="translate(${x} ${y}) scale(${eOB(cl(p))*s}) rotate(${Math.sin(t*4)*8})"><circle r="70" fill="#F3D9A4" stroke="#7A5B2E" stroke-width="6"/><text y="34" text-anchor="middle" font-family="K" font-weight="900" font-size="100" fill="#16171B">?</text></g>`}
+function pellet(cx,cy,R,layers,t,lid){let s=`<defs><radialGradient id="pc${lid}" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#C9CED8"/></radialGradient></defs>`;
+ const cols=['#F3D9A4','#E8C88E','#D9B98A','#C9A673','#B8925C'];
+ for(let i=cols.length-1;i>=0;i--){const v=layers[i];if(v<=0)continue;const r=R*(0.45+0.11*(i+1));s+=`<circle cx="${cx}" cy="${cy}" r="${r*Math.min(1,v)}" fill="${cols[i]}" stroke="#7A5B2E" stroke-width="3" opacity="${Math.min(1,v)}"/>`}
+ s+=`<circle cx="${cx}" cy="${cy}" r="${R*0.45}" fill="url(#pc${lid})" stroke="#7C838F" stroke-width="4"/><text x="${cx}" y="${cy+R*0.15}" text-anchor="middle" font-family="Arial" font-weight="700" font-size="${R*0.38}" fill="#3A3F47">Zn</text>`;
+ return s}
+function chartZ(lt,blueP,goldP,mark){let s='';const X0=230,Y0=640,W=980,H=420,HM=8;s+=axes(X0,Y0,W,H,HM,'ซิงค์ในร่างกาย',2);
+ const N=150;const fast=h=>0.7*Math.pow(h/2,2)*Math.exp(2*(1-h/2)),slow=h=>0.6*(1-Math.exp(-h*1.1))*(h<6?1:Math.exp(-(h-6)*0.3));
+ const path=(fn,pr)=>{const n=Math.max(2,Math.floor(N*pr));let d='';for(let i=0;i<=n;i++){const h=HM*i/N;d+=(i?'L':'M')+(X0+W*h/HM).toFixed(1)+' '+(Y0-H*fn(h)).toFixed(1)}return [d,X0+W*n/N]};
+ if(blueP>0){const [d]=path(fast,blueP);s+=`<path d="${d}" stroke="#7FA8E0" stroke-width="9" fill="none" stroke-linecap="round"/>`}
+ if(goldP>0){const [d,xe]=path(slow,goldP);s+=`<path d="${d} L${xe} ${Y0} L${X0} ${Y0}Z" fill="#F3D9A4" opacity=".18"/><path d="${d}" stroke="#F3D9A4" stroke-width="12" fill="none" stroke-linecap="round"/>`}
+ s+=`<text x="1290" y="300" text-anchor="middle" font-family="K" font-weight="900" font-size="26" fill="#7FA8E0">บิสไกลซิเนต</text><text x="1290" y="332" text-anchor="middle" font-family="K" font-weight="900" font-size="26" fill="#7FA8E0">ทั่วไป</text><rect x="1220" y="346" width="140" height="8" rx="4" fill="#7FA8E0"/>`;
+ if(goldP>0)s+=jarAt('jar.png',1290,220,100)+`<rect x="1220" y="232" width="140" height="8" rx="4" fill="#F3D9A4"/>`;
+ return s}
+window.extra=function(t){
+ const on=(a,b)=>t>=a-0.05&&t<b+0.45;
+ if(on(0,2.6)){const lt=t;$('v1').innerHTML=bigQ(470,230,1,t,1)+bigQ(990,170,0.75,t+1,1)+bigQ(1000,470,0.6,t+2,cl((lt-0.4)/0.3))}
+ // S2 bisglycinate molecule + globe
+ if(on(2.6,7.0)){const lt=t-2.6;let s='';
+  const k=eOB(cl(lt/0.4));s+=`<g transform="translate(470 360) scale(${k})"><circle r="80" fill="url(#zs2)" stroke="#5B616B" stroke-width="5"/><defs><radialGradient id="zs2" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#C9CED8"/><stop offset="1" stop-color="#7C838F"/></radialGradient></defs><text y="26" text-anchor="middle" font-family="Arial" font-weight="700" font-size="72" fill="#3A3F47">Zn</text>`;
+  [[-210,0],[210,0]].forEach(([gx,gy],i)=>{const p=cl((lt-0.4-i*0.2)/0.35);s+=`<path d="M${gx*0.38} 0 L${gx*0.62} 0" stroke="#F3D9A4" stroke-width="10" opacity="${p}"/><g transform="translate(${gx} ${gy}) scale(${eOB(p)})"><circle r="70" fill="#2EC4B6" stroke="#fff" stroke-width="5"/><text y="14" text-anchor="middle" font-family="K" font-weight="900" font-size="34" fill="#0B2240">ไกลซีน</text></g>`});
+  s+=`</g>`+pill(470,520,'Zinc Bisglycinate',cl((lt-0.9)/0.3),'#F3D9A4','#16171B',40)+check(640,250,40,cl((lt-1.6)/0.3));
+  if(lt>2.9){const g=cl((lt-2.9)/0.4);s+=`<g transform="translate(1080 360) scale(${eOB(g)})"><circle r="140" fill="#1F4E79" stroke="#7FD6F0" stroke-width="6"/><path d="M-140 0 H140 M0 -140 V140" stroke="#7FD6F0" stroke-width="4" opacity=".6"/><ellipse rx="70" ry="140" fill="none" stroke="#7FD6F0" stroke-width="4" opacity=".6"/><ellipse rx="140" ry="60" fill="none" stroke="#7FD6F0" stroke-width="4" opacity=".6"/><path d="M-70 -60 q30 -20 60 0 q20 30 -10 50 q-40 10 -50 -50Z M30 20 q40 -10 60 20 q-10 40 -50 30Z" fill="#6BBF59"/></g>`+pill(1080,540,'นิยมในต่างประเทศ',g,'#16171B','#7FD6F0',34)}
+  $('v2').innerHTML=s}
+ // S3 coating layers grow
+ if(on(7.0,9.2)){const lt=t-7.0;const L=[0,1,2,3,4].map(i=>eOC(cl((lt-0.4-i*0.25)/0.3)));
+  let s=pellet(720,360,240,L,t,'3');s+=pill(1120,240,'เคลือบหลายชั้น',cl((lt-1.0)/0.3),'#F3D9A4','#16171B',38)+pill(1120,480,'ชะลอการปลดปล่อย',cl((lt-1.6)/0.3),'#16171B','#F3D9A4',34);
+  $('v3').innerHTML=s}
+ if(on(9.2,10.6)){$('v4').innerHTML=bigQ(720,330,2.2,t,cl((t-9.2)/0.35))}
+ // S5 fast absorb chart (blue only)
+ if(on(10.6,16.1)){const lt=t-10.6;let s=chartZ(lt,eIO(cl((lt-0.2)/(lt<3.8?1.5:4.5))),0);
+  const pk=cl((lt-1.7)/0.3);if(pk>0){const x=230+980*2/8,y=640-420*0.7;s+=`<circle cx="${x}" cy="${y}" r="16" fill="#fff" stroke="#7FA8E0" stroke-width="6" opacity="${pk}"/>`+pill(x,y-60,'สูงสุดที่ 2 ชม.',pk,'#7FA8E0','#0B2240',34)}
+  if(lt>3.8){const k=cl((lt-3.9)/0.3);s+=`<path d="M560 330 Q800 420 1100 580" stroke="#FF6B6E" stroke-width="10" fill="none" stroke-dasharray="20 14" opacity="${k}"/><path d="M1080 540 L1112 590 L1050 590Z" fill="#FF6B6E" opacity="${k}"/>`}
+  $('v5').innerHTML=s}
+ // S6 layers dissolve, zinc released slowly
+ if(on(16.1,21.0)){const lt=t-16.1;const hr=6*cl((lt-0.4)/4.0);const L=[0,1,2,3,4].map(i=>{const st=(4-i)*1.3;return 1-cl((hr-st)/1.3)});
+  let s=pellet(560,360,230,L,t,'6');
+  let k=9;const rr=()=>{k=(k*16807)%2147483647;return (k-1)/2147483646};
+  for(let i=0;i<26;i++){const st=rr()*6,p=cl((hr-st)/1.4);if(p<=0||p>=1)continue;const a=rr()*6.28;const x=560+Math.cos(a)*(240+p*280),y=360+Math.sin(a)*(200+p*160);s+=`<circle cx="${x}" cy="${y}" r="12" fill="#D5DAE2" stroke="#7C838F" stroke-width="3" opacity="${1-p}"/>`}
+  s+=`<g transform="translate(1110 330)"><circle r="120" fill="#16171B" stroke="#D9B98A" stroke-width="6"/><text y="-20" text-anchor="middle" font-family="K" font-weight="800" font-size="30" fill="#C9CED8">ชั่วโมงที่</text><text y="56" text-anchor="middle" font-family="K" font-weight="900" font-size="90" fill="#F3D9A4">${hr.toFixed(0)}</text></g>`;
+  s+=pill(1110,510,'ค่อยๆ ปล่อยทีละชั้น',cl((lt-2.6)/0.3),'#F3D9A4','#16171B',32);
+  $('v6').innerHTML=s}
+ // S7 chart gold steady 6 h
+ if(on(21.0,31.0)){const lt=t-21.0;let s=chartZ(lt,1,eIO(cl((lt-0.2)/1.6)));
+  if(lt>3.7){const k=cl((lt-3.7)/0.3);const x=230+980*6/8,y=640-420*0.6;s+=`<path d="M${x} ${y-30} V640" stroke="#F3D9A4" stroke-width="5" stroke-dasharray="12 9" opacity="${k}"/>`+pill(x,y-70,'6 ชม.',k,'#F3D9A4','#16171B',44)}
+  if(lt>7.0){const k=cl((lt-7.0)/0.3);const y=640-420*0.6-26;s+=`<path d="M${230+980*1.6/8} ${y} H${230+980*6/8}" stroke="#2EC4B6" stroke-width="8" opacity="${k}"/><path d="M${230+980*1.6/8} ${y-16} V${y+16} M${230+980*6/8} ${y-16} V${y+16}" stroke="#2EC4B6" stroke-width="8" opacity="${k}"/>`+pill(230+980*3.8/8,y-46,'แทบไม่ลด',k,'#2EC4B6','#0B2240',34)}
+  s+=focus(7,700,350,330,110,(lt-8.6)/0.3);
+  $('v7').innerHTML=s}
+ // S8 made in Thailand
+ if(on(31.0,34.0)){const lt=t-31.0;let s='';const p=cl((lt-1.5)/0.35);
+  if(p>0){const k=eOB(p);s+=`<g transform="translate(1000 330) scale(${k})"><path d="M-170 120 V-20 L-90 -70 V-20 L-10 -70 V-20 L70 -70 V-130 H120 V120Z" fill="#2A2D35" stroke="#D9B98A" stroke-width="6"/><rect x="-140" y="30" width="50" height="50" fill="#F3D9A4"/><rect x="-60" y="30" width="50" height="50" fill="#F3D9A4"/><rect x="20" y="30" width="50" height="50" fill="#F3D9A4"/><g transform="translate(150 -150)"><rect x="0" y="0" width="120" height="80" fill="#fff" stroke="#16171B" stroke-width="2"/><rect y="0" width="120" height="13" fill="#E5484D"/><rect y="67" width="120" height="13" fill="#E5484D"/><rect y="27" width="120" height="26" fill="#2B3A8C"/><path d="M0 0 V170" stroke="#C9CED8" stroke-width="6"/></g></g>`+pill(1000,520,'ผลิตในไทย โรงงานไทย',p,'#F3D9A4','#16171B',38)}
+  if(lt<1.5)s+=sparkle(560,170,1.2,(lt%0.8)/0.4)+sparkle(380,420,1,((lt+0.3)%0.8)/0.4);
+  $('v8').innerHTML=s}
+ // S6 exploded capsule
+ if(on(34.0,37.85)){const lt=t-34.0;let s='';const e=eOC(cl((lt-0.3)/0.6));
+  const cx=1000,cy=330;
+  s+=`<g transform="translate(${cx} ${cy-80-e*70}) rotate(${-20*e})"><path d="M-80 60 V-10 A80 80 0 0 1 80 -10 V60Z" fill="rgba(255,255,255,.18)" stroke="#fff" stroke-width="5"/></g>`;
+  s+=`<g transform="translate(${cx} ${cy+80+e*70}) rotate(${15*e})"><path d="M-84 -60 V20 A84 84 0 0 0 84 20 V-60Z" fill="#F4EFE4" stroke="#B9AF9B" stroke-width="5"/><text y="20" text-anchor="middle" font-family="Arial" font-weight="700" font-size="36" fill="#4A4A4A">Zn</text></g>`;
+  let k=5;const rr=()=>{k=(k*16807)%2147483647;return (k-1)/2147483646};
+  for(let i=0;i<34;i++){const a=rr()*6.28,d=40+rr()*220*e,r=10+rr()*8;const x=cx+Math.cos(a)*d*1.3,y=cy+Math.sin(a)*d*0.7;s+=`<circle cx="${x}" cy="${y}" r="${r}" fill="url(#gPl6)" stroke="#BFB6A3" stroke-width="1.5"/>`}
+  s=`<defs><radialGradient id="gPl6" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#F3EEE3"/><stop offset="1" stop-color="#BFB6A3"/></radialGradient></defs>`+s;
+  s+=pill(1000,620,'Pellet Technology',cl((lt-0.8)/0.3),'#F3D9A4','#16171B',40);
+  
+  $('v9').innerHTML=s}
+ // S10 level up
+ if(on(37.85,42.95)){const lt=t-37.85;let s='';
+  const st=(x,y,w,h,col,p)=>p<=0?'':`<g opacity="${cl(p)}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="18" fill="${col}"/></g>`;
+  s+=st(230,520,420,120,'#2A2D35',cl((lt-0.1)/0.3))+st(790,360,420,280,'#3A3D44',cl((lt-2.1)/0.3));
+  s+=`<g opacity="${cl((lt-0.2)/0.3)}">${jarAt('jar.png',340,510,0.001)}</g>`;
+  const p1=cl((lt-0.3)/0.35);if(p1>0)s+=`<g transform="translate(440 430) scale(${eOB(p1)})"><circle r="80" fill="#16171B" stroke="#2EC4B6" stroke-width="6"/><path d="M0 -40 V24 M-26 0 L0 28 L26 0" stroke="#2EC4B6" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`+pill(440,580,'ดูดซึมดี',p1,'#2EC4B6','#0B2240',36);
+  const a=cl((lt-1.6)/0.4);if(a>0)s+=`<path d="M560 400 Q680 260 820 280" stroke="#F3D9A4" stroke-width="14" fill="none" stroke-dasharray="${400*a} 400"/><path d="M810 250 L860 285 L805 315Z" fill="#F3D9A4" opacity="${cl((a-0.8)/0.2)}"/>`;
+  const p2=cl((lt-2.2)/0.35);if(p2>0)s+=`<g transform="translate(1000 270) scale(${eOB(p2)})"><circle r="90" fill="#16171B" stroke="#F3D9A4" stroke-width="6"/><path d="M0 0 V-46 M0 0 H34" stroke="#F3D9A4" stroke-width="10" stroke-linecap="round"/><circle r="8" fill="#F3D9A4"/></g>`+pill(1000,430,'+ อยู่ได้นานขึ้น',p2,'#F3D9A4','#16171B',38)+pill(1000,520,'iCAP',p2,'#16171B','#F3D9A4',40);
+  s+=focus(10,1000,400,230,230,(lt-3.3)/0.3);
+  $('v10').innerHTML=s}
+ // S11 basket CTA
+ if(on(42.95,46.4)){const lt=t-42.95;let s='';const p=cl((lt-1.9)/0.35);
+  if(p>0){const k=eOB(p),b=Math.sin(t*6)*8;s+=`<g transform="translate(1000 ${330+b}) scale(${k})"><path d="M-130 -60 H130 L100 90 H-100Z" fill="#FFD23F" stroke="#16171B" stroke-width="8" stroke-linejoin="round"/><path d="M-80 -60 Q-80 -150 0 -150 Q80 -150 80 -60" fill="none" stroke="#16171B" stroke-width="12"/><path d="M-60 -20 V60 M0 -20 V60 M60 -20 V60" stroke="#16171B" stroke-width="7"/></g>`;
+   s+=`<g transform="translate(1000 ${560+Math.abs(Math.sin(t*5))*20})"><path d="M-40 -40 H40 V0 H70 L0 70 L-70 0 H-40Z" fill="#F3D9A4" stroke="#7A5B2E" stroke-width="5"/></g>`}
+  else s+=sparkle(980,300,1.4,(lt%0.9)/0.45);
+  $('v11').innerHTML=s}
+ // S12 new
+ if(on(46.4,99)){const lt=t-46.4;const k=eOB(cl((lt-0.3)/0.35));
+  $('v12').innerHTML=`<g transform="translate(1000 170) scale(${k}) rotate(${Math.sin(t*4)*6})"><polygon points="${[...Array(24)].map((_,i)=>{const a=i/24*6.283,r=i%2?0.78:1;return (Math.cos(a)*130*r).toFixed(0)+','+(Math.sin(a)*90*r).toFixed(0)}).join(' ')}" fill="#E5484D" stroke="#fff" stroke-width="7"/><text y="22" text-anchor="middle" font-family="K" font-weight="900" font-size="66" fill="#fff">NEW!</text></g>`+sparkle(450,200,1.3,(lt%1)/0.5)+sparkle(1060,520,1.1,((lt+0.4)%1)/0.5)+sparkle(400,520,1,((lt+0.7)%1)/0.5)}
+};
+
+</script>
+</body></html>
