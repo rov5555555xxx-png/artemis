@@ -1,0 +1,85 @@
+.jar{background-image:url(jar.png)}
+.red{color:#FF6B6E;text-shadow:0 6px 0 #6E1416,0 14px 30px rgba(0,0,0,.6)}
+.cop{color:#F0A070;text-shadow:0 6px 0 #6B3418,0 14px 30px rgba(0,0,0,.6)}
+.vsvg{position:absolute;overflow:visible}
+#confetti{display:none}
+</style></head><body>
+<div id="stage">
+
+<!-- S1 0-2.9 taking zinc continuously for a long time -->
+<div class="scene" data-s="0" data-e="2.9" data-bg="studio" data-cam="0:1.03:720:500;2.9:1:720:540">
+ <div class="cam"><svg class="a vsvg" id="v1" data-at="-1" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="-1" data-an="fade" style="top:800px;font-size:80px">กินซิงค์<span class="hl" data-hl="0.8">ติดต่อกันนานๆ</span></div>
+</div>
+
+<!-- S2 2.9-6.0 does it lower copper absorption? true and false -->
+<div class="scene" data-s="2.9" data-e="6.0" data-bg="studio" data-tr="wipe" data-cam="2.9:1:720:540;6.0:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v2" data-at="2.92" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="2.95" data-an="up" data-out="4.85" style="top:800px;font-size:78px">ลดการดูดซึม<span class="cop">ทองแดง</span> จริงไหม?</div>
+ <div class="a big cx wht" data-at="4.9" data-an="up" style="top:800px;font-size:80px">มีทั้ง <span class="gold">จริง</span> และ <span class="red">ไม่จริง</span></div>
+</div>
+
+<!-- S3 6.0-9.5 case 1: one capsule a day, however long -->
+<div class="scene" data-s="6.0" data-e="9.5" data-bg="studio" data-tr="iris" data-cam="6.0:1.04:720:500;9.5:1:720:540">
+ <div class="cam">
+  <div class="a glow" data-at="6.0" data-an="fade" style="left:110px;top:60px;width:500px;height:500px"></div>
+  <div class="a img jar" data-at="6.02" data-an="left" data-float="0.4" style="left:220px;top:100px;width:270px;height:504px"></div>
+  <svg class="a vsvg" id="v3" data-at="6.05" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="6.05" data-an="up" data-out="7.85" style="top:790px;font-size:80px">ถ้ากินวันละ <span class="hl" data-hl="6.6">1 เม็ด</span></div>
+ <div class="a big cx wht" data-at="7.9" data-an="up" style="top:790px;font-size:78px">ไม่ว่าจะกิน<span class="hl" data-hl="8.4">นานแค่ไหน</span></div>
+</div>
+
+<!-- S4 9.5-12.0 never lowers copper absorption -->
+<div class="scene" data-s="9.5" data-e="12.0" data-bg="studio" data-tr="wipe" data-cam="9.5:1:720:540;12.0:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v4" data-at="9.52" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="9.55" data-an="up" style="top:800px;font-size:76px"><span class="gold">ไม่</span>ลดการดูดซึม<span class="cop">ทองแดง</span></div>
+</div>
+
+<!-- S5 12.0-17.75 case 2: 2 capsules 30 mg + 10 mg from food -->
+<div class="scene" data-s="12.0" data-e="17.75" data-bg="studio" data-tr="wipe" data-cam="12.0:1:720:540;17.75:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v5" data-at="12.02" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="12.05" data-an="up" data-out="14.35" style="top:800px;font-size:78px">อีกแบบ: กินวันละ <span class="red">2 เม็ด</span></div>
+ <div class="a big cx wht" data-at="14.4" data-an="up" style="top:800px;font-size:78px">+ จากอาหารอีก <span class="red">10 mg</span></div>
+</div>
+
+<!-- S6 17.75-21.8 over 40 mg -> copper absorption drops -->
+<div class="scene" data-s="17.75" data-e="21.8" data-bg="studio" data-tr="flash" data-cam="17.75:1.04:720:500;21.8:1:720:540">
+ <div class="cam"><svg class="a vsvg" id="v6" data-at="17.77" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="17.8" data-an="up" data-out="19.25" style="top:800px;font-size:80px">รวมเกิน <span class="red">40 mg/วัน</span></div>
+ <div class="a big cx wht" data-at="19.3" data-an="up" style="top:800px;font-size:76px">ดูดซึม<span class="cop">ทองแดง</span><span class="red">ลดลงทันที</span></div>
+</div>
+
+<!-- S7 21.8-27.6 that's why: don't exceed 40 mg -->
+<div class="scene" data-s="21.8" data-e="27.6" data-bg="studio" data-tr="wipe" data-cam="21.8:1:720:540;27.6:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v7" data-at="21.82" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="21.85" data-an="up" data-out="23.85" style="top:800px;font-size:78px">เหตุผลที่<span class="hl" data-hl="22.4">ห้ามเกิน 40 mg</span></div>
+ <div class="a big cx wht" data-at="23.9" data-an="up" style="top:800px;font-size:78px"><span class="red">เสี่ยงผลเสีย</span>ต่อร่างกาย</div>
+</div>
+
+<!-- S8 27.6-33.0 one capsule: don't worry, right amount -->
+<div class="scene" data-s="27.6" data-e="33.0" data-bg="studio" data-tr="iris" data-cam="27.6:1.04:720:500;33.0:1:720:540">
+ <div class="cam"><svg class="a vsvg" id="v8" data-at="27.62" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="27.65" data-an="up" data-out="29.95" style="top:800px;font-size:78px">กินวันละ 1 เม็ด <span class="gold">ไม่ต้องตกใจ</span></div>
+ <div class="a big cx wht" data-at="30.0" data-an="up" style="top:800px;font-size:78px"><span class="hl" data-hl="30.4">ปริมาณที่เหมาะสม</span></div>
+</div>
+
+<!-- S9 33.0-36.0 every day, no need to add copper -->
+<div class="scene" data-s="33.0" data-e="36.0" data-bg="studio" data-tr="wipe" data-cam="33.0:1:720:540;36.0:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v9" data-at="33.02" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="33.05" data-an="up" data-out="34.55" style="top:800px;font-size:80px">กินได้<span class="hl" data-hl="33.5">ทุกวัน</span></div>
+ <div class="a big cx wht" data-at="34.6" data-an="up" style="top:800px;font-size:76px">ไม่ต้องหา<span class="cop">ทองแดง</span>มากินเพิ่ม</div>
+</div>
+
+<!-- S10 36.0-end safe amount: copper absorbed normally -->
+<div class="scene" data-s="36.0" data-e="99" data-bg="studio" data-tr="flash" data-cam="36.0:1.06:720:480;40.24:1:720:540">
+ <div id="confetti"></div>
+ <div class="cam">
+  <div class="a rays" data-at="35.9" data-an="fade" data-spin="12" style="left:100px;top:-40px;width:640px;height:640px"></div>
+  <div class="a glow" data-at="36.0" data-an="fade" style="left:180px;top:60px;width:480px;height:480px"></div>
+  <div class="a img jar" data-at="36.02" data-an="drop" data-float="0.3" style="left:280px;top:100px;width:270px;height:504px"></div>
+  <svg class="a vsvg" id="v10" data-at="36.05" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="36.05" data-an="up" data-out="37.95" style="top:790px;font-size:80px">กินใน<span class="hl" data-hl="36.6">ปริมาณที่ปลอดภัย</span></div>
+ <div class="a big cx wht" data-at="38.0" data-an="up" style="top:790px;font-size:78px"><span class="cop">ทองแดง</span>ก็ดูดซึมได้<span class="gold">ตามปกติ</span></div>
+</div>
