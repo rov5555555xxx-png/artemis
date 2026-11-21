@@ -105,16 +105,33 @@ svg{overflow:visible}
  <div class="kt" data-at="12.06" data-st="0.045" data-fx="jelly" style="top:790px;font-size:100px;color:#FFD23F">Dr.Aum จัดให้แล้ว!</div>
 </div>
 
-<!-- S5 13.14-17.08 Ubiquinol form, no ubiquinone mixed in, works fast (lab magnifier sorting balls; stopwatch) -->
-<div class="scene" data-s="13.14" data-e="17.08" data-bg="lab" data-tr="iris" data-cam="13.14:1:720:540;14.0:1.15:700:470;15.6:1.15:700:470;16.3:1.2:1050:430;17.08:1.2:1050:430">
+<!-- S5a 13.14-15.08 pure Ubiquinol: a cut-open capsule fills with gold balls only (colour key on top) -->
+<div class="scene" data-s="13.14" data-e="15.08" data-bg="lab" data-tr="iris" data-cam="13.14:1:720:520;14.4:1:720:520;14.8:1.18:720:460;15.08:1.18:720:460">
  <div class="cam">
-  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="grid5"></g><g id="jar5" transform="translate(620 470)"></g><g id="balls5"></g><g id="out5"></g><g id="watch5" transform="translate(1080 430)"></g></svg>
-  <div class="a box" data-at="13.2" data-an="left" data-float="0.3" style="left:150px;top:300px;width:200px;height:254px"></div>
-  <div class="a" data-at="15.2" data-an="stamp" style="left:820px;top:150px"><span class="stk" style="font-size:38px;background:#FFB36B">ไม่มียูบิควิโนนปน</span></div>
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="grid5"></g><g id="key5a" transform="translate(720 165)"></g><g id="capA"></g><g id="spk5a"></g></svg>
+  <div class="a box" data-at="13.2" data-an="right" data-float="0.3" style="left:1090px;top:400px;width:180px;height:228px"></div>
  </div>
- <div class="kt" data-at="13.14" data-st="0.045" data-fx="bounce" data-out="15.0" style="top:800px;font-size:100px;color:#FFE7A0">ฟอร์มยูบิควินอล</div>
- <div class="kt" data-at="15.08" data-st="0.04" data-fx="shake" data-out="16.32" style="top:800px;font-size:96px;color:#FF9B4A">ไม่มียูบิควิโนนปน</div>
- <div class="kt" data-at="16.4" data-st="0.05" data-fx="jelly" style="top:800px;font-size:104px;color:#3DDC97">กินแป๊บเดียว</div>
+ <div class="kt" data-at="13.14" data-st="0.05" data-fx="jelly" style="top:800px;font-size:110px;color:#FFD23F">ยูบิควินอลล้วน!</div>
+</div>
+
+<!-- S5b 15.08-16.40 no ubiquinone mixed in: ordinary capsule (mixed, X) vs Dr.Aum capsule (gold only, check) -->
+<div class="scene" data-s="15.08" data-e="16.40" data-bg="lab" data-tr="stripe" data-cam="15.08:1:720:520;16.40:1.04:760:500">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="grid5b"></g><g id="key5b" transform="translate(720 150)"></g><g id="capL5"></g><g id="capR5"></g>
+   <g id="xL5" transform="translate(530 280)"><circle r="46" fill="#FF6B6B" stroke="#1B2A4A" stroke-width="6"/><path d="M-18 -18L18 18M18 -18L-18 18" stroke="#fff" stroke-width="10" stroke-linecap="round"/></g>
+   <g id="okR5" transform="translate(1170 280)"><circle r="46" fill="#3DDC97" stroke="#1B2A4A" stroke-width="6"/><path d="M-20 2l13 13 26-28" stroke="#fff" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g></svg>
+  <div class="a" data-at="15.1" data-an="up" style="left:270px;top:665px;width:260px;text-align:center"><span class="stk" style="font-size:36px;background:#fff">ฟอร์มทั่วไป</span></div>
+  <div class="a" data-at="15.2" data-an="up" style="left:910px;top:665px;width:260px;text-align:center"><span class="stk" style="font-size:36px;background:#FFE7A0">Dr.Aum</span></div>
+ </div>
+ <div class="kt" data-at="15.1" data-st="0.04" data-fx="bounce" style="top:800px;font-size:96px;color:#fff">ไม่มียูบิควิโนนผสม</div>
+</div>
+
+<!-- S5c 16.40-17.08 works fast: capsule dissolves, gold balls dash off; stopwatch spins -->
+<div class="scene" data-s="16.40" data-e="17.08" data-bg="lab" data-tr="zoom" data-cam="16.40:1.06:720:500;17.08:1:720:520">
+ <div class="cam">
+  <svg style="position:absolute;left:0;top:0" width="1440" height="1080"><g id="grid5c"></g><g id="capC"></g><g id="dash5"></g><g id="watch5" transform="translate(1130 430)"></g></svg>
+ </div>
+ <div class="kt" data-at="16.4" data-st="0.04" data-fx="jelly" style="top:800px;font-size:110px;color:#3DDC97">กินแป๊บเดียว!</div>
 </div>
 
 <!-- S6 17.08-20.16 goes straight into cells: repairs, gives energy (inside cell; door -> repair -> battery) -->
@@ -205,12 +222,29 @@ const POOF=RAD.map(()=>H$($('zap3'),[...Array(8)].map((_,k)=>`<circle cx="${Math
 // ---- S4 gift box
 const GIFT=H$($('gift4'),`<g transform="translate(720 690)"><rect x="-230" y="-250" width="460" height="250" rx="16" fill="#FF6B6B" stroke="${INK}" stroke-width="8"/><rect x="-30" y="-250" width="60" height="250" fill="#FFD23F" stroke="${INK}" stroke-width="6"/>
  <g id="lid4"><rect x="-250" y="-310" width="500" height="70" rx="16" fill="#FF8F8F" stroke="${INK}" stroke-width="8"/><rect x="-30" y="-310" width="60" height="70" fill="#FFD23F" stroke="${INK}" stroke-width="6"/><path d="M0 -310 C-60 -400 -140 -360 -90 -320 C-60 -300 -20 -305 0 -310 C20 -305 60 -300 90 -320 C140 -360 60 -400 0 -310Z" fill="#FFD23F" stroke="${INK}" stroke-width="6"/></g></g>`);
-// ---- S5 lab: magnifier jar sorting gold vs orange balls; stopwatch
-{const g=$('grid5');for(let x=-200;x<1640;x+=60)mk('line',{x1:x,y1:-200,x2:x,y2:1300,stroke:'#BDEBD9','stroke-width':3},g);for(let y=-200;y<1300;y+=60)mk('line',{x1:-200,y1:y,x2:1640,y2:y,stroke:'#BDEBD9','stroke-width':3},g)}
-H$($('jar5'),`<circle r="230" fill="rgba(255,255,255,.75)" stroke="${INK}" stroke-width="14"/><circle r="230" fill="none" stroke="#fff" stroke-width="5" opacity=".7"/><path d="M165 165 L270 270" stroke="${INK}" stroke-width="40" stroke-linecap="round"/><path d="M170 170 L265 265" stroke="#B18CFF" stroke-width="22" stroke-linecap="round"/>`);
-const B5=[];for(let i=0;i<9;i++){const a=i/9*Math.PI*2,r=i%3?120:40;B5.push({g:H$($('balls5'),`<g transform="scale(.36)">${QB(GOLD)}</g>`),x:620+Math.cos(a)*r,y:470+Math.sin(a)*r,ph:rnd()*6})}
-const OUT5=[0,1].map(i=>H$($('out5'),`<g transform="scale(.36)">${QB(ORNG)}</g><path d="M-50 -50L50 50M50 -50L-50 50" stroke="#fff" stroke-width="22" stroke-linecap="round"/><path d="M-50 -50L50 50M50 -50L-50 50" stroke="#E8231F" stroke-width="13" stroke-linecap="round"/>`));
-H$($('watch5'),`<circle r="130" fill="#fff" stroke="${INK}" stroke-width="10"/><rect x="-26" y="-176" width="52" height="34" rx="8" fill="${INK}"/><circle r="8" fill="${INK}"/><path id="hand5" d="M0 0 V-100" stroke="#E8231F" stroke-width="10" stroke-linecap="round"/><path d="M-170 -40h-60M-170 0h-90M-170 40h-60" stroke="${INK}" stroke-width="10" stroke-linecap="round" opacity=".6"/>`);
+// ---- S5 capsules (colour key: gold = ubiquinol, orange = ubiquinone)
+function gridIn(g){for(let x=-200;x<1640;x+=60)mk('line',{x1:x,y1:-200,x2:x,y2:1300,stroke:'#BDEBD9','stroke-width':3},g);for(let y=-200;y<1300;y+=60)mk('line',{x1:-200,y1:y,x2:1640,y2:y,stroke:'#BDEBD9','stroke-width':3},g)}
+['grid5','grid5b','grid5c'].forEach(id=>gridIn($(id)));
+const DEF5=mk('defs',{},$('grid5'));DEF5.innerHTML=`<radialGradient id="bG" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#FFFBEA"/><stop offset=".45" stop-color="#FFD966"/><stop offset="1" stop-color="#D9A21C"/></radialGradient><radialGradient id="bO" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#FFE9D6"/><stop offset=".45" stop-color="#FF9F45"/><stop offset="1" stop-color="#C9520A"/></radialGradient>`;
+const ball5=(o,r=30)=>`<circle r="${r}" fill="${o?'#FF8A2A':'#FFD24A'}" stroke="${INK}" stroke-width="4"/><ellipse cx="${-r*.32}" cy="${-r*.42}" rx="${r*.3}" ry="${r*.16}" fill="#fff" opacity=".75"/><circle cx="${-r*.3}" cy="${r*.05}" r="${r*.09}" fill="${INK}"/><circle cx="${r*.3}" cy="${r*.05}" r="${r*.09}" fill="${INK}"/><path d="M${-r*.22} ${r*.3} q${r*.22} ${o?-r*.14:r*.2} ${r*.44} 0" stroke="${INK}" stroke-width="${r*.09}" fill="none" stroke-linecap="round"/>`;
+const keySvg=(both)=>`<g transform="translate(${both?-300:-150} 0)"><rect x="-60" y="-42" width="${both?600:300}" height="84" rx="42" fill="#fff" stroke="${INK}" stroke-width="6"/><g transform="translate(-14 0)">${ball5(0,26)}</g><text x="24" y="14" font-family="K" font-weight="900" font-size="38" fill="#B07A00">ยูบิควินอล</text>`+(both?`<g transform="translate(286 0)">${ball5(1,26)}</g><text x="324" y="14" font-family="K" font-weight="900" font-size="38" fill="#C9520A">ยูบิควิโนน</text>`:'')+`</g>`;
+H$($('key5a'),keySvg(false));H$($('key5b'),keySvg(true));
+// capsule: horizontal (w,h) or vertical; clear shell, balls clipped inside
+function capsule(par,cx,cy,w,h,vert,id){const g=mk('g',{transform:`translate(${cx} ${cy})`},par);const r=Math.min(w,h)/2;
+ const shell=`<rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" rx="${r}" ry="${r}"/>`;
+ g.innerHTML=`<clipPath id="cp${id}">${shell}</clipPath><rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" rx="${r}" ry="${r}" fill="rgba(255,255,255,.55)" stroke="${INK}" stroke-width="8"/><g clip-path="url(#cp${id})" class="in"></g>
+  <path d="${vert?`M${-w/2} 0 H${w/2}`:`M0 ${-h/2} V${h/2}`}" stroke="${INK}" stroke-width="5" stroke-dasharray="14 10" opacity=".5"/><rect x="${-w/2+18}" y="${-h/2+16}" width="${vert?24:w*0.5}" height="${vert?h*0.5:22}" rx="11" fill="#fff" opacity=".7"/>`;
+ return {g,inG:g.querySelector('.in'),w,h}}
+function fillBalls(cap,n,mix,r=30){const out=[];const cols=Math.floor(cap.w/(r*2.05)),rows=Math.ceil(n/cols);
+ for(let i=0;i<n;i++){const c=i%cols,rw=Math.floor(i/cols);const x=-cap.w/2+r*1.1+c*r*2.05+(rw%2?r:0),y=cap.h/2-r*1.1-rw*r*1.8;
+  const o=mix?((i+(i>>2))%2===0):false;const b=H$(cap.inG,ball5(o,r));out.push({b,x,y,o,i})}return out}
+const CA=capsule($('capA'),700,470,640,300,false,'A');const BA=fillBalls(CA,44,false,30);
+const SPK5=[];for(let i=0;i<8;i++)SPK5.push(H$($('spk5a'),`<path d="M0 -24 L6 -6 L24 0 L6 6 L0 24 L-6 6 L-24 0 L-6 -6Z" fill="#FFD23F" stroke="${INK}" stroke-width="4"/>`));
+const CL=capsule($('capL5'),400,450,230,400,true,'L');const BL=fillBalls(CL,26,true,28);
+const CR=capsule($('capR5'),1040,450,230,400,true,'R');const BR=fillBalls(CR,26,false,28);CR.g.id='capR5g';
+const CC=capsule($('capC'),620,470,560,260,false,'C');const BC=fillBalls(CC,34,false,28);
+const DASH=[];for(let i=0;i<10;i++)DASH.push(H$($('dash5'),`<path d="M-120 0 H-40" stroke="${INK}" stroke-width="6" stroke-linecap="round" opacity=".5"/><g>${ball5(0,26)}</g>`));
+H$($('watch5'),`<circle r="120" fill="#fff" stroke="${INK}" stroke-width="10"/><rect x="-24" y="-164" width="48" height="32" rx="8" fill="${INK}"/><circle r="8" fill="${INK}"/><path id="hand5" d="M0 0 V-92" stroke="#E8231F" stroke-width="10" stroke-linecap="round"/><path d="M-160 -40h-50M-160 0h-80M-160 40h-50" stroke="${INK}" stroke-width="10" stroke-linecap="round" opacity=".6"/>`);
 // ---- S6 cell: tired -> repaired -> charged
 organelles($('org6'),9);
 H$($('cellM6'),`<circle r="200" fill="#FFE3EA" stroke="${INK}" stroke-width="9"/><circle cx="50" cy="-50" r="56" fill="#FFB3C6" stroke="${INK}" stroke-width="6"/><g id="faceT6">${faceSm(150,'tired')}</g><g id="faceH6" opacity="0">${faceSm(150,'happy')}</g>`);
@@ -231,7 +265,7 @@ H$($('tag8'),`<g transform="rotate(-8)"><path d="M0 0 H240 L300 70 L240 140 H0Z"
 H$($('bsk8'),`<circle r="120" fill="#1B2A4A"/><path d="M-62 -14 L62 -14 L48 58 L-48 58 Z" fill="#FFD21F" stroke="#fff" stroke-width="7" stroke-linejoin="round"/><path d="M-38 -14 Q-30 -66 0 -66 Q30 -66 38 -14" fill="none" stroke="#FFD21F" stroke-width="12" stroke-linecap="round"/>`+[-26,0,26].map(x=>`<line x1="${x}" y1="4" x2="${x*0.85}" y2="44" stroke="#1B2A4A" stroke-width="6" stroke-linecap="round"/>`).join(''));
 const hand8=H$($('hand8'),`<g transform="translate(40 40) rotate(-30)"><path d="M0 0a14 14 0 0128 0v70l34 8c12 3 18 12 15 24l-9 44H22L-12 100c-6-9 3-20 15-15l-3 -5z" fill="#fff" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/></g>`);
 // ---- annotations (tracked from real element boxes, end with their scene)
-const ANNS=[{at:2.2,el:'ubq1',ang:-150},{at:9.3,el:'hero3',kx:1.0,ky:1.0,pad:14,ang:-140},{at:21.0,el:'act7',ang:-30},{at:22.5,el:'R7A',kx:1.1,ky:1.1,pad:12,ang:-140}];
+const ANNS=[{at:2.2,el:'ubq1',ang:-150},{at:9.3,el:'hero3',kx:1.0,ky:1.0,pad:14,ang:-140},{at:15.7,el:'capR5g',kx:1.12,ky:1.05,pad:12,ang:-30},{at:21.0,el:'act7',ang:-30},{at:22.5,el:'R7A',kx:1.1,ky:1.1,pad:12,ang:-140}];
 ANNS.forEach(a=>{const g=mk('g',{opacity:0},$('annL'));a.g=g;const st=(w,c)=>({fill:'none',stroke:c,'stroke-width':w,'stroke-linecap':'round','stroke-linejoin':'round'});a.ew=mk('path',st(17,'#fff'),g);a.er=mk('path',st(10,'#E8231F'),g);a.aw=mk('path',st(17,'#fff'),g);a.ar=mk('path',st(10,'#E8231F'),g)});
 let _T=0;
 function tRect(a){const el=$(a.el);if(!el)return null;const sc=el.closest('.scene');if(sc&&(sc.style.display==='none'||_T>=+sc.dataset.e))return null;const aa=el.closest('.a');if(aa&&+aa.style.opacity<0.5)return null;const sr=$('stage').getBoundingClientRect();const r=el.getBoundingClientRect();if(r.width<2)return null;return{x:(r.left+r.right)/2-sr.left,y:(r.top+r.bottom)/2-sr.top,w:r.width,h:r.height}}
@@ -262,7 +296,7 @@ const scenes=[...document.querySelectorAll('.scene')].map(el=>{const bg=document
  const cam=(el.dataset.cam||'').split(';').filter(Boolean).map(k=>k.split(':').map(Number));
  return{el,s:+el.dataset.s,e:+el.dataset.e,tr:el.dataset.tr||'',parts,cam,camEl:el.querySelector('.cam'),items:[...el.querySelectorAll('.a')]}});
 function camAt(keys,t){const g=(k,j)=>k[j]||0;const J=[1,2,3,4,5];if(!keys.length)return[1,720,540,0,0];if(t<=keys[0][0])return J.map(j=>g(keys[0],j));for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(t<=b[0]){const p=eIO(cl((t-a[0])/(b[0]-a[0])));return J.map(j=>g(a,j)+(g(b,j)-g(a,j))*p)}}return J.map(j=>g(keys[keys.length-1],j))}
-const ringDefs=[[1.98,1020,215],[3.3,522,450],[5.05,470,450],[6.0,970,450],[11.0,720,560],[12.1,1020,215],[15.2,980,190],[16.4,1080,430],[19.2,1040,440],[22.4,1210,325],[24.46,880,250],[25.5,940,520]];
+const ringDefs=[[1.98,1020,215],[3.3,522,450],[5.05,470,450],[6.0,970,450],[11.0,720,560],[12.1,1020,215],[15.55,1170,280],[16.4,1130,430],[14.6,700,470],[19.2,1040,440],[22.4,1210,325],[24.46,880,250],[25.5,940,520]];
 const rw=$('rings');const rings=ringDefs.map(([t,x,y])=>{const d=document.createElement('div');d.className='ring';d.style.left=x+'px';d.style.top=y+'px';rw.appendChild(d);return{d,t}});
 const conf=[];{const cw=$('confetti');const cc=['#FFD23F','#FF8FB1','#7FD3FF','#3DDC97','#FF6B6B'];for(let i=0;i<70;i++){const d=document.createElement('div');d.className='conf';d.style.background=cc[i%5];cw.appendChild(d);conf.push({d,x:200+rnd()*1040,vy:240+rnd()*300,vx:(rnd()-.5)*180,r:rnd()*360,vr:(rnd()-.5)*720,dl:rnd()*0.5,sw:rnd()*6})}}
 function animT(an,p){switch(an){case'fade':return[eOC(p),''];case'pop':return[cl(p*4),`scale(${p<=0?0:eOB(p)})`];
@@ -305,10 +339,18 @@ window.render=function(t){
  // S4 gift lid pops, product rises out
  if(t>10.4&&t<13.6){const k=eOB(cl((t-11.0)/0.45));$('lid4').setAttribute('transform',`translate(${k*60} ${-k*260}) rotate(${k*28})`);$('lid4').setAttribute('opacity',1-cl((t-11.6)/0.3));
   const r=eOC(cl((t-11.2)/0.6));$('box4').style.transform+=` translateY(${(1-r)*300}px)`;GIFT.setAttribute('opacity',1-cl((t-11.7)/0.35))}
- // S5 gold balls jiggle under the magnifier; orange balls get kicked out; stopwatch spins fast
- if(t>13.0&&t<17.5){B5.forEach((b,i)=>{const k=cl((t-13.3-i*0.06)/0.3);b.g.setAttribute('transform',`translate(${b.x+Math.sin(t*4+b.ph)*8} ${b.y+Math.cos(t*3+b.ph)*8}) scale(${k?eOB(k):0})`)});
-  OUT5.forEach((g,i)=>{const k=cl((t-13.6)/0.3);const f=cl((t-15.2-i*0.12)/0.6);g.setAttribute('transform',`translate(${620+(i?60:-60)+f*(i?420:300)} ${470+(i?-30:40)-f*(i?160:-60)}) scale(${k?eOB(k)*(1-0.2*f):0})`);g.setAttribute('opacity',f>=1?0:1)});
-  $('hand5').setAttribute('transform',`rotate(${t>16.3?(t-16.3)*720:0})`)}
+ // S5a gold balls drop into the capsule one after another until it is full
+ if(t>13.0&&t<15.5){BA.forEach(o=>{const t0=13.3+o.i*0.028;const p=cl((t-t0)/0.35);const y=o.y-(1-eBn(p))*360;o.b.setAttribute('transform',`translate(${o.x} ${y}) rotate(${Math.sin(t*3+o.i)*8})`);o.b.setAttribute('opacity',t<t0?0:1)});
+  SPK5.forEach((s,i)=>{const d=t-14.6-i*0.05;const a=i*Math.PI/4+t;s.setAttribute('transform',`translate(${700+Math.cos(a)*380} ${470+Math.sin(a)*200}) scale(${d>0?eOB(cl(d/0.3))*(0.8+0.3*Math.sin(t*9+i)):0})`)})}
+ // S5b: the mixed capsule shakes (X), the gold-only capsule glows (check)
+ if(t>15.0&&t<16.8){[[BL,CL],[BR,CR]].forEach(([bs,c],k)=>bs.forEach(o=>o.b.setAttribute('transform',`translate(${o.x+Math.sin(t*6+o.i)*3} ${o.y+Math.cos(t*5+o.i)*3})`)));
+  const sx=Math.sin(t*30)*6*Math.max(0,1-(t-15.3)*1.5);CL.g.setAttribute('transform',`translate(${400+(t>15.3?sx:0)} 450)`);
+  const kx=cl((t-15.35)/0.3),ko=cl((t-15.55)/0.3);$('xL5').setAttribute('transform',`translate(530 280) scale(${kx?eOB(kx):0})`);$('okR5').setAttribute('transform',`translate(1170 280) scale(${ko?eOB(ko):0})`);
+  CR.g.setAttribute('transform',`translate(1040 450) scale(${1+0.04*Math.max(0,Math.sin((t-15.5)*8))})`)}
+ // S5c capsule dissolves, balls dash right; stopwatch spins
+ if(t>16.3&&t<17.5){const d=cl((t-16.5)/0.25);CC.g.querySelector('rect').setAttribute('opacity',1-d);CC.g.querySelectorAll('path,rect:not(:first-of-type)').forEach(e=>e.setAttribute('opacity',(1-d)*0.6));
+  BC.forEach(o=>{const f=cl((t-16.55-o.i*0.008)/0.4);o.b.setAttribute('transform',`translate(${o.x+f*f*900} ${o.y-f*20})`);o.b.setAttribute('opacity',1-cl((f-0.8)/0.2))});
+  DASH.forEach((g,i)=>{const f=((t*2.2+i/10)%1);g.setAttribute('transform',`translate(${300+f*700} ${300+(i*53)%340})`);g.setAttribute('opacity',t>16.6?(1-f):0)});$('hand5').setAttribute('transform',`rotate(${(t-16.4)*900})`)}
  // S6 ball enters, repair stars, battery charges
  if(t>17.0&&t<20.6){const p=cl((t-17.2)/0.7);QB6.setAttribute('transform',`translate(${260+360*eIO(p)} ${470+Math.sin(t*9)*6})`);
   const h=t>18.42?1:0;$('faceT6').setAttribute('opacity',1-h);$('faceH6').setAttribute('opacity',h);
