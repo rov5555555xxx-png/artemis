@@ -56,12 +56,14 @@ window.extra=function(t){
   $('v6').innerHTML=s}
  // S7 switch: plain capsule -> iCAP pellet capsule
  if(on(21.95,25.6)){const lt=t-21.95;let s=`<defs><radialGradient id="gP7" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#F3EEE3"/><stop offset="1" stop-color="#BFB6A3"/></radialGradient></defs>`;
-  const fade=1-0.6*cl((lt-0.8)/0.4);
-  s+=`<g opacity="${fade}"><g transform="translate(380 380) rotate(-20)"><path d="M0 -55 H-90 A55 55 0 0 0 -90 55 H0Z" fill="#7FA8E0" stroke="#2E4E7A" stroke-width="5"/><path d="M-2 -57 H88 A57 57 0 0 1 88 57 H-2Z" fill="#E7E9EE" stroke="#9AA0AC" stroke-width="5"/><path d="M-120 -30 H-60" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".5"/></g><text x="380" y="520" text-anchor="middle" font-family="K" font-weight="900" font-size="38" fill="#C9CED8">ซิงค์ทั่วไป</text></g>`;
+  const fade=1-0.25*cl((lt-0.8)/0.4);
+  s+=`<g opacity="${fade}"><g transform="translate(380 380) rotate(-20)"><path d="M0 -55 H-90 A55 55 0 0 0 -90 55 H0Z" fill="#F4F5F8" stroke="#B9BEC8" stroke-width="5"/><path d="M-2 -57 H88 A57 57 0 0 1 88 57 H-2Z" fill="#FFFFFF" stroke="#B9BEC8" stroke-width="5"/><path d="M-120 -30 H-60" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".5"/></g><text x="380" y="520" text-anchor="middle" font-family="K" font-weight="900" font-size="38" fill="#C9CED8">ซิงค์ทั่วไป</text></g>`;
   const a=cl((lt-0.5)/0.5);s+=`<path d="M560 380 H${560+230*eOC(a)}" stroke="#F3D9A4" stroke-width="18" stroke-linecap="round"/>`+(a>0.8?`<path d="M790 340 L850 380 L790 420Z" fill="#F3D9A4"/>`:'');
   const k=eOB(cl((lt-0.9)/0.4));let caps=`<g transform="translate(1080 360) scale(${k*1.5}) rotate(-20)"><path d="M0 -55 H-90 A55 55 0 0 0 -90 55 H0Z" fill="rgba(255,255,255,.15)" stroke="#fff" stroke-width="4"/>`;
   let kk=5;const rr=()=>{kk=(kk*16807)%2147483647;return (kk-1)/2147483646};
-  for(let i=0;i<26;i++)caps+=`<circle cx="${-18-rr()*120}" cy="${(rr()-.5)*84}" r="${8+rr()*4}" fill="url(#gP7)" stroke="#BFB6A3" stroke-width="1"/>`;
+  caps+=`<clipPath id="cp7"><path d="M0 -53 H-90 A53 53 0 0 0 -90 53 H0Z"/></clipPath><g clip-path="url(#cp7)">`;
+  for(let row=0;row<7;row++)for(let col=0;col<9;col++){const x=-8-col*17-(row%2)*8.5+(rr()-.5)*3,y=-48+row*16+(rr()-.5)*3;caps+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(8.5+rr()*1.8).toFixed(1)}" fill="url(#gP7)" stroke="#BFB6A3" stroke-width="1"/>`}
+  caps+=`</g><path d="M0 -55 H-90 A55 55 0 0 0 -90 55 H0" fill="none" stroke="#fff" stroke-width="4"/>`;
   caps+=`<path d="M-2 -57 H88 A57 57 0 0 1 88 57 H-2Z" fill="#F4EFE4" stroke="#B9AF9B" stroke-width="4"/><text x="46" y="14" text-anchor="middle" font-family="Arial" font-weight="700" font-size="38" fill="#4A4A4A">Zn</text></g>`;
   s+=`<defs><radialGradient id="gl7"><stop offset="0" stop-color="#FFECC8" stop-opacity=".45"/><stop offset="1" stop-color="#D9B98A" stop-opacity="0"/></radialGradient></defs><circle cx="1080" cy="370" r="${260*k}" fill="url(#gl7)"/>`+caps+pill(1080,510,'iCAP',cl((lt-1.2)/0.3),'#16171B','#F3D9A4',40);
   s+=pill(1080,650,'ดูดซึมดีกว่า',cl((lt-1.8)/0.3),'#2EC4B6','#0B2240',36)+pill(1080,580,'อยู่ได้นานกว่า',cl((lt-2.3)/0.3),'#F3D9A4','#16171B',36);
