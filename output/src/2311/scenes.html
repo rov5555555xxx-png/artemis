@@ -1,0 +1,76 @@
+.jar{background-image:url(jar.png)}.b30{background-image:url(box30.png)}.b60{background-image:url(box60.png)}
+.red{color:#FF6B6E;text-shadow:0 6px 0 #6E1416,0 14px 30px rgba(0,0,0,.6)}
+.vsvg{position:absolute;overflow:visible}
+#confetti{display:none}
+</style></head><body>
+<div id="stage">
+<!-- S1 0-2.4 locks zinc in blood 6 h -->
+<div class="scene" data-s="0" data-e="2.4" data-bg="studio" data-cam="0:1.04:720:500;2.4:1:720:540">
+ <div class="cam"><svg class="a vsvg" id="v1" data-at="-1" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="-1" data-an="fade" style="top:800px;font-size:80px">ล็อกซิงค์ในเลือดได้ <span class="gold">6 ชั่วโมง</span></div>
+</div>
+<!-- S2 2.4-5.0 others: 2 h then flushed -->
+<div class="scene" data-s="2.4" data-e="5.0" data-bg="studio" data-tr="wipe" data-cam="2.4:1:720:540;5.0:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v2" data-at="2.42" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="2.45" data-an="up" style="top:800px;font-size:78px">ตัวอื่นแค่ <span class="red">2 ชม.</span> ก็ขับทิ้งแล้ว</div>
+</div>
+<!-- S3 5.0-6.16 innovation -->
+<div class="scene" data-s="5.0" data-e="6.16" data-bg="studio" data-tr="flash" data-cam="5.0:1.06:720:480;6.16:1:720:540">
+ <div class="cam">
+  <div class="a rays" data-at="4.95" data-an="fade" data-spin="14" style="left:400px;top:-40px;width:640px;height:640px"></div>
+  <div class="a glow" data-at="5.0" data-an="fade" style="left:480px;top:60px;width:480px;height:480px"></div>
+  <div class="a img jar" data-at="5.02" data-an="drop" data-float="0.3" style="left:585px;top:100px;width:270px;height:504px"></div>
+  <div class="a" data-at="5.3" data-an="stamp" style="left:900px;top:200px"><span class="pill p-gold" style="font-size:56px">iCAP</span></div>
+ </div>
+ <div class="a big cx wht" data-at="5.05" data-an="up" style="top:790px;font-size:84px">ซิงค์<span class="gold">นวัตกรรมใหม่</span></div>
+</div>
+<!-- S4 6.16-11.6 ordinary zinc: brief, out at 2 h, body not done using it -->
+<div class="scene" data-s="6.16" data-e="11.6" data-bg="studio" data-tr="wipe" data-cam="6.16:1:720:540;11.6:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v4" data-at="6.18" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="6.2" data-an="up" data-out="7.55" style="top:800px;font-size:78px">ซิงค์ทั่วไป อยู่<span class="red">แป๊บเดียว</span></div>
+ <div class="a big cx wht" data-at="7.6" data-an="up" data-out="9.85" style="top:800px;font-size:78px">ผ่านไป <span class="red">2 ชม.</span> ก็เริ่มขับออก</div>
+ <div class="a big cx wht" data-at="9.9" data-an="up" style="top:800px;font-size:78px">ทั้งที่ร่างกาย<span class="hl" data-hl="10.4">ยังใช้ไม่คุ้ม</span></div>
+</div>
+<!-- S5 11.6-17.4 iCAP locks 6 h, barely drops -->
+<div class="scene" data-s="11.6" data-e="17.4" data-bg="studio" data-tr="wipe" data-cam="11.6:1:720:540;17.4:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v5" data-at="11.62" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="11.65" data-an="up" data-out="15.05" style="top:790px;font-size:78px">ตัวนี้ล็อกซิงค์ได้นานถึง <span class="gold">6 ชม.</span></div>
+ <div class="a big cx wht" data-at="15.1" data-an="up" style="top:790px;font-size:78px">6 ชม.แรก <span class="hl" data-hl="16.4">แทบไม่ลดลงเลย</span></div>
+</div>
+<!-- S6 17.4-21.95 body uses it longer, worth it, not flushed early -->
+<div class="scene" data-s="17.4" data-e="21.95" data-bg="studio" data-tr="iris" data-cam="17.4:1.04:720:500;21.95:1:720:540">
+ <div class="cam"><svg class="a vsvg" id="v6" data-at="17.42" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="17.45" data-an="up" data-out="19.55" style="top:800px;font-size:76px">ร่างกาย<span class="hl" data-hl="18.0">ใช้ประโยชน์ได้นานขึ้น</span></div>
+ <div class="a big cx wht" data-at="19.6" data-an="up" style="top:800px;font-size:78px"><span class="gold">คุ้มค่า</span> ไม่ถูกขับทิ้งเร็ว</div>
+</div>
+<!-- S7 21.95-25.6 switch to the new innovation: absorbs better, stays longer -->
+<div class="scene" data-s="21.95" data-e="25.6" data-bg="studio" data-tr="wipe" data-cam="21.95:1:720:540;25.6:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v7" data-at="21.97" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="22.0" data-an="up" data-out="23.65" style="top:800px;font-size:78px">อยาก<span class="hl" data-hl="22.5">เปลี่ยนมากิน</span>ตัวใหม่</div>
+ <div class="a big cx wht" data-at="23.7" data-an="up" style="top:800px;font-size:78px"><span class="gold">ดูดซึมดีกว่า</span> อยู่ได้นานกว่า</div>
+</div>
+<!-- S8 25.6-28.5 two sizes, recommend 60 -->
+<div class="scene" data-s="25.6" data-e="28.5" data-bg="studio" data-tr="wipe" data-cam="25.6:1:720:540;28.5:1.03:720:510">
+ <div class="cam">
+  <div class="a card new" data-at="25.62" data-an="left" style="left:200px;top:110px;width:480px;height:540px"></div>
+  <div class="a card new" data-at="25.7" data-an="right" style="left:760px;top:110px;width:480px;height:540px"></div>
+  <div class="a img b30" data-at="25.66" data-an="left" data-float="0.5" data-dim="27.0" style="left:330px;top:140px;width:220px;height:349px"></div>
+  <div class="a img b60" data-at="25.74" data-an="right" data-float="1.5" style="left:870px;top:130px;width:260px;height:413px"></div>
+  <div class="a cx" data-at="25.9" data-an="pop" data-dim="27.0" style="left:200px;width:480px;top:540px;text-align:center"><span class="pill p-white" style="font-size:50px">30 เม็ด</span></div>
+  <div class="a cx" data-at="26.1" data-an="pop" style="left:760px;width:480px;top:540px;text-align:center"><span class="pill p-gold" style="font-size:50px">60 เม็ด</span></div>
+  <div class="a" data-at="27.0" data-an="stamp" style="left:1150px;top:70px;width:150px;height:130px"><svg viewBox="0 0 150 130" width="150" height="130"><path d="M10 110L22 30L52 70L75 15L98 70L128 30L140 110Z" fill="#F3D9A4" stroke="#7A5B2E" stroke-width="6" stroke-linejoin="round"/></svg></div>
+ </div>
+ <div class="a big cx wht" data-at="25.65" data-an="up" data-out="26.85" style="top:790px;font-size:80px">มี <span class="hl" data-hl="25.9">2 ขนาด</span></div>
+ <div class="a big cx wht" data-at="26.9" data-an="up" style="top:790px;font-size:80px">แนะนำ <span class="gold">60 เม็ด</span> ไปเลย</div>
+</div>
+<!-- S9 28.5-end better price, go tap -->
+<div class="scene" data-s="28.5" data-e="99" data-bg="studio" data-tr="flash" data-cam="28.5:1.05:720:490;30.84:1:720:540">
+ <div id="confetti"></div>
+ <div class="cam">
+  <div class="a rays" data-at="28.4" data-an="fade" data-spin="14" style="left:100px;top:-40px;width:640px;height:640px"></div>
+  <div class="a img b60" data-at="28.52" data-an="drop" data-float="0.3" style="left:280px;top:100px;width:290px;height:460px"></div>
+  <svg class="a vsvg" id="v9" data-at="28.55" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="28.55" data-an="up" data-out="29.95" style="top:790px;font-size:80px">ราคา<span class="gold">คุ้มกว่า 30 เม็ดเยอะ</span></div>
+ <div class="a big cx wht" data-at="30.0" data-an="up" style="top:790px;font-size:84px">ลองไป<span class="gold">กดดูนะ!</span></div>
+</div>
