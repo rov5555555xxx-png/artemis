@@ -11,18 +11,20 @@ window.extra=function(t){
   s+=jarAt('box60.png',1050,590,470)+priceTag2(1050,650,'฿179',cl((lt-0.9)/0.35),true);
   s+=pill(1050,90,'60 เม็ด',cl((lt-1.6)/0.3),'#F3D9A4','#16171B',48);
   $('v1').innerHTML=s}
- // S2 per capsule
+ // S2 readable price comparison
  if(on(3.6,4.9)){const lt=t-3.6;let s='';
-  const card=(x,img,price,per,col,d)=>{const p=cl((lt-d)/0.3);if(p<=0)return '';return `<g opacity="${p}"><rect x="${x-250}" y="110" width="500" height="560" rx="34" fill="rgba(22,23,27,.9)" stroke="${col}" stroke-width="6"/>${jarAt(img,x,420,280)}<text x="${x}" y="500" text-anchor="middle" font-family="K" font-weight="900" font-size="46" fill="#fff">${price}</text><text x="${x}" y="600" text-anchor="middle" font-family="K" font-weight="900" font-size="64" fill="${col}">${per}</text><text x="${x}" y="640" text-anchor="middle" font-family="K" font-weight="800" font-size="26" fill="#C9CED8">ต่อเม็ด</text></g>`};
-  s+=card(450,'box30.png','30 เม็ด ฿159','~฿5.3','#9AA0AC',0)+card(990,'box60.png','60 เม็ด ฿179','~฿3','#F3D9A4',0.1);
-  s+=focus(2,990,390,270,310,(lt-0.6)/0.3);
+  const card=(x,img,n,price,col,d,big)=>{const p=cl((lt-d)/0.3);if(p<=0)return '';return `<g opacity="${p}"><rect x="${x-250}" y="100" width="500" height="580" rx="34" fill="rgba(22,23,27,.9)" stroke="${col}" stroke-width="6"/>${jarAt(img,x,400,big?290:250)}<text x="${x}" y="490" text-anchor="middle" font-family="K" font-weight="900" font-size="56" fill="#fff">${n}</text><text x="${x}" y="610" text-anchor="middle" font-family="K" font-weight="900" font-size="${big?110:92}" fill="${col}">${price}</text></g>`};
+  s+=card(450,'box30.png','30 เม็ด','฿159','#C9CED8',0,false)+card(990,'box60.png','60 เม็ด','฿179','#F3D9A4',0.1,true);
+  s+=`<g transform="translate(720 300) scale(${eOB(cl((lt-0.3)/0.3))})"><circle r="66" fill="#E5484D" stroke="#fff" stroke-width="6"/><text y="-2" text-anchor="middle" font-family="K" font-weight="900" font-size="40" fill="#fff">+20</text><text y="36" text-anchor="middle" font-family="K" font-weight="900" font-size="28" fill="#fff">บาท</text></g>`;
+  s+=`<rect x="735" y="95" width="510" height="590" rx="38" fill="none" stroke="#F3D9A4" stroke-width="${4+4*Math.sin(t*8)}" opacity="${cl((lt-0.5)/0.3)}"/>`+pill(990,720,'ได้เพิ่มอีก 30 เม็ด!',cl((lt-0.6)/0.3),'#F3D9A4','#16171B',42);
   $('v2').innerHTML=s}
- // S3 who benefits
+ // S3 who benefits: hormone, skin, hair, nails, acne
  if(on(4.9,10.3)){const lt=t-4.9;let s='';
-  const it=[['ฮอร์โมน',0.1,SCALE(0,30,t).replace('<g transform="translate(0 30)">','<g transform="translate(0 30) scale(.4)">')],['ผิว',1.5,IC.skin],['ผม',2.5,IC.hair],['สิว / ผิวมัน',3.4,IC.acne]];
-  const pos=[[300,330],[580,330],[860,330],[1140,330]];
+  const HAIR2=`<g><path d="M-30 -48 Q-56 -20 -50 30 Q-46 56 -60 70 L60 70 Q46 56 50 30 Q56 -20 30 -48 Q0 -66 -30 -48Z" fill="#1E1A17"/><ellipse cx="0" cy="-4" rx="30" ry="36" fill="${SK}"/><path d="M-32 -30 Q0 -62 32 -30 Q20 -44 0 -44 Q-20 -44 -32 -30Z" fill="#1E1A17"/><path d="M-44 0 Q-40 30 -50 56 M44 0 Q40 30 50 56" stroke="#5A4A3A" stroke-width="4" fill="none"/><path d="M-38 -10 Q-34 20 -42 44" stroke="#fff" stroke-width="4" fill="none" opacity=".6" stroke-linecap="round"/></g>`;
+  const it=[['ฮอร์โมน',0.1,SCALE(0,30,t).replace('<g transform="translate(0 30)">','<g transform="translate(0 30) scale(.4)">')],['ผิว',2.1,IC.skin],['ผม',2.5,HAIR2],['เล็บ',2.9,IC.nail],['สิว / ผิวมัน',3.9,IC.acne]];
+  const xs=[240,480,720,960,1200];
   const fade=lt>4.6?1-cl((lt-4.6)/0.3):1;
-  it.forEach(([l,d,ic],i)=>{s+=`<g opacity="${fade}">`+icoTile(pos[i][0],pos[i][1],cl((lt-d)/0.35),l,ic)+`</g>`});
+  it.forEach(([l,d,ic],i)=>{s+=`<g opacity="${fade}" transform="translate(${xs[i]} 330) scale(1.15) translate(${-xs[i]} -330)">`+icoTile(xs[i],330,cl((lt-d)/0.35),l,ic)+`</g>`});
   if(lt>4.6){const k=eOB(cl((lt-4.7)/0.4));s+=`<g transform="translate(720 360) scale(${k})">${jarAt('jar.png',0,250,480)}</g>`}
   $('v3').innerHTML=s}
  // S4 pellet slow release
