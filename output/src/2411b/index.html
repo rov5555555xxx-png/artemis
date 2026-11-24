@@ -121,15 +121,34 @@ function setCap(t){let i=0;for(let k=0;k<CAPS.length;k++)if(t>=CAPS[k][0])i=k;
 const S=[];const sc=(s,e,f)=>S.push({s,e,f});
 const CX=540;
 
-// 1. hormone needs zinc  (frame 0 readable)
-sc(0,2.3,t=>{let o='';const pl=placeHand(t,'pinch',330,400,-0.5,.5,.35);
- o+=male(760,420,105,1,CH,9);
- o+=tag(760,610,'ฮอร์โมนเพศชาย',-3,34);
- o+=ch('M410,400 L620,400',P(t,.55,.5),8)+ch('M590,375 L620,400 L590,425',P(t,1.0,.15),8);
- o+=coin(330+(pl.arrived?0:pl.dx),400+(pl.arrived?0:pl.dy),62,'Zn','#efe9da',INK,46);
- o+=tag(330,500,'ซิงค์',3,30,P(t,.9,.2),pop(t,.9));
- const gl=P(t,1.75,.5);if(gl>0)o+=`<circle cx="760" cy="420" r="${105+gl*8}" fill="none" stroke="${YEL}" stroke-width="8" opacity="${Math.sin(gl*Math.PI)}"/>`;
- o+=ticks(760,420,130,P(t,1.75,.5),YEL,8);
+// 1. hormone needs zinc  (frame 0 readable): man -> testosterone molecule, zinc goes in
+function polyFrom(P1,P2,n){const pts=[P1,P2];let ang=Math.atan2(P2.y-P1.y,P2.x-P1.x);const a=Math.hypot(P2.x-P1.x,P2.y-P1.y);let c=P2;for(let i=0;i<n-2;i++){ang+=2*Math.PI/n;c={x:c.x+Math.cos(ang)*a,y:c.y+Math.sin(ang)*a};pts.push(c);}return pts;}
+function hexAt(cx,cy,a){const p=[];for(let i=0;i<6;i++){const t=(-90+60*i)*Math.PI/180;p.push({x:cx+a*Math.cos(t),y:cy+a*Math.sin(t)});}return p;}
+const pd=pts=>'M'+pts.map(q=>q.x.toFixed(1)+','+q.y.toFixed(1)).join(' L')+' Z';
+function testo(cx,cy,a){const r3=Math.sqrt(3);const A=hexAt(cx,cy,a),B=hexAt(cx+a*r3,cy,a),C=hexAt(cx+a*r3*1.5,cy-a*1.5,a);
+ const D=polyFrom(C[2],C[1],5); // pentagon on C's right edge
+ const top=D[3]||D[2];
+ return {rings:[pd(A),pd(B),pd(C),pd(D)],A,B,C,D};}
+sc(0,2.3,t=>{let o='';const pl=placeHand(t,'pinch',150,340,-0.5,.5,.35);
+ {const k=.7,ox=370-540*k,oy=560-440*k;let m=ch(TL,1,8/k)+ch(TR,1,8/k)+ch(pec(0,-1),1,8/k)+ch(pec(0,1),1,8/k)+ch('M540,300 L540,680',1,5/k);
+  [[440,66],[518,66],[596,70]].forEach(([y,h])=>[[456,76],[548,76]].forEach(([x,w])=>{m+=ch(abBox(x,y,w,h),1,7/k);}));
+  m+=ch('M598,125 A58,58 0 1 1 597.9,124.5',1,8/k);
+  o+=`<g transform="translate(${ox},${oy}) scale(${k})">${m}</g>`;}
+ o+=male(575,300,30,1,YEL,6);
+ // molecule
+ const M=testo(735,400,40);M.rings.forEach(d=>o+=ch(d,1,6));
+ const D=M.D;
+ const tp=D[3];o+=ch(`M${tp.x},${tp.y} L${tp.x+28},${tp.y-34}`,1,6)+`<text x="${tp.x+22}" y="${tp.y-42}" font-family="K" font-weight="800" font-size="32" fill="${CH}">OH</text>`;
+ o+=tag(790,560,'ฮอร์โมนเพศชาย',-3,32);
+ o+=`<text x="790" y="635" font-family="K" font-weight="600" font-size="30" text-anchor="middle" fill="${CH}" opacity=".85">(เทสโทสเตอโรน)</text>`;
+ // man produces hormone
+ o+=ch('M530,470 Q565,440 598,440',1,7)+ch('M570,420 L600,440 L572,462',1,7);
+ // zinc goes into the man
+ o+=ch('M175,400 Q205,470 250,510',P(t,.5,.4),7,YEL)+ch('M222,510 L252,512 L248,482',P(t,.85,.12),7,YEL);
+ o+=coin(150+(pl.arrived?0:pl.dx),340+(pl.arrived?0:pl.dy),58,'Zn','#efe9da',INK,44);
+ o+=tag(150,250,'ซิงค์',3,30,P(t,.4,.2),pop(t,.4));
+ const gl=P(t,1.75,.5);if(gl>0)o+=`<circle cx="760" cy="350" r="${165+gl*10}" fill="none" stroke="${YEL}" stroke-width="7" opacity="${Math.sin(gl*Math.PI)*.8}"/>`;
+ o+=ticks(575,300,45,P(t,1.6,.5),YEL,6);
  return {o,h:pl.hand};});
 // 2. take 15 mg a day
 sc(2.3,4.2,t=>{let o='';const lt=t-2.3;
@@ -249,17 +268,17 @@ sc(27.0,29.85,t=>{let o='';
  const fo=P(t,29.15,.3);if(fo>0){o+=`<rect x="160" y="100" width="350" height="620" fill="#1d1e21" opacity="${fo*.55}"/>`;o+=`<ellipse cx="750" cy="420" rx="${200+10*(1-fo)}" ry="${330+10*(1-fo)}" fill="none" stroke="${RED}" stroke-width="9" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="${1-fo}"/>`;}
  return {o,h:''};});
 // 15. 6 hours chart
-sc(29.85,32.75,t=>{let o='';const X0=230,Y0=650,XW=640,YH=440,hx=h=>X0+h/8*XW,vy=v=>Y0-v*YH;
+sc(29.85,32.75,t=>{let o='';const X0=230,Y0=640,XW=640,YH=330,hx=h=>X0+h/8*XW,vy=v=>Y0-v*YH;
  const ax=`M${X0},${Y0-YH-20} L${X0},${Y0} L${X0+XW+20},${Y0}`;
  const blue=`M${hx(0)},${vy(0)} C${hx(1)},${vy(.4)} ${hx(1.8)},${vy(.8)} ${hx(2.5)},${vy(.8)} C${hx(3.5)},${vy(.8)} ${hx(5)},${vy(.25)} ${hx(8)},${vy(.08)}`;
- const gold=`M${hx(0)},${vy(0)} C${hx(.6)},${vy(.5)} ${hx(1)},${vy(.82)} ${hx(1.8)},${vy(.85)} L${hx(6)},${vy(.85)} C${hx(6.8)},${vy(.85)} ${hx(7.3)},${vy(.55)} ${hx(8)},${vy(.4)}`;
+ const gold=`M${hx(0)},${vy(0)} C${hx(.6)},${vy(.36)} ${hx(1)},${vy(.58)} ${hx(1.8)},${vy(.6)} L${hx(6)},${vy(.6)} C${hx(6.7)},${vy(.6)} ${hx(7.3)},${vy(.42)} ${hx(8)},${vy(.3)}`;
  const hs=drawSeq(t,'chalk',[{d:ax,a:29.9,dur:.45},{d:gold,a:30.95,dur:1.2}],{exit:.35});
  o+=ch(ax,hs.p[0],7)+ch(blue,P(t,30.4,.5),8,BLU)+ch(gold,hs.p[1],10,YEL);
  for(let h=0;h<=8;h+=2)o+=g(`<text x="0" y="0" font-family="K" font-weight="600" font-size="26" text-anchor="middle" fill="${CH}">${h}</text>`,{x:hx(h),y:Y0+38,o:P(t,30.2,.2)});
  o+=g(`<text font-family="K" font-weight="600" font-size="24" fill="${CH}">ชม.</text>`,{x:X0+XW+5,y:Y0+38,o:P(t,30.2,.2)});
- const m=P(t,32.15,.3);o+=ch(`M${hx(6)},${vy(.85)-20} L${hx(6)},${Y0}`,m,5,YEL,'stroke-dasharray="0.04 0.03"');
- o+=tag(hx(6),vy(.85)-60,'6 ชม.',-3,40,m,pop(t,32.15));
- o+=tag(hx(1.9),vy(.8)+90,'ทั่วไป',2,26,P(t,30.8,.15),1,'#3a5c94');o+=tag(hx(4),vy(.85)-50,'iCAP',-2,30,P(t,31.6,.15));
+ const m=P(t,32.15,.3);o+=ch(`M${hx(6)},${vy(.6)-30} L${hx(6)},${Y0}`,m,5,YEL,'stroke-dasharray="0.04 0.03"');
+ o+=tag(hx(6),Y0+95,'6 ชม.',-3,40,m,pop(t,32.15));
+ o+=tag(hx(2.2),vy(.8)-50,'ทั่วไป',2,26,P(t,30.8,.15),1,'#3a5c94');o+=tag(hx(7.1),vy(.45)-60,'iCAP',-2,30,P(t,31.6,.15));
  return {o,h:hs.hand};});
 // 16. answers hormone needs
 sc(32.75,35.7,t=>{let o='';
