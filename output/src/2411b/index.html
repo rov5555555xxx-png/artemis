@@ -184,7 +184,7 @@ sc(7.7,9.3,t=>{let o='';
  o+=paper(740,400,330,380,4,`${g(iconMaleHeart(),{y:-20,s:1.25})}<text x="0" y="150" font-family="K" font-weight="800" font-size="46" text-anchor="middle" fill="${INK}">ทางเพศ</text>`,cl(b*2),b);
  return {o,h:''};});
 // 6. bone
-const BONE='M330,470 C290,500 250,450 285,420 C255,385 305,340 335,380 L700,300 C715,255 780,265 770,305 C810,315 800,375 760,370 L395,450 C410,495 355,515 330,470Z';
+const BONE='M364.7,382 L715.3,382 A58,58 0 1 1 801.4,420 A58,58 0 1 1 715.3,458 L364.7,458 A58,58 0 1 1 278.6,420 A58,58 0 1 1 364.7,382 Z';
 sc(9.3,10.5,t=>{let o='';const hs=drawSeq(t,'chalk',[{d:BONE,a:9.35,dur:.7}],{exit:.3});o+=ch(BONE,hs.p[0],8);
  o+=ticks(540,400,150,P(t,10.0,.45),YEL,6);
  return {o,h:hs.hand};});
