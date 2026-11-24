@@ -129,27 +129,26 @@ function testo(cx,cy,a){const r3=Math.sqrt(3);const A=hexAt(cx,cy,a),B=hexAt(cx+
  const D=polyFrom(C[2],C[1],5); // pentagon on C's right edge
  const top=D[3]||D[2];
  return {rings:[pd(A),pd(B),pd(C),pd(D)],A,B,C,D};}
-sc(0,2.3,t=>{let o='';const pl=placeHand(t,'pinch',220,460,-0.5,.5,.35);
- const MX=670,MY=480,MR=145;
- // dashed empty male symbol = hormone not made yet
- const fillP=eio(P(t,.75,.95));
- o+=`<g opacity="${1-fillP*.0}" filter="url(#chf)"><circle cx="${MX}" cy="${MY}" r="${MR}" fill="none" stroke="${CH}" stroke-width="7" stroke-dasharray="18 14" opacity=".55"/></g>`;
- const ex=MX+MR*.707,ey=MY-MR*.707,L=MR*.8;
- o+=`<path d="M${ex},${ey} L${ex+L*.7},${ey-L*.7} M${ex+L*.7-MR*.5},${ey-L*.7} L${ex+L*.7},${ey-L*.7} L${ex+L*.7},${ey-L*.7+MR*.5}" fill="none" stroke="${CH}" stroke-width="7" stroke-dasharray="18 14" opacity=".55" filter="url(#chf)"/>`;
- // solid yellow male symbol grows as zinc arrives
- o+=`<circle cx="${MX}" cy="${MY}" r="${MR}" fill="none" stroke="${YEL}" stroke-width="14" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="${1-fillP}" transform="rotate(-45 ${MX} ${MY})" filter="url(#chf)"/>`;
- o+=ch(`M${ex},${ey} L${ex+L*.7},${ey-L*.7}`,P(t,1.6,.15),14,YEL)+ch(`M${ex+L*.7-MR*.5},${ey-L*.7} L${ex+L*.7},${ey-L*.7} L${ex+L*.7},${ey-L*.7+MR*.5}`,P(t,1.72,.12),14,YEL);
- // zinc dots stream from the coin into the ring
- for(let i=0;i<14;i++){const a0=.5+i*.07,q=P(t,a0,.42);if(q<=0||q>=1)continue;const ang=(-45+i*360/14)*Math.PI/180;
-  const tx=MX+Math.cos(ang)*MR,ty=MY+Math.sin(ang)*MR;const e=eio(q);const x=lerp(330,tx,e),y=lerp(460,ty,e)-Math.sin(e*Math.PI)*40;
-  o+=`<circle cx="${x}" cy="${y}" r="15" fill="#d9dce2" stroke="#2a2b2e" stroke-width="2.5"/>`;}
- o+=ch('M340,460 L480,460',P(t,.45,.3),10,YEL)+ch('M452,436 L482,460 L452,484',P(t,.72,.1),10,YEL);
- {const zx=220+(pl.arrived?0:pl.dx),zy=460+(pl.arrived?0:pl.dy);o+=coin(zx,zy,102,'Zn','#efe9da',INK,80);o+=ticks(zx,zy,120,P(t,.1,.6),YEL,8);}
- o+=tag(220,620,'ซิงค์',3,38);
- o+=tag(MX,710,'ฮอร์โมนเพศชาย',-3,44);
- const gl=P(t,1.85,.45);if(gl>0)o+=`<circle cx="${MX}" cy="${MY}" r="${MR+10+gl*14}" fill="none" stroke="${YEL}" stroke-width="6" opacity="${Math.sin(gl*Math.PI)*.8}"/>`;
- o+=ticks(MX,MY,MR+30,P(t,1.85,.45),YEL,8);
- return {o,h:pl.hand};});
+function maleToken(r){return `<circle cx="0" cy="6" r="${r}" fill="rgba(0,0,0,.35)"/><circle r="${r}" fill="${YEL}" stroke="#2a2b2e" stroke-width="4"/>`+g(male(0,0,r*.42,1,INK,r*.11),{x:-r*.1,y:r*.12});}
+sc(0,2.3,t=>{let o='';
+ const ZX=280,ZY=540,MX=735,MY=540;
+ // heading = label of the male token (same column, on top: first thing the eye reads)
+ const hp=pop(t,0,.01);
+ o+=`<text x="${MX}" y="300" font-family="K" font-weight="800" font-size="68" text-anchor="middle" fill="${CH}" filter="url(#chf)">ฮอร์โมนเพศชาย</text>`;
+ o+=ch(`M${MX-215},326 Q${MX},341 ${MX+215},322`,1,8,YEL);
+ o+=ch(`M${MX},350 L${MX},392`,P(t,.75,.15),6)+ch(`M${MX-14},378 L${MX},394 L${MX+14},378`,P(t,.85,.1),6);
+ // hand 1 places zinc, hand 2 places the male token
+ const h1=placeHand(t,'pinch',ZX,ZY,-0.5,.5,.3,.4);
+ const h2=placeHand(t,'pinch',MX,MY,0.3,.45,.25,.4);
+ {const x=ZX+(h1.arrived?0:h1.dx),y=ZY+(h1.arrived?0:h1.dy);o+=coin(x,y,100,'Zn','#efe9da',INK,78);o+=ticks(x,y,118,P(t,.05,.6),YEL,8);}
+ o+=tag(ZX,695,'ซิงค์',3,38);
+ if(t>=0.3){const x=MX+(h2.arrived?0:h2.dx),y=MY+(h2.arrived?0:h2.dy);const pu=1+0.07*Math.sin(Math.max(0,t-1.75)*9)*P(t,1.75,.2)*(1-P(t,2.1,.2));o+=g(maleToken(108),{x,y,s:pu});}
+ // arrow zinc -> male token, zinc dots flow in
+ o+=ch(`M${ZX+115},${ZY} L${MX-130},${MY}`,P(t,.95,.3),10,YEL)+ch(`M${MX-158},${MY-24} L${MX-128},${MY} L${MX-158},${MY+24}`,P(t,1.22,.1),10,YEL);
+ for(let i=0;i<7;i++){const q=P(t,1.25+i*.07,.35);if(q<=0||q>=1)continue;const x=lerp(ZX+110,MX-100,eio(q));o+=`<circle cx="${x}" cy="${ZY}" r="14" fill="#d9dce2" stroke="#2a2b2e" stroke-width="2.5" opacity="${1-q*q}"/>`;}
+ const gl=P(t,1.75,.45);if(gl>0)o+=`<circle cx="${MX}" cy="${MY}" r="${120+gl*16}" fill="none" stroke="${YEL}" stroke-width="7" opacity="${Math.sin(gl*Math.PI)*.85}"/>`;
+ o+=ticks(MX,MY,140,P(t,1.75,.45),YEL,8);
+ return {o,h:h1.hand+h2.hand};});
 // 2. take 15 mg a day
 sc(2.3,4.2,t=>{let o='';const lt=t-2.3;
  const b=pop(t,2.35,.4);o+=capsule(400,380,230,-28,'plain',cl(b*2));o+=ticks(400,380,140,P(t,2.5,.5));
