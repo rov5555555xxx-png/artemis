@@ -1,0 +1,18 @@
+function zdot(x,y,r,gold,o){return `<circle cx="${x}" cy="${y}" r="${r}" fill="${gold?'#F3D9A4':'#7FA8E0'}" stroke="${gold?'#7A5B2E':'#2E4E7A'}" stroke-width="3" opacity="${o==null?1:o}"/>`}
+function lock(x,y,s,open,col){const sh=open?-38:0;return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-38 -10 V-50 A38 38 0 0 1 38 -50 V${-10+sh}" transform="translate(${open?30:0} ${sh})" fill="none" stroke="${col||'#F3D9A4'}" stroke-width="16"/><rect x="-62" y="-14" width="124" height="104" rx="18" fill="${col||'#F3D9A4'}" stroke="#7A5B2E" stroke-width="5"/><circle cy="30" r="13" fill="#16171B"/><rect x="-5" y="34" width="10" height="28" fill="#16171B"/></g>`}
+function clockTag(x,y,txt,col){return `<g transform="translate(${x} ${y})"><circle r="56" fill="#16171B" stroke="${col}" stroke-width="6"/><path d="M0 0 V-32 M0 0 H24" stroke="${col}" stroke-width="7" stroke-linecap="round"/></g>`+pill(x,y+90,txt,1,col,'#16171B',38)}
+function vessel(y,h){return `<rect x="150" y="${y}" width="1140" height="${h}" rx="${h/2}" fill="#8E1A1D" stroke="#B5323A" stroke-width="6"/><rect x="170" y="${y+14}" width="1100" height="14" rx="7" fill="#fff" opacity=".12"/>`}
+function toilet(x,y,s,t,swirl){let g=`<g transform="translate(${x} ${y}) scale(${s})"><rect x="40" y="-150" width="90" height="120" rx="14" fill="#E7E9EE" stroke="#9AA0AC" stroke-width="5"/><path d="M-110 -40 H130 Q130 40 60 70 L50 130 H-40 L-50 70 Q-110 40 -110 -40Z" fill="#F4F5F8" stroke="#9AA0AC" stroke-width="5"/><ellipse cx="10" cy="-40" rx="120" ry="30" fill="#DDE1E8" stroke="#9AA0AC" stroke-width="5"/><ellipse cx="10" cy="-38" rx="86" ry="18" fill="#7FB7E8"/>`;
+ if(swirl)g+=`<path d="M10 -38 m-60 0 a60 14 0 1 0 120 0 a40 10 0 1 0 -80 0 a20 5 0 1 0 40 0" fill="none" stroke="#fff" stroke-width="5" transform="rotate(${t*200} 10 -38)" opacity=".8"/>`;
+ return g+'</g>'}
+function bodyS(cx,col,fill){return `<path d="M${cx-110} 330 Q${cx} 280 ${cx+110} 330 L${cx+130} 510 Q${cx+120} 540 ${cx+90} 540 L${cx+80} 660 H${cx-80} L${cx-90} 540 Q${cx-120} 540 ${cx-130} 510Z" fill="${col}" fill-opacity="${fill}" stroke="${col}" stroke-width="5"/><circle cx="${cx}" cy="245" r="55" fill="${col}" fill-opacity="${fill}" stroke="${col}" stroke-width="5"/>`}
+function miniChart(x0,y0,W,H,blueP,goldP,mark){let s=`<rect x="${x0-30}" y="${y0-H-60}" width="${W+70}" height="${H+120}" rx="26" fill="rgba(22,23,27,.85)" stroke="rgba(255,255,255,.18)" stroke-width="3"/>`;
+ s+=`<path d="M${x0} ${y0-H-10} V${y0} H${x0+W}" stroke="#9AA0AC" stroke-width="4" fill="none"/>`;
+ for(let h=0;h<=8;h+=2)s+=`<text x="${x0+W*h/8}" y="${y0+34}" text-anchor="middle" font-family="K" font-weight="800" font-size="24" fill="#9AA0AC">${h}</text>`;
+ s+=`<text x="${x0+W}" y="${y0-H-24}" text-anchor="end" font-family="K" font-weight="800" font-size="24" fill="#9AA0AC">ชม.</text>`;
+ const N=120;const fast=h=>0.75*Math.pow(h/2,2)*Math.exp(2*(1-h/2)),slow=h=>0.62*(1-Math.exp(-h*1.1))*(h<6?1:Math.exp(-(h-6)*0.3));
+ const path=(fn,pr)=>{const n=Math.max(2,Math.floor(N*pr));let d='';for(let i=0;i<=n;i++){const h=8*i/N;d+=(i?'L':'M')+(x0+W*h/8).toFixed(1)+' '+(y0-H*fn(h)).toFixed(1)}return [d,x0+W*n/N]};
+ if(blueP>0){const [d]=path(fast,blueP);s+=`<path d="${d}" stroke="#7FA8E0" stroke-width="7" fill="none" stroke-linecap="round"/>`}
+ if(goldP>0){const [d,xe]=path(slow,goldP);s+=`<path d="${d} L${xe} ${y0} L${x0} ${y0}Z" fill="#F3D9A4" opacity=".18"/><path d="${d}" stroke="#F3D9A4" stroke-width="9" fill="none" stroke-linecap="round"/>`}
+ if(mark){const [mh,col,txt,p]=mark;if(p>0){const x=x0+W*mh/8;s+=`<path d="M${x} ${y0-H} V${y0}" stroke="${col}" stroke-width="4" stroke-dasharray="10 8" opacity="${p}"/>`+pill(x,y0-H-6,txt,p,col,'#16171B',30)}}
+ return s}

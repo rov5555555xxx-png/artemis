@@ -1,0 +1,73 @@
+.jar{background-image:url(jar.png)}.b30{background-image:url(box30.png)}.b60{background-image:url(box60.png)}
+.red{color:#FF6B6E;text-shadow:0 6px 0 #6E1416,0 14px 30px rgba(0,0,0,.6)}
+.vsvg{position:absolute;overflow:visible}
+#confetti{display:none}
+</style></head><body>
+<div id="stage">
+<!-- S1 0-3.6 +20 baht -> 60 caps -->
+<div class="scene" data-s="0" data-e="3.6" data-bg="studio" data-cam="0:1.03:720:500;3.6:1:720:540">
+ <div class="cam"><svg class="a vsvg" id="v1" data-at="-1" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="-1" data-an="fade" style="top:800px;font-size:80px">เพิ่มแค่ <span class="gold">20 บาท</span> ได้ 60 เม็ด</div>
+</div>
+<!-- S2 3.6-4.9 per capsule: much better value -->
+<div class="scene" data-s="3.6" data-e="4.9" data-bg="studio" data-tr="wipe" data-cam="3.6:1:720:540;4.9:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v2" data-at="3.62" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="3.65" data-an="up" style="top:800px;font-size:84px">เห็นป่ะ? <span class="gold">คุ้มกว่าเยอะ</span></div>
+</div>
+<!-- S3 4.9-10.3 who: hormones, skin, hair, acne/oily skin -->
+<div class="scene" data-s="4.9" data-e="10.3" data-bg="studio" data-tr="iris" data-cam="4.9:1.03:720:510;10.3:1:720:540">
+ <div class="cam">
+  <div class="a rays" data-at="9.5" data-an="fade" data-spin="12" style="left:420px;top:40px;width:600px;height:600px"></div>
+  <svg class="a vsvg" id="v3" data-at="4.92" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="4.95" data-an="up" data-out="9.5" style="top:800px;font-size:76px">ดูแล<span class="hl" data-hl="5.3">ฮอร์โมน ผิว ผม สิว</span></div>
+ <div class="a big cx gold" data-at="9.6" data-an="slam" style="top:800px;font-size:88px">ต้องตัวนี้เลย!</div>
+</div>
+<!-- S4 10.3-14.6 innovation: slow release -->
+<div class="scene" data-s="10.3" data-e="14.6" data-bg="studio" data-tr="wipe" data-cam="10.3:1.04:720:500;14.6:1:720:540">
+ <div class="cam"><svg class="a vsvg" id="v4" data-at="10.32" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="10.35" data-an="up" data-out="11.75" style="top:800px;font-size:80px">เพราะเป็น<span class="gold">นวัตกรรมใหม่</span></div>
+ <div class="a big cx wht" data-at="11.8" data-an="up" style="top:800px;font-size:78px">ซิงค์<span class="hl" data-hl="12.3">ค่อยๆ ปลดปล่อย</span>ยาวๆ</div>
+</div>
+<!-- S5 14.6-18.0 ordinary: 2 h then drops -->
+<div class="scene" data-s="14.6" data-e="18.0" data-bg="studio" data-tr="wipe" data-cam="14.6:1:720:540;18.0:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v5" data-at="14.62" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="14.65" data-an="up" style="top:800px;font-size:78px">ซิงค์ทั่วไปอยู่แค่ <span class="red">2 ชม.</span></div>
+</div>
+<!-- S6 18.0-22.5 iCAP locks 6 h -->
+<div class="scene" data-s="18.0" data-e="22.5" data-bg="studio" data-tr="flash" data-cam="18.0:1.04:720:500;22.5:1:720:540">
+ <div class="cam"><svg class="a vsvg" id="v6" data-at="18.02" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="18.05" data-an="up" data-out="20.95" style="top:800px;font-size:78px">ตัวนี้ล็อกซิงค์ได้ <span class="gold">6 ชม.</span></div>
+ <div class="a big cx wht" data-at="21.0" data-an="up" style="top:800px;font-size:80px"><span class="hl" data-hl="21.4">ช่วยได้มากกว่า</span></div>
+</div>
+<!-- S7 22.5-25.3 body can draw on it any time -->
+<div class="scene" data-s="22.5" data-e="25.3" data-bg="studio" data-tr="wipe" data-cam="22.5:1:720:540;25.3:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v7" data-at="22.52" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="22.55" data-an="up" style="top:800px;font-size:78px">ร่างกาย<span class="hl" data-hl="23.4">หยิบไปใช้ได้ตลอด</span></div>
+</div>
+<!-- S8 25.3-29.0 price may change -->
+<div class="scene" data-s="25.3" data-e="29.0" data-bg="studio" data-tr="wipe" data-cam="25.3:1:720:540;29.0:1.03:720:510">
+ <div class="cam"><svg class="a vsvg" id="v8" data-at="25.32" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg></div>
+ <div class="a big cx wht" data-at="25.35" data-an="up" style="top:800px;font-size:78px">ราคา<span class="red">อาจเปลี่ยนแปลง</span>ในอนาคต</div>
+</div>
+<!-- S9 29.0-35.5 now: +20 baht upsize to 60 for 179, 2 months -->
+<div class="scene" data-s="29.0" data-e="35.5" data-bg="studio" data-tr="flash" data-cam="29.0:1.05:720:490;32.5:1:720:540;35.5:1.03:720:510">
+ <div class="cam">
+  <div class="a rays" data-at="28.9" data-an="fade" data-spin="14" style="left:520px;top:-40px;width:700px;height:700px"></div>
+  <svg class="a vsvg" id="v9" data-at="29.02" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="29.05" data-an="up" data-out="32.4" style="top:800px;font-size:78px">ตอนนี้ +20 บาท <span class="gold">อัปไซส์เป็น 60 เม็ด</span></div>
+ <div class="a big cx wht" data-at="32.45" data-an="up" data-out="33.95" style="top:800px;font-size:84px">แค่ <span class="gold">179 บาท</span></div>
+ <div class="a big cx wht" data-at="34.0" data-an="up" style="top:800px;font-size:80px">ทานได้ยาวๆ <span class="gold">2 เดือน!</span></div>
+</div>
+<!-- S10 35.5-end launch promotion -->
+<div class="scene" data-s="35.5" data-e="99" data-bg="studio" data-tr="flash" data-cam="35.5:1.06:720:480;38.17:1:720:540">
+ <div id="confetti"></div>
+ <div class="cam">
+  <div class="a rays" data-at="35.4" data-an="fade" data-spin="14" style="left:400px;top:-40px;width:640px;height:640px"></div>
+  <div class="a glow" data-at="35.5" data-an="fade" style="left:480px;top:60px;width:480px;height:480px"></div>
+  <div class="a img b60" data-at="35.52" data-an="drop" data-float="0.3" style="left:575px;top:90px;width:290px;height:460px"></div>
+  <svg class="a vsvg" id="v10" data-at="35.55" data-an="fade" style="left:0;top:0;width:1440px;height:1080px" viewBox="0 0 1440 1080"></svg>
+ </div>
+ <div class="a big cx wht" data-at="35.55" data-an="up" style="top:790px;font-size:80px">โปร<span class="gold">ช่วงเปิดตัว</span>ซิงค์ iCAP</div>
+</div>
