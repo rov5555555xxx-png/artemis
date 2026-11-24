@@ -2,14 +2,14 @@ function priceTag2(x,y,txt,p,big){if(p<=0)return '';const k=eOB(cl(p));const w=b
 function calM(x,y,m,p){if(p<=0)return '';const k=eOB(cl(p));return `<g transform="translate(${x} ${y}) scale(${k})"><rect x="-120" y="-115" width="240" height="235" rx="26" fill="#16171B" stroke="#D9B98A" stroke-width="6"/><rect x="-120" y="-115" width="240" height="64" rx="26" fill="#D9B98A"/><text y="-70" text-anchor="middle" font-family="K" font-weight="900" font-size="34" fill="#16171B">เดือนที่ ${m}</text><text y="70" text-anchor="middle" font-family="K" font-weight="900" font-size="100" fill="#fff">30</text></g>`}
 window.extra=function(t){
  const on=(a,b)=>t>=a-0.05&&t<b+0.45;
- // S1 30 vs 60 price
+ // S1 30 vs 60 price (big, flat, different colours)
  if(on(0,3.6)){const lt=t;let s='';
-  s+=jarAt('box30.png',330,560,330)+priceTag2(330,620,'฿159',1,false);
+  const price=(x,y,n,p,col,bg,fs,show)=>{if(show<=0)return '';const k=eOB(cl(show));const w=fs*3.3;return `<g transform="translate(${x} ${y}) scale(${k})"><rect x="${-w/2}" y="${-fs*0.95}" width="${w}" height="${fs*1.9}" rx="24" fill="${bg}" stroke="${col}" stroke-width="6"/><text y="${-fs*0.18}" text-anchor="middle" font-family="K" font-weight="900" font-size="${fs*0.42}" fill="${col}">${n}</text><text y="${fs*0.62}" text-anchor="middle" font-family="K" font-weight="900" font-size="${fs*0.82}" fill="${col}">${p}</text></g>`};
+  s+=jarAt('box30.png',330,520,300)+price(330,650,'30 เม็ด','฿159','#C9D6EA','#1E2633',90,1);
   const a=cl((lt-0.3)/0.4);s+=`<g opacity="${a}"><path d="M520 340 H${520+230*eOC(a)}" stroke="#E8C26A" stroke-width="26" stroke-linecap="round"/><path d="M745 290 L820 340 L745 390Z" fill="#FFE08A" stroke="#B8862F" stroke-width="6"/></g>`;
-  s+=pill(670,250,'+20 บาท',cl((lt-0.6)/0.3),'#E5484D','#fff',50);
+  s+=pill(670,250,'+20 บาท',cl((lt-0.6)/0.3),'#E5484D','#fff',54);
   s+=`<circle cx="1050" cy="330" r="270" fill="url(#g1)"/><defs><radialGradient id="g1"><stop offset="0" stop-color="#FFECC8" stop-opacity=".5"/><stop offset="1" stop-color="#D9B98A" stop-opacity="0"/></radialGradient></defs>`;
-  s+=jarAt('box60.png',1050,590,470)+priceTag2(1050,650,'฿179',cl((lt-0.9)/0.35),true);
-  s+=pill(1050,90,'60 เม็ด',cl((lt-1.6)/0.3),'#F3D9A4','#16171B',48);
+  s+=jarAt('box60.png',1050,520,420)+price(1050,650,'60 เม็ด','฿179','#FFD36E','#2A2210',110,cl((lt-0.9)/0.35));
   $('v1').innerHTML=s}
  // S2 readable price comparison
  if(on(3.6,4.9)){const lt=t-3.6;let s='';
@@ -67,7 +67,7 @@ window.extra=function(t){
   if(lt<5.0){const sh=cl((lt-0.4)/0.5);s+=`<g opacity="${1-0.6*sh}">${jarAt('box30.png',380,560,300)}</g>`;
    s+=pill(640,300,'+20 บาท',cl((lt-0.6)/0.3),'#E5484D','#fff',48);
    const g=eOB(cl((lt-1.0)/0.5));s+=`<g transform="translate(1000 600) scale(${g})">${jarAt('box60.png',0,0,500)}</g>`;
-   s+=priceTag2(1180,560,'฿179',cl((lt-3.45)/0.3),true);
+   {const sh=cl((lt-3.45)/0.3);if(sh>0){const k=eOB(sh);s+=`<g transform="translate(1180 560) scale(${k})"><rect x="-170" y="-70" width="340" height="140" rx="24" fill="#2A2210" stroke="#FFD36E" stroke-width="6"/><text y="36" text-anchor="middle" font-family="K" font-weight="900" font-size="100" fill="#FFD36E">฿179</text></g>`}}
    s+=`<g transform="translate(1000 120) scale(${eOB(cl((lt-1.6)/0.35))})"><path d="M-75 50 L-63 -30 L-33 10 L0 -45 L33 10 L63 -30 L75 50Z" fill="#F3D9A4" stroke="#7A5B2E" stroke-width="6" stroke-linejoin="round"/></g>`}
   if(lt>4.9){const k=cl((lt-4.9)/0.3);s+=`<g opacity="${k}">${jarAt('box60.png',380,560,330)}</g>`+calM(860,340,1,cl((lt-5.0)/0.35))+calM(1150,340,2,cl((lt-5.3)/0.35))+pill(1005,560,'60 เม็ด = 2 เดือน',cl((lt-5.5)/0.3),'#F3D9A4','#16171B',40)}
   $('v9').innerHTML=s}
