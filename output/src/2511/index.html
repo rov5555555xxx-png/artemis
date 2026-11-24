@@ -244,7 +244,7 @@ const DEFS=`<defs><filter id="chf" filterUnits="userSpaceOnUse" x="-200" y="-200
 <pattern id="pgrain" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#e6dcc4"/><circle cx="2" cy="2" r=".8" fill="#d7ccb2"/></pattern></defs>`;
 window.render=function(t){UID=0;let o='',h='';
  for(let i=0;i<S.length;i++){const s=S[i];const nx=S[i+1];const end=nx?nx.s:s.e;
-  if(t<s.s||t>=end+0.32)continue;let r=s.f(t);
+  if(t<s.s||t>=end)continue;let r=s.f(t);
   if(t>=end){const q=eio(P(t,end,.32));o+=g(r.o+r.h,{x:-140*q,o:1-q});}else{o+=r.o;h+=r.h;}}
  sv.innerHTML=DEFS+o+h;setCap(t);};
 render(0);
