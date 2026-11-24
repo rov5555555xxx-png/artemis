@@ -1,0 +1,302 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E00-0E7F}
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E00-0E7F}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E00-0E7F}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+html,body{margin:0;background:#1e1f22;overflow:hidden}
+#st{position:relative;width:1080px;height:1080px;overflow:hidden;
+ background:radial-gradient(ellipse 75% 65% at 50% 42%,#45474b 0%,#303236 45%,#1d1e21 100%)}
+#sv{position:absolute;inset:0}
+#cap{position:absolute;left:0;right:0;top:880px;height:110px;display:flex;align-items:center;justify-content:center;
+ font:800 66px/1.15 K;color:#fff;text-shadow:0 4px 10px rgba(0,0,0,.55);white-space:nowrap}
+#cap .y{color:#ffd23f}
+#cap .rb{background:#e2332f;color:#fff;border-radius:14px;padding:0 22px 6px;text-shadow:none;box-shadow:0 6px 14px rgba(0,0,0,.35)}
+#cap span.w{display:inline-block}
+.safe #st::after{content:'';position:absolute;inset:70px;border:2px dashed #0f0;pointer-events:none}
+</style></head><body>
+<div id="st"><svg id="sv" width="1080" height="1080" viewBox="0 0 1080 1080"></svg><div id="cap"></div></div>
+<svg width="0" height="0" style="position:absolute"><path id="meas" d="M0,0"/></svg>
+<script>
+if(location.hash=='#safe')document.body.classList.add('safe');
+const CH='#f2efe6',INK='#34363a',YEL='#ffd23f',RED='#e2332f',GRN='#2faa58',BLU='#7fa3d6';
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const P=(t,a,d)=>d<=0?(t>=a?1:0):cl((t-a)/d);
+const eo=x=>1-Math.pow(1-x,3), eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const eb=x=>{x=cl(x);const c1=1.9,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+const pop=(t,a,d=.35)=>eb(P(t,a,d));
+const lerp=(a,b,p)=>a+(b-a)*p;
+let UID=0;const uid=()=>'u'+(UID++);
+const meas=document.getElementById('meas');
+function ptAt(d,p){meas.setAttribute('d',d);const L=meas.getTotalLength();const q=meas.getPointAtLength(L*cl(p));return {x:q.x,y:q.y};}
+const cvs=document.createElement('canvas').getContext('2d');
+function tw(txt,size,wt=800){cvs.font=`${wt} ${size}px K`;return cvs.measureText(txt).width;}
+
+// ---------- primitives ----------
+function ch(d,p,w=7,c=CH,extra=''){if(p<=0)return '';return `<path d="${d}" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="${1-p}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" filter="url(#chf)" ${extra}/>`;}
+function g(inner,{x=0,y=0,s=1,r=0,o=1}={}){if(o<=0.001||!inner)return '';return `<g transform="translate(${x},${y}) rotate(${r}) scale(${s})" opacity="${o}">${inner}</g>`;}
+function coin(x,y,r,lab,fill='#efe9da',tc=INK,fs){fs=fs||r*.72;return `<g><circle cx="${x}" cy="${y+4}" r="${r}" fill="rgba(0,0,0,.35)"/><circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="#2a2b2e" stroke-width="3"/><text x="${x}" y="${y+fs*.36}" font-family="K" font-weight="800" font-size="${fs}" text-anchor="middle" fill="${tc}">${lab}</text></g>`;}
+function capsule(x,y,L,ang,kind='plain',o=1){const h=L*.42,r=h/2;let s=`<g transform="translate(${x},${y}) rotate(${ang})" opacity="${o}">`;
+ s+=`<rect x="${-L/2+3}" y="${-r+6}" width="${L}" height="${h}" rx="${r}" fill="rgba(0,0,0,.35)"/>`;
+ if(kind=='plain'){s+=`<path d="M0,${-r} H${L/2-r} A${r},${r} 0 0 1 ${L/2-r},${r} H0Z" fill="#9ca2aa" stroke="#2a2b2e" stroke-width="3"/><path d="M0,${-r} H${-L/2+r} A${r},${r} 0 0 0 ${-L/2+r},${r} H0Z" fill="#f2eee4" stroke="#2a2b2e" stroke-width="3"/>`;}
+ else if(kind=='white'){s+=`<rect x="${-L/2}" y="${-r}" width="${L}" height="${h}" rx="${r}" fill="#f4f2ec" stroke="#2a2b2e" stroke-width="3"/><line x1="0" y1="${-r}" x2="0" y2="${r}" stroke="#2a2b2e" stroke-width="2.5"/>`;}
+ else{ // icap: left clear packed with pellets, right cream Zn
+  s+=`<path d="M0,${-r} H${-L/2+r} A${r},${r} 0 0 0 ${-L/2+r},${r} H0Z" fill="rgba(220,230,238,.28)" stroke="#2a2b2e" stroke-width="3"/>`;
+  const pr=h*.11;for(let i=0;i<5;i++)for(let j=0;j<4;j++){const px=-L/2+r*.55+i*pr*2.15+(j%2)*pr*.9,py=-r+pr*1.5+j*pr*2.05;if(px>-pr*1.1)continue;const dx=px-(-L/2+r),dy=py;if(px<-L/2+r&&dx*dx+dy*dy>(r-pr*1.2)**2)continue;s+=`<circle cx="${px}" cy="${py}" r="${pr}" fill="#fbfaf6" stroke="#2a2b2e" stroke-width="1.6"/>`;}
+  s+=`<path d="M0,${-r} H${L/2-r} A${r},${r} 0 0 1 ${L/2-r},${r} H0Z" fill="#e9dcbc" stroke="#2a2b2e" stroke-width="3"/><text x="${L/4}" y="${h*.13}" font-family="K" font-weight="800" font-size="${h*.38}" text-anchor="middle" fill="${INK}">Zn</text>`;}
+ return s+'</g>';}
+function ticks(x,y,R,p,c=CH,n=6,a0=-90){if(p<=0||p>=1)return '';let s='';const k=Math.sin(p*Math.PI);for(let i=0;i<n;i++){const a=(a0+i*360/n)*Math.PI/180,r1=R+p*18,r2=r1+26*k;s+=`<line x1="${x+Math.cos(a)*r1}" y1="${y+Math.sin(a)*r1}" x2="${x+Math.cos(a)*r2}" y2="${y+Math.sin(a)*r2}" stroke="${c}" stroke-width="6" stroke-linecap="round"/>`;}return s;}
+function check(x,y,s,p,c=GRN,w=12){return ch(`M${x-s*.5},${y} L${x-s*.12},${y+s*.38} L${x+s*.55},${y-s*.45}`,p,w,c);}
+function cross(x,y,s,p,c=RED,w=11){return ch(`M${x-s/2},${y-s/2} L${x+s/2},${y+s/2}`,cl(p*2),w,c)+ch(`M${x+s/2},${y-s/2} L${x-s/2},${y+s/2}`,cl(p*2-1),w,c);}
+function male(x,y,r,p,c=CH,w=8){const a=Math.PI/4,ex=x+Math.cos(-a)*r,ey=y+Math.sin(-a)*r,L=r*.85;
+ return ch(`M${x+r},${y} A${r},${r} 0 1 1 ${x+r-.01},${y-.5}`,cl(p*1.4),w,c)+ch(`M${ex},${ey} L${ex+L*.7},${ey-L*.7}`,cl(p*3-1.6),w,c)+ch(`M${ex+L*.7-r*.5},${ey-L*.7} L${ex+L*.7},${ey-L*.7} L${ex+L*.7},${ey-L*.7+r*.5}`,cl(p*3-2),w,c);}
+function paper(x,y,w,h,r,inner,o=1,s=1){if(o<=0)return '';const id=uid();return `<g transform="translate(${x},${y}) rotate(${r}) scale(${s})" opacity="${o}"><rect x="${-w/2+5}" y="${-h/2+9}" width="${w}" height="${h}" fill="rgba(0,0,0,.4)" rx="3"/><rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" fill="#efe8d6" rx="3"/><rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" fill="url(#pgrain)" rx="3" opacity=".5"/>${inner}<rect x="-42" y="${-h/2-16}" width="84" height="30" fill="rgba(226,221,196,.82)" transform="rotate(-3)"/></g>`;}
+function tag(x,y,txt,r=-3,fs=34,o=1,s=1,col=INK){fs=Math.round(fs*1.3);const w=tw(txt,fs,800)+40,h=fs*1.45;return paper(x,y,w,h,r,`<text x="0" y="${fs*.36}" font-family="K" font-weight="800" font-size="${fs}" text-anchor="middle" fill="${col}">${txt}</text>`,o,s);}
+function ctext(x,y,txt,fs,p,c=CH,anchor='middle',wt=800){if(p<=0)return '';const w=tw(txt,fs,wt),x0=anchor=='middle'?x-w/2:anchor=='end'?x-w:x;const id=uid();
+ return `<clipPath id="${id}"><rect x="${x0-10}" y="${y-fs*1.3}" width="${(w+20)*p}" height="${fs*1.9}"/></clipPath><text clip-path="url(#${id})" x="${x0}" y="${y}" font-family="K" font-weight="${wt}" font-size="${fs}" fill="${c}" filter="url(#chf)">${txt}</text>`;}
+function ctextRange(x,y,txt,fs,anchor='middle',wt=800){const w=tw(txt,fs,wt),x0=anchor=='middle'?x-w/2:anchor=='end'?x-w:x;return {d:`M${x0},${y-fs*.25} L${x0+w},${y-fs*.25}`,x0,w};}
+function jar(cx,bottom,h,o=1,r=0){const w=h*434/810;return `<g opacity="${o}" transform="rotate(${r} ${cx} ${bottom})"><ellipse cx="${cx}" cy="${bottom-4}" rx="${w*.48}" ry="${h*.025}" fill="rgba(0,0,0,.45)"/><image href="inzent_zinc_icap.png" x="${cx-w/2}" y="${bottom-h}" width="${w}" height="${h}"/></g>`;}
+function box(cx,bottom,h,o=1,r=0){const w=h*660/1048;return `<g opacity="${o}" transform="rotate(${r} ${cx} ${bottom})"><image href="inzent_zinc_icap_box30.png" x="${cx-w/2}" y="${bottom-h}" width="${w}" height="${h}"/></g>`;}
+function body(cx,cy,s){return {head:`M${cx+45*s},${cy-160*s} A${45*s},${45*s} 0 1 1 ${cx+45*s-.01},${cy-160.5*s}`,
+ torso:`M${cx-115*s},${cy+170*s} L${cx-115*s},${cy-40*s} Q${cx-115*s},${cy-95*s} ${cx-55*s},${cy-95*s} L${cx+55*s},${cy-95*s} Q${cx+115*s},${cy-95*s} ${cx+115*s},${cy-40*s} L${cx+115*s},${cy+170*s}`};}
+
+// ---------- hands ----------
+const HANDS={chalk:{src:'chalk.png',w:242,h:315,ax:2,ay:6,s:1.05,off:[480,620]},
+ marker:{src:'marker.png',w:302,h:561,ax:151,ay:548,s:.78,off:[120,-760]},
+ pinch:{src:'pinch2.png',w:415,h:845,ax:73,ay:760,s:.62,off:[160,-760]},
+ stamp:{src:'stamp.png',w:453,h:283,ax:4,ay:178,s:.7,off:[700,60]},
+ hold:{src:'hold.png',w:377,h:337,ax:6,ay:190,s:.85,off:[720,40]}};
+function handImg(k,x,y,rot=0){const H=HANDS[k],s=H.s;if(x<-600||x>1700||y<-1000||y>1700)return '';
+ return `<g transform="translate(${x},${y}) rotate(${rot})"><image href="${H.src}" x="${-H.ax*s}" y="${-H.ay*s}" width="${H.w*s}" height="${H.h*s}"/></g>`;}
+// a hand that draws a sequence of chalk segments: segs=[{d,a,dur}] -> {p:[..], hand}
+function drawSeq(t,k,segs,{enter=.3,exit=.4,wob=1}={}){const H=HANDS[k];const ps=segs.map(s=>P(t,s.a,s.dur));let tip;
+ const first=segs[0],last=segs[segs.length-1];
+ if(t<first.a){const q=ptAt(first.d,0),e=eo(P(t,first.a-enter,enter));tip={x:q.x+H.off[0]*(1-e),y:q.y+H.off[1]*(1-e)};}
+ else if(t>=last.a+last.dur){const q=ptAt(last.d,1),e=eio(P(t,last.a+last.dur,exit));tip={x:q.x+H.off[0]*e,y:q.y+H.off[1]*e};}
+ else{for(let i=0;i<segs.length;i++){const s=segs[i];if(t>=s.a&&t<s.a+s.dur){tip=ptAt(s.d,P(t,s.a,s.dur));break;}
+   const n=segs[i+1];if(n&&t>=s.a+s.dur&&t<n.a){const A=ptAt(s.d,1),B=ptAt(n.d,0),e=eio(P(t,s.a+s.dur,n.a-s.a-s.dur));tip={x:lerp(A.x,B.x,e),y:lerp(A.y,B.y,e)-Math.sin(e*Math.PI)*30};break;}}}
+ const rot=Math.sin(t*23)*1.2*wob;return {p:ps,hand:handImg(k,tip.x,tip.y,rot)};}
+// a hand that brings/places something at (x,y) by time a+dur, holds for hold s, leaves. returns {hand, held(0..1 arrival), placed}
+function placeHand(t,k,x,y,a,dur=.45,hold=.25,exit=.4){const H=HANDS[k];let px=x,py=y;
+ if(t<a+dur){const e=eo(P(t,a,dur));px=x+H.off[0]*(1-e);py=y+H.off[1]*(1-e);}
+ else if(t>a+dur+hold){const e=eio(P(t,a+dur+hold,exit));px=x+H.off[0]*e;py=y+H.off[1]*e;}
+ return {hand:(t<a-0.01||t>a+dur+hold+exit)?'':handImg(k,px,py),dx:px-x,dy:py-y,carry:t<a+dur+hold,arrived:t>=a+dur};}
+
+// ---------- captions ----------
+const CAPS=[
+ [0,'ฮอร์โมนเพศชาย ต้องใช้<span class="y">ซิงค์</span>'],
+ [2.3,'กินเลย <span class="y">วันละ 15 มก.</span>'],
+ [4.2,'ช่วยสร้าง<span class="y">กล้ามเนื้อ</span>'],
+ [6.45,'<span class="y">สิว</span>บนใบหน้า'],
+ [7.7,'ทั้ง<span class="y">ทางกาย</span> และ<span class="y">ทางเพศ</span>'],
+ [9.3,'ความยืดหยุ่นของ<span class="y">กระดูก</span>'],
+ [10.5,'เรื่อง<span class="y">อารมณ์</span>ก็เกี่ยวด้วย'],
+ [12.95,'หงุดหงิด · กระตือรือร้น · <span class="y">สมาธิ</span>'],
+ [15.25,'ถ้า<span class="rb">ซิงค์ไม่พอ</span>'],
+ [16.4,'สร้างฮอร์โมน<span class="y">ยากขึ้น</span>'],
+ [17.95,'ทุกอย่าง<span class="y">รวนไปหมด</span>'],
+ [19.38,'<span class="rb">สมดุลเสีย!</span>'],
+ [20.15,'ผู้ชายควรได้<span class="y">ซิงค์วันละ 15 มก.</span>'],
+ [23.3,'เช่น<span class="y">ตัวนี้</span> ซิงค์บิสไกลซิเนต iCAP'],
+ [25.2,'ให้ซิงค์ <span class="y">15 มก. พอดี</span>'],
+ [27.0,'นวัตกรรม <span class="y">iCAP</span>'],
+ [27.8,'<span class="y">ดูดซึมดีกว่า</span>บิสไกลซิเนตทั่วไป'],
+ [29.85,'กักเก็บซิงค์ได้<span class="y">นานถึง 6 ชม.</span>'],
+ [32.75,'หาซิงค์ช่วยเรื่อง<span class="y">ฮอร์โมน</span>?'],
+ [34.7,'ตัวนี้<span class="y">ตอบโจทย์</span>เลย'],
+ [35.7,'อยู่ในร่างกาย<span class="y">นานกว่า</span>ซิงค์ทั่วไป'],
+ [37.8,'ดูดซึมได้<span class="y">เยอะ</span>'],
+ [39.3,'<span class="rb">พิกัดซ้ายล่าง</span>'],
+];
+const capEl=document.getElementById('cap');let capIdx=-1;
+function setCap(t){let i=0;for(let k=0;k<CAPS.length;k++)if(t>=CAPS[k][0])i=k;
+ if(i!==capIdx){capEl.innerHTML=CAPS[i][1];capIdx=i;}
+ const lt=t-CAPS[i][0];const s=i==0?1:lerp(.86,1,eb(P(lt,0,.28)));const o=i==0?1:cl(lt/.08);
+ capEl.style.transform=`scale(${s})`;capEl.style.opacity=o;}
+
+// ---------- scenes ----------
+const S=[];const sc=(s,e,f)=>S.push({s,e,f});
+const CX=540;
+
+// 1. hormone needs zinc  (frame 0 readable)
+sc(0,2.3,t=>{let o='';const pl=placeHand(t,'pinch',330,400,-0.5,.5,.35);
+ o+=male(760,420,105,1,CH,9);
+ o+=tag(760,610,'ฮอร์โมนเพศชาย',-3,34);
+ o+=ch('M410,400 L620,400',P(t,.55,.5),8)+ch('M590,375 L620,400 L590,425',P(t,1.0,.15),8);
+ o+=coin(330+(pl.arrived?0:pl.dx),400+(pl.arrived?0:pl.dy),62,'Zn','#efe9da',INK,46);
+ o+=tag(330,500,'ซิงค์',3,30,P(t,.9,.2),pop(t,.9));
+ const gl=P(t,1.75,.5);if(gl>0)o+=`<circle cx="760" cy="420" r="${105+gl*8}" fill="none" stroke="${YEL}" stroke-width="8" opacity="${Math.sin(gl*Math.PI)}"/>`;
+ o+=ticks(760,420,130,P(t,1.75,.5),YEL,8);
+ return {o,h:pl.hand};});
+// 2. take 15 mg a day
+sc(2.3,4.2,t=>{let o='';const lt=t-2.3;
+ const b=pop(t,2.35,.4);o+=capsule(400,380,230,-28,'plain',cl(b*2));o+=ticks(400,380,140,P(t,2.5,.5));
+ const R=ctextRange(720,420,'15 mg',110,'middle',900);const hs=drawSeq(t,'chalk',[{d:R.d,a:3.45,dur:.55}]);
+ o+=ctext(720,420,'15 mg',110,hs.p[0],CH,'middle',900);
+ o+=tag(720,500,'ต่อวัน',-4,36,P(t,3.95,.15),pop(t,3.95));
+ return {o,h:hs.hand};});
+// 3. muscle
+const TL='M540,190 L470,190 L460,235 Q340,242 300,285 Q282,335 318,405 Q352,485 378,560 L388,690';
+const TR='M540,190 L610,190 L620,235 Q740,242 780,285 Q798,335 762,405 Q728,485 702,560 L692,690';
+function pec(k,side){const m=x=>side<0?x:1080-x;return `M540,300 Q${m(450)},${282-k*.3} ${m(350)},${305-k*.2} Q${m(318-k*.4)},${395+k*.5} ${m(400)},${410+k*.6} Q${m(480)},${428+k} 540,${388+k*.4}`;}
+function abBox(x,y,w,h){const r=16;return `M${x+r},${y} L${x+w-r},${y} Q${x+w},${y} ${x+w},${y+r} L${x+w},${y+h-r} Q${x+w},${y+h} ${x+w-r},${y+h} L${x+r},${y+h} Q${x},${y+h} ${x},${y+h-r} L${x},${y+r} Q${x},${y} ${x+r},${y}Z`;}
+sc(4.2,6.45,t=>{let o='';const gr=eb(P(t,5.6,.45))*(1+0.04*Math.sin(Math.max(0,t-6.0)*14));const k=18*gr;
+ const segs=[{d:TL,a:4.3,dur:.35},{d:TR,a:4.68,dur:.35},{d:pec(0,-1),a:5.06,dur:.2},{d:pec(0,1),a:5.28,dur:.2}];
+ const hs=drawSeq(t,'chalk',segs,{exit:.35});
+ o+=ch(TL,hs.p[0],8)+ch(TR,hs.p[1],8);
+ o+=ch(pec(hs.p[2]>=1?k:0,-1),hs.p[2],8)+ch(pec(hs.p[3]>=1?k:0,1),hs.p[3],8);
+ const rows=[[440,66],[518,66],[596,70]];let i=0;
+ rows.forEach(([y,h],r)=>{[[456,76],[548,76]].forEach(([x,w])=>{const q=P(t,5.42+i*.04,.14);const sc2=1+0.06*gr;const cx=x+w/2,cy=y+h/2;
+   o+=g(ch(abBox(-w/2,-h/2,w,h),q,7),{x:cx,y:cy,s:sc2});i++;});});
+ o+=ch('M540,300 L540,680',P(t,5.4,.2),5);
+ if(t>5.6){const q=P(t,5.65,.6);o+=ticks(410,350,95,q,YEL,5,-150)+ticks(670,350,95,q,YEL,5,-30)+ticks(540,560,150,P(t,5.8,.6),YEL,6,0);}
+ o+=tag(540,770,'กล้ามเนื้อ',-2,36,P(t,5.65,.15),pop(t,5.65));
+ o+=male(880,200,48,P(t,4.25,.35),CH,6);
+ return {o,h:hs.hand};});
+// 4. acne face
+sc(6.45,7.7,t=>{let o='';const face='M540,200 C680,200 720,300 720,400 C720,530 640,600 540,600 C440,600 360,530 360,400 C360,300 400,200 540,200';
+ const hs=drawSeq(t,'chalk',[{d:face,a:6.5,dur:.55}],{exit:.3});o+=ch(face,hs.p[0],8);
+ const f=P(t,6.95,.2);o+=ch('M465,365 L485,365',f,9)+ch('M595,365 L615,365',f,9)+ch('M490,500 Q540,525 590,500',P(t,7.05,.2),8);
+ [[440,440,0],[625,450,.1],[600,300,.2],[470,290,.15],[655,395,.25],[425,385,.3]].forEach(([x,y,d])=>{const q=pop(t,6.75+d,.3);if(q>0)o+=`<circle cx="${x}" cy="${y}" r="${14*q}" fill="${RED}" stroke="#8f1d1a" stroke-width="2"/>`;});
+ return {o,h:hs.hand};});
+// 5. physical / sexual cards
+function iconBody(){return `<g fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"><circle cx="0" cy="-70" r="24"/><path d="M-50,-30 L50,-30 M0,-30 L0,30 M0,30 L-30,80 M0,30 L30,80 M-50,-30 L-75,-75 M50,-30 L75,-75"/><circle cx="-75" cy="-75" r="10" fill="${INK}"/><circle cx="75" cy="-75" r="10" fill="${INK}"/></g>`;}
+function iconMaleHeart(){return `<g fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"><circle cx="-10" cy="-10" r="45"/><path d="M22,-42 L62,-82 M36,-82 L62,-82 L62,-56"/></g><path d="M-10,8 C-10,-2 -28,-6 -28,6 C-28,18 -10,26 -10,32 C-10,26 8,18 8,6 C8,-6 -10,-2 -10,8Z" fill="${RED}"/>`;}
+sc(7.7,9.3,t=>{let o='';
+ const a=pop(t,7.8,.4),b=pop(t,8.85,.4);
+ o+=paper(340,400,330,380,-4,`${g(iconBody(),{y:-20,s:1.2})}<text x="0" y="150" font-family="K" font-weight="800" font-size="46" text-anchor="middle" fill="${INK}">ทางกาย</text>`,cl(a*2),a);
+ o+=paper(740,400,330,380,4,`${g(iconMaleHeart(),{y:-20,s:1.25})}<text x="0" y="150" font-family="K" font-weight="800" font-size="46" text-anchor="middle" fill="${INK}">ทางเพศ</text>`,cl(b*2),b);
+ return {o,h:''};});
+// 6. bone
+const BONE='M330,470 C290,500 250,450 285,420 C255,385 305,340 335,380 L700,300 C715,255 780,265 770,305 C810,315 800,375 760,370 L395,450 C410,495 355,515 330,470Z';
+sc(9.3,10.5,t=>{let o='';const hs=drawSeq(t,'chalk',[{d:BONE,a:9.35,dur:.7}],{exit:.3});o+=ch(BONE,hs.p[0],8);
+ o+=ticks(540,400,150,P(t,10.0,.45),YEL,6);
+ return {o,h:hs.hand};});
+// 7. mood
+const HEAD='M610,640 L610,560 C700,540 720,470 700,420 L730,380 L700,360 C700,250 620,190 530,190 C420,190 360,270 360,360 C360,440 400,490 430,520 L430,640';
+sc(10.5,12.95,t=>{let o='';const wave='M450,360 L490,320 L520,400 L555,300 L590,390 L620,350';
+ const hs=drawSeq(t,'chalk',[{d:HEAD,a:10.55,dur:.75},{d:wave,a:11.45,dur:.5}]);
+ o+=ch(HEAD,hs.p[0],8)+ch(wave,hs.p[1],8,YEL);
+ o+=male(200,330,55,P(t,11.3,.4),CH,7);o+=tag(200,450,'ฮอร์โมนเพศ',-4,28,P(t,11.3,.15),pop(t,11.3));
+ o+=ch('M280,330 L380,340',P(t,12.4,.3),6,CH,'stroke-dasharray="0.06 0.05"');
+ return {o,h:hs.hand};});
+// 8. three cards
+function iconAngry(){return `<g fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round"><circle cx="0" cy="0" r="60"/><path d="M-35,-25 L-12,-14 M35,-25 L12,-14 M-25,32 Q0,15 25,32"/></g><path d="M55,-70 l12,-20 l8,18 l14,-14" fill="none" stroke="${RED}" stroke-width="6" stroke-linecap="round"/>`;}
+function iconBolt(){return `<path d="M12,-75 L-35,10 L-2,10 L-14,75 L38,-14 L4,-14Z" fill="${YEL}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`;}
+function iconTarget(){return `<g fill="none" stroke="${INK}" stroke-width="6"><circle r="62"/><circle r="38"/></g><circle r="14" fill="${RED}"/><path d="M8,-8 L70,-70 M55,-75 L72,-72 L70,-55" stroke="${INK}" stroke-width="6" fill="none" stroke-linecap="round"/>`;}
+sc(12.95,15.25,t=>{let o='';const C=[[230,13.25,-5,iconAngry(),'หงุดหงิด'],[540,13.85,3,iconBolt(),'กระตือรือร้น'],[850,14.65,-3,iconTarget(),'สมาธิ']];
+ C.forEach(([x,a,r,ic,lb],i)=>{const q=pop(t,a,.38);o+=paper(x,410,270,330,r,`${g(ic,{y:-30})}<text x="0" y="120" font-family="K" font-weight="800" font-size="${lb.length>8?34:40}" text-anchor="middle" fill="${INK}">${lb}</text>`,cl(q*2),q);});
+ return {o,h:''};});
+// 9. not enough zinc
+sc(15.25,17.95,t=>{let o='';
+ const d=P(t,15.3,.35);o+=`<circle cx="320" cy="400" r="62" fill="none" stroke="${CH}" stroke-width="6" stroke-dasharray="14 12" opacity="${d}" filter="url(#chf)"/>`;
+ o+=g(`<text x="0" y="0" font-family="K" font-weight="900" font-size="90" text-anchor="middle" fill="${RED}">?</text>`,{x:320,y:432,s:pop(t,15.45,.35),o:d});
+ o+=tag(320,505,'ซิงค์',3,30,d);
+ o+=ch('M400,400 L620,400',P(t,15.6,.4),8)+ch('M590,375 L620,400 L590,425',P(t,15.95,.12),8);
+ const fade=lerp(1,.35,P(t,16.6,.6));o+=g(male(0,0,105,1,CH,9),{x:760,y:420,o:fade});
+ o+=cross(510,400,90,P(t,16.45,.35));
+ o+=tag(760,610,'ฮอร์โมนเพศชาย',-3,34,fade);
+ o+=ch('M700,250 L720,215 M760,240 L765,200 M815,250 L840,220',P(t,17.0,.4),6,'#9a9a9a');
+ return {o,h:''};});
+// 10. balance lost
+sc(17.95,20.15,t=>{let o='';const lt=t-17.95;
+ const ang=t<19.3?Math.sin(lt*9)*9*P(t,18.3,.3):lerp(0,-20,eb(P(t,19.3,.45)));
+ o+=ch('M540,640 L540,250',P(t,18.0,.3),9)+ch('M430,650 L650,650',P(t,18.15,.2),9);
+ const a=ang*Math.PI/180,L=260,lx=540-Math.cos(a)*L,ly=250-Math.sin(a)*L,rx=540+Math.cos(a)*L,ry=250+Math.sin(a)*L;
+ const bp=P(t,18.2,.3);o+=ch(`M${lx},${ly} L${rx},${ry}`,bp,9);
+ const pan=(x,y,lab,ic)=>ch(`M${x},${y} L${x-75},${y+150} M${x},${y} L${x+75},${y+150}`,bp,5)+ch(`M${x-95},${y+150} Q${x},${y+215} ${x+95},${y+150} Z`,bp,7)+tag(x,y+120,lab,0,28,bp);
+ o+=pan(lx,ly,'กล้ามเนื้อ')+pan(rx,ry,'อารมณ์');
+ o+=`<circle cx="540" cy="250" r="12" fill="${CH}" opacity="${bp}"/>`;
+ o+=g(`<text font-family="K" font-weight="900" font-size="120" text-anchor="middle" fill="${RED}">!</text>`,{x:800,y:200,s:pop(t,19.45,.35),r:12});
+ return {o,h:''};});
+// 11. men need 15 mg a day
+sc(20.15,23.3,t=>{let o='';const B=body(330,430,1);
+ const hs=drawSeq(t,'chalk',[{d:B.head,a:20.2,dur:.35},{d:B.torso,a:20.6,dur:.6}],{exit:.35});
+ o+=ch(B.head,hs.p[0],8)+ch(B.torso,hs.p[1],8);o+=male(330,450,40,P(t,21.1,.35),YEL,6);
+ const q=pop(t,21.85,.4);
+ o+=paper(740,380,360,330,3,`<text x="0" y="-55" font-family="K" font-weight="800" font-size="40" text-anchor="middle" fill="${INK}">ซิงค์ ต่อวัน</text><text x="0" y="65" font-family="K" font-weight="900" font-size="120" text-anchor="middle" fill="${INK}">15 mg</text>`,cl(q*2),q);
+ const ul='M610,480 Q740,470 880,478';const mh=drawSeq(t,'marker',[{d:ul,a:22.45,dur:.45}]);o+=ch(ul,mh.p[0],11,RED);
+ return {o,h:hs.hand+mh.hand};});
+// 12. this one: jar on shelf
+sc(23.3,25.2,t=>{let o='';o+=ch('M300,720 L780,720',P(t,23.3,.3),8);
+ const ph=placeHand(t,'hold',540+112,720-210,23.25,.55,.5);
+ o+=jar(540+(ph.arrived?0:ph.dx),720+(ph.arrived?0:ph.dy),420);
+ o+=tag(800,330,'Zinc Bisglycinate iCAP',5,30,P(t,24.25,.15),pop(t,24.25));
+ o+=ticks(540,500,240,P(t,23.85,.5),CH,8);
+ return {o,h:ph.hand};});
+// 13. exactly 15 mg
+sc(25.2,27.0,t=>{let o='';const mv=eio(P(t,25.2,.45));o+=ch('M200,720 L560,720',1,8);o+=jar(lerp(540,380,mv),720,420);
+ const tp=P(t,25.4,.3);o+=paper(760,440,110,520,2,'',tp);
+ const f=eio(P(t,25.7,.9));const top=680-460*0.8*f;
+ if(tp>0){o+=`<g transform="rotate(2 760 440)" opacity="${tp}"><rect x="722" y="${top}" width="76" height="${680-top}" fill="${YEL}"/>`;
+  for(let i=0;i<=10;i++){const y=680-i*46;o+=`<line x1="705" y1="${y}" x2="${i%5==0?735:722}" y2="${y}" stroke="${INK}" stroke-width="3"/>`;}
+  o+=`<line x1="690" y1="${680-368}" x2="840" y2="${680-368}" stroke="${INK}" stroke-width="4"/></g>`;
+  o+=tag(890,680-368,'15 mg',-4,34,P(t,25.5,.15));}
+ o+=check(880,220,90,P(t,26.65,.3));o+=tag(880,140,'พอดี!',4,34,P(t,26.7,.15),pop(t,26.7));
+ return {o,h:''};});
+// 14. iCAP absorbs better
+sc(27.0,29.85,t=>{let o='';
+ const a=pop(t,27.05,.4),b=pop(t,27.3,.4);
+ o+=capsule(330,250,220,0,'white',cl(b*2));o+=tag(330,140,'บิสไกลซิเนตทั่วไป',-3,28,cl(b*2));
+ o+=capsule(750,250,220,0,'icap',cl(a*2));o+=tag(750,140,'iCAP',3,34,cl(a*2),a);o+=ticks(750,250,130,P(t,27.1,.5),YEL);
+ const cup=(x)=>`M${x-120},420 L${x-120},640 Q${x-120},680 ${x-80},680 L${x+80},680 Q${x+120},680 ${x+120},640 L${x+120},420`;
+ const cp=P(t,27.8,.35);o+=ch(cup(330),cp,8)+ch(cup(750),cp,8);
+ const fill=(x,n,start)=>{let s='';for(let i=0;i<n;i++){const col=i%8,row=Math.floor(i/8);const tx=x-95+col*27,ty=660-row*27;const at=start+i*0.028;const q=P(t,at,.35);if(q<=0)continue;const y=lerp(300,ty,eo(q));s+=`<circle cx="${tx}" cy="${y}" r="11" fill="#f6f4ee" stroke="#2a2b2e" stroke-width="2"/>`;}return s;};
+ o+=fill(330,14,28.1)+fill(750,48,28.1);
+ const fo=P(t,29.15,.3);if(fo>0){o+=`<rect x="160" y="100" width="350" height="620" fill="#1d1e21" opacity="${fo*.55}"/>`;o+=`<ellipse cx="750" cy="420" rx="${200+10*(1-fo)}" ry="${330+10*(1-fo)}" fill="none" stroke="${RED}" stroke-width="9" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="${1-fo}"/>`;}
+ return {o,h:''};});
+// 15. 6 hours chart
+sc(29.85,32.75,t=>{let o='';const X0=230,Y0=650,XW=640,YH=440,hx=h=>X0+h/8*XW,vy=v=>Y0-v*YH;
+ const ax=`M${X0},${Y0-YH-20} L${X0},${Y0} L${X0+XW+20},${Y0}`;
+ const blue=`M${hx(0)},${vy(0)} C${hx(1)},${vy(.4)} ${hx(1.8)},${vy(.8)} ${hx(2.5)},${vy(.8)} C${hx(3.5)},${vy(.8)} ${hx(5)},${vy(.25)} ${hx(8)},${vy(.08)}`;
+ const gold=`M${hx(0)},${vy(0)} C${hx(.6)},${vy(.5)} ${hx(1)},${vy(.82)} ${hx(1.8)},${vy(.85)} L${hx(6)},${vy(.85)} C${hx(6.8)},${vy(.85)} ${hx(7.3)},${vy(.55)} ${hx(8)},${vy(.4)}`;
+ const hs=drawSeq(t,'chalk',[{d:ax,a:29.9,dur:.45},{d:gold,a:30.95,dur:1.2}],{exit:.35});
+ o+=ch(ax,hs.p[0],7)+ch(blue,P(t,30.4,.5),8,BLU)+ch(gold,hs.p[1],10,YEL);
+ for(let h=0;h<=8;h+=2)o+=g(`<text x="0" y="0" font-family="K" font-weight="600" font-size="26" text-anchor="middle" fill="${CH}">${h}</text>`,{x:hx(h),y:Y0+38,o:P(t,30.2,.2)});
+ o+=g(`<text font-family="K" font-weight="600" font-size="24" fill="${CH}">ชม.</text>`,{x:X0+XW+5,y:Y0+38,o:P(t,30.2,.2)});
+ const m=P(t,32.15,.3);o+=ch(`M${hx(6)},${vy(.85)-20} L${hx(6)},${Y0}`,m,5,YEL,'stroke-dasharray="0.04 0.03"');
+ o+=tag(hx(6),vy(.85)-60,'6 ชม.',-3,40,m,pop(t,32.15));
+ o+=tag(hx(1.9),vy(.8)+90,'ทั่วไป',2,26,P(t,30.8,.15),1,'#3a5c94');o+=tag(hx(4),vy(.85)-50,'iCAP',-2,30,P(t,31.6,.15));
+ return {o,h:hs.hand};});
+// 16. answers hormone needs
+sc(32.75,35.7,t=>{let o='';
+ const q=pop(t,32.85,.4);o+=paper(330,380,320,360,-4,`${g(male(0,0,70,1,INK,9),{y:-30})}<text x="0" y="130" font-family="K" font-weight="800" font-size="44" text-anchor="middle" fill="${INK}">ฮอร์โมน</text>`,cl(q*2),q);
+ o+=ch('M590,700 L900,700',P(t,33.3,.3),8);
+ const j=pop(t,33.4,.45);o+=jar(745,700,400,cl(j*2),0);
+ const sh=placeHand(t,'stamp',390,330,34.55,.4,.25,.4);
+ if(sh.arrived)o+=`<g transform="translate(330,330) rotate(-8) scale(${lerp(1.25,1,eo(P(t,34.95,.15)))})"><circle r="78" fill="none" stroke="${GRN}" stroke-width="9" opacity=".9"/><path d="M-38,0 L-10,30 L42,-32" fill="none" stroke="${GRN}" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+ return {o,h:sh.hand};});
+// 17. stays longer, absorbs more
+sc(35.7,39.3,t=>{let o='';const L=body(310,470,1),R=body(770,470,1);
+ const bp=P(t,35.75,.45);o+=ch(L.head,bp,7)+ch(L.torso,bp,7)+ch(R.head,bp,7)+ch(R.torso,bp,7);
+ o+=tag(310,720,'ซิงค์ทั่วไป',-3,30,bp)+tag(770,720,'iCAP',3,34,bp);
+ const pts=[];for(let i=0;i<30;i++){pts.push([(i%6)*30-75,Math.floor(i/6)*36-40]);}
+ pts.forEach(([dx,dy],i)=>{const inL=P(t,35.9+i*.012,.3);const out=P(t,36.6+i*.03,.5);const oy=dy+out*240;
+  const outL=i<6?0:out;if(i<18&&inL>0&&outL<1)o+=`<circle cx="${310+dx}" cy="${470+dy+outL*240}" r="10" fill="#c9ccd2" stroke="#2a2b2e" stroke-width="2" opacity="${inL*(1-outL)}"/>`;
+  const inR=P(t,35.9+i*.012,.3);const more=i<18?1:P(t,37.85+(i-18)*.05,.3);if(inR>0&&more>0)o+=`<circle cx="${770+dx}" cy="${470+dy}" r="${10*(i<18?1:eb(more))}" fill="${YEL}" stroke="#2a2b2e" stroke-width="2"/>`;});
+ const ex=P(t,36.6,.8);if(ex>0&&ex<1)o+=ch('M310,660 L310,700',1,5,'#9a9a9a');
+ o+=check(900,280,70,P(t,38.4,.3));
+ return {o,h:''};});
+// 18. end card
+sc(39.3,40.6,t=>{let o='';o+=ch('M320,700 L840,700',1,8)+ch('M340,722 Q580,735 820,720',P(t,39.35,.35),9,YEL);
+ o+=box(470,700,380,1,-3);o+=jar(700,700,420);
+ o+=`<text x="580" y="200" font-family="K" font-weight="900" font-size="64" text-anchor="middle" fill="${CH}" letter-spacing="10" opacity="${P(t,39.3,.2)}">INZENT</text>`;
+ // basket + arrow to bottom-left
+ const q=pop(t,39.45,.4);o+=g(`<path d="M-55,-10 L55,-10 L42,45 L-42,45Z" fill="${YEL}" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M-35,-10 Q0,-60 35,-10" fill="none" stroke="${YEL}" stroke-width="8"/>`,{x:110,y:940,s:q});
+ const ar=P(t,39.5,.3);o+=ch('M300,800 Q200,820 150,880',ar,10,YEL)+ch('M150,840 L150,880 L190,880',cl(ar*2-1),10,YEL);
+ return {o,h:''};});
+
+// ---------- render ----------
+const sv=document.getElementById('sv');
+const DEFS=`<defs><filter id="chf" filterUnits="userSpaceOnUse" x="-200" y="-200" width="1480" height="1480"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
+<pattern id="pgrain" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#e6dcc4"/><circle cx="2" cy="2" r=".8" fill="#d7ccb2"/></pattern></defs>`;
+window.render=function(t){UID=0;let o='',h='';
+ for(let i=0;i<S.length;i++){const s=S[i];const nx=S[i+1];const end=nx?nx.s:s.e;
+  if(t<s.s||t>=end+0.32)continue;let r=s.f(t);
+  if(t>=end){const q=eio(P(t,end,.32));o+=g(r.o+r.h,{x:-140*q,o:1-q});}else{o+=r.o;h+=r.h;}}
+ sv.innerHTML=DEFS+o+h;setCap(t);};
+render(0);
+</script></body></html>
