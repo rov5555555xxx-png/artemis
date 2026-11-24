@@ -65,6 +65,22 @@ From their re-edit of the 11/12 zinc clip — they layered these on top of our c
 
 - **Probio-H (CEO Factory) probiotic for H.pylori, green/white bottle** — photo `assets/products/ceo_probio_h_photo.jpg` (from footage; no clean cutout). Whisper hears it as 'ไบโอเฮส/โปรเบลติ'. User wanted it in the dark/gold zinc style too (16/11/26); source `output/src/1611-probio`. Footage has a burned-in title around y 640–720 of the 1080×1918 frame — crop photo panels above it.
 
+
+## Current default for INZENT zinc iCAP clips (17–24/11/26) — use this first
+
+- Style: dark-gold motion graphics (black/charcoal studio background, gold accents) where EVERY line of narration gets its own literal visual (no generic stock filler): e.g. "ไขมันเฉพาะจุด" → body with red rings on belly/sides/chest; "ล็อกได้ 6 ชม." → padlock on a blood vessel + gold chart; "ขับทิ้ง" → zinc dots flushed down a toilet; "ดูดซึมดีกว่า" → two body silhouettes, zinc dots fall in, old formula leaks out, iCAP stays.
+- Kit + example: `templates/dark_motion/` (README explains each lib). Build by concatenation with build.py.
+- Comparisons: show both sides first, then dim the loser and draw a red ring on the iCAP side (`focus()`). User: "เราจะรู้ได้ไงว่าควรมองจุดไหน" when this was missing.
+- When comparing against another INZENT zinc, compare with the blue Zinc Vitamins Biotin jar (`assets/products/inzent_zinc_vitamins_biotin.png`) and show its jar next to its line/side.
+- The release chart the user chose: blue = ordinary bisglycinate peaks ~2–3 h then declines gradually; gold = iCAP rises, flat plateau to 6 h, then a clear (not steep) decline; x axis 0–8 h; "6 ชม." marker. Keep charts centred and large, not squeezed to one side.
+- iCAP capsule visual: half clear packed FULL of white pellets, half cream with "Zn". Ordinary capsule = plain white. Silver Zn coin icon, not gold, for "ซิงค์คุณภาพ".
+- Price scenes: big flat (not tilted) labels, different colours per size (30 = grey/blue, 60 = gold), "+20 บาท" badge; 30 = ฿159, 60 = ฿179 (24/11/26). Don't add per-capsule maths unless asked.
+- Icons must be recognisable: hair = long dark hair; include every word said (e.g. ผิว ผม เล็บ สิว). Re-listen to unclear words (Whisper heard "สิว" as "อสุจิ"; ask if unsure).
+- Workflow: send a storyboard sheet (stills + Thai notes) and wait for "ทำเลย" before rendering, unless the user says to skip it. Do NOT render on an ambiguous "แก้ใหม่".
+- Deliver `-4x3.mp4` + `-music-sfx-only.mp4`; offer a music-only version (no SFX) if asked.
+- Covers: everything centred with margins, black background, no extra pills unless asked; respect the TikTok profile-grid safe zone (top ~30% background only) and send the 9:16 preview.
+- Box cutouts: the cleaned 30/60 boxes are in `assets/products/` (white top-edge line removed, original bottom edge). Don't re-run fringe fixes on them.
+
 ## User feedback log (apply by default)
 
 - "ตากาสายล้าง" in Whisper = **ตะกร้าสีเหลือง** (yellow basket), not orange. Yellow basket on a non-yellow background.
