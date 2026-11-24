@@ -34,19 +34,15 @@ window.extra=function(t){
   for(let i=0;i<26;i++){const st=rr()*6,p=cl((hr-st)/1.4);if(p<=0||p>=1)continue;const a=rr()*6.28;s+=zdot(560+Math.cos(a)*(240+p*280),370+Math.sin(a)*(200+p*160),12,false,1-p).replace('#7FA8E0','#D5DAE2').replace('#2E4E7A','#7C838F')}
   s+=`<g transform="translate(1110 340)"><circle r="120" fill="#16171B" stroke="#D9B98A" stroke-width="6"/><text y="-20" text-anchor="middle" font-family="K" font-weight="800" font-size="30" fill="#C9CED8">ชั่วโมงที่</text><text y="56" text-anchor="middle" font-family="K" font-weight="900" font-size="90" fill="#F3D9A4">${hr.toFixed(0)}</text></g>`+pill(1110,520,'ปล่อยทีละชั้น',cl((lt-1.6)/0.3),'#F3D9A4','#16171B',34);
   $('v4').innerHTML=s}
- // S5 ordinary 2 h
- if(on(14.6,18.0)){const lt=t-14.6;let s=`<rect x="120" y="230" width="560" height="200" rx="100" fill="#8E1A1D" stroke="#B5323A" stroke-width="6"/>`;
-  s+=lock(400,210,1.0,lt>1.4,'#7FA8E0');
-  for(let i=0;i<10;i++){const p=cl((lt-1.5-i*0.07)/1.0);const x0=170+i*48,y0=290+(i*29%100);let x=x0,y=y0,o=1;if(p>0){x=lerp(x0,560,eIO(p));y=lerp(y0,620,eIO(p));o=1-cl((p-0.85)/0.15)}s+=zdot(x,y,13,false,o)}
-  s+=toilet(560,640,0.5,t,lt>2.0);
-  s+=miniChart(820,620,500,380,eIO(cl((lt-0.1)/1.6)),0,[2,'#7FA8E0','2 ชม.',cl((lt-0.9)/0.3)]);
+ // S5 ordinary 2 h: centred chart
+ if(on(14.6,18.0)){const lt=t-14.6;let s=miniChart(330,640,780,430,eIO(cl((lt-0.1)/1.6)),0,[2,'#7FA8E0','2 ชม.',cl((lt-0.9)/0.3)]);
+  s+=`<g transform="translate(1010 270)">${lock(0,0,0.5,lt>1.4,'#7FA8E0')}</g>`;
+  if(lt>1.6)s+=`<g opacity="${cl((lt-1.6)/0.3)}">${toilet(1030,560,0.42,t,true)}</g>`+pill(860,520,'ขับทิ้ง',cl((lt-1.8)/0.3),'#E5484D','#fff',32);
   $('v5').innerHTML=s}
- // S6 iCAP 6 h
- if(on(18.0,22.5)){const lt=t-18.0;let s=`<rect x="120" y="230" width="560" height="200" rx="100" fill="#8E1A1D" stroke="#B5323A" stroke-width="6"/>`;
-  for(let i=0;i<12;i++){const x=160+((i*61+lt*70)%480),y=270+(i*37%120);s+=zdot(x,y,14,true)}
-  s+=lock(400,210,1.05,false)+pill(400,500,'ล็อกไว้ 6 ชม.',cl((lt-0.4)/0.3),'#F3D9A4','#16171B',38);
-  s+=miniChart(820,620,500,380,1,eIO(cl((lt-0.2)/1.6)),[6,'#F3D9A4','6 ชม.',cl((lt-1.6)/0.3)]);
-  s+=focus(6,1070,410,290,250,(lt-3.0)/0.3);
+ // S6 iCAP 6 h: centred chart
+ if(on(18.0,22.5)){const lt=t-18.0;let s=miniChart(330,640,780,430,1,eIO(cl((lt-0.2)/1.6)),[6,'#F3D9A4','6 ชม.',cl((lt-1.6)/0.3)]);
+  s+=`<g transform="translate(1040 285)">${lock(0,0,0.45,false)}</g>`;
+  s+=focus(6,800,330,340,190,(lt-3.0)/0.3);
   $('v6').innerHTML=s}
  // S7 body reservoir, used any time
  if(on(22.5,25.3)){const lt=t-22.5;let s=`<circle cx="720" cy="440" r="${210+10*Math.sin(t*3)}" fill="#F3D9A4" opacity=".14"/>`+bodyS(720,'#F3D9A4',0.55);
