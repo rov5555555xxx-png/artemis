@@ -63,7 +63,7 @@ window.extra=function(t){
   if(lt<5.0){const sh=cl((lt-0.4)/0.5);s+=`<g opacity="${1-0.6*sh}">${jarAt('box30.png',380,560,300)}</g>`;
    s+=pill(640,300,'+20 บาท',cl((lt-0.6)/0.3),'#E5484D','#fff',48);
    const g=eOB(cl((lt-1.0)/0.5));s+=`<g transform="translate(1000 600) scale(${g})">${jarAt('box60.png',0,0,500)}</g>`;
-   {const sh=cl((lt-3.45)/0.3);if(sh>0){const k=eOB(sh);s+=`<g transform="translate(1180 560) scale(${k})"><rect x="-170" y="-70" width="340" height="140" rx="24" fill="#2A2210" stroke="#FFD36E" stroke-width="6"/><text y="36" text-anchor="middle" font-family="K" font-weight="900" font-size="100" fill="#FFD36E">฿179</text></g>`}}
+   s+=priceTag2(1180,560,'฿179',cl((lt-3.45)/0.3),true);
    s+=`<g transform="translate(1000 120) scale(${eOB(cl((lt-1.6)/0.35))})"><path d="M-75 50 L-63 -30 L-33 10 L0 -45 L33 10 L63 -30 L75 50Z" fill="#F3D9A4" stroke="#7A5B2E" stroke-width="6" stroke-linejoin="round"/></g>`}
   if(lt>4.9){const k=cl((lt-4.9)/0.3);s+=`<g opacity="${k}">${jarAt('box60.png',380,560,330)}</g>`+calM(860,340,1,cl((lt-5.0)/0.35))+calM(1150,340,2,cl((lt-5.3)/0.35))+pill(1005,560,'60 เม็ด = 2 เดือน',cl((lt-5.5)/0.3),'#F3D9A4','#16171B',40)}
   $('v9').innerHTML=s}
