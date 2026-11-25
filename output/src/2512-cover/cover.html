@@ -1,0 +1,32 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E00-0E7F}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2);unicode-range:U+0000-00FF}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E00-0E7F}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2);unicode-range:U+0000-00FF}
+html,body{margin:0;background:#000}
+#c{position:relative;width:1440px;height:1080px;overflow:hidden;background:radial-gradient(ellipse 60% 55% at 50% 70%,#2a2110 0%,#0b0905 60%,#000 100%)}
+.rays{position:absolute;left:50%;top:-200px;width:1600px;height:1600px;margin-left:-800px;background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,200,90,.07) 0 6deg,transparent 6deg 18deg);-webkit-mask:radial-gradient(circle at 50% 50%,#000 0,transparent 60%)}
+.t1{position:absolute;left:0;right:0;top:350px;text-align:center;font:800 88px/1 K;color:#fff;text-shadow:0 6px 18px rgba(0,0,0,.6)}
+.t2{position:absolute;left:0;right:0;top:450px;text-align:center;font:900 150px/1 K;color:#f6c94c;background:linear-gradient(180deg,#ffe9a3,#f2b632 55%,#c98a14);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 8px 16px rgba(0,0,0,.7))}
+img{position:absolute}
+.b30{left:300px;top:690px;height:340px;filter:brightness(.62) saturate(.6)}
+.b60{left:830px;top:620px;height:420px;filter:drop-shadow(0 0 30px rgba(246,201,76,.45))}
+.tag{position:absolute;font:900 44px/1 K;padding:10px 22px 14px;border-radius:14px}
+.p30{left:330px;top:960px;background:#6b7380;color:#fff}
+.p60{left:1010px;top:960px;background:linear-gradient(180deg,#ffe28a,#f0b12c);color:#1a1205;box-shadow:0 6px 16px rgba(0,0,0,.5)}
+.n30{left:345px;top:700px;background:#2b2f36;color:#d7dbe2;font-size:34px}
+.n60{left:860px;top:640px;background:#1a1205;color:#f6c94c;font-size:38px;border:3px solid #f6c94c}
+.plus{position:absolute;left:600px;top:780px;font:900 52px/1 K;color:#fff;background:#e2332f;border-radius:40px;padding:12px 26px 16px;box-shadow:0 8px 18px rgba(0,0,0,.5)}
+.arr{position:absolute;left:620px;top:880px}
+.safe .g{position:absolute;left:0;right:0;top:330px;border-top:3px dashed #0f0}
+</style></head><body><div id="c">
+<div class="rays"></div>
+<div class="t1">เพิ่มแค่ 20 บาท</div>
+<div class="t2">ได้ 60 เม็ด!</div>
+<img class="b30" src="inzent_zinc_icap_box30.png"><img class="b60" src="inzent_zinc_icap_box60.png">
+<div class="tag n30">30 เม็ด</div><div class="tag n60">60 เม็ด</div>
+<div class="tag p30">฿159</div><div class="tag p60">฿179</div>
+<div class="plus">+20 บาท</div>
+<svg class="arr" width="200" height="60"><path d="M10,30 L170,30 M140,8 L176,30 L140,52" fill="none" stroke="#f6c94c" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="g"></div>
+</div><script>if(location.hash=='#safe')document.body.classList.add('safe');window.render=()=>{};</script></body></html>
