@@ -143,32 +143,37 @@ sc(0,3.2,t=>{let o='';
  o+=g(`<text font-family="K" font-weight="900" font-size="150" text-anchor="middle" fill="${RED}">?</text>`,{x:540,y:575,s:pop(t,1.6,.4),r:8});
  o+=label(540,720,'โมเลกุลเดียวกัน คนละร่าง',36,P(t,2.0,.3),YEL);
  return {o,h:h.hand+h2.hand};});
-// 2. young body: converter spins fast -> powers the mitochondria
+// 2. young body: ONE big token goes through the body's converter -> becomes ready form -> powers the cell
 sc(3.2,9.0,t=>{let o='';
  o+=heading(540,170,'อายุ 18–30+',58,P(t,3.4,.4));
- o+=mito(730,470,440,270,P(t,3.5,.9));o+=label(730,640,'ไมโทคอนเดรีย (โรงไฟฟ้าของเซลล์)',28,P(t,4.3,.3));
- const ga=(t-3.2)*240;o+=gear(370,470,62,ga,CH,P(t,4.2,.3));o+=label(370,580,'ตัวแปลง',32,P(t,4.4,.3),YEL);
- // conveyor: ubiquinone in -> gear -> ubiquinol into mito
- const flow=t>5.0;if(flow)for(let i=0;i<4;i++){const q=((t-5.0)*.55+i/4)%1;let x,col;if(q<.4){x=lerp(140,370,q/.4);col='one';}else{x=lerp(370,640,(q-.4)/.6);col='ol';}o+=q10(x,470,q<.4?26:24,1,col);
-  o+=spark(lerp(560,900,(q*1.7)%1),420+((i*37)%60),((q*1.7)%1));}
- o+=battery(880,760,lerp(.4,1,eio(P(t,5.6,1.6))),1.2*P(t,5.4,.2));o+=label(740,772,'พลังงาน',34,P(t,5.6,.3));
- o+=check(470,330,60,P(t,6.6,.3));
- const h=placeHand(t,'pinch',150,470,7.5,.45,.3);
- if(t>=7.5&&t<8.6){o+=tag(220,350,'ฟอร์มปกติก็พอ',-3,30,P(t,7.8,.2),pop(t,7.8));}
+ o+=mito(760,470,400,260,P(t,3.4,.7));o+=label(760,645,'โรงไฟฟ้าของเซลล์',34,P(t,3.9,.3));
+ const ga=(t-3.2)*(t>4.9&&t<5.9?520:90);o+=gear(420,470,78,ga,CH,P(t,3.9,.3));o+=label(420,600,'ร่างกายแปลงให้',34,P(t,4.1,.3),YEL);
+ // token path
+ const h=placeHand(t,'pinch',170,470,4.0,.45,.3);
+ if(t>=4.0){let x=170,y=470,kind='one',r=66;
+  if(t>=4.9){const q=eio(P(t,4.9,.5));x=lerp(170,420,q);r=lerp(66,52,q);}
+  if(t>=5.5){kind='ol';const q=eio(P(t,5.5,.7));x=lerp(420,760,q);y=470-Math.sin(q*Math.PI)*110;r=lerp(52,46,q);}
+  if(t>=5.2&&t<5.5){r=34;kind=t<5.35?'one':'ol';}
+  o+=q10(x+(h.arrived?0:h.dx),y+(h.arrived?0:h.dy),r,1,kind);}
+ o+=ticks(420,470,100,P(t,5.4,.4),YEL,8);
+ for(let i=0;i<5;i++)o+=spark(600+i*60,410+(i%2)*80,P(t,6.2+i*.1,.5));
+ o+=battery(880,770,lerp(.35,1,eio(P(t,6.2,1.0))),1.2);o+=label(740,782,'พลังงาน',34,1);
+ o+=check(530,350,60,P(t,6.4,.3));
+ o+=tag(200,340,'ฟอร์มปกติก็พอ',-3,32,P(t,7.6,.2),pop(t,7.6));
  return {o,h:h.hand};});
-// 3. age 40+: converter slows down, less energy
+// 3. age 40+: the converter is rusty, the token gets stuck, the battery drains
 sc(9.0,13.3,t=>{let o='';
  o+=heading(540,170,'อายุ 40+',58,P(t,9.2,.4));
- o+=mito(730,470,440,270,1,'#b9bdc4');
- const slow=1-0.85*eio(P(t,10.4,1.5));const ga=(t-9)*240*slow;
- o+=gear(370,470,62,ga,'#9a8f84',1);o+=label(370,580,'ตัวแปลงช้าลง',32,P(t,10.6,.3),RED);
- // rust specks
- [[340,430],[400,500],[350,505],[405,440]].forEach(([x,y],i)=>{const q=pop(t,10.6+i*.1,.3);if(q>0)o+=`<circle cx="${x}" cy="${y}" r="${7*q}" fill="#a0522d"/>`;});
- for(let i=0;i<2;i++){const q=((t-9)*.25*slow+i/2)%1;const x=q<.5?lerp(140,370,q/.5):lerp(370,640,(q-.5)/.5);o+=q10(x,470,24,1,q<.5?'one':'ol');}
- o+=battery(880,760,lerp(.9,.18,eio(P(t,11.4,1.4))),1.2);o+=label(740,772,'พลังงาน',34,1);
- o+=ch('M955,330 L955,560',P(t,11.6,.4),12,RED)+ch('M918,520 L955,566 L992,520',P(t,11.95,.2),12,RED);
- o+=g(`<text font-family="K" font-weight="900" font-size="100" text-anchor="middle" fill="${RED}">!</text>`,{x:250,y:330,s:pop(t,10.4,.35),r:10});
- return {o,h:''};});
+ o+=mito(760,470,400,260,1,'#b9bdc4');o+=label(760,645,'โรงไฟฟ้าของเซลล์',34,1,'#b9bdc4');
+ const ga=Math.sin(Math.max(0,t-10.4)*3)*6;o+=gear(420,470,78,ga,'#9a8f84',1);o+=label(420,600,'แปลงได้น้อยลง',34,P(t,10.6,.3),RED);
+ [[390,420],[455,500],[385,510],[460,430],[420,395]].forEach(([x,y],i)=>{const q=pop(t,10.4+i*.08,.3);if(q>0)o+=`<circle cx="${x}" cy="${y}" r="${8*q}" fill="#a0522d"/>`;});
+ const h=placeHand(t,'pinch',170,470,9.2,.45,.3);
+ if(t>=9.2){let x=170,r=66;if(t>=10.0){const q=eio(P(t,10.0,.6));x=lerp(170,330,q);}
+  const jig=t>10.6?Math.sin(t*30)*4:0;o+=q10(x+jig+(h.arrived?0:h.dx),470+(h.arrived?0:h.dy),r,1,'one');}
+ o+=g(`<text font-family="K" font-weight="900" font-size="110" text-anchor="middle" fill="${RED}">!</text>`,{x:330,y:360,s:pop(t,10.7,.35),r:10});
+ o+=battery(880,770,lerp(.9,.15,eio(P(t,11.4,1.4))),1.2);o+=label(740,782,'พลังงาน',34,1);
+ o+=ch('M960,560 L960,700',P(t,11.6,.3),10,RED)+ch('M932,672 L960,704 L988,672',P(t,11.85,.15),10,RED);
+ return {o,h:h.hand};});
 // 4. take ubiquinol: skips the converter, ready to use
 sc(13.3,17.5,t=>{let o='';
  o+=mito(730,470,440,270,1,CH);
