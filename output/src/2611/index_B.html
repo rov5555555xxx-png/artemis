@@ -141,12 +141,12 @@ sc(0,3.2,t=>{let o='';
  const h2=placeHand(t,'pinch',800,520,0.6,.45,.3);
  if(t>=0.6){o+=heading(800,300,'ยูบิควินอล',50,P(t,0.9,.3));o+=downArrow(800,330,P(t,1.1,.3));o+=q10(800+(h2.arrived?0:h2.dx),520+(h2.arrived?0:h2.dy),105,1,'ol');}
  o+=g(`<text font-family="K" font-weight="900" font-size="150" text-anchor="middle" fill="${RED}">?</text>`,{x:540,y:575,s:pop(t,1.6,.4),r:8});
- o+=label(540,720,'โมเลกุลเดียวกัน คนละร่าง',36,P(t,2.0,.3),YEL);
  return {o,h:h.hand+h2.hand};});
 // 2. young body: ONE big token goes through the body's converter -> becomes ready form -> powers the cell
 sc(3.2,9.0,t=>{let o='';
  o+=heading(540,170,'อายุ 18–30+',58,P(t,3.4,.4));
- o+=mito(760,470,400,260,P(t,3.4,.7));o+=label(760,645,'โรงไฟฟ้าของเซลล์',34,P(t,3.9,.3));
+ o+=mito(760,470,400,260,P(t,3.4,.7));
+ const pw=P(t,6.2,.8);if(pw>0)o+=`<ellipse cx="760" cy="470" rx="${200+10*pw}" ry="${135+8*pw}" fill="rgba(255,210,63,${.22*Math.sin(Math.min(pw,1)*Math.PI/2)})"/>`;o+=label(760,645,'โรงไฟฟ้าของเซลล์',34,P(t,3.9,.3));
  const ga=(t-3.2)*(t>4.9&&t<5.9?520:90);o+=gear(420,470,78,ga,CH,P(t,3.9,.3));o+=label(420,600,'ร่างกายแปลงให้',34,P(t,4.1,.3),YEL);
  // token path
  const h=placeHand(t,'pinch',170,470,4.0,.45,.3);
@@ -157,7 +157,6 @@ sc(3.2,9.0,t=>{let o='';
   o+=q10(x+(h.arrived?0:h.dx),y+(h.arrived?0:h.dy),r,1,kind);}
  o+=ticks(420,470,100,P(t,5.4,.4),YEL,8);
  for(let i=0;i<5;i++)o+=spark(600+i*60,410+(i%2)*80,P(t,6.2+i*.1,.5));
- o+=battery(880,770,lerp(.35,1,eio(P(t,6.2,1.0))),1.2);o+=label(740,782,'พลังงาน',34,1);
  o+=check(530,350,60,P(t,6.4,.3));
  o+=tag(200,340,'ฟอร์มปกติก็พอ',-3,32,P(t,7.6,.2),pop(t,7.6));
  return {o,h:h.hand};});
@@ -171,21 +170,20 @@ sc(9.0,13.3,t=>{let o='';
  if(t>=9.2){let x=170,r=66;if(t>=10.0){const q=eio(P(t,10.0,.6));x=lerp(170,330,q);}
   const jig=t>10.6?Math.sin(t*30)*4:0;o+=q10(x+jig+(h.arrived?0:h.dx),470+(h.arrived?0:h.dy),r,1,'one');}
  o+=g(`<text font-family="K" font-weight="900" font-size="110" text-anchor="middle" fill="${RED}">!</text>`,{x:330,y:360,s:pop(t,10.7,.35),r:10});
- o+=battery(880,770,lerp(.9,.15,eio(P(t,11.4,1.4))),1.2);o+=label(740,782,'พลังงาน',34,1);
- o+=ch('M960,560 L960,700',P(t,11.6,.3),10,RED)+ch('M932,672 L960,704 L988,672',P(t,11.85,.15),10,RED);
  return {o,h:h.hand};});
 // 4. take ubiquinol: skips the converter, ready to use
 sc(13.3,17.5,t=>{let o='';
- o+=mito(730,470,440,270,1,CH);
+ o+=mito(760,470,400,260,1,CH);o+=label(760,645,'โรงไฟฟ้าของเซลล์',34,1);
+ const pw=P(t,15.2,.8);if(pw>0)o+=`<ellipse cx="760" cy="470" rx="${200+10*pw}" ry="${135+8*pw}" fill="rgba(255,210,63,${.22*Math.sin(Math.min(pw,1)*Math.PI/2)})"/>`;
  o+=gear(370,470,62,0,'#6f675f',.45);o+=cross(370,470,110,P(t,13.5,.3));o+=label(370,580,'ข้ามขั้นแปลง',32,P(t,13.7,.3),YEL);
  o+=ch('M150,330 Q370,220 600,380',P(t,14.0,.5),10,YEL)+ch('M566,366 L604,384 L590,346',P(t,14.45,.12),10,YEL);
  const h=placeHand(t,'pinch',150,330,13.3,.5,.4);
  if(t<14.5)o+=q10(150+(h.arrived?0:h.dx),330+(h.arrived?0:h.dy),70,1,'ol');
- else{const q=eio(P(t,14.5,.6));const x=lerp(150,700,q),y=lerp(330,470,q)-Math.sin(q*Math.PI)*120;o+=q10(x,y,lerp(70,46,q),1,'ol');}
+ else{const q=eio(P(t,14.5,.6));const x=lerp(150,760,q),y=lerp(330,470,q)-Math.sin(q*Math.PI)*120;o+=q10(x,y,lerp(70,46,q),1,'ol');}
  o+=heading(540,170,'ยูบิควินอล = พร้อมใช้ทันที',50,P(t,15.0,.4));
  for(let i=0;i<5;i++)o+=spark(560+i*70,400+(i%2)*80,P(t,15.2+i*.12,.5));
- o+=battery(880,760,lerp(.18,1,eio(P(t,15.3,1.2))),1.2);o+=label(740,772,'พลังงาน',34,1);
- o+=ticks(880,760,80,P(t,16.4,.5),YEL,8);
+
+ o+=ticks(760,470,230,P(t,16.0,.6),YEL,10);
  return {o,h:h.hand};});
 
 // ---------- render ----------
