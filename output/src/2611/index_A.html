@@ -1,0 +1,181 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E00-0E7F}
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E00-0E7F}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E00-0E7F}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+html,body{margin:0;background:#1e1f22;overflow:hidden}
+#st{position:relative;width:1080px;height:1080px;overflow:hidden;
+ background:radial-gradient(ellipse 75% 65% at 50% 42%,#45474b 0%,#303236 45%,#1d1e21 100%)}
+#sv{position:absolute;inset:0}
+#cap{position:absolute;left:0;right:0;top:880px;height:110px;display:flex;align-items:center;justify-content:center;
+ font:800 66px/1.15 K;color:#fff;text-shadow:0 4px 10px rgba(0,0,0,.55);white-space:nowrap}
+#cap .y{color:#ffd23f}
+#cap .rb{background:#e2332f;color:#fff;border-radius:14px;padding:0 22px 6px;text-shadow:none;box-shadow:0 6px 14px rgba(0,0,0,.35)}
+#cap span.w{display:inline-block}
+.safe #st::after{content:'';position:absolute;inset:70px;border:2px dashed #0f0;pointer-events:none}
+</style></head><body>
+<div id="st"><svg id="sv" width="1080" height="1080" viewBox="0 0 1080 1080"></svg><div id="cap"></div></div>
+<svg width="0" height="0" style="position:absolute"><path id="meas" d="M0,0"/></svg>
+<script>
+if(location.hash=='#safe')document.body.classList.add('safe');
+const CH='#f2efe6',INK='#34363a',YEL='#ffd23f',RED='#e2332f',GRN='#2faa58',BLU='#7fa3d6';
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const P=(t,a,d)=>d<=0?(t>=a?1:0):cl((t-a)/d);
+const eo=x=>1-Math.pow(1-x,3), eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const eb=x=>{x=cl(x);const c1=1.9,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+const pop=(t,a,d=.35)=>eb(P(t,a,d));
+const lerp=(a,b,p)=>a+(b-a)*p;
+let UID=0;const uid=()=>'u'+(UID++);
+const meas=document.getElementById('meas');
+function ptAt(d,p){meas.setAttribute('d',d);const L=meas.getTotalLength();const q=meas.getPointAtLength(L*cl(p));return {x:q.x,y:q.y};}
+const cvs=document.createElement('canvas').getContext('2d');
+function tw(txt,size,wt=800){cvs.font=`${wt} ${size}px K`;return cvs.measureText(txt).width;}
+
+// ---------- primitives ----------
+function ch(d,p,w=7,c=CH,extra=''){if(p<=0)return '';return `<path d="${d}" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="${1-p}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" filter="url(#chf)" ${extra}/>`;}
+function g(inner,{x=0,y=0,s=1,r=0,o=1}={}){if(o<=0.001||!inner)return '';return `<g transform="translate(${x},${y}) rotate(${r}) scale(${s})" opacity="${o}">${inner}</g>`;}
+function coin(x,y,r,lab,fill='#efe9da',tc=INK,fs){fs=fs||r*.72;return `<g><circle cx="${x}" cy="${y+4}" r="${r}" fill="rgba(0,0,0,.35)"/><circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="#2a2b2e" stroke-width="3"/><text x="${x}" y="${y+fs*.36}" font-family="K" font-weight="800" font-size="${fs}" text-anchor="middle" fill="${tc}">${lab}</text></g>`;}
+function capsule(x,y,L,ang,kind='plain',o=1){const h=L*.42,r=h/2;let s=`<g transform="translate(${x},${y}) rotate(${ang})" opacity="${o}">`;
+ s+=`<rect x="${-L/2+3}" y="${-r+6}" width="${L}" height="${h}" rx="${r}" fill="rgba(0,0,0,.35)"/>`;
+ if(kind=='plain'){s+=`<path d="M0,${-r} H${L/2-r} A${r},${r} 0 0 1 ${L/2-r},${r} H0Z" fill="#9ca2aa" stroke="#2a2b2e" stroke-width="3"/><path d="M0,${-r} H${-L/2+r} A${r},${r} 0 0 0 ${-L/2+r},${r} H0Z" fill="#f2eee4" stroke="#2a2b2e" stroke-width="3"/>`;}
+ else if(kind=='white'){s+=`<rect x="${-L/2}" y="${-r}" width="${L}" height="${h}" rx="${r}" fill="#f4f2ec" stroke="#2a2b2e" stroke-width="3"/><line x1="0" y1="${-r}" x2="0" y2="${r}" stroke="#2a2b2e" stroke-width="2.5"/>`;}
+ else{ // icap: left clear packed with pellets, right cream Zn
+  s+=`<path d="M0,${-r} H${-L/2+r} A${r},${r} 0 0 0 ${-L/2+r},${r} H0Z" fill="rgba(220,230,238,.28)" stroke="#2a2b2e" stroke-width="3"/>`;
+  const pr=h*.11;for(let i=0;i<5;i++)for(let j=0;j<4;j++){const px=-L/2+r*.55+i*pr*2.15+(j%2)*pr*.9,py=-r+pr*1.5+j*pr*2.05;if(px>-pr*1.1)continue;const dx=px-(-L/2+r),dy=py;if(px<-L/2+r&&dx*dx+dy*dy>(r-pr*1.2)**2)continue;s+=`<circle cx="${px}" cy="${py}" r="${pr}" fill="#fbfaf6" stroke="#2a2b2e" stroke-width="1.6"/>`;}
+  s+=`<path d="M0,${-r} H${L/2-r} A${r},${r} 0 0 1 ${L/2-r},${r} H0Z" fill="#e9dcbc" stroke="#2a2b2e" stroke-width="3"/><text x="${L/4}" y="${h*.13}" font-family="K" font-weight="800" font-size="${h*.38}" text-anchor="middle" fill="${INK}">Zn</text>`;}
+ return s+'</g>';}
+function ticks(x,y,R,p,c=CH,n=6,a0=-90){if(p<=0||p>=1)return '';let s='';const k=Math.sin(p*Math.PI);for(let i=0;i<n;i++){const a=(a0+i*360/n)*Math.PI/180,r1=R+p*18,r2=r1+26*k;s+=`<line x1="${x+Math.cos(a)*r1}" y1="${y+Math.sin(a)*r1}" x2="${x+Math.cos(a)*r2}" y2="${y+Math.sin(a)*r2}" stroke="${c}" stroke-width="6" stroke-linecap="round"/>`;}return s;}
+function check(x,y,s,p,c=GRN,w=12){return ch(`M${x-s*.5},${y} L${x-s*.12},${y+s*.38} L${x+s*.55},${y-s*.45}`,p,w,c);}
+function cross(x,y,s,p,c=RED,w=11){return ch(`M${x-s/2},${y-s/2} L${x+s/2},${y+s/2}`,cl(p*2),w,c)+ch(`M${x+s/2},${y-s/2} L${x-s/2},${y+s/2}`,cl(p*2-1),w,c);}
+function male(x,y,r,p,c=CH,w=8){const a=Math.PI/4,ex=x+Math.cos(-a)*r,ey=y+Math.sin(-a)*r,L=r*.85;
+ return ch(`M${x+r},${y} A${r},${r} 0 1 1 ${x+r-.01},${y-.5}`,cl(p*1.4),w,c)+ch(`M${ex},${ey} L${ex+L*.7},${ey-L*.7}`,cl(p*3-1.6),w,c)+ch(`M${ex+L*.7-r*.5},${ey-L*.7} L${ex+L*.7},${ey-L*.7} L${ex+L*.7},${ey-L*.7+r*.5}`,cl(p*3-2),w,c);}
+function paper(x,y,w,h,r,inner,o=1,s=1){if(o<=0)return '';const id=uid();return `<g transform="translate(${x},${y}) rotate(${r}) scale(${s})" opacity="${o}"><rect x="${-w/2+5}" y="${-h/2+9}" width="${w}" height="${h}" fill="rgba(0,0,0,.4)" rx="3"/><rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" fill="#efe8d6" rx="3"/><rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" fill="url(#pgrain)" rx="3" opacity=".5"/>${inner}<rect x="-42" y="${-h/2-16}" width="84" height="30" fill="rgba(226,221,196,.82)" transform="rotate(-3)"/></g>`;}
+function tag(x,y,txt,r=-3,fs=34,o=1,s=1,col=INK){fs=Math.round(fs*1.3);const w=tw(txt,fs,800)+40,h=fs*1.45;return paper(x,y,w,h,r,`<text x="0" y="${fs*.36}" font-family="K" font-weight="800" font-size="${fs}" text-anchor="middle" fill="${col}">${txt}</text>`,o,s);}
+function ctext(x,y,txt,fs,p,c=CH,anchor='middle',wt=800){if(p<=0)return '';const w=tw(txt,fs,wt),x0=anchor=='middle'?x-w/2:anchor=='end'?x-w:x;const id=uid();
+ return `<clipPath id="${id}"><rect x="${x0-10}" y="${y-fs*1.3}" width="${(w+20)*p}" height="${fs*1.9}"/></clipPath><text clip-path="url(#${id})" x="${x0}" y="${y}" font-family="K" font-weight="${wt}" font-size="${fs}" fill="${c}" filter="url(#chf)">${txt}</text>`;}
+function ctextRange(x,y,txt,fs,anchor='middle',wt=800){const w=tw(txt,fs,wt),x0=anchor=='middle'?x-w/2:anchor=='end'?x-w:x;return {d:`M${x0},${y-fs*.25} L${x0+w},${y-fs*.25}`,x0,w};}
+function jar(cx,bottom,h,o=1,r=0){const w=h*434/810;return `<g opacity="${o}" transform="rotate(${r} ${cx} ${bottom})"><ellipse cx="${cx}" cy="${bottom-4}" rx="${w*.48}" ry="${h*.025}" fill="rgba(0,0,0,.45)"/><image href="inzent_zinc_icap.png" x="${cx-w/2}" y="${bottom-h}" width="${w}" height="${h}"/></g>`;}
+function box(cx,bottom,h,o=1,r=0){const w=h*660/1048;return `<g opacity="${o}" transform="rotate(${r} ${cx} ${bottom})"><image href="inzent_zinc_icap_box30.png" x="${cx-w/2}" y="${bottom-h}" width="${w}" height="${h}"/></g>`;}
+function body(cx,cy,s){return {head:`M${cx+45*s},${cy-160*s} A${45*s},${45*s} 0 1 1 ${cx+45*s-.01},${cy-160.5*s}`,
+ torso:`M${cx-115*s},${cy+170*s} L${cx-115*s},${cy-40*s} Q${cx-115*s},${cy-95*s} ${cx-55*s},${cy-95*s} L${cx+55*s},${cy-95*s} Q${cx+115*s},${cy-95*s} ${cx+115*s},${cy-40*s} L${cx+115*s},${cy+170*s}`};}
+
+// ---------- hands ----------
+const HANDS={chalk:{src:'chalk.png',w:242,h:315,ax:2,ay:6,s:1.05,off:[480,620]},
+ marker:{src:'marker.png',w:302,h:561,ax:151,ay:548,s:.78,off:[120,-760]},
+ pinch:{src:'pinch2.png',w:415,h:845,ax:73,ay:760,s:.62,off:[160,-760]},
+ stamp:{src:'stamp.png',w:453,h:283,ax:4,ay:178,s:.7,off:[700,60]},
+ hold:{src:'hold.png',w:377,h:337,ax:6,ay:190,s:.85,off:[720,40]}};
+function handImg(k,x,y,rot=0){const H=HANDS[k],s=H.s;if(x<-600||x>1700||y<-1000||y>1700)return '';
+ return `<g transform="translate(${x},${y}) rotate(${rot})"><image href="${H.src}" x="${-H.ax*s}" y="${-H.ay*s}" width="${H.w*s}" height="${H.h*s}"/></g>`;}
+// a hand that draws a sequence of chalk segments: segs=[{d,a,dur}] -> {p:[..], hand}
+function drawSeq(t,k,segs,{enter=.3,exit=.4,wob=1}={}){const H=HANDS[k];const ps=segs.map(s=>P(t,s.a,s.dur));let tip;
+ const first=segs[0],last=segs[segs.length-1];
+ if(t<first.a){const q=ptAt(first.d,0),e=eo(P(t,first.a-enter,enter));tip={x:q.x+H.off[0]*(1-e),y:q.y+H.off[1]*(1-e)};}
+ else if(t>=last.a+last.dur){const q=ptAt(last.d,1),e=eio(P(t,last.a+last.dur,exit));tip={x:q.x+H.off[0]*e,y:q.y+H.off[1]*e};}
+ else{for(let i=0;i<segs.length;i++){const s=segs[i];if(t>=s.a&&t<s.a+s.dur){tip=ptAt(s.d,P(t,s.a,s.dur));break;}
+   const n=segs[i+1];if(n&&t>=s.a+s.dur&&t<n.a){const A=ptAt(s.d,1),B=ptAt(n.d,0),e=eio(P(t,s.a+s.dur,n.a-s.a-s.dur));tip={x:lerp(A.x,B.x,e),y:lerp(A.y,B.y,e)-Math.sin(e*Math.PI)*30};break;}}}
+ const rot=Math.sin(t*23)*1.2*wob;return {p:ps,hand:handImg(k,tip.x,tip.y,rot)};}
+// a hand that brings/places something at (x,y) by time a+dur, holds for hold s, leaves. returns {hand, held(0..1 arrival), placed}
+function placeHand(t,k,x,y,a,dur=.45,hold=.25,exit=.4){const H=HANDS[k];let px=x,py=y;
+ if(t<a+dur){const e=eo(P(t,a,dur));px=x+H.off[0]*(1-e);py=y+H.off[1]*(1-e);}
+ else if(t>a+dur+hold){const e=eio(P(t,a+dur+hold,exit));px=x+H.off[0]*e;py=y+H.off[1]*e;}
+ return {hand:(t<a-0.01||t>a+dur+hold+exit)?'':handImg(k,px,py),dx:px-x,dy:py-y,carry:t<a+dur+hold,arrived:t>=a+dur};}
+
+// ---------- captions ----------
+const CAPS=[
+ [0,'ควรกิน<span class="y">โคคิวเท็น</span> ฟอร์มไหน?'],
+ [2.6,'<span class="y">ง่ายๆ</span> ครับ'],
+ [3.2,'ถ้าอายุ <span class="y">18 – 30 กว่า</span>'],
+ [5.6,'ร่างกายยัง<span class="y">สร้างได้ดี</span>'],
+ [7.6,'กิน<span class="y">ฟอร์มปกติ</span>ได้เลย'],
+ [9.0,'แต่ถ้าอายุ <span class="y">40</span>'],
+ [10.4,'ร่างกาย<span class="rb">ไม่เหมือนเดิม</span>'],
+ [11.6,'สร้างโคคิวเท็น<span class="y">ได้น้อยลง</span>'],
+ [13.3,'ถึงเวลา<span class="y">เปลี่ยน</span>'],
+ [15.0,'มากิน<span class="y">ยูบิควินอล</span>'],
+];
+const capEl=document.getElementById('cap');let capIdx=-1;
+function setCap(t){let i=0;for(let k=0;k<CAPS.length;k++)if(t>=CAPS[k][0])i=k;
+ if(i!==capIdx){capEl.innerHTML=CAPS[i][1];capIdx=i;}
+ const lt=t-CAPS[i][0];const s=i==0?1:lerp(.86,1,eb(P(lt,0,.28)));const o=i==0?1:cl(lt/.08);
+ capEl.style.transform=`scale(${s})`;capEl.style.opacity=o;}
+
+// ---------- helpers ----------
+function q10(x,y,r,s=1,kind='none'){const f=kind=='ol'?'#e2332f':kind=='one'?'#f5a623':'#f07b2a';
+ return g(`<circle cx="0" cy="6" r="${r}" fill="rgba(0,0,0,.35)"/><circle r="${r}" fill="${f}" stroke="#2a2b2e" stroke-width="4"/><circle cx="${-r*.32}" cy="${-r*.34}" r="${r*.22}" fill="#fff" opacity=".35"/><text y="${r*.28}" font-family="K" font-weight="900" font-size="${r*.72}" text-anchor="middle" fill="#fff">Q10</text>`,{x,y,s});}
+function heading(x,y,txt,fs=64,p=1,col=CH){if(p<=0)return '';const w=tw(txt,fs,800);return `<text x="${x}" y="${y}" font-family="K" font-weight="800" font-size="${fs}" text-anchor="middle" fill="${col}" filter="url(#chf)" opacity="${cl(p*2)}">${txt}</text>`+ch(`M${x-w/2-10},${y+24} Q${x},${y+38} ${x+w/2+10},${y+20}`,P(p,.3,.7),8,YEL);}
+function downArrow(x,y,p){return ch(`M${x},${y} L${x},${y+40}`,cl(p*2),6)+ch(`M${x-14},${y+26} L${x},${y+42} L${x+14},${y+26}`,cl(p*2-1),6);}
+function label(x,y,txt,fs=34,o=1,col=CH){return o>0?`<text x="${x}" y="${y}" font-family="K" font-weight="800" font-size="${fs}" text-anchor="middle" fill="${col}" opacity="${o}">${txt}</text>`:'';}
+// chalk person: young (spiky hair) or older (grey hair + glasses)
+function person(cx,cy,s,p,old){const B=body(cx,cy,s);let o=ch(B.head,p,8)+ch(B.torso,p,8);
+ const hx=cx,hy=cy-160*s;
+ if(!old)o+=ch(`M${hx-40*s},${hy-22*s} L${hx-30*s},${hy-56*s} L${hx-12*s},${hy-34*s} L${hx},${hy-62*s} L${hx+14*s},${hy-34*s} L${hx+32*s},${hy-56*s} L${hx+40*s},${hy-22*s}`,P(p,.6,.4),7,CH);
+ else{o+=ch(`M${hx-44*s},${hy-8*s} Q${hx},${hy-62*s} ${hx+44*s},${hy-8*s}`,P(p,.6,.4),9,'#b8bcc4');
+  o+=ch(`M${hx-30*s},${hy+4*s} a12,12 0 1 0 24,0 a12,12 0 1 0 -24,0 M${hx+6*s},${hy+4*s} a12,12 0 1 0 24,0 a12,12 0 1 0 -24,0 M${hx-6*s},${hy+4*s} L${hx+6*s},${hy+4*s}`,P(p,.7,.3),4,CH);}
+ return o;}
+// ---------- scenes ----------
+const S=[];const sc=(s,e,f)=>S.push({s,e,f});
+// 1. which form of CoQ10?
+sc(0,3.2,t=>{let o='';
+ o+=heading(540,250,'โคคิวเท็น',70,1);o+=downArrow(540,282,1);
+ const h=placeHand(t,'pinch',540,500,-0.5,.5,.35);
+ o+=q10(540+(h.arrived?0:h.dx),500+(h.arrived?0:h.dy),118);
+ const a=pop(t,1.2,.35),b=pop(t,1.45,.35);
+ o+=paper(220,560,230,170,-5,`<text y="22" font-family="K" font-weight="900" font-size="72" text-anchor="middle" fill="${RED}">?</text>`,cl(a*2),a);
+ o+=paper(860,560,230,170,5,`<text y="22" font-family="K" font-weight="900" font-size="72" text-anchor="middle" fill="${RED}">?</text>`,cl(b*2),b);
+ o+=label(220,690,'ฟอร์มไหน?',36,P(t,2.2,.2))+label(860,690,'ฟอร์มไหน?',36,P(t,2.2,.2));
+ return {o,h:h.hand};});
+// 2. age 18-30+: body still makes plenty -> regular form
+sc(3.2,9.0,t=>{let o='';
+ o+=heading(300,200,'อายุ 18–30+',60,P(t,3.6,.4));
+ o+=person(300,560,1,P(t,3.3,.6),false);
+ // factory output: Q10 dots stream out to the right
+ const on=t>5.8;for(let i=0;i<6;i++){const q=((t-5.8)*.9+i/6)%1;if(!on)break;const x=lerp(380,600,q),y=520-Math.sin(q*Math.PI)*60;o+=q10(x,y,22,1);}
+ o+=check(480,330,70,P(t,6.4,.3));o+=label(300,800,'สร้างโคคิวเท็นได้ดี',36,P(t,6.0,.3),YEL);
+ const h=placeHand(t,'pinch',800,520,7.55,.45,.3);
+ if(t>=7.55){o+=heading(800,330,'ฟอร์มปกติ',52,P(t,7.9,.4));o+=downArrow(800,358,P(t,8.1,.3));
+  o+=q10(800+(h.arrived?0:h.dx),520+(h.arrived?0:h.dy),104,1,'one');o+=tag(800,670,'ยูบิควิโนน',3,30,P(t,8.2,.2));}
+ return {o,h:h.hand};});
+// 3. age 40+: production drops
+sc(9.0,13.3,t=>{let o='';
+ o+=heading(300,200,'อายุ 40+',60,P(t,9.3,.4));
+ o+=person(300,560,1,P(t,9.1,.6),true);
+ // tank of Q10 in the body falls
+ const TX=560,TT=300,TB=660,TW=90;o+=ch(`M${TX},${TT} L${TX},${TB} L${TX+TW},${TB} L${TX+TW},${TT}`,P(t,9.4,.35),7);
+ const lvl=lerp(.9,.25,eio(P(t,11.4,1.2)));const ly=TB-(TB-TT)*lvl;
+ o+=`<rect x="${TX+6}" y="${ly}" width="${TW-12}" height="${TB-ly-6}" fill="${lvl>.5?'#f07b2a':RED}" opacity=".9" rx="4"/>`;
+ o+=q10(TX+TW/2,TT-50,34,P(t,9.5,.3));
+ o+=ch('M840,320 L840,580',P(t,11.6,.45),14,RED)+ch('M792,530 L840,586 L888,530',P(t,12.0,.2),14,RED);
+ o+=label(840,680,'สร้างได้น้อยลง',40,P(t,11.8,.25),RED);
+ o+=g(`<text font-family="K" font-weight="900" font-size="110" text-anchor="middle" fill="${RED}">!</text>`,{x:430,y:330,s:pop(t,10.5,.35),r:10});
+ return {o,h:''};});
+// 4. switch to ubiquinol
+sc(13.3,17.5,t=>{let o='';
+ const dim=P(t,14.6,.4);
+ o+=g(q10(0,0,96,1,'one')+`<text y="160" font-family="K" font-weight="800" font-size="34" text-anchor="middle" fill="${CH}">ยูบิควิโนน</text>`,{x:250,y:540,o:1-.6*dim});
+ o+=cross(250,540,130,P(t,14.7,.3));
+ o+=ch('M380,540 L620,540',P(t,13.6,.4),10,YEL)+ch('M592,516 L622,540 L592,564',P(t,13.95,.1),10,YEL);
+ const h=placeHand(t,'pinch',800,540,14.3,.5,.35);
+ if(t<14.3+.5)o+=`<circle cx="800" cy="540" r="125" fill="none" stroke="${CH}" stroke-width="6" stroke-dasharray="16 12" opacity=".5" filter="url(#chf)"/>`;
+ if(t>=14.3)o+=q10(800+(h.arrived?0:h.dx),540+(h.arrived?0:h.dy),125,1,'ol');
+ o+=heading(800,300,'ยูบิควินอล',66,P(t,15.0,.4));o+=downArrow(800,334,P(t,15.3,.3));
+ const gl=P(t,16.0,.6);if(gl>0)o+=`<circle cx="800" cy="540" r="${140+gl*20}" fill="none" stroke="${YEL}" stroke-width="7" opacity="${Math.sin(gl*Math.PI)*.85}"/>`;
+ o+=ticks(800,540,155,P(t,16.0,.6),YEL,8);
+ o+=tag(800,750,'อายุ 40+',3,36,P(t,15.2,.2),pop(t,15.2));
+ return {o,h:h.hand};});
+
+// ---------- render ----------
+const sv=document.getElementById('sv');
+const DEFS=`<defs><filter id="chf" filterUnits="userSpaceOnUse" x="-200" y="-200" width="1480" height="1480"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
+<pattern id="pgrain" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#e6dcc4"/><circle cx="2" cy="2" r=".8" fill="#d7ccb2"/></pattern></defs>`;
+window.render=function(t){UID=0;let o='',h='';
+ for(let i=0;i<S.length;i++){const s=S[i];const nx=S[i+1];const end=nx?nx.s:s.e;
+  if(t<s.s||t>=end)continue;let r=s.f(t);
+  if(t>=end){const q=eio(P(t,end,.32));o+=g(r.o+r.h,{x:-140*q,o:1-q});}else{o+=r.o;h+=r.h;}}
+ sv.innerHTML=DEFS+o+h;setCap(t);};
+render(0);
+</script></body></html>
