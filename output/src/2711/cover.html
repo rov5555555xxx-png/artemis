@@ -1,0 +1,223 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E00-0E7F}
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E00-0E7F}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E00-0E7F}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+html,body{margin:0;background:#1e1f22;overflow:hidden}
+#st{position:relative;width:1080px;height:1080px;overflow:hidden;
+ background:radial-gradient(ellipse 75% 65% at 50% 42%,#45474b 0%,#303236 45%,#1d1e21 100%)}
+#sv{position:absolute;inset:0}
+#cap{position:absolute;left:0;right:0;top:880px;height:110px;display:flex;align-items:center;justify-content:center;
+ font:800 66px/1.15 K;color:#fff;text-shadow:0 4px 10px rgba(0,0,0,.55);white-space:nowrap}
+#cap .y{color:#ffd23f}
+#cap .rb{background:#e2332f;color:#fff;border-radius:14px;padding:0 22px 6px;text-shadow:none;box-shadow:0 6px 14px rgba(0,0,0,.35)}
+#cap span.w{display:inline-block}
+.safe #st::after{content:'';position:absolute;inset:70px;border:2px dashed #0f0;pointer-events:none}
+</style></head><body>
+<div id="st"><svg id="sv" width="1080" height="1080" viewBox="0 0 1080 1080"></svg><div id="cap"></div></div>
+<svg width="0" height="0" style="position:absolute"><path id="meas" d="M0,0"/></svg>
+<script>
+if(location.hash=='#safe')document.body.classList.add('safe');
+const CH='#f2efe6',INK='#34363a',YEL='#ffd23f',RED='#e2332f',GRN='#2faa58',BLU='#7fa3d6';
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const P=(t,a,d)=>d<=0?(t>=a?1:0):cl((t-a)/d);
+const eo=x=>1-Math.pow(1-x,3), eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const eb=x=>{x=cl(x);const c1=1.9,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+const pop=(t,a,d=.35)=>eb(P(t,a,d));
+const lerp=(a,b,p)=>a+(b-a)*p;
+let UID=0;const uid=()=>'u'+(UID++);
+const meas=document.getElementById('meas');
+function ptAt(d,p){meas.setAttribute('d',d);const L=meas.getTotalLength();const q=meas.getPointAtLength(L*cl(p));return {x:q.x,y:q.y};}
+const cvs=document.createElement('canvas').getContext('2d');
+function tw(txt,size,wt=800){cvs.font=`${wt} ${size}px K`;return cvs.measureText(txt).width;}
+
+// ---------- primitives ----------
+function ch(d,p,w=7,c=CH,extra=''){if(p<=0)return '';return `<path d="${d}" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="${1-p}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" filter="url(#chf)" ${extra}/>`;}
+function g(inner,{x=0,y=0,s=1,r=0,o=1}={}){if(o<=0.001||!inner)return '';return `<g transform="translate(${x},${y}) rotate(${r}) scale(${s})" opacity="${o}">${inner}</g>`;}
+function coin(x,y,r,lab,fill='#efe9da',tc=INK,fs){fs=fs||r*.72;return `<g><circle cx="${x}" cy="${y+4}" r="${r}" fill="rgba(0,0,0,.35)"/><circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="#2a2b2e" stroke-width="3"/><text x="${x}" y="${y+fs*.36}" font-family="K" font-weight="800" font-size="${fs}" text-anchor="middle" fill="${tc}">${lab}</text></g>`;}
+function capsule(x,y,L,ang,kind='plain',o=1){const h=L*.42,r=h/2;let s=`<g transform="translate(${x},${y}) rotate(${ang})" opacity="${o}">`;
+ s+=`<rect x="${-L/2+3}" y="${-r+6}" width="${L}" height="${h}" rx="${r}" fill="rgba(0,0,0,.35)"/>`;
+ if(kind=='plain'){s+=`<path d="M0,${-r} H${L/2-r} A${r},${r} 0 0 1 ${L/2-r},${r} H0Z" fill="#9ca2aa" stroke="#2a2b2e" stroke-width="3"/><path d="M0,${-r} H${-L/2+r} A${r},${r} 0 0 0 ${-L/2+r},${r} H0Z" fill="#f2eee4" stroke="#2a2b2e" stroke-width="3"/>`;}
+ else if(kind=='white'){s+=`<rect x="${-L/2}" y="${-r}" width="${L}" height="${h}" rx="${r}" fill="#f4f2ec" stroke="#2a2b2e" stroke-width="3"/><line x1="0" y1="${-r}" x2="0" y2="${r}" stroke="#2a2b2e" stroke-width="2.5"/>`;}
+ else{ // icap: left clear packed with pellets, right cream Zn
+  s+=`<path d="M0,${-r} H${-L/2+r} A${r},${r} 0 0 0 ${-L/2+r},${r} H0Z" fill="rgba(220,230,238,.28)" stroke="#2a2b2e" stroke-width="3"/>`;
+  const pr=h*.11;for(let i=0;i<5;i++)for(let j=0;j<4;j++){const px=-L/2+r*.55+i*pr*2.15+(j%2)*pr*.9,py=-r+pr*1.5+j*pr*2.05;if(px>-pr*1.1)continue;const dx=px-(-L/2+r),dy=py;if(px<-L/2+r&&dx*dx+dy*dy>(r-pr*1.2)**2)continue;s+=`<circle cx="${px}" cy="${py}" r="${pr}" fill="#fbfaf6" stroke="#2a2b2e" stroke-width="1.6"/>`;}
+  s+=`<path d="M0,${-r} H${L/2-r} A${r},${r} 0 0 1 ${L/2-r},${r} H0Z" fill="#e9dcbc" stroke="#2a2b2e" stroke-width="3"/><text x="${L/4}" y="${h*.13}" font-family="K" font-weight="800" font-size="${h*.38}" text-anchor="middle" fill="${INK}">Zn</text>`;}
+ return s+'</g>';}
+function ticks(x,y,R,p,c=CH,n=6,a0=-90){if(p<=0||p>=1)return '';let s='';const k=Math.sin(p*Math.PI);for(let i=0;i<n;i++){const a=(a0+i*360/n)*Math.PI/180,r1=R+p*18,r2=r1+26*k;s+=`<line x1="${x+Math.cos(a)*r1}" y1="${y+Math.sin(a)*r1}" x2="${x+Math.cos(a)*r2}" y2="${y+Math.sin(a)*r2}" stroke="${c}" stroke-width="6" stroke-linecap="round"/>`;}return s;}
+function check(x,y,s,p,c=GRN,w=12){return ch(`M${x-s*.5},${y} L${x-s*.12},${y+s*.38} L${x+s*.55},${y-s*.45}`,p,w,c);}
+function cross(x,y,s,p,c=RED,w=11){return ch(`M${x-s/2},${y-s/2} L${x+s/2},${y+s/2}`,cl(p*2),w,c)+ch(`M${x+s/2},${y-s/2} L${x-s/2},${y+s/2}`,cl(p*2-1),w,c);}
+function male(x,y,r,p,c=CH,w=8){const a=Math.PI/4,ex=x+Math.cos(-a)*r,ey=y+Math.sin(-a)*r,L=r*.85;
+ return ch(`M${x+r},${y} A${r},${r} 0 1 1 ${x+r-.01},${y-.5}`,cl(p*1.4),w,c)+ch(`M${ex},${ey} L${ex+L*.7},${ey-L*.7}`,cl(p*3-1.6),w,c)+ch(`M${ex+L*.7-r*.5},${ey-L*.7} L${ex+L*.7},${ey-L*.7} L${ex+L*.7},${ey-L*.7+r*.5}`,cl(p*3-2),w,c);}
+function paper(x,y,w,h,r,inner,o=1,s=1){if(o<=0)return '';const id=uid();return `<g transform="translate(${x},${y}) rotate(${r}) scale(${s})" opacity="${o}"><rect x="${-w/2+5}" y="${-h/2+9}" width="${w}" height="${h}" fill="rgba(0,0,0,.4)" rx="3"/><rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" fill="#efe8d6" rx="3"/><rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" fill="url(#pgrain)" rx="3" opacity=".5"/>${inner}<rect x="-42" y="${-h/2-16}" width="84" height="30" fill="rgba(226,221,196,.82)" transform="rotate(-3)"/></g>`;}
+function tag(x,y,txt,r=-3,fs=34,o=1,s=1,col=INK){fs=Math.round(fs*1.3);const w=tw(txt,fs,800)+40,h=fs*1.45;return paper(x,y,w,h,r,`<text x="0" y="${fs*.36}" font-family="K" font-weight="800" font-size="${fs}" text-anchor="middle" fill="${col}">${txt}</text>`,o,s);}
+function ctext(x,y,txt,fs,p,c=CH,anchor='middle',wt=800){if(p<=0)return '';const w=tw(txt,fs,wt),x0=anchor=='middle'?x-w/2:anchor=='end'?x-w:x;const id=uid();
+ return `<clipPath id="${id}"><rect x="${x0-10}" y="${y-fs*1.3}" width="${(w+20)*p}" height="${fs*1.9}"/></clipPath><text clip-path="url(#${id})" x="${x0}" y="${y}" font-family="K" font-weight="${wt}" font-size="${fs}" fill="${c}" filter="url(#chf)">${txt}</text>`;}
+function ctextRange(x,y,txt,fs,anchor='middle',wt=800){const w=tw(txt,fs,wt),x0=anchor=='middle'?x-w/2:anchor=='end'?x-w:x;return {d:`M${x0},${y-fs*.25} L${x0+w},${y-fs*.25}`,x0,w};}
+function jar(cx,bottom,h,o=1,r=0){const w=h*434/810;return `<g opacity="${o}" transform="rotate(${r} ${cx} ${bottom})"><ellipse cx="${cx}" cy="${bottom-4}" rx="${w*.48}" ry="${h*.025}" fill="rgba(0,0,0,.45)"/><image href="inzent_zinc_icap.png" x="${cx-w/2}" y="${bottom-h}" width="${w}" height="${h}"/></g>`;}
+function box(cx,bottom,h,o=1,r=0){const w=h*660/1048;return `<g opacity="${o}" transform="rotate(${r} ${cx} ${bottom})"><image href="inzent_zinc_icap_box30.png" x="${cx-w/2}" y="${bottom-h}" width="${w}" height="${h}"/></g>`;}
+function body(cx,cy,s){return {head:`M${cx+45*s},${cy-160*s} A${45*s},${45*s} 0 1 1 ${cx+45*s-.01},${cy-160.5*s}`,
+ torso:`M${cx-115*s},${cy+170*s} L${cx-115*s},${cy-40*s} Q${cx-115*s},${cy-95*s} ${cx-55*s},${cy-95*s} L${cx+55*s},${cy-95*s} Q${cx+115*s},${cy-95*s} ${cx+115*s},${cy-40*s} L${cx+115*s},${cy+170*s}`};}
+
+// ---------- hands ----------
+const HANDS={chalk:{src:'chalk.png',w:242,h:315,ax:2,ay:6,s:1.05,off:[480,620]},
+ marker:{src:'marker.png',w:302,h:561,ax:151,ay:548,s:.78,off:[120,-760]},
+ pinch:{src:'pinch2.png',w:415,h:845,ax:73,ay:760,s:.62,off:[160,-760]},
+ stamp:{src:'stamp.png',w:453,h:283,ax:4,ay:178,s:.7,off:[700,60]},
+ hold:{src:'hold.png',w:377,h:337,ax:6,ay:190,s:.85,off:[720,40]}};
+function handImg(k,x,y,rot=0){const H=HANDS[k],s=H.s;if(x<-600||x>1700||y<-1000||y>1700)return '';
+ return `<g transform="translate(${x},${y}) rotate(${rot})"><image href="${H.src}" x="${-H.ax*s}" y="${-H.ay*s}" width="${H.w*s}" height="${H.h*s}"/></g>`;}
+// a hand that draws a sequence of chalk segments: segs=[{d,a,dur}] -> {p:[..], hand}
+function drawSeq(t,k,segs,{enter=.3,exit=.4,wob=1}={}){const H=HANDS[k];const ps=segs.map(s=>P(t,s.a,s.dur));let tip;
+ const first=segs[0],last=segs[segs.length-1];
+ if(t<first.a){const q=ptAt(first.d,0),e=eo(P(t,first.a-enter,enter));tip={x:q.x+H.off[0]*(1-e),y:q.y+H.off[1]*(1-e)};}
+ else if(t>=last.a+last.dur){const q=ptAt(last.d,1),e=eio(P(t,last.a+last.dur,exit));tip={x:q.x+H.off[0]*e,y:q.y+H.off[1]*e};}
+ else{for(let i=0;i<segs.length;i++){const s=segs[i];if(t>=s.a&&t<s.a+s.dur){tip=ptAt(s.d,P(t,s.a,s.dur));break;}
+   const n=segs[i+1];if(n&&t>=s.a+s.dur&&t<n.a){const A=ptAt(s.d,1),B=ptAt(n.d,0),e=eio(P(t,s.a+s.dur,n.a-s.a-s.dur));tip={x:lerp(A.x,B.x,e),y:lerp(A.y,B.y,e)-Math.sin(e*Math.PI)*30};break;}}}
+ const rot=Math.sin(t*23)*1.2*wob;return {p:ps,hand:handImg(k,tip.x,tip.y,rot)};}
+// a hand that brings/places something at (x,y) by time a+dur, holds for hold s, leaves. returns {hand, held(0..1 arrival), placed}
+function placeHand(t,k,x,y,a,dur=.45,hold=.25,exit=.4){const H=HANDS[k];let px=x,py=y;
+ if(t<a+dur){const e=eo(P(t,a,dur));px=x+H.off[0]*(1-e);py=y+H.off[1]*(1-e);}
+ else if(t>a+dur+hold){const e=eio(P(t,a+dur+hold,exit));px=x+H.off[0]*e;py=y+H.off[1]*e;}
+ return {hand:(t<a-0.01||t>a+dur+hold+exit)?'':handImg(k,px,py),dx:px-x,dy:py-y,carry:t<a+dur+hold,arrived:t>=a+dur};}
+
+// ---------- captions ----------
+const CAPS=[
+ [0,'ยังมีคน<span class="rb">เข้าใจผิด</span>'],
+ [1.6,'กินซิงค์ ต้องกิน<span class="y">ทองแดง</span>ด้วย'],
+ [3.4,'ไม่งั้น<span class="y">ทองแดงดูดซึมลดลง</span>?'],
+ [5.8,'<span class="y">เอาจริงนะ</span>'],
+ [6.2,'ถ้าไม่กินซิงค์<span class="y">เกิน 40 มก.</span>'],
+ [8.5,'ทองแดงก็<span class="y">ดูดซึมปกติ</span>'],
+ [11.2,'ต้องเป็นซิงค์<span class="y">สูงมากๆ</span>'],
+ [15.4,'เกิน<span class="rb">เกณฑ์ปลอดภัย</span>'],
+ [16.5,'<span class="y">เกิน 40 มก.</span>'],
+ [17.7,'ถึงจะเริ่ม<span class="y">มีผลกับทองแดง</span>'],
+ [19.6,'ไม่งั้นจะห้าม<span class="y">เกิน 40 มก.</span>ทำไม'],
+ [22.5,'งานวิจัยเลย<span class="y">จำกัดไว้ที่ 40 มก.</span>'],
+ [25.7,'ใครกิน<span class="y">ตัวนี้</span> ไม่ต้องห่วง'],
+ [28.4,'ทองแดงยัง<span class="y">ดูดซึมปกติ</span>'],
+ [30.0,'เพราะกิน<span class="y">วันละ 1 เม็ด</span>'],
+ [31.9,'กินเป็น<span class="y">เดือน เป็นปี</span>'],
+ [35.2,'ทองแดงก็ยัง<span class="y">ดูดซึมปกติ</span>'],
+];
+const capEl=document.getElementById('cap');let capIdx=-1;
+function setCap(t){let i=0;for(let k=0;k<CAPS.length;k++)if(t>=CAPS[k][0])i=k;
+ if(i!==capIdx){capEl.innerHTML=CAPS[i][1];capIdx=i;}
+ const lt=t-CAPS[i][0];const s=i==0?1:lerp(.86,1,eb(P(lt,0,.28)));const o=i==0?1:cl(lt/.08);
+ capEl.style.transform=`scale(${s})`;capEl.style.opacity=o;}
+
+// ---------- helpers ----------
+const CU='#c8743c';
+function zn(x,y,r,s=1){return g(coin(0,0,r,'Zn','#e6e8ec',INK,r*.78),{x,y,s});}
+function cu(x,y,r,s=1){return g(coin(0,0,r,'Cu',CU,'#fff',r*.78),{x,y,s});}
+function heading(x,y,txt,fs=64,p=1,col=CH){if(p<=0)return '';const w=tw(txt,fs,800);return `<text x="${x}" y="${y}" font-family="K" font-weight="800" font-size="${fs}" text-anchor="middle" fill="${col}" filter="url(#chf)" opacity="${cl(p*2)}">${txt}</text>`+ch(`M${x-w/2-10},${y+24} Q${x},${y+38} ${x+w/2+10},${y+20}`,P(p,.3,.7),8,YEL);}
+function downArrow(x,y,p){return ch(`M${x},${y} L${x},${y+40}`,cl(p*2),6)+ch(`M${x-14},${y+26} L${x},${y+42} L${x+14},${y+26}`,cl(p*2-1),6);}
+function label(x,y,txt,fs=34,o=1,col=CH){return o>0?`<text x="${x}" y="${y}" font-family="K" font-weight="800" font-size="${fs}" text-anchor="middle" fill="${col}" opacity="${o}">${txt}</text>`:'';}
+// two absorption lanes (U-tubes) into the body line
+const LX=[380,700],LT=300,LB=700;
+function lane(x,p,c=CH){return ch(`M${x-70},${LT} L${x-70},${LB-60} Q${x-70},${LB} ${x},${LB} Q${x+70},${LB} ${x+70},${LB-60} L${x+70},${LT}`,p,8,c);}
+function lanes(p,c){return lane(LX[0],p,c)+lane(LX[1],p,c)+label(LX[0],LB+60,'ทางดูดซึมซิงค์',30,p)+label(LX[1],LB+60,'ทางดูดซึมทองแดง',30,p);}
+function drop(t,a,x,kind,stopY){const q=eio(P(t,a,.7));const y=lerp(LT+10,stopY||LB-62,q);const sc=pop(t,a-.25,.25);return kind=='zn'?zn(x,y,48,sc):cu(x,y,48,sc);}
+function stampMark(cx,cy,txt,t,a,col=RED,w=300,rot=-8){const sh=placeHand(t,'stamp',cx+w/2+10,cy,a,.4,.25,.4);let o='';if(sh.arrived)o+=`<g transform="translate(${cx},${cy}) rotate(${rot}) scale(${lerp(1.25,1,eo(P(t,a+.4,.15)))})"><rect x="${-w/2}" y="-46" width="${w}" height="92" rx="14" fill="none" stroke="${col}" stroke-width="8"/><text y="17" font-family="K" font-weight="900" font-size="50" text-anchor="middle" fill="${col}">${txt}</text></g>`;return {o,h:sh.hand};}
+function ruler(x,top,bot,lvl,mark,markLab,p=1){const H=bot-top;let o=paper(x,(top+bot)/2,110,H+40,2,'',p);if(p<=0)return o;
+ const ly=bot-H*cl(lvl,0,1.15);const over=lvl>mark;o+=`<g transform="rotate(2 ${x} ${(top+bot)/2})"><rect x="${x-34}" y="${Math.max(top,ly)}" width="68" height="${bot-Math.max(top,ly)}" fill="${over?RED:YEL}"/>`;
+ for(let i=0;i<=10;i++){const y=bot-i*H/10;o+=`<line x1="${x-55}" y1="${y}" x2="${x-(i%5==0?22:38)}" y2="${y}" stroke="${INK}" stroke-width="3"/>`;}
+ const my=bot-H*mark;o+=`<line x1="${x-70}" y1="${my}" x2="${x+70}" y2="${my}" stroke="${RED}" stroke-width="5"/></g>`;o+=tag(x+150,my,markLab,-3,30,p);return o;}
+
+// ---------- scenes ----------
+const S=[];const sc=(s,e,f)=>S.push({s,e,f});
+// 1. myth: zinc must be taken with copper
+sc(0,3.4,t=>{let o='';
+ o+=heading(540,250,'ซิงค์ + ทองแดง ต้องกินคู่?',58,1);
+ const h1=placeHand(t,'pinch',330,520,-0.5,.5,.3),h2=placeHand(t,'pinch',750,520,0.5,.45,.25);
+ o+=zn(330+(h1.arrived?0:h1.dx),520+(h1.arrived?0:h1.dy),105);
+ if(t>=0.5)o+=cu(750+(h2.arrived?0:h2.dx),520+(h2.arrived?0:h2.dy),105);
+ o+=g(`<text font-family="K" font-weight="900" font-size="110" text-anchor="middle" fill="${YEL}">+</text>`,{x:540,y:560,o:P(t,1.0,.2)});
+ const st=stampMark(540,720,'เข้าใจผิด!',t,1.4);o+=st.o;
+ return {o,h:h1.hand+h2.hand+st.h};});
+// 2. the belief: copper absorption drops?
+sc(3.4,5.8,t=>{let o='';
+ o+=lanes(1);o+=drop(t,3.5,LX[0],'zn');
+ const q=eio(P(t,3.9,.6));o+=cu(LX[1],lerp(220,330,q),48);
+ o+=cross(LX[1],420,110,P(t,4.6,.35));
+ o+=g(`<text font-family="K" font-weight="900" font-size="120" text-anchor="middle" fill="${RED}">?</text>`,{x:880,y:380,s:pop(t,4.9,.35),r:10});
+ return {o,h:''};});
+// 3. truth: under 40 mg both are absorbed normally
+sc(5.8,11.2,t=>{let o='';
+ o+=heading(540,190,'ไม่เกิน 40 มก.',64,P(t,6.3,.4));
+ o+=lanes(1);
+ o+=drop(t,7.4,LX[0],'zn');o+=drop(t,8.6,LX[1],'cu');
+ o+=check(LX[0]+100,LB-140,70,P(t,8.2,.3));o+=check(LX[1]+100,LB-140,70,P(t,9.4,.3));
+ return {o,h:''};});
+// 4a. only very high doses (>40 mg): the safety line
+sc(11.2,17.7,t=>{let o='';
+ const lvl=t<13.4?.18:lerp(.18,1.1,eio(P(t,13.4,3.4)));
+ o+=ruler(470,230,780,lvl,.8,'40 มก.',P(t,11.3,.3));
+ o+=label(470,840,'ปริมาณซิงค์ต่อวัน',32,P(t,11.5,.3));
+ const my=780-550*.8;
+ o+=g(`<text font-family="K" font-weight="800" font-size="44" fill="${RED}">เกณฑ์ปลอดภัย</text>`,{x:690,y:my+70,o:P(t,15.4,.3)});
+ o+=g(`<text font-family="K" font-weight="900" font-size="100" text-anchor="middle" fill="${RED}">!</text>`,{x:300,y:300,s:pop(t,16.6,.35),r:-8});
+ return {o,h:''};});
+// 4b. above 40 mg: zinc floods and crowds out copper (same lanes as before)
+sc(17.7,19.6,t=>{let o='';
+ o+=lanes(1);
+ for(let i=0;i<12;i++){const q=eio(P(t,17.75+i*.05,.45));const col=i%3,row=Math.floor(i/3);const tx=LX[0]-40+col*40+(row%2)*12,ty=LB-50-row*48;o+=zn(lerp(LX[0],tx,q),lerp(200,ty,q),26);}
+ for(let i=0;i<5;i++){const q=eio(P(t,18.3+i*.06,.45));const tx=LX[1]-30+(i%3)*30,ty=LB-50-Math.floor(i/3)*48;o+=zn(lerp(LX[0]+40,tx,q),lerp(260,ty,q)-Math.sin(q*Math.PI)*60,26);}
+ o+=cu(LX[1],250,46,pop(t,18.4,.3));o+=cross(LX[1],250,100,P(t,18.9,.3));
+ return {o,h:''};});
+// 5. that's why the research limit is 40 mg
+sc(19.6,25.7,t=>{let o='';
+ const a=pop(t,19.8,.4);
+ o+=paper(540,470,420,460,-2,`<text y="-150" font-family="K" font-weight="800" font-size="42" text-anchor="middle" fill="${INK}">งานวิจัย</text>
+  <g stroke="#9a948a" stroke-width="6" stroke-linecap="round"><line x1="-150" y1="-95" x2="150" y2="-95"/><line x1="-150" y1="-60" x2="110" y2="-60"/><line x1="-150" y1="-25" x2="140" y2="-25"/></g>
+  <text y="80" font-family="K" font-weight="900" font-size="110" text-anchor="middle" fill="${INK}">40 มก.</text><text y="140" font-family="K" font-weight="800" font-size="36" text-anchor="middle" fill="${INK}">ซิงค์สูงสุดต่อวัน</text>`,cl(a*2),a);
+ const st=stampMark(700,300,'ห้ามเกิน',t,23.9,RED,260,10);o+=st.o;
+ return {o,h:st.h};});
+// 6. this product: 1 capsule a day, far below the limit
+sc(25.7,31.9,t=>{let o='';
+ o+=ch('M180,800 L560,800',P(t,25.8,.3),8);
+ const ph=placeHand(t,'hold',370+112,800-210,25.6,.55,.5);
+ o+=jar(370+(ph.arrived?0:ph.dx),800+(ph.arrived?0:ph.dy),430);
+ o+=heading(370,250,'ตัวนี้',64,P(t,26.3,.4));
+ o+=ruler(800,300,760,lerp(0,.3,eio(P(t,30.3,.8))),.8,'40 มก.',P(t,28.0,.3));
+ o+=tag(800,250,'1 เม็ด = 15 มก.',3,32,P(t,30.4,.2),pop(t,30.4));
+ o+=check(690,560,70,P(t,31.0,.3));
+ return {o,h:ph.hand};});
+// 7. even for months or years: copper still absorbed normally
+sc(31.9,37.7,t=>{let o='';
+ const cal='';const q=pop(t,31.95,.4);
+ let grid='';for(let r=0;r<5;r++)for(let c=0;c<6;c++){const n=r*6+c+1;if(n>30)continue;grid+=`<rect x="${-165+c*55}" y="${-110+r*48}" width="50" height="42" fill="none" stroke="#b9b3a6" stroke-width="2"/><text x="${-160+c*55}" y="${-94+r*48}" font-family="K" font-weight="600" font-size="14" fill="${INK}">${n}</text>`;}
+ o+=paper(330,470,380,330,-2,`<rect x="-190" y="-165" width="380" height="44" fill="${RED}"/><text y="-134" font-family="K" font-weight="800" font-size="28" text-anchor="middle" fill="#fff">กินทุกวัน</text>${grid}`,cl(q*2),q);
+ const nT=Math.floor(lerp(0,30,eio(P(t,32.4,2.2))));
+ for(let i=0;i<nT;i++){const r=Math.floor(i/6),c=i%6;o+=`<path d="M${330-165+c*55+8},${470-110+r*48+34} L${330-165+c*55+42},${470-110+r*48+8}" stroke="${RED}" stroke-width="5" stroke-linecap="round" transform="rotate(-2 330 470)"/>`;}
+ const mh=placeHand(t,'marker',330-165+(Math.min(nT,29)%6)*55+42,470-110+Math.floor(Math.min(nT,29)/6)*48+8,32.2,.3,2.3,.4);o+=mh.hand?'':'';
+ o+=cu(780,440,100,pop(t,35.0,.4));o+=heading(780,270,'ทองแดง',56,P(t,35.2,.4));o+=downArrow(780,300,P(t,35.4,.3));
+ o+=check(900,580,80,P(t,35.6,.3));o+=label(780,620,'ดูดซึมปกติ',40,P(t,35.7,.3),YEL);
+ return {o,h:mh.hand};});
+
+// ---------- render ----------
+const sv=document.getElementById('sv');
+const DEFS=`<defs><filter id="chf" filterUnits="userSpaceOnUse" x="-200" y="-200" width="1480" height="1480"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
+<pattern id="pgrain" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#e6dcc4"/><circle cx="2" cy="2" r=".8" fill="#d7ccb2"/></pattern></defs>`;
+window.render=function(t){UID=0;let o='',h='';
+ for(let i=0;i<S.length;i++){const s=S[i];const nx=S[i+1];const end=nx?nx.s:s.e;
+  if(t<s.s||t>=end)continue;let r=s.f(t);
+  if(t>=end){const q=eio(P(t,end,.32));o+=g(r.o+r.h,{x:-140*q,o:1-q});}else{o+=r.o;h+=r.h;}}
+ sv.innerHTML=DEFS+o+h;setCap(t);};
+render(0);
+</script><script>
+window.render=function(){UID=0;let o='';
+ o+=`<text x="540" y="215" font-family="K" font-weight="800" font-size="84" text-anchor="middle" fill="#fff" style="paint-order:stroke" stroke="rgba(0,0,0,.35)" stroke-width="6">กินซิงค์ ต้องกิน</text>`;
+ o+=`<text x="540" y="360" font-family="K" font-weight="900" font-size="120" text-anchor="middle" fill="${YEL}" style="paint-order:stroke" stroke="rgba(0,0,0,.35)" stroke-width="8">ทองแดงด้วยไหม?</text>`;
+ o+=ch('M170,395 Q540,420 910,393',1,9,YEL);
+ o+=zn(330,610,115);o+=cu(750,610,115);
+ o+=g(`<text font-family="K" font-weight="900" font-size="110" text-anchor="middle" fill="${YEL}">+</text>`,{x:540,y:650});
+ o+=`<g transform="translate(540,815) rotate(-6)"><rect x="-200" y="-56" width="400" height="112" rx="16" fill="rgba(20,20,22,.6)" stroke="${RED}" stroke-width="9"/><text y="22" font-family="K" font-weight="900" font-size="66" text-anchor="middle" fill="${RED}">เข้าใจผิด!</text></g>`;
+ sv.innerHTML=DEFS+o;capEl.innerHTML='';};
+render();
+</script></body></html>
