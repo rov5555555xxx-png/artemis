@@ -1,0 +1,268 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:K;font-weight:600;src:url(kanit-thai-600-normal.woff2);unicode-range:U+0E00-0E7F}
+@font-face{font-family:K;font-weight:600;src:url(kanit-latin-600-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:K;font-weight:800;src:url(kanit-thai-800-normal.woff2);unicode-range:U+0E00-0E7F}
+@font-face{font-family:K;font-weight:800;src:url(kanit-latin-800-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:K;font-weight:900;src:url(kanit-thai-900-normal.woff2);unicode-range:U+0E00-0E7F}
+@font-face{font-family:K;font-weight:900;src:url(kanit-latin-900-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+html,body{margin:0;background:#1e1f22;overflow:hidden}
+#st{position:relative;width:1080px;height:1080px;overflow:hidden;
+ background:radial-gradient(ellipse 75% 65% at 50% 42%,#45474b 0%,#303236 45%,#1d1e21 100%)}
+#sv{position:absolute;inset:0}
+#cap{position:absolute;left:0;right:0;top:880px;height:110px;display:flex;align-items:center;justify-content:center;
+ font:800 66px/1.15 K;color:#fff;text-shadow:0 4px 10px rgba(0,0,0,.55);white-space:nowrap}
+#cap .y{color:#ffd23f}
+#cap .rb{background:#e2332f;color:#fff;border-radius:14px;padding:0 22px 6px;text-shadow:none;box-shadow:0 6px 14px rgba(0,0,0,.35)}
+#cap span.w{display:inline-block}
+.safe #st::after{content:'';position:absolute;inset:70px;border:2px dashed #0f0;pointer-events:none}
+.ft{position:absolute;left:0;top:0;border-radius:26px;border:7px solid #f2efe6;box-shadow:0 10px 26px rgba(0,0,0,.55);display:none;object-fit:cover;transform-origin:50% 50%}
+</style></head><body>
+<div id="st"><img id="ftbg" class="ft" style="border:none;border-radius:0;box-shadow:none"><svg id="sv" style="position:absolute;left:0;top:0" width="1080" height="1080" viewBox="0 0 1080 1080"></svg><img id="ft1" class="ft"><img id="ft2" class="ft"><div id="cap"></div></div>
+<svg width="0" height="0" style="position:absolute"><path id="meas" d="M0,0"/></svg>
+<script>
+if(location.hash=='#safe')document.body.classList.add('safe');
+const CH='#f2efe6',INK='#34363a',YEL='#ffd23f',RED='#e2332f',GRN='#2faa58',BLU='#7fa3d6';
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const P=(t,a,d)=>d<=0?(t>=a?1:0):cl((t-a)/d);
+const eo=x=>1-Math.pow(1-x,3), eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const eb=x=>{x=cl(x);const c1=1.9,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+const pop=(t,a,d=.35)=>eb(P(t,a,d));
+const lerp=(a,b,p)=>a+(b-a)*p;
+let UID=0;const uid=()=>'u'+(UID++);
+const meas=document.getElementById('meas');
+function ptAt(d,p){meas.setAttribute('d',d);const L=meas.getTotalLength();const q=meas.getPointAtLength(L*cl(p));return {x:q.x,y:q.y};}
+const cvs=document.createElement('canvas').getContext('2d');
+function tw(txt,size,wt=800){cvs.font=`${wt} ${size}px K`;return cvs.measureText(txt).width;}
+
+// ---------- primitives ----------
+function ch(d,p,w=7,c=CH,extra=''){if(p<=0)return '';return `<path d="${d}" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="${1-p}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" filter="url(#chf)" ${extra}/>`;}
+function g(inner,{x=0,y=0,s=1,r=0,o=1}={}){if(o<=0.001||!inner)return '';return `<g transform="translate(${x},${y}) rotate(${r}) scale(${s})" opacity="${o}">${inner}</g>`;}
+function coin(x,y,r,lab,fill='#efe9da',tc=INK,fs){fs=fs||r*.72;return `<g><circle cx="${x}" cy="${y+4}" r="${r}" fill="rgba(0,0,0,.35)"/><circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="#2a2b2e" stroke-width="3"/><text x="${x}" y="${y+fs*.36}" font-family="K" font-weight="800" font-size="${fs}" text-anchor="middle" fill="${tc}">${lab}</text></g>`;}
+function capsule(x,y,L,ang,kind='plain',o=1){const h=L*.42,r=h/2;let s=`<g transform="translate(${x},${y}) rotate(${ang})" opacity="${o}">`;
+ s+=`<rect x="${-L/2+3}" y="${-r+6}" width="${L}" height="${h}" rx="${r}" fill="rgba(0,0,0,.35)"/>`;
+ if(kind=='plain'){s+=`<path d="M0,${-r} H${L/2-r} A${r},${r} 0 0 1 ${L/2-r},${r} H0Z" fill="#9ca2aa" stroke="#2a2b2e" stroke-width="3"/><path d="M0,${-r} H${-L/2+r} A${r},${r} 0 0 0 ${-L/2+r},${r} H0Z" fill="#f2eee4" stroke="#2a2b2e" stroke-width="3"/>`;}
+ else if(kind=='white'){s+=`<rect x="${-L/2}" y="${-r}" width="${L}" height="${h}" rx="${r}" fill="#f4f2ec" stroke="#2a2b2e" stroke-width="3"/><line x1="0" y1="${-r}" x2="0" y2="${r}" stroke="#2a2b2e" stroke-width="2.5"/>`;}
+ else{ // icap: left clear packed with pellets, right cream Zn
+  s+=`<path d="M0,${-r} H${-L/2+r} A${r},${r} 0 0 0 ${-L/2+r},${r} H0Z" fill="rgba(220,230,238,.28)" stroke="#2a2b2e" stroke-width="3"/>`;
+  const pr=h*.11;for(let i=0;i<5;i++)for(let j=0;j<4;j++){const px=-L/2+r*.55+i*pr*2.15+(j%2)*pr*.9,py=-r+pr*1.5+j*pr*2.05;if(px>-pr*1.1)continue;const dx=px-(-L/2+r),dy=py;if(px<-L/2+r&&dx*dx+dy*dy>(r-pr*1.2)**2)continue;s+=`<circle cx="${px}" cy="${py}" r="${pr}" fill="#fbfaf6" stroke="#2a2b2e" stroke-width="1.6"/>`;}
+  s+=`<path d="M0,${-r} H${L/2-r} A${r},${r} 0 0 1 ${L/2-r},${r} H0Z" fill="#e9dcbc" stroke="#2a2b2e" stroke-width="3"/><text x="${L/4}" y="${h*.13}" font-family="K" font-weight="800" font-size="${h*.38}" text-anchor="middle" fill="${INK}">Zn</text>`;}
+ return s+'</g>';}
+function ticks(x,y,R,p,c=CH,n=6,a0=-90){if(p<=0||p>=1)return '';let s='';const k=Math.sin(p*Math.PI);for(let i=0;i<n;i++){const a=(a0+i*360/n)*Math.PI/180,r1=R+p*18,r2=r1+26*k;s+=`<line x1="${x+Math.cos(a)*r1}" y1="${y+Math.sin(a)*r1}" x2="${x+Math.cos(a)*r2}" y2="${y+Math.sin(a)*r2}" stroke="${c}" stroke-width="6" stroke-linecap="round"/>`;}return s;}
+function check(x,y,s,p,c=GRN,w=12){return ch(`M${x-s*.5},${y} L${x-s*.12},${y+s*.38} L${x+s*.55},${y-s*.45}`,p,w,c);}
+function cross(x,y,s,p,c=RED,w=11){return ch(`M${x-s/2},${y-s/2} L${x+s/2},${y+s/2}`,cl(p*2),w,c)+ch(`M${x+s/2},${y-s/2} L${x-s/2},${y+s/2}`,cl(p*2-1),w,c);}
+function male(x,y,r,p,c=CH,w=8){const a=Math.PI/4,ex=x+Math.cos(-a)*r,ey=y+Math.sin(-a)*r,L=r*.85;
+ return ch(`M${x+r},${y} A${r},${r} 0 1 1 ${x+r-.01},${y-.5}`,cl(p*1.4),w,c)+ch(`M${ex},${ey} L${ex+L*.7},${ey-L*.7}`,cl(p*3-1.6),w,c)+ch(`M${ex+L*.7-r*.5},${ey-L*.7} L${ex+L*.7},${ey-L*.7} L${ex+L*.7},${ey-L*.7+r*.5}`,cl(p*3-2),w,c);}
+function paper(x,y,w,h,r,inner,o=1,s=1){if(o<=0)return '';const id=uid();return `<g transform="translate(${x},${y}) rotate(${r}) scale(${s})" opacity="${o}"><rect x="${-w/2+5}" y="${-h/2+9}" width="${w}" height="${h}" fill="rgba(0,0,0,.4)" rx="3"/><rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" fill="#efe8d6" rx="3"/><rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" fill="url(#pgrain)" rx="3" opacity=".5"/>${inner}<rect x="-42" y="${-h/2-16}" width="84" height="30" fill="rgba(226,221,196,.82)" transform="rotate(-3)"/></g>`;}
+function tag(x,y,txt,r=-3,fs=34,o=1,s=1,col=INK){fs=Math.round(fs*1.3);const w=tw(txt,fs,800)+40,h=fs*1.45;return paper(x,y,w,h,r,`<text x="0" y="${fs*.36}" font-family="K" font-weight="800" font-size="${fs}" text-anchor="middle" fill="${col}">${txt}</text>`,o,s);}
+function ctext(x,y,txt,fs,p,c=CH,anchor='middle',wt=800){if(p<=0)return '';const w=tw(txt,fs,wt),x0=anchor=='middle'?x-w/2:anchor=='end'?x-w:x;const id=uid();
+ return `<clipPath id="${id}"><rect x="${x0-10}" y="${y-fs*1.3}" width="${(w+20)*p}" height="${fs*1.9}"/></clipPath><text clip-path="url(#${id})" x="${x0}" y="${y}" font-family="K" font-weight="${wt}" font-size="${fs}" fill="${c}" filter="url(#chf)">${txt}</text>`;}
+function ctextRange(x,y,txt,fs,anchor='middle',wt=800){const w=tw(txt,fs,wt),x0=anchor=='middle'?x-w/2:anchor=='end'?x-w:x;return {d:`M${x0},${y-fs*.25} L${x0+w},${y-fs*.25}`,x0,w};}
+function jar(cx,bottom,h,o=1,r=0){const w=h*434/810;return `<g opacity="${o}" transform="rotate(${r} ${cx} ${bottom})"><ellipse cx="${cx}" cy="${bottom-4}" rx="${w*.48}" ry="${h*.025}" fill="rgba(0,0,0,.45)"/><image href="inzent_zinc_icap.png" x="${cx-w/2}" y="${bottom-h}" width="${w}" height="${h}"/></g>`;}
+function box(cx,bottom,h,o=1,r=0){const w=h*660/1048;return `<g opacity="${o}" transform="rotate(${r} ${cx} ${bottom})"><image href="inzent_zinc_icap_box30.png" x="${cx-w/2}" y="${bottom-h}" width="${w}" height="${h}"/></g>`;}
+function body(cx,cy,s){return {head:`M${cx+45*s},${cy-160*s} A${45*s},${45*s} 0 1 1 ${cx+45*s-.01},${cy-160.5*s}`,
+ torso:`M${cx-115*s},${cy+170*s} L${cx-115*s},${cy-40*s} Q${cx-115*s},${cy-95*s} ${cx-55*s},${cy-95*s} L${cx+55*s},${cy-95*s} Q${cx+115*s},${cy-95*s} ${cx+115*s},${cy-40*s} L${cx+115*s},${cy+170*s}`};}
+
+// ---------- hands ----------
+const HANDS={chalk:{src:'chalk.png',w:242,h:315,ax:2,ay:6,s:1.05,off:[480,620]},
+ marker:{src:'marker.png',w:302,h:561,ax:151,ay:548,s:.78,off:[120,-760]},
+ pinch:{src:'pinch2.png',w:415,h:845,ax:73,ay:760,s:.62,off:[160,-760]},
+ stamp:{src:'stamp.png',w:453,h:283,ax:4,ay:178,s:.7,off:[700,60]},
+ hold:{src:'hold.png',w:377,h:337,ax:6,ay:190,s:.85,off:[720,40]}};
+function handImg(k,x,y,rot=0){const H=HANDS[k],s=H.s;if(x<-600||x>1700||y<-1000||y>1700)return '';
+ return `<g transform="translate(${x},${y}) rotate(${rot})"><image href="${H.src}" x="${-H.ax*s}" y="${-H.ay*s}" width="${H.w*s}" height="${H.h*s}"/></g>`;}
+// a hand that draws a sequence of chalk segments: segs=[{d,a,dur}] -> {p:[..], hand}
+function drawSeq(t,k,segs,{enter=.3,exit=.4,wob=1}={}){const H=HANDS[k];const ps=segs.map(s=>P(t,s.a,s.dur));let tip;
+ const first=segs[0],last=segs[segs.length-1];
+ if(t<first.a){const q=ptAt(first.d,0),e=eo(P(t,first.a-enter,enter));tip={x:q.x+H.off[0]*(1-e),y:q.y+H.off[1]*(1-e)};}
+ else if(t>=last.a+last.dur){const q=ptAt(last.d,1),e=eio(P(t,last.a+last.dur,exit));tip={x:q.x+H.off[0]*e,y:q.y+H.off[1]*e};}
+ else{for(let i=0;i<segs.length;i++){const s=segs[i];if(t>=s.a&&t<s.a+s.dur){tip=ptAt(s.d,P(t,s.a,s.dur));break;}
+   const n=segs[i+1];if(n&&t>=s.a+s.dur&&t<n.a){const A=ptAt(s.d,1),B=ptAt(n.d,0),e=eio(P(t,s.a+s.dur,n.a-s.a-s.dur));tip={x:lerp(A.x,B.x,e),y:lerp(A.y,B.y,e)-Math.sin(e*Math.PI)*30};break;}}}
+ const rot=Math.sin(t*23)*1.2*wob;return {p:ps,hand:handImg(k,tip.x,tip.y,rot)};}
+// a hand that brings/places something at (x,y) by time a+dur, holds for hold s, leaves. returns {hand, held(0..1 arrival), placed}
+function placeHand(t,k,x,y,a,dur=.45,hold=.25,exit=.4){const H=HANDS[k];let px=x,py=y;
+ if(t<a+dur){const e=eo(P(t,a,dur));px=x+H.off[0]*(1-e);py=y+H.off[1]*(1-e);}
+ else if(t>a+dur+hold){const e=eio(P(t,a+dur+hold,exit));px=x+H.off[0]*e;py=y+H.off[1]*e;}
+ return {hand:(t<a-0.01||t>a+dur+hold+exit)?'':handImg(k,px,py),dx:px-x,dy:py-y,carry:t<a+dur+hold,arrived:t>=a+dur};}
+
+// ---------- captions ----------
+const CAPS=[
+ [0,'โปรตีน 30 กรัม <span class="y">ตกวันละ 13–18 บาท</span>'],
+ [2.7,'ต้อง <span class="y">ISO SOY</span> ของ FITWHEY'],
+ [4.9,'โปรตีน<span class="y">ถั่วเหลือง</span>คุณภาพ'],
+ [6.5,'ราคา<span class="y">โคตรประหยัด</span>'],
+ [8.0,'อัดแน่น<span class="y">จุกๆ</span>'],
+ [9.4,'ขนาด <span class="y">10 ปอนด์</span>'],
+ [10.3,'กินได้ถึง <span class="y">113 ครั้ง</span>'],
+ [12.1,'กินได้<span class="y">เกือบ 4 เดือน</span>'],
+ [14.9,'ดูขนาดถัง <span class="y">โคตรใหญ่</span>'],
+ [16.7,'ต่อครั้ง <span class="y">2 ช้อน</span> = โปรตีน 30 กรัม'],
+ [19.3,'ตกครั้งละ <span class="y">13 บาท</span>'],
+ [21.8,'หรือ <span class="y">18 บาท</span>'],
+ [23.7,'ขึ้นอยู่กับ<span class="y">ราคาขายตอนนั้น</span>'],
+ [25.4,'ยังไงก็<span class="y">ถูกกว่า</span>ร้านสะดวกซื้อ'],
+ [28.6,'โปรตีน<span class="y">ราคาประหยัด</span> คุ้มค่า'],
+ [31.6,'จาก<span class="y">ถั่วเหลืองอย่างดี</span>'],
+ [33.3,'แบรนด์ที่<span class="y">คนไทยคุ้นตา</span>'],
+ [35.4,'แนะนำ <span class="y">BAAM ISO SOY</span>'],
+ [38.4,'<span class="y">คุ้มค่ามาก</span>'],
+ [39.9,'<span class="rb">พิกัดตะกร้าเหลือง ซ้ายล่าง</span>'],
+];
+const capEl=document.getElementById('cap');let capIdx=-1;
+function setCap(t){let i=0;for(let k=0;k<CAPS.length;k++)if(t>=CAPS[k][0])i=k;
+ if(i!==capIdx){capEl.innerHTML=CAPS[i][1];capIdx=i;}
+ const lt=t-CAPS[i][0];const s=i==0?1:lerp(.86,1,eb(P(lt,0,.28)));const o=i==0?1:cl(lt/.08);
+ capEl.style.transform=`scale(${s})`;capEl.style.opacity=o;}
+
+// ---------- helpers ----------
+const IC={
+ protein:`<g stroke="#2a2b2e" stroke-width="3.5" stroke-linejoin="round">
+  <rect x="44" y="-6" width="46" height="16" rx="8" fill="#d9e1e8"/>
+  <path d="M-62,-6 L52,-6 Q50,44 -5,48 Q-60,44 -62,-6Z" fill="#eef3f6"/>
+  <path d="M-58,4 Q-50,40 -5,42" fill="none" stroke="#c3ced8" stroke-width="5"/>
+  <path d="M-66,-6 Q-58,-52 -6,-56 Q46,-52 56,-6Z" fill="#8a5a36"/></g>
+  <path d="M-40,-22 Q-24,-46 6,-46" fill="none" stroke="#b07a4f" stroke-width="7" stroke-linecap="round"/>
+  <g fill="#6d4427">${[[-30,-14],[-6,-24],[18,-14],[30,-30],[-18,-36]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="3.2"/>`).join('')}</g>
+  <g fill="#8a5a36">${[[66,-30],[74,-46],[-74,-24]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="4"/>`).join('')}</g>`,
+
+ soy:`<g fill="#e6c98a" stroke="#2a2b2e" stroke-width="3"><circle cx="-14" cy="0" r="14"/><circle cx="14" cy="-4" r="14"/></g>`,
+
+};
+function soyTub(cx,bottom,h,o=1,s=1){const w=h*826/890;return `<g opacity="${o}" transform="translate(${cx},${bottom}) scale(${s}) translate(${-cx},${-bottom})"><ellipse cx="${cx}" cy="${bottom-6}" rx="${w*.48}" ry="${h*.035}" fill="rgba(0,0,0,.5)"/><image href="isosoy.png" x="${cx-w/2}" y="${bottom-h}" width="${w}" height="${h}" filter="url(#rim)"/></g>`;}
+function disc(x,y,r,inner,s=1,fill='#efe8d6'){return g(`<circle cx="0" cy="6" r="${r}" fill="rgba(0,0,0,.35)"/><circle r="${r}" fill="${fill}" stroke="#2a2b2e" stroke-width="4"/>${inner}`,{x,y,s});}
+function label(x,y,txt,fs=34,o=1,col=CH){return o>0?`<text x="${x}" y="${y}" font-family="K" font-weight="800" font-size="${fs}" text-anchor="middle" fill="${col}" opacity="${o}">${txt}</text>`:'';}
+// handwriting: one chalk hand writes a list of texts in sequence. items=[[x,y,txt,fs,a,dur,col,anchor]]
+function write(t,items,{exit=.4,pre=null}={}){const segs=items.map(([x,y,txt,fs,a,dur,col,an])=>({d:ctextRange(x,y,txt,fs,an||'middle',900).d,a,dur}));
+ const hs=drawSeq(t,'chalk',segs,{exit});let o='';items.forEach(([x,y,txt,fs,a,dur,col,an],i)=>{o+=ctext(x,y,txt,fs,hs.p[i],col||CH,an||'middle',900);});
+ return {o,h:hs.hand};}
+function underline(t,x0,x1,y,a,dur=.4,col=RED){const d=`M${x0},${y} Q${(x0+x1)/2},${y+12} ${x1},${y-4}`;const mh=drawSeq(t,'marker',[{d,a,dur}],{exit:.35});return {o:ch(d,mh.p[0],10,col),h:mh.hand};}
+function ring(t,cx,cy,rx,ry,a,dur=.6,col=RED){const d=`M${cx},${cy-ry} C${cx+rx*1.1},${cy-ry} ${cx+rx},${cy+ry} ${cx},${cy+ry} C${cx-rx},${cy+ry} ${cx-rx*1.1},${cy-ry} ${cx+rx*.1},${cy-ry*1.08}`;const mh=drawSeq(t,'marker',[{d,a,dur}],{exit:.35});return {o:ch(d,mh.p[0],10,col),h:mh.hand};}
+function stampMark(cx,cy,txt,t,a,col=RED,w=300,rot=-8){const sh=placeHand(t,'stamp',cx+w/2+10,cy,a,.4,.25,.4);let o='';if(sh.arrived)o+=`<g transform="translate(${cx},${cy}) rotate(${rot}) scale(${lerp(1.25,1,eo(P(t,a+.4,.15)))})"><rect x="${-w/2}" y="-46" width="${w}" height="92" rx="14" fill="rgba(20,20,22,.4)" stroke="${col}" stroke-width="8"/><text y="17" font-family="K" font-weight="900" font-size="50" text-anchor="middle" fill="${col}">${txt}</text></g>`;return {o,h:sh.hand};}
+
+// ---------- scenes ----------
+const S=[];const sc=(s,e,f)=>S.push({s,e,f});
+// 1. OPENING variants (?v=1..4): real scoop footage
+const OV=+(new URLSearchParams(location.search).get('v')||1);
+sc(0,2.7,t=>{let o='',h='';
+ if(OV==1){ // one big real scoop, hand writes the price under it
+  FTS.push({id:'ft1',x:540,y:360,size:500,s:1+0.03*t,o:1,r:-2,frame:ftFrame(t)});
+  o+=tag(540,690,'โปรตีน 30 g',-3,44);
+  const w=write(t,[[540,800,'= 13–18 บาท/วัน',84,0.7,1.3,YEL]]);o+=w.o;h+=w.h;}
+ else if(OV==2){ // scoop left, handwriting right
+  FTS.push({id:'ft1',x:300,y:450,size:440,s:1,o:1,r:-4,frame:ftFrame(t)});
+  o+=ctext(770,330,'โปรตีน',72,1,CH,'middle',900)+ctext(770,470,'30 g',120,1,CH,'middle',900);
+  const w=write(t,[[770,650,'13–18 บาท',80,0.7,1.0,YEL],[770,760,'ต่อวัน',56,1.8,.5,YEL]]);o+=w.o;h+=w.h;
+  o+=ch('M600,520 L930,512',P(t,0.3,.3),8,YEL);}
+ else if(OV==3){ // two scoops = 30 g = price
+  const b=pop(t,0.5,.35);
+  FTS.push({id:'ft1',x:290,y:350,size:380,s:1,o:1,r:-3,frame:ftFrame(t)});
+  if(b>0)FTS.push({id:'ft2',x:790,y:350,size:380,s:b,o:cl(b*2),r:3,frame:ftFrame(t,7)});
+  o+=g(`<text font-family="K" font-weight="900" font-size="100" text-anchor="middle" fill="${YEL}">+</text>`,{x:540,y:385,s:pop(t,.55,.3)});
+  o+=ctext(540,640,'2 ช้อน = โปรตีน 30 g',68,1,CH,'middle',900);
+  const w=write(t,[[540,790,'= 13–18 บาท/วัน',80,1.1,1.1,YEL]]);o+=w.o;h+=w.h;}
+ else { // full-bleed real footage, chalk text over a dark veil
+  FTS.push({id:'ftbg',x:540,y:540,size:1080,s:1.02+0.04*t/2.7,o:1,r:0,frame:ftFrame(t)});
+  o+=`<rect width="1080" height="1080" fill="rgba(15,15,18,.55)"/>`;
+  o+=ctext(540,330,'โปรตีน 30 g',120,1,'#fff','middle',900);
+  const w=write(t,[[540,560,'13–18 บาท/วัน',104,0.6,1.3,YEL]]);o+=w.o;h+=w.h;
+  o+=ch('M270,600 Q540,620 810,596',P(t,2.0,.4),10,YEL);}
+ return {o,h};});
+// 2. FITWHEY ISO SOY (tub placed, name written)
+sc(2.7,4.9,t=>{let o='',h='';
+ const ph=placeHand(t,'hold',540+220,820-260,2.6,.5,.4);
+ o+=soyTub(540+(ph.arrived?0:ph.dx),820+(ph.arrived?0:ph.dy),540);h+=ph.hand;
+ const w=write(t,[[540,200,'ISO SOY',92,3.4,.9,YEL]]);o+=w.o;h+=w.h;
+ return {o,h};});
+// 3. quality soy protein, very cheap
+sc(4.9,8.0,t=>{let o='',h='';
+ o+=soyTub(300,800,440);
+ const p=placeHand(t,'pinch',760,380,4.8,.45,.3);o+=disc(760+(p.arrived?0:p.dx),380+(p.arrived?0:p.dy),95,g(IC.soy,{s:1.9}),1);h+=p.hand;
+ const w=write(t,[[760,560,'ถั่วเหลือง',64,5.5,.8,CH]]);o+=w.o;h+=w.h;
+ const st=stampMark(760,700,'ประหยัด!',t,6.9,YEL,280,-6);o+=st.o;h+=st.h;
+ return {o,h};});
+// 4. packed full, 10 lb, 113 servings
+sc(8.0,12.1,t=>{let o='',h='';
+ o+=soyTub(310,820,500);
+ o+=ticks(310,560,260,P(t,8.6,.5),YEL,8);
+ const w=write(t,[[780,380,'10 ปอนด์',82,9.4,.8,CH],[780,600,'113 ครั้ง',100,10.6,.9,YEL]]);o+=w.o;h+=w.h;
+ return {o,h};});
+// 5. almost 4 months (marker ticks 4 months)
+sc(12.1,14.9,t=>{let o='',h='';
+ const q=pop(t,12.15,.4);
+ let boxes='';for(let i=0;i<4;i++){boxes+=`<rect x="${-300+i*150}" y="-60" width="130" height="120" rx="8" fill="#fbf7ec" stroke="#b9b3a6" stroke-width="3"/><text x="${-235+i*150}" y="-18" font-family="K" font-weight="800" font-size="30" text-anchor="middle" fill="${INK}">เดือน ${i+1}</text>`;}
+ o+=paper(540,450,660,200,-2,boxes,cl(q*2),q);
+ const segs=[0,1,2,3].map(i=>({d:`M${540-280+i*150},${470} L${540-240+i*150},${510} L${540-180+i*150},${430}`,a:12.6+i*.45,dur:.3}));
+ const mh=drawSeq(t,'marker',segs,{exit:.35});segs.forEach((s2,i)=>o+=ch(s2.d,mh.p[i],10,RED));h+=mh.hand;
+ const w=write(t,[[540,700,'เกือบ 4 เดือน',86,13.4,1.0,YEL]]);o+=w.o;h+=w.h;
+ return {o,h};});
+// 6. look at the bucket size
+sc(14.9,16.7,t=>{let o='',h='';
+ o+=soyTub(500,840,620);
+ const d1='M860,240 L860,830',d2='M840,270 L860,240 L880,270',d3='M840,800 L860,830 L880,800';
+ const hs=drawSeq(t,'chalk',[{d:d1,a:15.0,dur:.5},{d:d2,a:15.55,dur:.12},{d:d3,a:15.75,dur:.12}],{exit:.3});o+=ch(d1,hs.p[0],8)+ch(d2,hs.p[1],8)+ch(d3,hs.p[2],8);h+=hs.hand;
+ o+=g(`<text font-family="K" font-weight="900" font-size="64" text-anchor="middle" fill="${YEL}">ใหญ่!</text>`,{x:860,y:210,s:pop(t,16.0,.35),r:8});
+ return {o,h};});
+// 7. each serving = 2 scoops = 30 g protein (real scoop footage)
+function ftFrame(t,off=0){const n=19,k=Math.floor(t*30*.6)+off,m=k%(2*n-2);return 1+(m<n?m:2*n-2-m);}
+sc(16.7,19.3,t=>{let o='',h='';
+ const a=pop(t,16.72,.35),b=pop(t,17.15,.35);
+ if(a>0)FTS.push({id:'ft1',x:290,y:370,size:400,s:a,o:cl(a*2),r:-3,frame:ftFrame(t)});
+ if(b>0)FTS.push({id:'ft2',x:790,y:370,size:400,s:b,o:cl(b*2),r:3,frame:ftFrame(t,7)});
+ o+=tag(290,612,'ช้อนที่ 1',-3,34,cl(a*2),a)+tag(790,612,'ช้อนที่ 2',3,34,cl(b*2),b);
+ o+=g(`<text font-family="K" font-weight="900" font-size="110" text-anchor="middle" fill="${YEL}">+</text>`,{x:540,y:410,s:pop(t,17.2,.3)});
+ const w=write(t,[[540,770,'2 ช้อน = โปรตีน 30 g',76,17.65,.75,YEL]]);o+=w.o;h+=w.h;
+ return {o,h};});
+// 8. price / 113 = 13-18 baht per serving
+sc(19.3,25.4,t=>{let o='',h='';
+ const w=write(t,[[540,250,'ราคาถัง',76,19.4,.7,CH],[540,400,'113 ครั้ง',76,19.9,.6,CH],[540,600,'≈ 13 บาท',100,20.4,.8,YEL],[540,760,'– 18 บาท',100,22.3,.7,YEL]]);
+ o+=ch('M330,300 L750,300',P(t,19.85,.15),8);o+=g(`<text font-family="K" font-weight="900" font-size="70" fill="${CH}">÷</text>`,{x:250,y:330,o:P(t,19.85,.15)});
+ o+=w.o;h+=w.h;
+ return {o,h};});
+// 9. still cheaper than convenience-store protein
+function shop(){return `<g fill="none" stroke="${CH}" stroke-width="7" stroke-linejoin="round" filter="url(#chf)"><path d="M-110,-30 L110,-30 L110,110 L-110,110Z"/><path d="M-125,-30 L-100,-90 L100,-90 L125,-30"/><path d="M-60,110 L-60,30 L-10,30 L-10,110"/><rect x="20" y="20" width="60" height="45"/></g><path d="M-125,-30 Q-104,-6 -83,-30 Q-62,-6 -41,-30 Q-20,-6 1,-30 Q22,-6 43,-30 Q64,-6 85,-30 Q106,-6 125,-30" fill="none" stroke="${RED}" stroke-width="6"/>`;}
+sc(25.4,28.6,t=>{let o='',h='';
+ o+=g(shop(),{x:280,y:420,o:P(t,25.45,.25)});o+=label(280,600,'ร้านสะดวกซื้อ',38,P(t,25.6,.2));
+ o+=g(`<text font-family="K" font-weight="900" font-size="80" text-anchor="middle" fill="${RED}">฿฿฿</text>`,{x:280,y:300,s:pop(t,25.9,.35)});
+ o+=`<text x="540" y="460" font-family="K" font-weight="900" font-size="70" text-anchor="middle" fill="${CH}" opacity="${P(t,25.7,.2)}">VS</text>`;
+ o+=soyTub(800,600,330,P(t,25.8,.2));
+ o+=g(`<text font-family="K" font-weight="900" font-size="80" text-anchor="middle" fill="${GRN}">฿</text>`,{x:800,y:230,s:pop(t,26.2,.35)});
+ const st=stampMark(800,720,'ถูกกว่า!',t,27.2,GRN,260,-6);o+=st.o;h+=st.h;
+ return {o,h};});
+// 10. good value, quality soy, brand Thais know (checklist written by hand)
+sc(28.6,35.4,t=>{let o='',h='';
+ o+=soyTub(250,820,420);
+ const items=[[480,330,'คุ้มค่า',64,29.9,.6,CH,'start'],[480,500,'ถั่วเหลืองอย่างดี',60,32.0,.9,CH,'start'],[480,670,'แบรนด์คนไทยคุ้นตา',56,33.8,1.0,CH,'start']];
+ const w=write(t,items);o+=w.o;h+=w.h;
+ [[440,312,29.7],[440,482,31.8],[440,652,33.6]].forEach(([x,y,a])=>o+=check(x,y,54,P(t,a,.25)));
+ return {o,h};});
+// 11. end card: BAAM ISO SOY, worth it, yellow basket bottom-left
+sc(35.4,42.7,t=>{let o='',h='';
+ o+=ch('M300,800 L800,800',1,8)+ch('M320,822 Q550,835 780,820',P(t,35.5,.35),9,YEL);
+ o+=soyTub(550,800,520);
+ const w=write(t,[[550,200,'BAAM!! ISO SOY',80,35.7,1.1,YEL]]);o+=w.o;h+=w.h;
+ const st=stampMark(860,380,'คุ้มมาก!',t,38.6,RED,260,10);o+=st.o;h+=st.h;
+ const q=pop(t,40.0,.4);o+=g(`<path d="M-55,-10 L55,-10 L42,45 L-42,45Z" fill="${YEL}" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M-35,-10 Q0,-60 35,-10" fill="none" stroke="${YEL}" stroke-width="8"/>`,{x:120,y:780,s:q});
+ const ar=P(t,40.2,.35);o+=ch('M290,700 Q200,690 160,740',ar,10,YEL)+ch('M160,705 L160,742 L198,744',cl(ar*2-1),10,YEL);
+ return {o,h};});
+
+// ---------- render ----------
+const sv=document.getElementById('sv');
+const DEFS=`<defs><filter id="chf" filterUnits="userSpaceOnUse" x="-200" y="-200" width="1480" height="1480"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
+<filter id="rim" x="-10%" y="-10%" width="120%" height="120%"><feMorphology in="SourceAlpha" operator="dilate" radius="3" result="d"/><feFlood flood-color="#cfd3da" flood-opacity=".55"/><feComposite in2="d" operator="in" result="r"/><feGaussianBlur in="r" stdDeviation="3" result="rb"/><feMerge><feMergeNode in="rb"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<pattern id="pgrain" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#e6dcc4"/><circle cx="2" cy="2" r=".8" fill="#d7ccb2"/></pattern></defs>`;
+let FTS=[];const FTEL={ft1:document.getElementById('ft1'),ft2:document.getElementById('ft2'),ftbg:document.getElementById('ftbg')};
+window.render=async function(t){UID=0;FTS=[];let o='',h='';
+ for(let i=0;i<S.length;i++){const s=S[i];const nx=S[i+1];const end=nx?nx.s:s.e;
+  if(t<s.s||t>=end)continue;let r=s.f(t);
+  if(t>=end){const q=eio(P(t,end,.32));o+=g(r.o+r.h,{x:-140*q,o:1-q});}else{o+=r.o;h+=r.h;}}
+ sv.innerHTML=DEFS+o+h;setCap(t);
+ const waits=[];for(const id in FTEL){const el=FTEL[id];const f=FTS.find(z=>z.id==id);
+  if(!f||f.o<=0){el.style.display='none';continue;}
+  el.style.display='block';el.style.width=el.style.height=f.size+'px';el.style.opacity=f.o;
+  el.style.transform=`translate(${f.x-f.size/2}px,${f.y-f.size/2}px) rotate(${f.r||0}deg) scale(${f.s})`;
+  const src='ft/'+String(f.frame).padStart(3,'0')+'.jpg';if(el.getAttribute('src')!==src){el.setAttribute('src',src);}
+  waits.push(el.decode().catch(()=>{}));}
+ await Promise.all(waits);};
+render(0);
+</script></body></html>
