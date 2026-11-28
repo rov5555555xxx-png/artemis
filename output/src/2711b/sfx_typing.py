@@ -115,7 +115,7 @@ def keyclick(f=2600):
     y+=0.35*bp(rng.standard_normal(len(t)),300,900)*np.exp(-np.maximum(t-0.012,0)*120)*(t>0.012)
     return y
 def typing(d):
-    out=np.zeros(int((d+0.1)*SR)); k=0.0
+    out=np.zeros(int((d+0.5)*SR)); k=0.0
     while k<d:
         c=keyclick(rng.uniform(2000,3400)); i=int(k*SR); out[i:i+len(c)]+=c*rng.uniform(.6,1)
         k+=rng.uniform(.065,.11)
