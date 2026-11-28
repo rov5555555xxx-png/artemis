@@ -17,8 +17,9 @@ html,body{margin:0;background:#1e1f22;overflow:hidden}
 #cap .rb{background:#e2332f;color:#fff;border-radius:14px;padding:0 22px 6px;text-shadow:none;box-shadow:0 6px 14px rgba(0,0,0,.35)}
 #cap span.w{display:inline-block}
 .safe #st::after{content:'';position:absolute;inset:70px;border:2px dashed #0f0;pointer-events:none}
+.ft{position:absolute;left:0;top:0;border-radius:26px;border:7px solid #f2efe6;box-shadow:0 10px 26px rgba(0,0,0,.55);display:none;object-fit:cover;transform-origin:50% 50%}
 </style></head><body>
-<div id="st"><svg id="sv" width="1080" height="1080" viewBox="0 0 1080 1080"></svg><div id="cap"></div></div>
+<div id="st"><svg id="sv" width="1080" height="1080" viewBox="0 0 1080 1080"></svg><img id="ft1" class="ft"><img id="ft2" class="ft"><div id="cap"></div></div>
 <svg width="0" height="0" style="position:absolute"><path id="meas" d="M0,0"/></svg>
 <script>
 if(location.hash=='#safe')document.body.classList.add('safe');
@@ -96,7 +97,7 @@ const CAPS=[
  [10.3,'กินได้ถึง <span class="y">113 ครั้ง</span>'],
  [12.1,'กินได้<span class="y">เกือบ 4 เดือน</span>'],
  [14.9,'ดูขนาดถัง <span class="y">โคตรใหญ่</span>'],
- [16.7,'ต่อครั้งได้โปรตีน <span class="y">30 กรัม</span>'],
+ [16.7,'ต่อครั้ง <span class="y">2 ช้อน</span> = โปรตีน 30 กรัม'],
  [19.3,'ตกครั้งละ <span class="y">13 บาท</span>'],
  [21.8,'หรือ <span class="y">18 บาท</span>'],
  [23.7,'ขึ้นอยู่กับ<span class="y">ราคาขายตอนนั้น</span>'],
@@ -182,11 +183,15 @@ sc(14.9,16.7,t=>{let o='',h='';
  const hs=drawSeq(t,'chalk',[{d:d1,a:15.0,dur:.5},{d:d2,a:15.55,dur:.12},{d:d3,a:15.75,dur:.12}],{exit:.3});o+=ch(d1,hs.p[0],8)+ch(d2,hs.p[1],8)+ch(d3,hs.p[2],8);h+=hs.hand;
  o+=g(`<text font-family="K" font-weight="900" font-size="64" text-anchor="middle" fill="${YEL}">ใหญ่!</text>`,{x:860,y:210,s:pop(t,16.0,.35),r:8});
  return {o,h};});
-// 7. each serving = 30 g protein
+// 7. each serving = 2 scoops = 30 g protein (real scoop footage)
+function ftFrame(t,off=0){const n=19,k=Math.floor(t*30*.6)+off,m=k%(2*n-2);return 1+(m<n?m:2*n-2-m);}
 sc(16.7,19.3,t=>{let o='',h='';
- const p=placeHand(t,'pinch',300,470,16.65,.45,.3);o+=disc(300+(p.arrived?0:p.dx),470+(p.arrived?0:p.dy),120,g(IC.protein,{s:1.3,y:8}),1);h+=p.hand;
- o+=label(300,640,'1 ครั้ง',44,P(t,17.3,.2));
- const w=write(t,[[740,420,'โปรตีน',72,17.8,.6,CH],[740,580,'30 g',130,18.5,.6,YEL]]);o+=w.o;h+=w.h;
+ const a=pop(t,16.72,.35),b=pop(t,17.15,.35);
+ if(a>0)FTS.push({id:'ft1',x:290,y:370,size:400,s:a,o:cl(a*2),r:-3,frame:ftFrame(t)});
+ if(b>0)FTS.push({id:'ft2',x:790,y:370,size:400,s:b,o:cl(b*2),r:3,frame:ftFrame(t,7)});
+ o+=tag(290,612,'ช้อนที่ 1',-3,34,cl(a*2),a)+tag(790,612,'ช้อนที่ 2',3,34,cl(b*2),b);
+ o+=g(`<text font-family="K" font-weight="900" font-size="110" text-anchor="middle" fill="${YEL}">+</text>`,{x:540,y:410,s:pop(t,17.2,.3)});
+ const w=write(t,[[540,770,'2 ช้อน = โปรตีน 30 g',76,17.65,.75,YEL]]);o+=w.o;h+=w.h;
  return {o,h};});
 // 8. price / 113 = 13-18 baht per serving
 sc(19.3,25.4,t=>{let o='',h='';
@@ -226,10 +231,18 @@ const sv=document.getElementById('sv');
 const DEFS=`<defs><filter id="chf" filterUnits="userSpaceOnUse" x="-200" y="-200" width="1480" height="1480"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
 <filter id="rim" x="-10%" y="-10%" width="120%" height="120%"><feMorphology in="SourceAlpha" operator="dilate" radius="3" result="d"/><feFlood flood-color="#cfd3da" flood-opacity=".55"/><feComposite in2="d" operator="in" result="r"/><feGaussianBlur in="r" stdDeviation="3" result="rb"/><feMerge><feMergeNode in="rb"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 <pattern id="pgrain" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#e6dcc4"/><circle cx="2" cy="2" r=".8" fill="#d7ccb2"/></pattern></defs>`;
-window.render=function(t){UID=0;let o='',h='';
+let FTS=[];const FTEL={ft1:document.getElementById('ft1'),ft2:document.getElementById('ft2')};
+window.render=async function(t){UID=0;FTS=[];let o='',h='';
  for(let i=0;i<S.length;i++){const s=S[i];const nx=S[i+1];const end=nx?nx.s:s.e;
   if(t<s.s||t>=end)continue;let r=s.f(t);
   if(t>=end){const q=eio(P(t,end,.32));o+=g(r.o+r.h,{x:-140*q,o:1-q});}else{o+=r.o;h+=r.h;}}
- sv.innerHTML=DEFS+o+h;setCap(t);};
+ sv.innerHTML=DEFS+o+h;setCap(t);
+ const waits=[];for(const id in FTEL){const el=FTEL[id];const f=FTS.find(z=>z.id==id);
+  if(!f||f.o<=0){el.style.display='none';continue;}
+  el.style.display='block';el.style.width=el.style.height=f.size+'px';el.style.opacity=f.o;
+  el.style.transform=`translate(${f.x-f.size/2}px,${f.y-f.size/2}px) rotate(${f.r||0}deg) scale(${f.s})`;
+  const src='ft/'+String(f.frame).padStart(3,'0')+'.jpg';if(el.getAttribute('src')!==src){el.setAttribute('src',src);}
+  waits.push(el.decode().catch(()=>{}));}
+ await Promise.all(waits);};
 render(0);
 </script></body></html>
