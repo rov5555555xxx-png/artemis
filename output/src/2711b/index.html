@@ -19,7 +19,7 @@ html,body{margin:0;background:#1e1f22;overflow:hidden}
 .safe #st::after{content:'';position:absolute;inset:70px;border:2px dashed #0f0;pointer-events:none}
 .ft{position:absolute;left:0;top:0;border-radius:26px;border:7px solid #f2efe6;box-shadow:0 10px 26px rgba(0,0,0,.55);display:none;object-fit:cover;transform-origin:50% 50%}
 </style></head><body>
-<div id="st"><svg id="sv" width="1080" height="1080" viewBox="0 0 1080 1080"></svg><img id="ft1" class="ft"><img id="ft2" class="ft"><div id="cap"></div></div>
+<div id="st"><img id="ftbg" class="ft" style="border:none;border-radius:0;box-shadow:none"><svg id="sv" style="position:absolute;left:0;top:0" width="1080" height="1080" viewBox="0 0 1080 1080"></svg><img id="ft1" class="ft"><img id="ft2" class="ft"><div id="cap"></div></div>
 <svg width="0" height="0" style="position:absolute"><path id="meas" d="M0,0"/></svg>
 <script>
 if(location.hash=='#safe')document.body.classList.add('safe');
@@ -142,11 +142,31 @@ function stampMark(cx,cy,txt,t,a,col=RED,w=300,rot=-8){const sh=placeHand(t,'sta
 
 // ---------- scenes ----------
 const S=[];const sc=(s,e,f)=>S.push({s,e,f});
-// 1. 30 g protein = 13-18 baht a day (written by hand)
+// 1. OPENING variants (?v=1..4): real scoop footage
+const OV=+(new URLSearchParams(location.search).get('v')||1);
 sc(0,2.7,t=>{let o='',h='';
- o+=disc(540,330,95,g(IC.protein,{s:1.05,y:6}),1);
- o+=ctext(540,560,'โปรตีน 30 g',96,1,CH,'middle',900);
- const w=write(t,[[540,720,'= 13–18 บาท/วัน',84,0.9,1.4,YEL]]);o+=w.o;h+=w.h;
+ if(OV==1){ // one big real scoop, hand writes the price under it
+  FTS.push({id:'ft1',x:540,y:360,size:500,s:1+0.03*t,o:1,r:-2,frame:ftFrame(t)});
+  o+=tag(540,690,'โปรตีน 30 g',-3,44);
+  const w=write(t,[[540,800,'= 13–18 บาท/วัน',84,0.7,1.3,YEL]]);o+=w.o;h+=w.h;}
+ else if(OV==2){ // scoop left, handwriting right
+  FTS.push({id:'ft1',x:300,y:450,size:440,s:1,o:1,r:-4,frame:ftFrame(t)});
+  o+=ctext(770,330,'โปรตีน',72,1,CH,'middle',900)+ctext(770,470,'30 g',120,1,CH,'middle',900);
+  const w=write(t,[[770,650,'13–18 บาท',80,0.7,1.0,YEL],[770,760,'ต่อวัน',56,1.8,.5,YEL]]);o+=w.o;h+=w.h;
+  o+=ch('M600,520 L930,512',P(t,0.3,.3),8,YEL);}
+ else if(OV==3){ // two scoops = 30 g = price
+  const b=pop(t,0.5,.35);
+  FTS.push({id:'ft1',x:290,y:350,size:380,s:1,o:1,r:-3,frame:ftFrame(t)});
+  if(b>0)FTS.push({id:'ft2',x:790,y:350,size:380,s:b,o:cl(b*2),r:3,frame:ftFrame(t,7)});
+  o+=g(`<text font-family="K" font-weight="900" font-size="100" text-anchor="middle" fill="${YEL}">+</text>`,{x:540,y:385,s:pop(t,.55,.3)});
+  o+=ctext(540,640,'2 ช้อน = โปรตีน 30 g',68,1,CH,'middle',900);
+  const w=write(t,[[540,790,'= 13–18 บาท/วัน',80,1.1,1.1,YEL]]);o+=w.o;h+=w.h;}
+ else { // full-bleed real footage, chalk text over a dark veil
+  FTS.push({id:'ftbg',x:540,y:540,size:1080,s:1.02+0.04*t/2.7,o:1,r:0,frame:ftFrame(t)});
+  o+=`<rect width="1080" height="1080" fill="rgba(15,15,18,.55)"/>`;
+  o+=ctext(540,330,'โปรตีน 30 g',120,1,'#fff','middle',900);
+  const w=write(t,[[540,560,'13–18 บาท/วัน',104,0.6,1.3,YEL]]);o+=w.o;h+=w.h;
+  o+=ch('M270,600 Q540,620 810,596',P(t,2.0,.4),10,YEL);}
  return {o,h};});
 // 2. FITWHEY ISO SOY (tub placed, name written)
 sc(2.7,4.9,t=>{let o='',h='';
@@ -231,7 +251,7 @@ const sv=document.getElementById('sv');
 const DEFS=`<defs><filter id="chf" filterUnits="userSpaceOnUse" x="-200" y="-200" width="1480" height="1480"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
 <filter id="rim" x="-10%" y="-10%" width="120%" height="120%"><feMorphology in="SourceAlpha" operator="dilate" radius="3" result="d"/><feFlood flood-color="#cfd3da" flood-opacity=".55"/><feComposite in2="d" operator="in" result="r"/><feGaussianBlur in="r" stdDeviation="3" result="rb"/><feMerge><feMergeNode in="rb"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 <pattern id="pgrain" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#e6dcc4"/><circle cx="2" cy="2" r=".8" fill="#d7ccb2"/></pattern></defs>`;
-let FTS=[];const FTEL={ft1:document.getElementById('ft1'),ft2:document.getElementById('ft2')};
+let FTS=[];const FTEL={ft1:document.getElementById('ft1'),ft2:document.getElementById('ft2'),ftbg:document.getElementById('ftbg')};
 window.render=async function(t){UID=0;FTS=[];let o='',h='';
  for(let i=0;i<S.length;i++){const s=S[i];const nx=S[i+1];const end=nx?nx.s:s.e;
   if(t<s.s||t>=end)continue;let r=s.f(t);
